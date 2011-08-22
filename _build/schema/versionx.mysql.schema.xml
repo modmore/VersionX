@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * VersionX
+ *
+ * Copyright 2011 by Mark Hamstra <business@markhamstra.nl>
+ *
+ * This file is part of VersionX, a versioning addon for MODX Revolution
+ *
+ * VersionX is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * VersionX is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA
+-->
+<model package="versionx" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
+
+    <object class="vxVersion" table="versionx" extends="xPDOObject">
+        <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="version_id" length="" collation="A" null="false" />
+        </index>
+
+        <field key="content_id" dbtype="int" precision="11" phptype="integer" null="false" index="fk" attributes="unsigned" />
+        <index alias="content_id" name="content_id" primary="false" unique="false" type="BTREE">
+            <column key="content_id" length="" collation="A" null="false" />
+        </index>
+
+        <field key="saved" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+        <field key="user" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
+        <field key="mode" dbtype="varchar" precision="24" phptype="string" null="false" default="update" />
+        <field key="marked" dbtype="tinyint" precision="1" phptype="boolean" default="0" />
+
+        <aggregate alias="User" class="modUser" local="user" foreign="id" owner="foreign" cardinality="one" />
+    </object>
+
+
+    <object class="vxResource" table="versionx_resource" extends="vxVersion">
+        <field key="title" dbtype="varchar" precision="255" phptype="string" null="false" default="Unnamed" />
+        <field key="fields" dbtype="text" phptype="array" null="false" />
+        <field key="tvs" dbtype="text" phptype="array" null="false" />
+
+        <aggregate alias="Resource" class="modResource" local="content_id" foreign="id" owner="foreign" cardinality="one" />
+    </object>
+
+
+    <object class="vxTemplate" table="versionx_template" extends="vxVersion">
+        <field key="templatename" dbtype="varchar" precision="50" phptype="string" null="false" />
+        <field key="description" dbtype="varchar" precision="255" phptype="string" default="Template" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
+        <field key="content" dbtype="mediumtext" phptype="string" null="false" default="" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0"  />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
+
+        <aggregate alias="Template" class="modTemplate" local="content_id" foreign="id" owner="foreign" cardinality="one" />
+    </object>
+
+
+    <object class="vxChunk" table="versionx_chunk" extends="vxVersion">
+        <field key="name" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
+        <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="Chunk" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
+        <field key="snippet" dbtype="mediumtext" phptype="string" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0"/>
+        <field key="properties" dbtype="text" phptype="array" null="true" />
+
+        <aggregate alias="Chunk" class="modChunk" local="content_id" foreign="id" owner="foreign" cardinality="one" />
+    </object>
+
+    
+    <object class="vxSnippet" table="versionx_snippet" extends="vxVersion">
+        <field key="name" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
+        <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="Chunk" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
+        <field key="snippet" dbtype="mediumtext" phptype="string" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0"/>
+        <field key="properties" dbtype="text" phptype="array" null="true" />
+
+        <aggregate alias="Snippet" class="modSnippet" local="content_id" foreign="id" owner="foreign" cardinality="one" />
+    </object>
+
+
+    <object class="vxPlugin" table="versionx_plugin" extends="vxVersion">
+        <field key="name" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
+        <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="Chunk" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
+        <field key="plugincode" dbtype="mediumtext" phptype="string" null="false" default="" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
+        <field key="disabled" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0"  />
+
+        <aggregate alias="Plugin" class="modPlugin" local="content_id" foreign="id" owner="foreign" cardinality="one" />
+    </object>
+
+</model>
+

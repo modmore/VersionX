@@ -1,0 +1,5 @@
+Changelog for VersionX.
+
+VersionX 2.0.0
+==============
+- Initial release of complete rewrite.
