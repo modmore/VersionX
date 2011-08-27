@@ -22,6 +22,23 @@ VersionX.panel.Resources = function(config) {
                     width: 200,
                     id: 'res-f-resource'
                 },{
+                    xtype: 'modx-combo-user',
+                    fieldLabel: _('user'),
+                    name: 'user',
+                    width: 200,
+                    id: 'res-f-user'
+                },{
+                    xtype: 'datefield',
+                    fieldLabel: _('versionx.filter.datefrom'),
+                    name: 'from',
+                    width: 200,
+                    id: 'res-f-from'
+                }]
+            },{
+                columnWidth: '48%',
+                layout: 'form',
+                border: false,
+                items: [{
                     xtype: 'modx-combo-context',
                     fieldLabel: _('context'),
                     name: 'context_key',
@@ -33,23 +50,6 @@ VersionX.panel.Resources = function(config) {
                     name: 'class',
                     width: 200,
                     id: 'res-f-class'
-                }]
-            },{
-                columnWidth: '48%',
-                layout: 'form',
-                border: false,
-                items: [{
-                    xtype: 'modx-combo-user', 
-                    fieldLabel: _('user'),
-                    name: 'user',
-                    width: 200,
-                    id: 'res-f-user'
-                },{
-                    xtype: 'datefield',
-                    fieldLabel: _('versionx.filter.datefrom'),
-                    name: 'from',
-                    width: 200,
-                    id: 'res-f-from'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
