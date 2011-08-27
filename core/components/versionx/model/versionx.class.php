@@ -156,7 +156,12 @@ class VersionX {
         unset ($rArray['id'],$rArray['content']);
         $version->set('fields',$rArray);
 
-        $tvs = $resource->getTemplateVars();
+        /* Check if $resource->getTemplateVars exists, as it's 2.1+ only. If it doesn't, do nothing for now. */
+        if (method_exists($resource,'getTemplateVars'))
+            $tvs = $resource->getTemplateVars();
+        else
+            $tvs = array();
+
         $tvArray = array();
         foreach ($tvs as $tv) {
             $tvArray[] = $tv->get(array('id','value'));
