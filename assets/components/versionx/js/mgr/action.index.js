@@ -28,7 +28,13 @@ VersionX.page.Index = function(config) {
             },{
                 title: _('resources'),
                 items: [{
-                    //xtype: 'versionx-grid-resources',
+                    xtype: 'versionx-panel-resources',
+                    border: false
+                },{
+                    html: '<hr />',
+                    border: false
+                },{
+                    xtype: 'versionx-grid-resources',
                     border: false
                 }]
             },{
@@ -36,31 +42,36 @@ VersionX.page.Index = function(config) {
                 items: [{
                     //xtype: 'versionx-grid-templates',
                     border: false
-                }]
+                }],
+                disabled: true
             },{
                 title: _('tmplvars'),
                 items: [{
                     //xtype: 'versionx-grid-templatevars',
                     border: false
-                }]
+                }],
+                disabled: true
             },{
                 title: _('chunks'),
                 items: [{
                     //xtype: 'versionx-grid-chunks',
                     border: false
-                }]
+                }],
+                disabled: true
             },{
                 title: _('snippets'),
                 items: [{
                     //xtype: 'versionx-grid-snippets',
                     border: false
-                }]
+                }],
+                disabled: true
             },{
                 title: _('plugins'),
                 items: [{
                     //xtype: 'versionx-grid-plugins',
                     border: false
-                }]
+                }],
+                disabled: true
             }]
 
         }]

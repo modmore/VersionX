@@ -53,6 +53,10 @@ class VersionX {
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
         ),$config);
+
+        $modelpath = $this->config['model_path'];
+        $this->modx->addPackage('versionx',$modelpath);
+        $this->modx->lexicon->load('versionx:default');
     }
 
     /**
@@ -62,9 +66,7 @@ class VersionX {
     public function initialize($ctx = 'web') {
         switch ($ctx) {
             case 'mgr':
-                $modelpath = $this->config['model_path'];
-                $this->modx->addPackage('versionx',$modelpath);
-                $this->modx->lexicon->load('versionx:default');
+
             break;
         }
         return true;
