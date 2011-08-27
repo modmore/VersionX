@@ -17,24 +17,13 @@
  * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * @package modextra
+ * @package versionx
  */
-/**
- * Default English Lexicon Entries for VersionX
- *
- * @package modextra
- * @subpackage lexicon
- */
-$_lang['modextra'] = 'VersionX';
-$_lang['modextra.menu_desc'] = 'A sample Extra to develop from.';
-$_lang['modextra.items'] = 'Items';
-$_lang['modextra.item_create'] = 'Create Item';
-$_lang['modextra.item_err_ae'] = 'An Item already exists with that name.';
-$_lang['modextra.item_err_nf'] = 'Item not found.';
-$_lang['modextra.item_err_ns'] = 'Item not specified.';
-$_lang['modextra.item_err_remove'] = 'An error occurred while trying to remove the Item.';
-$_lang['modextra.item_err_save'] = 'An error occurred while trying to save the Item.';
-$_lang['modextra.item_remove'] = 'Remove Item';
-$_lang['modextra.item_remove_confirm'] = 'Are you sure you want to remove this Item?';
-$_lang['modextra.item_update'] = 'Update Item';
-$_lang['modextra.intro_msg'] = 'Manage your items.';
+
+$_lang['versionx'] = 'VersionX';
+$_lang['versionx.menu_desc'] = 'Keeps track of your valuable content.';
+
+$_lang['versionx.home'] = 'VersionX';
+$_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component.';
+
+?>

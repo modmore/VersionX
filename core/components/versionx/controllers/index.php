@@ -17,12 +17,26 @@
  * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * @package modextra
  */
-/**
- * @package modextra
- * @subpackage controllers
- */
-require_once dirname(dirname(__FILE__)).'/model/modextra/modextra.class.php';
-$modextra = new VersionX($modx);
-return $modextra->initialize('mgr');
+
+require_once dirname(dirname(__FILE__)).'/model/versionx.class.php';
+$versionx = new VersionX($modx);
+$versionx->initialize('mgr');
+
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+    Ext.onReady(function() {
+        VersionX.config = '.$modx->toJSON($versionx->config).';
+    });
+</script>');
+
+
+$modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
+$modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
+/* Home */
+$modx->regClientStartupScript($versionx->config['js_url'].'mgr/home/panel.home.js');
+
+
+return '<div id="versionx"></div>';
+
+?>

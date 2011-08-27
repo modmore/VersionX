@@ -13,7 +13,7 @@ $manager = $modx->getManager();
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget('HTML');
 
-$objects = array('vxResource','vxTemplate','vxSnippet','vxChunk','vxPlugin');
+$objects = array('vxResource','vxTemplate','vxSnippet','vxChunk','vxPlugin','vxTemplateVar');
 
 foreach ($objects as $obj) {
     $manager->createObjectContainer($obj);

@@ -24,7 +24,16 @@
 
 class VersionX {
     public $modx;
+    private $chunks;
     public $config = array();
+
+
+    /**
+     * @param \modX $modx
+     * @param array $config
+     * @return \VersionX
+     *
+     */
     function __construct(modX &$modx,array $config = array()) {
         $this->modx =& $modx;
 
@@ -102,11 +111,190 @@ class VersionX {
         $f = $this->config['elements_path'].'chunks/'.strtolower($name).$postFix;
         if (file_exists($f)) {
             $o = file_get_contents($f);
+            /* @var modChunk $chunk */
             $chunk = $this->modx->newObject('modChunk');
             $chunk->set('name',$name);
             $chunk->setContent($o);
         }
         return $chunk;
     }
+
+    /**
+     * Creates a new version of a Resource.
+     *
+     * @param \modResource $resource
+     * @param string $mode
+     * @return bool
+     *
+     */
+    public function newResourceVersion(modResource $resource, $mode = 'upd') {
+        if (!($resource instanceof modResource)) { return false; }
+
+        // We're retrieving the resource again to clean up raw post data we don't want.
+        $resource = $this->modx->getObject('modResource',$resource->get('id'));
+
+        $rArray = $resource->toArray();
+
+        /* @var vxResource $version */
+        $version = $this->modx->newObject('vxResource');
+
+        $v = array(
+            'content_id' => $rArray['id'],
+            'user' => $this->modx->user->get('id'),
+            'mode' => $mode,
+            'title' => $rArray[$this->modx->getOption('resource_tree_node_name',null,'pagetitle')],
+            'context_key' => $rArray['context_key'],
+            'class' => $rArray['class_key'],
+            'content' => $resource->getContent(),
+        );
+
+        $version->fromArray($v);
+
+        unset ($rArray['id'],$rArray['content']);
+        $version->set('fields',$rArray);
+
+        $tvs = $resource->getTemplateVars();
+        $tvArray = array();
+        foreach ($tvs as $tv) {
+            $tvArray[] = $tv->get(array('id','value'));
+        }
+        $version->set('tvs',$tvArray);
+
+        return $version->save();
+    }
+
+
+    /**
+     * Creates a new version of a Template.
+     *
+     * @param \modTemplate $template
+     * @param string $mode
+     * @return bool
+     *
+     */
+    public function newTemplateVersion(modTemplate $template, $mode = 'upd') {
+        if (!($template instanceof modTemplate)) { return false; }
+
+        $tArray = $template->toArray();
+
+        /* @var vxTemplate $version */
+        $version = $this->modx->newObject('vxTemplate');
+
+        $v = array(
+            'content_id' => $tArray['id'],
+            'user' => $this->modx->user->get('id'),
+            'mode' => $mode,
+        );
+
+        $version->fromArray(array_merge($v,$tArray));
+
+        return $version->save();
+    }
+
+
+    /**
+     * Creates a new version of a Template Variable.
+     *
+     * @param \modTemplateVar $tv
+     * @param string $mode
+     * @return bool
+     *
+     */
+    public function newTemplateVarVersion(modTemplateVar $tv, $mode = 'upd') {
+        if (!($tv instanceof modTemplateVar)) { return false; }
+
+        $tArray = $tv->toArray();
+
+        /* @var modTemplateVar $version */
+        $version = $this->modx->newObject('vxTemplateVar');
+
+        $v = array(
+            'content_id' => $tArray['id'],
+            'user' => $this->modx->user->get('id'),
+            'mode' => $mode,
+        );
+
+        $version->fromArray(array_merge($v,$tArray));
+
+        return $version->save();
+    }
+    /**
+     * Create a new version of a Chunk.
+     *
+     * @param \modChunk $chunk
+     * @param string $mode
+     * @return bool
+     */
+    public function newChunkVersion(modChunk $chunk, $mode = 'upd') {
+        if (!($chunk instanceof modChunk)) { return false; }
+
+        $cArray = $chunk->toArray();
+
+        /* @var vxChunk $version */
+        $version = $this->modx->newObject('vxChunk');
+        
+        $v = array(
+            'content_id' => $cArray['id'],
+            'user' => $this->modx->user->get('id'),
+            'mode' => $mode,
+        );
+
+        $version->fromArray(array_merge($v,$cArray));
+
+        return $version->save();
+    }
+
+    /**
+     * Creates a new version of a Snippet.
+     *
+     * @param \modSnippet $snippet
+     * @param string $mode
+     * @return bool
+     */
+    public function newSnippetVersion(modSnippet $snippet, $mode = 'upd') {
+        if (!($snippet instanceof modSnippet)) { return false; }
+
+        $sArray = $snippet->toArray();
+
+        /* @var vxSnippet $version */
+        $version = $this->modx->newObject('vxSnippet');
+
+        $v = array(
+            'content_id' => $sArray['id'],
+            'user' => $this->modx->user->get('id'),
+            'mode' => $mode,
+        );
+
+        $version->fromArray(array_merge($v,$sArray));
+
+        return $version->save();
+    }
+
+    /**
+     * Creates a new version of a Plugin.
+     *
+     * @param \modPlugin $plugin
+     * @param string $mode
+     * @return bool
+     */
+    public function newPluginVersion(modPlugin $plugin, $mode = 'upd') {
+        if (!($plugin instanceof modPlugin)) { return false; }
+
+        $pArray = $plugin->toArray();
+
+        /* @var vxPlugin $version */
+        $version = $this->modx->newObject('vxPlugin');
+
+        $v = array(
+            'content_id' => $pArray['id'],
+            'user' => $this->modx->user->get('id'),
+            'mode' => $mode,
+        );
+
+        $version->fromArray(array_merge($v,$pArray));
+
+        return $version->save();
+    }
+
 }
 ?>

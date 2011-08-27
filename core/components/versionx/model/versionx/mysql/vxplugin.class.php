@@ -21,26 +21,6 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-
-
-if ($object->xpdo) {
-    $modx =& $object->xpdo;
-
-    $modelPath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/').'model/';
-    $modx->addPackage('versionx',$modelPath);
-
-    $manager = $modx->getManager();
-
-    $objects = array('vxResource','vxTemplate','vxSnippet','vxChunk','vxPlugin','vxTemplateVar');
-
-    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
-        case xPDOTransport::ACTION_UPGRADE:
-        case xPDOTransport::ACTION_INSTALL:
-            foreach ($objects as $obj) {
-                $manager->createObjectContainer($obj);
-            }
-        break;
-    }
-}
-return true;
+require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/vxplugin.class.php');
+class vxPlugin_mysql extends vxPlugin {}
 ?>
