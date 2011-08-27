@@ -20,7 +20,7 @@ $results = array();
 $c = $modx->newQuery('vxResource');
 $c->innerJoin('modUser','User');
 $c->innerJoin('modUserProfile','Profile','Profile.internalKey = User.id');
-$c->select(array('version_id','content_id','saved','mode','marked','title','context_key','class','User.username AS user'));
+$c->select(array('version_id','content_id','saved','mode','marked','title','context_key','class','User.username'));
 
 /* Filter */
 if ($resource)
@@ -45,7 +45,7 @@ $c->limit($limit,$start);
 $collection = $modx->getCollection('vxResource',$c);
 
 foreach ($collection as $res) {
-    $ta = $res->get(array('version_id','content_id','saved','user','mode','marked','title','context_key','class'));
+    $ta = $res->get(array('version_id','content_id','saved','username','mode','marked','title','context_key','class'));
     $results[] = $ta;
 }
 

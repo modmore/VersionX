@@ -22,13 +22,14 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','VersionX');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','0.5.0');
-define('PKG_RELEASE','dev');
+define('PKG_VERSION','2.0.0');
+define('PKG_RELEASE','dev2');
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
     'root' => $root,
     'build' => $root .'_build/',
+    'events' => $root . '_build/events/',
     'resolvers' => $root . '_build/resolvers/',
     'data' => $root . '_build/data/',
     'source_core' => $root.'core/components/'.PKG_NAME_LOWER,
@@ -61,6 +62,29 @@ $category->set('id',1);
 $category->set('category',PKG_NAME);
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in category.'); flush();
 
+/* add plugins */
+$plugins = include $sources['data'].'transport.plugins.php';
+if (!is_array($plugins)) { $modx->log(modX::LOG_LEVEL_FATAL,'Adding plugins failed.'); }
+$attributes= array(
+    xPDOTransport::UNIQUE_KEY => 'name',
+    xPDOTransport::PRESERVE_KEYS => false,
+    xPDOTransport::UPDATE_OBJECT => true,
+    xPDOTransport::RELATED_OBJECTS => true,
+    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
+        'PluginEvents' => array(
+            xPDOTransport::PRESERVE_KEYS => true,
+            xPDOTransport::UPDATE_OBJECT => false,
+            xPDOTransport::UNIQUE_KEY => array('pluginid','event'),
+        ),
+    ),
+);
+foreach ($plugins as $plugin) {
+    $vehicle = $builder->createVehicle($plugin, $attributes);
+    $builder->putVehicle($vehicle);
+}
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($plugins).' plugins.'); flush();
+unset($plugins,$plugin,$attributes);
+
 /* add snippets */
 /*$snippets = include $sources['data'].'transport.snippets.php';
 if (is_array($snippets)) {
@@ -70,22 +94,22 @@ $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($snippets).' snippets.'); f
 unset($snippets);*/
 
 /* Add actions */
-/*require_once ($sources['data'].'transport.actions.php');
-$modx->log(modX::LOG_LEVEL_INFO,'Packaged in actions');*/
+require_once ($sources['data'].'transport.actions.php');
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in actions');
 
 /* create category vehicle */
 $attr = array(
     xPDOTransport::UNIQUE_KEY => 'category',
     xPDOTransport::PRESERVE_KEYS => false,
     xPDOTransport::UPDATE_OBJECT => true,
-    xPDOTransport::RELATED_OBJECTS => true,
-    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
+    xPDOTransport::RELATED_OBJECTS => false,
+    /*xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
         'Snippets' => array(
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
-    )
+    ),*/
 );
 $vehicle = $builder->createVehicle($category,$attr);
 $vehicle->resolve('file',array(
@@ -96,11 +120,11 @@ $vehicle->resolve('file',array(
     'source' => $sources['source_assets'],
     'target' => "return MODX_ASSETS_PATH . 'components/';",
 ));
-/*
+
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'tables.resolver.php',
 ));
-*/
+
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();
 $builder->putVehicle($vehicle);
 

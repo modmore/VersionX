@@ -16,7 +16,7 @@ VersionX.grid.Resources = function(config) {
             {name: 'version_id', type: 'int'},
             {name: 'content_id', type: 'int'},
             {name: 'saved', type: 'string'},
-            {name: 'user', type: 'string'},
+            {name: 'username', type: 'string'},
             {name: 'mode', type: 'string'},
             {name: 'marked', type: 'boolean'},
             {name: 'title', type: 'string'},
@@ -47,7 +47,7 @@ VersionX.grid.Resources = function(config) {
 			width: .4
 		},{
 			header: _('user'),
-			dataIndex: 'user',
+			dataIndex: 'username',
 		    sortable: true,
 			width: .2
 		},{
