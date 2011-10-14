@@ -44,8 +44,9 @@ $c->limit($limit,$start);
 
 $collection = $modx->getCollection('vxResource',$c);
 
+/* @var vxResource $res */
 foreach ($collection as $res) {
-    $ta = $res->get(array('version_id','content_id','saved','username','mode','marked','title','context_key','class'));
+    $ta = $res->toArray('',false,true);
     $results[] = $ta;
 }
 
