@@ -339,8 +339,8 @@ class VersionX {
 
                 $vArray['content'] = nl2br(htmlentities($vArray['content']));
 
-                if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('inline');
-                else $vArray['content_dispo'] = $this->modx->lexicon('attachment');
+                if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
+                else $vArray['content_dispo'] = $this->modx->lexicon('inline');
 
                 /* Process boolean values */
                 $vArray['published'] = (intval($vArray['published'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
