@@ -55,6 +55,7 @@ switch ($_REQUEST['action']) {
 
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.resource.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel.v21.resources.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/combo.versions.resources.js');
     break;
     
     case 'index':
