@@ -30,14 +30,43 @@ $modx->regClientStartupHTMLBlock('
     });
 </script>');
 
+/*for (i in VersionX.record.tvs) {
+  tv = VersionX.record.tvs[i];
+  if (typeof tv == 'object') {
 
+  }
+}*/
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
-$modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
-/* Home */
-$modx->regClientStartupScript($versionx->config['js_url'].'mgr/home/panel.home.js');
-/* Resources */
-$modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/panel.resources.js');
-$modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/grid.resources.js');
+
+switch ($_REQUEST['action']) {
+    case 'resource':
+        /* If an ID was passed, fetch that version into a record array. */
+        if (intval($_REQUEST['vid']) > 0) {
+            $v = $versionx->getVersionDetails('vxResource',intval($_REQUEST['vid']),true);
+            if ($v !== false)
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$v.'; </script><!-- Fix for statictextfield positioning --><style type="text/css">.ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}</style>');
+        }
+        /* If an ID to compare to was passed, fetch that aswell. */
+        if (intval($_REQUEST['cmid']) > 0) {
+            $v = $versionx->getVersionDetails('vxResource',intval($_REQUEST['cmid']),true,'cm_');
+            if ($v !== false)
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$v.'; </script>');
+        }
+
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.resource.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel.v21.resources.js');
+    break;
+    
+    case 'index':
+    default:
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
+        /* Home */
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/home/panel.home.js');
+        /* Resources */
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/panel.resources.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/grid.resources.js');
+    break;
+}
 
 
 return '<div id="versionx"></div>';

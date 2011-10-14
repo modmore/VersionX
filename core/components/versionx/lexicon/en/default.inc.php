@@ -27,8 +27,12 @@ $_lang['versionx.home'] = 'VersionX';
 $_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component.';
 
 $_lang['versionx.resources.text'] = 'Resources include Documents, Weblinks, Symlinks and Static Resources. You can use the options below to filter the result set to dive into the history of edits.';
+$_lang['versionx.resources.detail'] = 'Resource Details';
+$_lang['versionx.resources.detail.text'] = 'Below you can find the details for the Resource Version you selected. To compare this Version with another one, use the combobox to the right to select another Version.';
 
-
+$_lang['versionx.menu.viewdetails'] = 'View Version Details';
+$_lang['versionx.back'] = 'Back to Overview';
+$_lang['versionx.compare_to'] = 'Compare To';
 $_lang['versionx.filter'] = 'Filter [[+what]]';
 $_lang['versionx.filter.reset'] = 'Reset Filter';
 $_lang['versionx.filter.datefrom'] = 'From';
@@ -37,9 +41,9 @@ $_lang['versionx.filter.dateuntil'] = 'Until';
 $_lang['versionx.version_id'] = 'Version ID';
 $_lang['versionx.content_id'] = '[[+what]] ID';
 $_lang['versionx.mode'] = 'Mode';
-$_lang['versionx.mode.new'] = 'Created';
-$_lang['versionx.mode.upd'] = 'Updated';
-$_lang['versionx.saved'] = 'Saved';
+$_lang['versionx.mode.new'] = 'Create';
+$_lang['versionx.mode.upd'] = 'Update';
+$_lang['versionx.saved'] = 'Saved On';
 $_lang['versionx.title'] = 'Title';
 $_lang['versionx.marked'] = 'Marked';
 

@@ -77,5 +77,22 @@ VersionX.grid.Resources = function(config) {
     });
     VersionX.grid.Resources.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.grid.Resources,MODx.grid.Grid);
+Ext.extend(VersionX.grid.Resources,MODx.grid.Grid,{
+    getMenu: function() {
+        var r = this.getSelectionModel().getSelected();
+        var d = r.data;
+
+        var m = [];
+        m.push({
+            text: _('versionx.menu.viewdetails'),
+            handler: function(grid, rowIndex, e) {
+                var eid = d.version_id;
+                window.location.href = '?a='+MODx.request['a']+'&action=resource&vid='+eid;
+            }
+        });
+        if (m.length > 0) {
+            this.addContextMenuItem(m);
+        }
+    }
+});
 Ext.reg('versionx-grid-resources',VersionX.grid.Resources);
