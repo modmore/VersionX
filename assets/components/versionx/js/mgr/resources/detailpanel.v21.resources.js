@@ -23,7 +23,8 @@ VersionX.panel.ResourcesDetail = function(config) {
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('versionx.title'),
-                    name: 'title'
+                    name: 'title',
+                    width: '97%'
                 }]
             },{
                 columnWidth: .5,
