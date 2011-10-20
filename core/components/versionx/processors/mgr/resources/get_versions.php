@@ -32,7 +32,7 @@ foreach ($query as $r) {
     $ta = $r->toArray('',false,true);
     $results[] = array(
         'id' => $ta['version_id'],
-        'display' => '#'.$ta['version_id'] . ': ' . $modx->lexicon('versionx.mode.'.$ta['mode']) . ' at ' . $ta['saved']
+        'display' => '#'.$ta['version_id'] . ': ' . $modx->lexicon('versionx.mode.'.$ta['mode']) . ' at ' . date($modx->config['manager_date_format'] . ' ' . $modx->config['manager_time_format'], strtotime($ta['saved'])),
     );
 }
 
