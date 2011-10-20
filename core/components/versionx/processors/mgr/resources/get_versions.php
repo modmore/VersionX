@@ -10,7 +10,7 @@ $resource = intval($modx->getOption('resource',$scriptProperties,0));
 $current = intval($modx->getOption('current',$scriptProperties,0));
 
 $c = $modx->newQuery('vxResource');
-$c->select(array('version_id','saved'));
+$c->select(array('version_id','saved','mode'));
 
 if (strlen($search) > 1) {
     $c->where(array('id:LIKE' => "%$search%",));
@@ -27,11 +27,12 @@ $c->limit($limit,$start);
 
 $results = array();
 $query = $modx->getCollection('vxResource',$c);
+/* @var vxResource $r */
 foreach ($query as $r) {
-    $ta = $r->get(array('version_id','saved'));
+    $ta = $r->toArray('',false,true);
     $results[] = array(
         'id' => $ta['version_id'],
-        'display' => '#'.$ta['version_id'] . ': ' . $ta['saved']
+        'display' => '#'.$ta['version_id'] . ': ' . $modx->lexicon('versionx.mode.'.$ta['mode']) . ' at ' . $ta['saved']
     );
 }
 
