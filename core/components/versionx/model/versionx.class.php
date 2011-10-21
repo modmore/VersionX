@@ -169,7 +169,45 @@ class VersionX {
         }
         $version->set('tvs',$tvArray);
 
-        return $version->save();
+        /* Get last version to make sure we've got some changes to save */
+        $c = $this->modx->newQuery('vxResource');
+        $c->where(array('content_id' => $version->get('content_id')));
+        $c->sortby('version_id','DESC');
+        $c->limit(1);
+
+        /* @var vxResource $lastVersion */
+        $lastVersion = $this->modx->getCollection('vxResource',$c);
+        $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
+
+        $changes = false;
+        if ($lastVersion instanceof vxResource) {
+            $lastVersionArray = $lastVersion->toArray();
+            unset($lastVersionArray['version_id'],$lastVersionArray['saved']);
+
+            $newVersionArray = $version->toArray();
+            foreach ($lastVersionArray as $key => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $k2 => $v2) {
+                        if (!in_array($k2,array('createdon','createdby','editedon'))) {
+                            if (is_array($v2)) {
+                                $v2 = implode('',$v2);
+                                $newVersionArray[$key][$k2] = implode('',$newVersionArray[$key][$k2]);
+                            }
+                            if ($newVersionArray[$key][$k2] != $v2) $changes = true;
+                        }
+                        //$this->modx->log(modX::LOG_LEVEL_ERROR,$key.$k2.'Changes: '. $changes .' New: '.$newVersionArray[$key][$k2].' Latest: '.$v2);
+                    }
+                } else {
+                    if ($newVersionArray[$key] != $value) $changes = true;
+                    //$this->modx->log(modX::LOG_LEVEL_ERROR,$key.'Changes: '. $changes .' New: '.$newVersionArray[$key].' Latest: '.$value);
+                }
+            }
+        }
+
+        /* If any changes were found, save the new version. Else just return true. */
+        if ($changes)
+            return $version->save();
+        return true;
     }
 
 
