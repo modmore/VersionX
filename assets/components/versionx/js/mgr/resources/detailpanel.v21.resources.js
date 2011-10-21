@@ -110,48 +110,59 @@ VersionX.panel.ResourcesDetail = function(config) {
                 items: [{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_pagetitle'),
-                    name: 'pagetitle'
+                    name: 'pagetitle',
+                    id: 'vx-pagetitle'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_longtitle'),
-                    name: 'longtitle'
+                    name: 'longtitle',
+                    id: 'vx-longtitle'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_description'),
-                    name: 'description'
+                    name: 'description',
+                    id: 'vx-description'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_alias'),
-                    name: 'alias'
+                    name: 'alias',
+                    id: 'vx-alias'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_link_attributes'),
-                    name: 'link_attributes'
+                    name: 'link_attributes',
+                    id: 'vx-link_attributes'
                 },{
                     xtype: 'textarea',
                     readOnly: true,
                     fieldLabel: _('resource_summary'),
-                    name: 'introtext'
+                    name: 'introtext',
+                    id: 'vx-introtext'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_parent'),
-                    name: 'parent'
+                    name: 'parent',
+                    id: 'vx-parent'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_menutitle'),
-                    name: 'menutitle'
+                    name: 'menutitle',
+                    id: 'vx-menutitle'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_menuindex'),
-                    name: 'menuindex'
+                    name: 'menuindex',
+                    id: 'vx-menuindex'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_published'),
-                    name: 'published'
+                    name: 'published',
+                    id: 'vx-published'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_hide_from_menus'),
-                    name: 'hidemenu'
+                    name: 'hidemenu',
+                    id: 'vx-hidemenu'
                 }]
             },{
                 columnWidth: .5,
@@ -276,47 +287,58 @@ VersionX.panel.ResourcesDetail = function(config) {
                 items: [{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_folder'),
-                    name: 'isfolder'
+                    name: 'isfolder',
+                    id: 'vx-isfolder'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_richtext'),
-                    name: 'richtext'
+                    name: 'richtext',
+                    id: 'vx-richtext'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_publishedon'),
-                    name: 'publishedon'
+                    name: 'publishedon',
+                    id: 'vx-publishedon'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_publishdate'),
-                    name: 'pub_date'
+                    name: 'pub_date',
+                    id: 'vx-pub_date'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_unpublishdate'),
-                    name: 'unpub_date'
+                    name: 'unpub_date',
+                    id: 'vx-unpub_date'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_searchable'),
-                    name: 'searchable'
+                    name: 'searchable',
+                    id: 'vx-searchable'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_cacheable'),
-                    name: 'cacheable'
+                    name: 'cacheable',
+                    id: 'vx-cacheable'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('deleted'),
-                    name: 'deleted'
+                    name: 'deleted',
+                    id: 'vx-deleted'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_content_type'),
-                    name: 'content_type'
+                    name: 'content_type',
+                    id: 'vx-content_type'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('resource_contentdispo'),
-                    name: 'content_dispo'
+                    name: 'content_dispo',
+                    id: 'vx-content_dispo'
                 },{
                     xtype: 'statictextfield',
                     fieldLabel: _('class_key'),
-                    name: 'class_key'
+                    name: 'class_key',
+                    id: 'vx-class_key'
                 }]
             },{
                 columnWidth: .5,

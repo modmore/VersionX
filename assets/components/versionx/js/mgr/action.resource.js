@@ -7,7 +7,7 @@ Ext.onReady(function() {
         for (i in VersionX.record.tvs) {
             tv = VersionX.record.tvs[i];
             if (typeof tv == 'object') {
-                Ext.getCmp('versionx-resource-tvs').add({xtype: 'statictextfield', fieldLabel: tv['caption'], value: tv['value']})
+                Ext.getCmp('versionx-resource-tvs').add({xtype: 'statictextfield', fieldLabel: tv['caption'], value: tv['value'], id: 'vx-tv-'+tv['id'] })
             }
         }
         Ext.getCmp('versionx-resource-tvs').doLayout();
@@ -15,10 +15,35 @@ Ext.onReady(function() {
     if (VersionX.cmrecord) {
         Ext.getCmp('versionx-panel-resourcesdetail').getForm().setValues(VersionX.cmrecord);
 
+        for (key in VersionX.cmrecord) {
+            if (!(key in {'cm_tvs':'', 'cm_fields':'', 'cm_content':'', 'cm_saved':'', 'cm_version_id':'', 'cm_editedon':'' })) {
+                keyVersion = key.substring(3);
+                left = VersionX.record[keyVersion];
+                right = VersionX.cmrecord[key];
+                /* Added to version on the left */
+                if (left != right) {
+                    leftObj = Ext.getCmp('vx-' + keyVersion);
+                    if (typeof leftObj != 'undefined') {
+                        if (left.length < 1) leftObj.getItemCt().addClass('vx-removed');
+                        else if (right.length < 1) leftObj.getItemCt().addClass('vx-added');
+                        else leftObj.getItemCt().addClass('vx-changed');
+                    }
+                }
+            }
+        }
+
         for (i in VersionX.cmrecord.cm_tvs) {
             tv = VersionX.cmrecord.cm_tvs[i];
             if (typeof tv == 'object') {
                 Ext.getCmp('versionx-resource-cm-tvs').add({xtype: 'statictextfield', fieldLabel: tv['caption'], value: tv['value']})
+                leftTv = Ext.getCmp('vx-tv-'+tv['id']);
+                if (typeof leftTv != 'undefined') {
+                    if (leftTv.value != tv['value']) {
+                        if (leftTv.length < 1) leftTv.getItemCt().addClass('vx-removed');
+                        else if (tv['value'].length < 1) leftTv.getItemCt().addClass('vx-added');
+                        else leftTv.getItemCt().addClass('vx-changed');
+                    }
+                }
             }
         }
         Ext.getCmp('versionx-resource-cm-tvs').doLayout();

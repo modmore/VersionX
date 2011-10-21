@@ -323,7 +323,7 @@ class VersionX {
 
             /* Resource specific processing */
             if ($class == 'vxResource') {
-                $vArray = array_merge($vArray,$vArray['fields'],$vArray['tvs']);
+                $vArray = array_merge($vArray,$vArray['fields']);
 
                 if ($vArray['parent'] != 0) {
                     /* @var modResource $parent */
