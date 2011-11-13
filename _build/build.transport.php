@@ -23,7 +23,7 @@ set_time_limit(0);
 define('PKG_NAME','VersionX');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
 define('PKG_VERSION','2.0.0');
-define('PKG_RELEASE','dev5');
+define('PKG_RELEASE','dev6');
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (
@@ -52,6 +52,7 @@ $modx->setLogTarget('ECHO'); echo 'Packing '.PKG_NAME_LOWER.'-'.PKG_VERSION.'-'.
 
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
+$builder->directory = dirname(dirname(__FILE__)).'/_packages/';
 $builder->createPackage(PKG_NAME_LOWER,PKG_VERSION,PKG_RELEASE);
 $builder->registerNamespace(PKG_NAME_LOWER,false,true,'{core_path}components/'.PKG_NAME_LOWER.'/');
 $modx->getService('lexicon','modLexicon');
