@@ -157,13 +157,14 @@ class VersionX {
         unset ($rArray['id'],$rArray['content']);
         $version->set('fields',$rArray);
 
-        /* Check if $resource->getTemplateVars exists, as it's 2.1+ only. If it doesn't, do nothing for now. */
+        /* @todo Check if $resource->getTemplateVars exists, as it's 2.1+ only. If it doesn't, do nothing for now. */
         if (method_exists($resource,'getTemplateVars'))
             $tvs = $resource->getTemplateVars();
         else
             $tvs = array();
 
         $tvArray = array();
+        /* @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
             $tvArray[] = $tv->get(array('id','value'));
         }
@@ -175,8 +176,8 @@ class VersionX {
         $c->sortby('version_id','DESC');
         $c->limit(1);
 
-        /* @var vxResource $lastVersion */
         $lastVersion = $this->modx->getCollection('vxResource',$c);
+        /* @var vxResource $lastVersion */
         $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
 
         $changes = false;
@@ -202,6 +203,9 @@ class VersionX {
                     //$this->modx->log(modX::LOG_LEVEL_ERROR,$key.'Changes: '. $changes .' New: '.$newVersionArray[$key].' Latest: '.$value);
                 }
             }
+        } else {
+            /* We don't have an earlier version yet */
+            $changes = true;
         }
 
         /* If any changes were found, save the new version. Else just return true. */
@@ -400,6 +404,7 @@ class VersionX {
                 $tvArray = array();
                 foreach ($vArray['tvs'] as $tv) {
                     if (!$this->tvs[$tv['id']]) {
+                        /* @var modTemplateVar $tvObj */
                         $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
                         if ($tvObj instanceof modTemplateVar) {
                             $this->tvs[$tv['id']] = $tvObj->get('caption');

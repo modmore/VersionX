@@ -1,5 +1,40 @@
-Changelog for VersionX.
+This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
-VersionX 2.0.0
-==============
-- Initial release of complete rewrite.
+Fix bug where it wouldn't create a version when no earlier versions existed.
+
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev6      ++
+++   Released on 2011-10-14   ++
+++++++++++++++++++++++++++++++++
+#5 Add check for Resource versions to make sure there are changes.
+Use colors in the detail/compare resource display to see changes/additions/removals.
+Respect manager_date_format and manager_time_format settings in drop down.
+Add the mode to dropdown display of versions to compare to, and prevent error notices.
+
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev5      ++
+++   Released on 2011-10-14   ++
+++++++++++++++++++++++++++++++++
+Fix content_disposition display on version details panel.
+Increase width of statictextfield
+Prevent silly error messages when loading resource version lists.
+
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev4      ++
+++   Released on 2011-10-14   ++
+++++++++++++++++++++++++++++++++
+Add compare functionality for resource versions.
+Add resource version details panel.
+Reorder of Resource filter options for easier duplication at a later stage.
+
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev3      ++
+++   Released on 2011-08-27   ++
+++++++++++++++++++++++++++++++++
+Fix endless save loop in MODX versions earlier than 2.1 due to lack of support for TVs.
+
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev2      ++
+++   Released on 2011-08-27   ++
+++++++++++++++++++++++++++++++++
+First proper build.
