@@ -7,22 +7,26 @@ VersionX.page.Index = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         renderTo: 'versionx',
+        cls: 'container',
         components: [{
-            xtype: 'versionx-panel-header'
+            html: '<h2>'+_('versionx')+'</h2>',
+            border: false,
+            cls: 'modx-page-header',
+            xtype: 'panel'
         },{
             xtype: 'modx-tabs',
+            cls: 'structure-tabs',
             width: '98%',
-            bodyStyle: 'padding: 10px 10px 10px 10px;',
             border: true,
             defaults: {
                 border: false,
                 autoHeight: true,
-                bodyStyle: 'padding: 5px 8px 5px 5px;'
+                cls: 'main-wrapper'
             },
             items: [{
                 title: _('versionx.home'),
                 items: [{
-                    xtype: 'versionx-panel-home',
+                    html: '<p>'+_('versionx.home.text')+'</p>',
                     border: false
                 }]
             },{
@@ -88,11 +92,9 @@ VersionX.panel.Header = function(config) {
     config = config || {};
     Ext.apply(config,{
         border: false
-        ,baseCls: 'modx-formpanel'
         ,items: [{
             html: '<h2>'+_('versionx')+'</h2>'
             ,border: false
-            ,cls: 'modx-page-header'
         }]
     });
     VersionX.panel.Header.superclass.constructor.call(this,config);

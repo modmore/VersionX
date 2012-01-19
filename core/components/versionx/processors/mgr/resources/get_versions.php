@@ -1,5 +1,7 @@
 <?php
-
+/* @var modX $modx
+ * @var array $scriptProperties 
+ */
 $start = $modx->getOption('start',$scriptProperties,0);
 $limit = $modx->getOption('limit',$scriptProperties,20);
 $sort = $modx->getOption('sort',$scriptProperties,'version_id');

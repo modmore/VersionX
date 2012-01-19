@@ -2,6 +2,7 @@ VersionX.grid.ResourcesDetail.Common = function(config) {
     config = config || {};
     Ext.apply(config,{
         autoHeight: true,
+        width: '98%',
         viewConfig: {
             forceFit: true,
             enableRowBody: true

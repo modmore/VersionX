@@ -71,8 +71,6 @@ switch ($_REQUEST['action']) {
     case 'index':
     default:
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
-        /* Home */
-        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/home/panel.home.js');
         /* Resources */
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/panel.resources.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/grid.resources.js');
