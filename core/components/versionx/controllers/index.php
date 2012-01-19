@@ -54,12 +54,16 @@ switch ($_REQUEST['action']) {
         }
         /* If an ID to compare to was passed, fetch that aswell. */
         if (intval($_REQUEST['cmid']) > 0) {
-            $v = $versionx->getVersionDetails('vxResource',intval($_REQUEST['cmid']),true,'cm_');
+            $v = $versionx->getVersionDetails('vxResource',intval($_REQUEST['cmid']),true);
             if ($v !== false)
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$v.'; </script>');
         }
 
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.resource.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/panel.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/panel.content.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/panel.tvs.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/grid.common.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel.v21.resources.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/combo.versions.resources.js');
     break;

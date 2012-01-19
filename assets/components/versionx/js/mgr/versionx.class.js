@@ -3,7 +3,7 @@ var VersionX = function(config) {
     VersionX.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX,Ext.Component,{
-    page:{},window:{},grid:{},tree:{},panel:{},combo:{},config: {}
+    page:{},window:{},grid:{},tree:{},panel:{},tabs:{},combo:{},config: {}
 });
 Ext.reg('versionx',VersionX);
 VersionX = new VersionX();

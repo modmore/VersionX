@@ -28,11 +28,22 @@ $_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution t
 
 $_lang['versionx.resources.text'] = 'Resources include Documents, Weblinks, Symlinks and Static Resources. You can use the options below to filter the result set to dive into the history of edits.';
 $_lang['versionx.resources.detail'] = 'Resource Details';
-$_lang['versionx.resources.detail.text'] = 'Below you can find the details for the Resource Version you selected. To compare this Version with another one, use the combobox to the right to select another Version.';
+$_lang['versionx.resources.detail.text'] = 'Below you can find the details for the Resource Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+
+$_lang['versionx.resources.detail.tabs.version-details'] = 'Version Details';
+$_lang['versionx.resources.detail.tabs.resource-fields'] = 'Fields';
+$_lang['versionx.resources.detail.tabs.resource-content'] = 'Content';
+$_lang['versionx.resources.detail.tabs.resource-content.columnheader'] = 'Content for Version #[[+id]]';
+$_lang['versionx.resources.detail.tabs.template-variables'] = 'Template Variables';
+$_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
+
+$_lang['versionx.resources.detail.grid.columns.field-name'] = 'Field Name';
+$_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver #[[+id]]]';
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
 $_lang['versionx.compare_to'] = 'Compare To';
+$_lang['versionx.compare_this_version_to'] = 'Compare this version to';
 $_lang['versionx.filter'] = 'Filter [[+what]]';
 $_lang['versionx.filter.reset'] = 'Reset Filter';
 $_lang['versionx.filter.datefrom'] = 'From';
