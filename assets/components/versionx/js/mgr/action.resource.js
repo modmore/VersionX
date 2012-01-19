@@ -14,15 +14,17 @@ VersionX.page.Resource = function(config) {
         renderTo: 'versionx',
         cls: 'container',
         components: [{
-            xtype: 'versionx-panel-header',
-            cls: 'modx-page-header'
+            xtype: 'panel',
+            html: '<h2>'+_('versionx')+' '+_('versionx.resources.detail')+'</h2>',
+            cls: 'modx-page-header',
+            border: false
         },{
             xtype: 'versionx-panel-resourcesdetail',
             cls: 'x-panel-body',
             vxRecord: VersionX.record,
             vxRecordCmp: VersionX.cmrecord,
             border: false,
-                    width: '98%'
+            width: '98%'
         }],
         buttons: [{
             text: _('versionx.back'),
@@ -35,23 +37,4 @@ VersionX.page.Resource = function(config) {
 };
 Ext.extend(VersionX.page.Resource,MODx.Component);
 Ext.reg('versionx-page-resource',VersionX.page.Resource);
-
-/*
-Index page header configuration.
- */
-VersionX.panel.Header = function(config) {
-    config = config || {};
-    Ext.apply(config,{
-        border: false,
-        items: [{
-            html: '<h2>'+_('versionx')+' '+_('versionx.resources.detail')+'</h2>',
-            border: false
-        }]
-    });
-    VersionX.panel.Header.superclass.constructor.call(this,config);
-};
-Ext.extend(VersionX.panel.Header,MODx.Panel,{});
-Ext.reg('versionx-panel-header',VersionX.panel.Header);
-
-
 

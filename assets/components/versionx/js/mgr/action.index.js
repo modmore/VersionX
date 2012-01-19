@@ -84,23 +84,3 @@ VersionX.page.Index = function(config) {
 };
 Ext.extend(VersionX.page.Index,MODx.Component);
 Ext.reg('versionx-page-index',VersionX.page.Index);
-
-/*
-Index page header configuration.
- */
-VersionX.panel.Header = function(config) {
-    config = config || {};
-    Ext.apply(config,{
-        border: false
-        ,items: [{
-            html: '<h2>'+_('versionx')+'</h2>'
-            ,border: false
-        }]
-    });
-    VersionX.panel.Header.superclass.constructor.call(this,config);
-};
-Ext.extend(VersionX.panel.Header,MODx.Panel);
-Ext.reg('versionx-panel-header',VersionX.panel.Header);
-
-
-
