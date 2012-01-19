@@ -32,53 +32,51 @@ VersionX.page.Index = function(config) {
                     defaults: {
                         border: false,
                         autoHeight: true,
-                        cls: 'main-wrapper'
+                        cls: 'main-wrapper',
+                        defaults: {
+                            border: false
+                        }
                     },
                     items: [{
                         title: _('resources'),
                         items: [{
-                            xtype: 'versionx-panel-resources',
-                            border: false
+                            html: '<p>'+_('versionx.resources.text')+'</p>',
+                            padding: '0 0 10px 0'
                         },{
-                            html: '<hr />',
-                            border: false
+                            xtype: 'versionx-panel-resources'
                         },{
-                            xtype: 'versionx-grid-resources',
-                            border: false
+                            html: '<hr />'
+                        },{
+                            xtype: 'versionx-grid-resources'
                         }]
                     },{
                         title: _('templates'),
                         items: [{
-                            //xtype: 'versionx-grid-templates',
-                            border: false
+                            //xtype: 'versionx-grid-templates'
                         }],
                         disabled: true
                     },{
                         title: _('tmplvars'),
                         items: [{
-                            //xtype: 'versionx-grid-templatevars',
-                            border: false
+                            //xtype: 'versionx-grid-templatevars'
                         }],
                         disabled: true
                     },{
                         title: _('chunks'),
                         items: [{
-                            //xtype: 'versionx-grid-chunks',
-                            border: false
+                            //xtype: 'versionx-grid-chunks'
                         }],
                         disabled: true
                     },{
                         title: _('snippets'),
                         items: [{
-                            //xtype: 'versionx-grid-snippets',
-                            border: false
+                            //xtype: 'versionx-grid-snippets'
                         }],
                         disabled: true
                     },{
                         title: _('plugins'),
                         items: [{
-                            //xtype: 'versionx-grid-plugins',
-                            border: false
+                            //xtype: 'versionx-grid-plugins'
                         }],
                         disabled: true
                     }]

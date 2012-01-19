@@ -7,8 +7,6 @@ VersionX.panel.Resources = function(config) {
         forceLayout: true,
         width: '98%',
         items: [{
-            html: '<p>'+_('versionx.resources.text')+'</p>'
-        },{
             layout: 'column',
             border: false,
             items: [{
@@ -60,7 +58,7 @@ VersionX.panel.Resources = function(config) {
             }]
         },{
             layout: 'column',
-            border: false,
+            padding: '10px 0 0 0',
             items: [{
                 columnWidth: '30%',
                 border: false,
