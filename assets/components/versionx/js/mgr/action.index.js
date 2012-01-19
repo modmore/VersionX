@@ -51,30 +51,35 @@ VersionX.page.Index = function(config) {
                         }]
                     },{
                         title: _('templates'),
+                        tabTip: _('versionx.tabtip.notyet',{what: _('templates')}),
                         items: [{
                             //xtype: 'versionx-grid-templates'
                         }],
                         disabled: true
                     },{
                         title: _('tmplvars'),
+                        tabTip: _('versionx.tabtip.notyet',{what: _('tmplvars')}),
                         items: [{
                             //xtype: 'versionx-grid-templatevars'
                         }],
                         disabled: true
                     },{
                         title: _('chunks'),
+                        tabTip: _('versionx.tabtip.notyet',{what: _('chunks')}),
                         items: [{
                             //xtype: 'versionx-grid-chunks'
                         }],
                         disabled: true
                     },{
                         title: _('snippets'),
+                        tabTip: _('versionx.tabtip.notyet',{what: _('snippets')}),
                         items: [{
                             //xtype: 'versionx-grid-snippets'
                         }],
                         disabled: true
                     },{
                         title: _('plugins'),
+                        tabTip: _('versionx.tabtip.notyet',{what: _('plugins')}),
                         items: [{
                             //xtype: 'versionx-grid-plugins'
                         }],

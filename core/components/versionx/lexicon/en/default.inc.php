@@ -59,5 +59,6 @@ $_lang['versionx.title'] = 'Title';
 $_lang['versionx.marked'] = 'Marked';
 
 $_lang['versionx.error.noresults'] = 'No results found for your query.';
+$_lang['versionx.tabtip.notyet'] = 'Sorry, we can\'t show you your [[+what]] history yet. Rest assured though - changes are already being monitored, and once we add this tab you\'re good to go!';
 
 ?>
