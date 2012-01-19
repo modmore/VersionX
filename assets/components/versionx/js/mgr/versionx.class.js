@@ -21,5 +21,5 @@ VersionX.panel.VersionHeader = function(config) {
     });
     VersionX.panel.VersionHeader.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.VersionHeader,MODx.FormPanel);
+Ext.extend(VersionX.panel.VersionHeader,MODx.Panel);
 Ext.reg('versionx-panel-versionheader',VersionX.panel.VersionHeader);
