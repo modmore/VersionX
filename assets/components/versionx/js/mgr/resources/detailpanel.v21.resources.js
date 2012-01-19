@@ -106,10 +106,5 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
     });
     VersionX.panel.ResourcesDetail.Main.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.ResourcesDetail.Main,MODx.FormPanel,{
-    compareVersion: function (tf, nv, ov) {
-        cmid = tf.getValue();
-        window.location.href = '?a='+MODx.request['a']+'&action=resource&vid='+MODx.request['vid']+'&cmid='+cmid;
-    }
-});
+Ext.extend(VersionX.panel.ResourcesDetail.Main,MODx.FormPanel,{});
 Ext.reg('versionx-panel-resourcesdetail',VersionX.panel.ResourcesDetail.Main);
