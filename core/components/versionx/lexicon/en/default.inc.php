@@ -30,6 +30,16 @@ $_lang['versionx.resources.text'] = 'Resources include Documents, Weblinks, Syml
 $_lang['versionx.resources.detail'] = 'Resource Details';
 $_lang['versionx.resources.detail.text'] = 'Below you can find the details for the Resource Version you selected. To compare this Version with another one, use the combobox to the right to select another Version.';
 
+$_lang['versionx.resources.detail.tabs.version-details'] = 'Version Details';
+$_lang['versionx.resources.detail.tabs.resource-fields'] = 'Fields';
+$_lang['versionx.resources.detail.tabs.resource-content'] = 'Content';
+$_lang['versionx.resources.detail.tabs.resource-content.columnheader'] = 'Content for Version #[[+id]]';
+$_lang['versionx.resources.detail.tabs.template-variables'] = 'Template Variables';
+$_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
+
+$_lang['versionx.resources.detail.grid.columns.field-name'] = 'Field Name';
+$_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver #[[+id]]]';
+
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
 $_lang['versionx.compare_to'] = 'Compare To';

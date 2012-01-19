@@ -1,5 +1,4 @@
-
-VersionX.panel.ResourcesDetail = function(config) {
+VersionX.panel.ResourcesDetail.Main = function(config) {
     config = config || {};
     Ext.apply(config,{
         id: 'versionx-panel-resourcesdetail',
@@ -8,415 +7,109 @@ VersionX.panel.ResourcesDetail = function(config) {
         width: '98%',
         layout: 'form',
         items: [{
-            html: '<p>'+_('versionx.resources.detail.text')+'</p>'
-        },{
-            layout: 'column',
-            border: false,
-            items: [{
-                columnWidth: .5,
-                layout: 'form',
+            xtype: 'modx-tabs',
+            width: '98%',
+            border: true,
+            defaults: {
                 border: false,
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource')+' '+_('id'),
-                    name: 'content_id'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.title'),
-                    name: 'title',
-                    width: '97%'
-                }]
-            },{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                items: [{
-                    width: '97%',
-                    xtype: 'versionx-combo-resourceversions',
-                    fieldLabel: _('versionx.compare_to'),
-                    name: 'compare_to',
-                    baseParams: {
-                        resource: (VersionX.record) ? VersionX.record['content_id'] : 0,
-                        current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                        action: 'mgr/resources/get_versions'
-                    },
-                    listeners: {
-                        'select': this.compareVersion
-                    }
-                }]
-            }]
-        },{
-            xtype: 'versionx-panel-versionheader',
-            title: 'Version Details'
-        },{
-            layout: 'column',
-            border: false,
-            items: [{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.version_id'),
-                    name: 'version_id'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('user'),
-                    name: 'user'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.saved'),
-                    name: 'saved'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.mode'),
-                    name: 'mode'
-                }]
-            },{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.version_id'),
-                    name: 'cm_version_id'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('user'),
-                    name: 'cm_user'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.saved'),
-                    name: 'cm_saved'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('versionx.mode'),
-                    name: 'cm_mode'
-                }]
-            }]
-        },{
-            xtype: 'versionx-panel-versionheader',
-            title: 'Resource Fields'
-        },{
-            layout: 'column',
-            border: false,
-            items: [{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                defaults: {
-                    width: '97%'
+                autoHeight: true,
+                bodyStyle: 'padding: 10px 10px 10px 10px;',
+            },
+            items: [
+                {
+                    title: _('versionx.resources.detail.tabs.version-details'),
+                    items: [{
+                        id: 'versionx-panel-resourcesdetail-versioninfo',
+                        xtype: 'versionx-panel-resourcesdetail-common',
+                        border: false,
+                        vxRecord: config.vxRecord,
+                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
+                        vxFieldMap: [
+                            { key: 'version_id', lexicon:'versionx.version_id' },
+                            { key: 'user', lexicon:'user' },
+                            { key: 'saved', lexicon:'versionx.saved' },
+                            { key: 'mode', lexicon:'versionx.mode' },
+                        ]
+                    }]
                 },
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_pagetitle'),
-                    name: 'pagetitle',
-                    id: 'vx-pagetitle'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_longtitle'),
-                    name: 'longtitle',
-                    id: 'vx-longtitle'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_description'),
-                    name: 'description',
-                    id: 'vx-description'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_alias'),
-                    name: 'alias',
-                    id: 'vx-alias'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_link_attributes'),
-                    name: 'link_attributes',
-                    id: 'vx-link_attributes'
-                },{
-                    xtype: 'textarea',
-                    readOnly: true,
-                    fieldLabel: _('resource_summary'),
-                    name: 'introtext',
-                    id: 'vx-introtext'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_parent'),
-                    name: 'parent',
-                    id: 'vx-parent'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_menutitle'),
-                    name: 'menutitle',
-                    id: 'vx-menutitle'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_menuindex'),
-                    name: 'menuindex',
-                    id: 'vx-menuindex'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_published'),
-                    name: 'published',
-                    id: 'vx-published'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_hide_from_menus'),
-                    name: 'hidemenu',
-                    id: 'vx-hidemenu'
-                }]
-            },{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                defaults: {
-                    width: '97%'
+                {
+                    title: _('versionx.resources.detail.tabs.resource-fields'),
+                    items: [{
+                        id: 'versionx-panel-resourcesdetail-resource-fields',
+                        xtype: 'versionx-panel-resourcesdetail-common',
+                        border: false,
+                        vxRecord: config.vxRecord,
+                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
+                        vxFieldMap: [
+                            { key: 'pagetitle', lexicon:'resource_pagetitle' },
+                            { key: 'longtitle', lexicon:'resource_longtitle' },
+                            { key: 'description', lexicon:'resource_description' },
+                            { key: 'alias', lexicon:'resource_alias' },
+                            { key: 'link_attributes', lexicon:'resource_link_attributes' },
+                            { key: 'summary', lexicon:'resource_summary' },
+                            { key: 'parent', lexicon:'resource_parent' },
+                            { key: 'menutitle', lexicon:'resource_menutitle' },
+                            { key: 'menuindex', lexicon:'resource_menuindex' },
+                            { key: 'published', lexicon:'resource_published' },
+                            { key: 'hidemenu', lexicon:'resource_hide_from_menus' },
+                        ]
+                    }]
                 },
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_pagetitle'),
-                    name: 'cm_pagetitle'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_longtitle'),
-                    name: 'cm_longtitle'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_description'),
-                    name: 'cm_description'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_alias'),
-                    name: 'cm_alias'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_link_attributes'),
-                    name: 'cm_link_attributes'
-                },{
-                    xtype: 'textarea',
-                    readOnly: true,
-                    fieldLabel: _('resource_summary'),
-                    name: 'cm_introtext'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_parent'),
-                    name: 'cm_parent'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_menutitle'),
-                    name: 'cm_menutitle'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_menuindex'),
-                    name: 'cm_menuindex'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_published'),
-                    name: 'cm_published'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_hide_from_menus'),
-                    name: 'cm_hidemenu'
-                }]
-            }]
-        },{
-            xtype: 'versionx-panel-versionheader',
-            title: _('resource_content')
-        },{
-            layout: 'column',
-            border: false,
-            items: [{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                defaults: {
-                    width: '97%'
+                {
+                    title: _('versionx.resources.detail.tabs.resource-content'),
+                    items: [{
+                        id: 'versionx-panel-resourcesdetail-content',
+                        xtype: 'versionx-panel-resourcesdetail-content',
+                        border: false,
+                        vxRecord: config.vxRecord,
+                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined
+                    }]
                 },
-                items: [{
-                    xtype: 'panel',
-                    border: false,
-                    html: (VersionX.record) ? ((VersionX.record.content) ? VersionX.record.content : '<em>Empty</em>') : '<em>No Version Chosen</em>'
-                }]
-            },{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                defaults: {
-                    width: '97%'
+                {
+                    title: _('versionx.resources.detail.tabs.template-variables'),
+                    // If this tab contains vertical tabs, enable this ---> bodyStyle: 'padding: 0 !important;',
+                    items: [{
+                        id: 'versionx-panel-resourcesdetail-tvs',
+                        xtype: 'versionx-panel-resourcesdetail-tvs',
+                        border: false,
+                        vxRecord: config.vxRecord,
+                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined
+                    }]
                 },
-                items: [{
-                    xtype: 'panel',
-                    border: false,
-                    html: (VersionX.cmrecord) ? ((VersionX.cmrecord.cm_content) ? VersionX.cmrecord.cm_content : '<em>Empty</em>') : '<em>No Version Chosen</em>'
-                }]
-            }]
-        },{
-            xtype: 'versionx-panel-versionheader',
-            title: _('template_variables')
-        },{
-            layout: 'column',
-            border: false,
-            items: [{
-                columnWidth: .5,
-                border: false,
-                layout: 'form',
-                id: 'versionx-resource-tvs',
-                defaults: {
-                    width: '97%'
-                },
-                items: []
-            },{
-                columnWidth: .5,
-                border: false,
-                layout: 'form',
-                id: 'versionx-resource-cm-tvs',
-                defaults: {
-                    width: '97%'
-                },
-                items: []
-            }]
-        },{
-            xtype: 'versionx-panel-versionheader',
-            title: _('page_settings')
-        },{
-            layout: 'column',
-            border: false,
-            items: [{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_folder'),
-                    name: 'isfolder',
-                    id: 'vx-isfolder'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_richtext'),
-                    name: 'richtext',
-                    id: 'vx-richtext'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_publishedon'),
-                    name: 'publishedon',
-                    id: 'vx-publishedon'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_publishdate'),
-                    name: 'pub_date',
-                    id: 'vx-pub_date'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_unpublishdate'),
-                    name: 'unpub_date',
-                    id: 'vx-unpub_date'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_searchable'),
-                    name: 'searchable',
-                    id: 'vx-searchable'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_cacheable'),
-                    name: 'cacheable',
-                    id: 'vx-cacheable'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('deleted'),
-                    name: 'deleted',
-                    id: 'vx-deleted'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_content_type'),
-                    name: 'content_type',
-                    id: 'vx-content_type'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_contentdispo'),
-                    name: 'content_dispo',
-                    id: 'vx-content_dispo'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('class_key'),
-                    name: 'class_key',
-                    id: 'vx-class_key'
-                }]
-            },{
-                columnWidth: .5,
-                layout: 'form',
-                border: false,
-                items: [{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_folder'),
-                    name: 'cm_isfolder'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_richtext'),
-                    name: 'cm_richtext'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_publishedon'),
-                    name: 'cm_publishedon'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_publishdate'),
-                    name: 'cm_pub_date'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_unpublishdate'),
-                    name: 'cm_unpub_date'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_searchable'),
-                    name: 'cm_searchable'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_cacheable'),
-                    name: 'cm_cacheable'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('deleted'),
-                    name: 'cm_deleted'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_content_type'),
-                    name: 'cm_content_type'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('resource_contentdispo'),
-                    name: 'cm_content_dispo'
-                },{
-                    xtype: 'statictextfield',
-                    fieldLabel: _('class_key'),
-                    name: 'cm_class_key'
-                }]
-            }]
+                {
+                    title: _('versionx.resources.detail.tabs.page-settings'),
+                    items: [{
+                        id: 'versionx-panel-resourcesdetail-page-settings',
+                        xtype: 'versionx-panel-resourcesdetail-common',
+                        border: false,
+                        vxRecord: config.vxRecord,
+                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
+                        vxFieldMap: [
+                            { key: 'isfolder', lexicon:'resource_folder' },
+                            { key: 'richtext', lexicon:'resource_richtext' },
+                            { key: 'publsihedon', lexicon:'resource_publishedon' },
+                            { key: 'pub_date', lexicon:'resource_publishdate' },
+                            { key: 'unpub_date', lexicon:'resource_unpublishdate' },
+                            { key: 'searchable', lexicon:'resource_searchable' },
+                            { key: 'cacheable', lexicon:'resource_cacheable' },
+                            { key: 'deleted', lexicon:'deleted' },
+                            { key: 'content_type', lexicon:'resource_content_type' },
+                            { key: 'content_dispo', lexicon:'resource_contentdispo' },
+                            { key: 'class_key', lexicon:'class_key' },
+                        ]
+                    }]
+                }
+            ]
         }],
         listeners: {
         }
     });
-    VersionX.panel.ResourcesDetail.superclass.constructor.call(this,config);
+    VersionX.panel.ResourcesDetail.Main.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.ResourcesDetail,MODx.FormPanel,{
+Ext.extend(VersionX.panel.ResourcesDetail.Main,MODx.FormPanel,{
     compareVersion: function (tf, nv, ov) {
         cmid = tf.getValue();
         window.location.href = '?a='+MODx.request['a']+'&action=resource&vid='+MODx.request['vid']+'&cmid='+cmid;
     }
 });
-Ext.reg('versionx-panel-resourcesdetail',VersionX.panel.ResourcesDetail);
-
-VersionX.panel.ResourcesDetailLeft = function(config) {
-    config = config || {};
-    Ext.apply(config,{
-        id: 'versionx-panel-resourcesdetail',
-        border: false,
-        forceLayout: true,
-        width: '98%',
-        items: [{
-            html: '<p>'+_('versionx.resources.detail.text')+'</p>'
-        },{
-        }]
-    });
-    VersionX.panel.ResourcesDetailLeft.superclass.constructor.call(this,config);
-};
-Ext.extend(VersionX.panel.ResourcesDetailLeft,MODx.FormPanel);
-Ext.reg('versionx-panel-resourcesdetailleft',VersionX.panel.ResourcesDetailLeft);
+Ext.reg('versionx-panel-resourcesdetail',VersionX.panel.ResourcesDetail.Main);
