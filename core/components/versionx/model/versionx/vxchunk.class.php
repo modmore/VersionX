@@ -21,5 +21,13 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-class vxChunk extends xPDOObject {}
+class vxChunk extends xPDOObject {
+    public static $excludeFields = array(
+        'version_id',
+        'saved',
+        'user',
+        'mode',
+        'marked',
+    );
+}
 ?>

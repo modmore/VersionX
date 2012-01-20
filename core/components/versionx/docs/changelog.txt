@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+#5 Make sure changes were made before creating a new version, normalized and now also for all element types.
 #1 Add ability to create a snapshot of all resources and elements during install.
 #2 Added TV compatibility for 2.0.8. 
 

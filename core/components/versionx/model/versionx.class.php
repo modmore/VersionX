@@ -28,6 +28,8 @@ class VersionX {
     private $chunks;
     private $tvs = array();
     public $config = array();
+    
+    public $debug = false;
 
 
     /**
@@ -58,6 +60,8 @@ class VersionX {
         $modelpath = $this->config['model_path'];
         $this->modx->addPackage('versionx',$modelpath);
         $this->modx->lexicon->load('versionx:default');
+        
+        $this->debug = $this->modx->getOption('versionx.debug',null,false); 
     }
 
     /**
@@ -169,7 +173,7 @@ class VersionX {
         }
         $version->set('tvs',$tvArray);
 
-        if($version->checkLastVersion()) {
+        if($this->checkLastVersion('vxResource', $version, $this->debug)) {
             return $version->save();
         }
         return true;
@@ -200,7 +204,10 @@ class VersionX {
 
         $version->fromArray(array_merge($v,$tArray));
 
-        return $version->save();
+        if($this->checkLastVersion('vxTemplate', $version)) {
+            return $version->save();
+        }
+        return true;
     }
 
 
@@ -228,7 +235,10 @@ class VersionX {
 
         $version->fromArray(array_merge($v,$tArray));
 
-        return $version->save();
+        if($this->checkLastVersion('vxTemplateVar', $version)) {
+            return $version->save();
+        }
+        return true;
     }
     /**
      * Create a new version of a Chunk.
@@ -253,7 +263,10 @@ class VersionX {
 
         $version->fromArray(array_merge($v,$cArray));
 
-        return $version->save();
+        if($this->checkLastVersion('vxChunk', $version)) {
+            return $version->save();
+        }
+        return true;
     }
 
     /**
@@ -279,7 +292,10 @@ class VersionX {
 
         $version->fromArray(array_merge($v,$sArray));
 
-        return $version->save();
+        if($this->checkLastVersion('vxSnippet', $version)) {
+            return $version->save();
+        }
+        return true;
     }
 
     /**
@@ -305,7 +321,10 @@ class VersionX {
 
         $version->fromArray(array_merge($v,$pArray));
 
-        return $version->save();
+        if($this->checkLastVersion('vxPlugin', $version)) {
+            return $version->save();
+        }
+        return true;
     }
 
     /**
@@ -430,6 +449,86 @@ class VersionX {
         }
         $c->sortby('tvtpl.rank,modTemplateVar.rank');
         return $resource->xpdo->getCollection('modTemplateVar', $c);
+    }
+
+    /**
+     * Checks the last saved version (if any).
+     * Returns true if there is no earlier version, or something is different.
+     * So if this returns true: go ahead and save the version.
+     * If this returns false: nothing changed, don't bother.
+     *
+     * @param string $class
+     * @param \xPDOObject $version
+     *
+     * @return bool
+     */
+    protected function checkLastVersion($class = 'vxResource', xPDOObject $version) {
+        /* Get last version to make sure we've got some changes to save */
+        $c = $this->modx->newQuery($class);
+        $c->where(array('content_id' => $version->get('content_id')));
+        $c->sortby('version_id','DESC');
+        $c->limit(1);
+
+        $lastVersion = $this->modx->getCollection($class,$c);
+        /* @var vxResource $lastVersion */
+        $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
+        
+        /* If there's no earlier version, we can go ahead and
+         return true to indicate we need to save the version */
+        if (!($lastVersion instanceof $class)) { 
+            if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: No earlier version found.");
+            return true;
+        }
+
+        $newVersionArray = $version->toArray();
+        $lastVersionArray = $lastVersion->toArray();
+
+        /* Get rid of root level excluded vars
+        While an IDE may report this as an error, it's usually not - it just doesn't know where to look. 
+        */
+        $exclude = $class::$excludeFields;
+        foreach ($exclude as $ex) { if (isset($lastVersionArray[$ex])) { unset($lastVersionArray[$ex]); } }
+        
+        /* Loop over array */
+        foreach ($lastVersionArray as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $k2 => $v2) {
+                    if (!is_string($k2) || !in_array($k2,$exclude)) {
+                        if (is_array($v2)) {
+                            $v2string = '';
+                            foreach ($v2 as $val) {
+                                $v2string .= (is_array($val)) ? implode('',$val) : $val;
+                            }
+                            $v2 = $v2string;
+                        }
+                        if (is_array($newVersionArray[$key][$k2])) {
+                            $v2string = '';
+                            foreach ($newVersionArray[$key][$k2] as $val) {
+                                $v2string .= (is_array($val)) ? implode('',$val) : $val;
+                            }
+                            $newVersionArray[$key][$k2] = $v2string;
+                        }
+                        if ($newVersionArray[$key][$k2] != $v2) {
+                            /* Hey, something's different! 
+                            Return true indicating to save a new version. */
+                            if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: Change found in {$k2}: {$newVersionArray[$key][$k2]}  - - -  {$v2}");
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if ($newVersionArray[$key] != $value) {
+                    /* Hey, something's different! 
+                    Return true indicating to save a new version. */
+                    if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: Change found in {$key}: {$newVersionArray[$key]}  - - -  {$value}");
+                    return true;
+                }
+            }
+        }
+        if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: No changes found.");
+        /* If we got here, there was a last version but it seemed nothing changes.
+        Return false to indicate to NOT save a new version. */
+        return false;
     }
 
 }
