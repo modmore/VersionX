@@ -60,7 +60,7 @@ switch($eventName) {
 
     /* Add tabs */
     case 'OnDocFormPrerender':
-        if ($mode == 'upd') {
+        if ($mode == 'upd' && $modx->getOption('versionx.formtabs.resource',null,true)) {
             $jsurl = $modx->getOption('versionx.assets_url',null,$modx->getOption('assets_url').'components/versionx/').'js/mgr/';
             
             $langs = '';
@@ -84,14 +84,18 @@ switch($eventName) {
             
             /* Create versions tab */
             $createtab = '<script type="text/javascript">
-                Ext.onReady(function() {
+                MODx.on("ready",function() {
                     MODx.addTab("modx-resource-tabs",{
                         title: \'Versions\',
                         id: \'versionx-resource-tab\',
                         layout: \'anchor\',
                         items: [{
                             xtype: \'versionx-panel-resources\',
-                            layout: \'anchor\'
+                            layout: \'anchor\',
+                            width: 500
+                        },{
+                            html: \'<hr />\',
+                            width: \'95%\'
                         },{
                             xtype: \'versionx-grid-resources\',
                             width: \'95%\'
@@ -106,6 +110,6 @@ switch($eventName) {
 if (isset($result) && $result === true)
     return;
 elseif (isset($result)) {
-    return $modx->log(1,'An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'false' : $result);
+    return $modx->log(modX::LOG_LEVEL_ERROR,'An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'false' : $result);
 }
 ?>
