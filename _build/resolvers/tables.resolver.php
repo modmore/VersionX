@@ -21,6 +21,7 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
+/* @var modX $modx */
 
 
 if ($object->xpdo) {
@@ -30,6 +31,8 @@ if ($object->xpdo) {
     $modx->addPackage('versionx',$modelPath);
 
     $manager = $modx->getManager();
+    
+    $loglevel = $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
 
     $objects = array('vxResource','vxTemplate','vxSnippet','vxChunk','vxPlugin','vxTemplateVar');
 
@@ -41,6 +44,8 @@ if ($object->xpdo) {
             }
         break;
     }
+    
+    $modx->setLogLevel($loglevel);
 }
 return true;
 ?>

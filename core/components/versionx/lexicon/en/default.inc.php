@@ -54,6 +54,7 @@ $_lang['versionx.content_id'] = '[[+what]] ID';
 $_lang['versionx.mode'] = 'Mode';
 $_lang['versionx.mode.new'] = 'Create';
 $_lang['versionx.mode.upd'] = 'Update';
+$_lang['versionx.mode.snapshot'] = 'Snapshot';
 $_lang['versionx.saved'] = 'Saved On';
 $_lang['versionx.title'] = 'Title';
 $_lang['versionx.marked'] = 'Marked';
