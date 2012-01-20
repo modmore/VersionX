@@ -14,7 +14,7 @@ VersionX.panel.Resources = function(config) {
                 layout: 'form',
                 border: false,
                 items: [{
-                    xtype: 'textfield', //'versionx-combo-resources',
+                    xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-resources',
                     fieldLabel: _('resource'),
                     name: 'resource',
                     width: 200,
@@ -37,7 +37,7 @@ VersionX.panel.Resources = function(config) {
                 layout: 'form',
                 border: false,
                 items: [{
-                    xtype: 'modx-combo-context',
+                    xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-context',
                     fieldLabel: _('context'),
                     name: 'context_key',
                     width: 200,
@@ -59,6 +59,7 @@ VersionX.panel.Resources = function(config) {
         },{
             layout: 'column',
             padding: '10px 0 0 0',
+            border: false,
             items: [{
                 columnWidth: '30%',
                 border: false,
@@ -84,7 +85,7 @@ VersionX.panel.Resources = function(config) {
     });
     VersionX.panel.Resources.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.Resources,MODx.FormPanel,{
+Ext.extend(VersionX.panel.Resources,MODx.Panel,{
     doFilter: function() {
         g = Ext.getCmp('versionx-grid-resources');
         if (g) {

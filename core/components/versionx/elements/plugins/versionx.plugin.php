@@ -52,6 +52,56 @@ switch($eventName) {
         $result = $modx->versionx->newPluginVersion($plugin, $mode);
         break;
     
+    case 'OnBeforeManagerPageInit':
+    case 'OnManagerPageInit':
+    case 'OnHandleRequest':
+
+        break;
+
+    /* Add tabs */
+    case 'OnDocFormPrerender':
+        if ($mode == 'upd') {
+            $jsurl = $modx->getOption('versionx.assets_url',null,$modx->getOption('assets_url').'components/versionx/').'js/mgr/';
+            
+            $langs = '';
+            $entries = $modx->lexicon->loadCache('versionx');
+            foreach ($entries as $e => $v) {
+                $v = htmlentities($v);
+                $langs .= "MODx.lang['$e'] = \"$v\";";
+            }
+            
+            /* Load class & set inVersion to true */
+            $modx->regClientStartupScript($jsurl.'versionx.class.js');
+            $modx->regClientStartupHTMLBlock('
+                <script type="text/javascript">
+                    VersionX.config = '.$modx->toJSON($modx->versionx->config).';
+                    VersionX.inVersion = true;
+                    '.$langs.'
+                </script>');
+            /* Load other JS */
+            $modx->regClientStartupScript($jsurl.'resources/panel.resources.js');
+            $modx->regClientStartupScript($jsurl.'resources/grid.resources.js');
+            
+            /* Create versions tab */
+            $createtab = '<script type="text/javascript">
+                Ext.onReady(function() {
+                    MODx.addTab("modx-resource-tabs",{
+                        title: \'Versions\',
+                        id: \'versionx-resource-tab\',
+                        layout: \'anchor\',
+                        items: [{
+                            xtype: \'versionx-panel-resources\',
+                            layout: \'anchor\'
+                        },{
+                            xtype: \'versionx-grid-resources\',
+                            width: \'95%\'
+                        }]
+                    });
+                });
+            </script>';
+            $modx->regClientStartupHTMLBlock($createtab);
+        }
+        break;
 }
 if (isset($result) && $result === true)
     return;

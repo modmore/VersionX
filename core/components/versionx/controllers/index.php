@@ -29,13 +29,6 @@ $modx->regClientStartupHTMLBlock('
         VersionX.config = '.$modx->toJSON($versionx->config).';
     });
 </script>');
-
-/*for (i in VersionX.record.tvs) {
-  tv = VersionX.record.tvs[i];
-  if (typeof tv == 'object') {
-
-  }
-}*/
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
 
 switch ($_REQUEST['action']) {

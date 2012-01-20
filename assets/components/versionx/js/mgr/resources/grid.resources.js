@@ -5,7 +5,8 @@ VersionX.grid.Resources = function(config) {
 		url: VersionX.config.connector_url,
 		id: 'versionx-grid-resources',
 		baseParams: {
-            action: 'mgr/resources/getlist'
+            action: 'mgr/resources/getlist',
+            resource: (VersionX.inVersion) ? MODx.request['id'] : 0
         },
         params: [],
         viewConfig: {
