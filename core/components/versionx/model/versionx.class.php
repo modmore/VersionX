@@ -157,11 +157,10 @@ class VersionX {
         unset ($rArray['id'],$rArray['content']);
         $version->set('fields',$rArray);
 
-        /* @todo Check if $resource->getTemplateVars exists, as it's 2.1+ only. If it doesn't, do nothing for now. */
         if (method_exists($resource,'getTemplateVars'))
             $tvs = $resource->getTemplateVars();
         else
-            $tvs = array();
+            $tvs = $this::getTemplateVars($resource);
 
         $tvArray = array();
         /* @var modTemplateVar $tv */
@@ -189,10 +188,20 @@ class VersionX {
             foreach ($lastVersionArray as $key => $value) {
                 if (is_array($value)) {
                     foreach ($value as $k2 => $v2) {
-                        if (!in_array($k2,array('createdon','createdby','editedon'))) {
+                        if (!is_string($k2) || !in_array($k2,array('createdon','createdby','editedon'))) {
                             if (is_array($v2)) {
-                                $v2 = implode('',$v2);
-                                $newVersionArray[$key][$k2] = implode('',$newVersionArray[$key][$k2]);
+								$v2string = '';
+								foreach ($v2 as $val) {
+									$v2string .= (is_array($val)) ? implode('',$val) : $val;
+								}
+                                $v2 = $v2string;
+                            }
+							if (is_array($newVersionArray[$key][$k2])) {
+								$v2string = '';
+								foreach ($newVersionArray[$key][$k2] as $val) {
+									$v2string .= (is_array($val)) ? implode('',$val) : $val;
+								}
+                                $newVersionArray[$key][$k2] = $v2string;
                             }
                             if ($newVersionArray[$key][$k2] != $v2) $changes = true;
                         }
@@ -430,6 +439,45 @@ class VersionX {
             return $vArray;
         }
         return false;
+    }
+
+    /**
+     * Provides backwards compatibility for MODX 2.0.8 (min. supported version)
+     * Only use if modResource::getTemplateVars is not available. 
+     * This function is identical to modResource::getTemplateVars in the MODX model. 
+     * 
+     * @static
+     * @param modResource $resource
+     * @return array|null
+     */
+    private static function getTemplateVars(modResource &$resource) {
+        /* @var xPDOQuery $c */
+        $c = $resource->xpdo->newQuery('modTemplateVar');
+        $c->query['distinct'] = 'DISTINCT';
+        $c->select($resource->xpdo->getSelectColumns('modTemplateVar', 'modTemplateVar'));
+        if ($resource->isNew()) {
+            $c->select(array(
+                'modTemplateVar.default_text AS value',
+                '0 AS resourceId'
+            ));
+        } else {
+            $c->select(array(
+                'IF(ISNULL(tvc.value),modTemplateVar.default_text,tvc.value) AS value',
+                $resource->get('id').' AS resourceId'
+            ));
+        }
+        $c->innerJoin('modTemplateVarTemplate','tvtpl',array(
+            'tvtpl.tmplvarid = modTemplateVar.id',
+            'tvtpl.templateid' => $resource->get('template'),
+        ));
+        if (!$resource->isNew()) {
+            $c->leftJoin('modTemplateVarResource','tvc',array(
+                'tvc.tmplvarid = modTemplateVar.id',
+                'tvc.contentid' => $resource->get('id'),
+            ));
+        }
+        $c->sortby('tvtpl.rank,modTemplateVar.rank');
+        return $resource->xpdo->getCollection('modTemplateVar', $c);
     }
 
 }
