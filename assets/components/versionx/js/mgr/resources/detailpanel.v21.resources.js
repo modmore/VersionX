@@ -127,8 +127,9 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
 };
 Ext.extend(VersionX.panel.ResourcesDetail.Main,MODx.FormPanel,{
     compareVersion: function (tf, nv, ov) {
-        cmid = tf.getValue();
-        window.location.href = '?a='+MODx.request['a']+'&action=resource&vid='+MODx.request['vid']+'&cmid='+cmid;
+        var cmid = tf.getValue();
+        var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
+        window.location.href = '?a='+VersionX.action+'&action=resource&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
     }
 });
 Ext.reg('versionx-panel-resourcesdetail',VersionX.panel.ResourcesDetail.Main);

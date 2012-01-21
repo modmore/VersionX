@@ -1,14 +1,24 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev10     ++
+++   Released on 2012-01-21   ++
+++++++++++++++++++++++++++++++++
+Fix linking from/to components, including when comparing.
+
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev9      ++
+++   Released on 2012-01-21   ++
+++++++++++++++++++++++++++++++++
 Add settings to setup for debug and showing/hiding the resource versions tab.
-Add tab on resource panel for versions [unfinished].
+Add tab on resource panel for versions.
 #5 Make sure changes were made before creating a new version, normalized and now also for all element types.
 #1 Add ability to create a snapshot of all resources and elements during install.
 #2 Added TV compatibility for 2.0.8. 
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.0.0-dev8      ++
-++   Released on 2011-10-14   ++
+++   Released on 2012-01-20   ++
 ++   Contributors:            ++
 ++   - Adam Lundrigan         ++
 ++++++++++++++++++++++++++++++++

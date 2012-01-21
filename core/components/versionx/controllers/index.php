@@ -22,11 +22,16 @@
 require_once dirname(dirname(__FILE__)).'/model/versionx.class.php';
 $versionx = new VersionX($modx);
 $versionx->initialize('mgr');
-
+$action = $modx->getObject('modAction',array(
+    'namespace' => 'versionx',
+    'controller' => 'controllers/index',
+));
+if ($action) $action = $action->get('id');
 $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
     Ext.onReady(function() {
         VersionX.config = '.$modx->toJSON($versionx->config).';
+        VersionX.action = '.$action.';
     });
 </script>');
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');

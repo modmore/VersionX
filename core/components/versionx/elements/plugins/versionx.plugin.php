@@ -70,12 +70,19 @@ switch($eventName) {
                 $langs .= "MODx.lang['$e'] = \"$v\";";
             }
             
+            $action = $modx->getObject('modAction',array(
+                'namespace' => 'versionx',
+                'controller' => 'controllers/index',
+            ));
+            if ($action) $action = $action->get('id');
+            
             /* Load class & set inVersion to true */
             $modx->regClientStartupScript($jsurl.'versionx.class.js');
             $modx->regClientStartupHTMLBlock('
                 <script type="text/javascript">
                     VersionX.config = '.$modx->toJSON($modx->versionx->config).';
                     VersionX.inVersion = true;
+                    VersionX.action = '.$action.';
                     '.$langs.'
                 </script>');
             /* Load other JS */
