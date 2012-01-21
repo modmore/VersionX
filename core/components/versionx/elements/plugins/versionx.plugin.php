@@ -88,7 +88,7 @@ switch($eventName) {
                     MODx.addTab("modx-resource-tabs",{
                         title: \'Versions\',
                         id: \'versionx-resource-tab\',
-                        layout: \'anchor\',
+                        width: \'95%\',
                         items: [{
                             xtype: \'versionx-panel-resources\',
                             layout: \'anchor\',
@@ -97,8 +97,11 @@ switch($eventName) {
                             html: \'<hr />\',
                             width: \'95%\'
                         },{
-                            xtype: \'versionx-grid-resources\',
-                            width: \'95%\'
+                            layout: \'anchor\',
+                            anchor: \'1\',
+                            items: [{
+                                xtype: \'versionx-grid-resources\'
+                            }]
                         }]
                     });
                 });

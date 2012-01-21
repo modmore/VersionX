@@ -3,7 +3,8 @@ var VersionX = function(config) {
     VersionX.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX,Ext.Component,{
-    page:{},window:{},grid:{},tree:{},panel:{},tabs:{},combo:{},config: {}
+    page:{},window:{},grid:{},tree:{},panel:{},tabs:{},combo:{},config: {},
+    action: (MODx.action['versionx:controllers/index']) ? MODx.action['versionx:controllers/index'] : MODx.action['controllers/index']
 });
 Ext.reg('versionx',VersionX);
 VersionX = new VersionX();

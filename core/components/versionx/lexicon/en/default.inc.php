@@ -42,6 +42,7 @@ $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
+$_lang['versionx.backtoresource'] = 'Back to Resource';
 $_lang['versionx.compare_to'] = 'Compare To';
 $_lang['versionx.compare_this_version_to'] = 'Compare this version to';
 $_lang['versionx.filter'] = 'Filter [[+what]]';

@@ -10,6 +10,24 @@ Ext.onReady(function() {
 
 VersionX.page.Resource = function(config) {
     config = config || {};
+    var buttons = [];
+    buttons.push({
+        text: _('versionx.back'),
+        handler: function () {
+            window.location.href = '?a='+MODx.request['a'];
+        }
+    });
+    if (MODx.request.backTo) {
+        var back = MODx.request.backTo.split('-');
+        if (back[0] == MODx.action['resource/update']) {
+            buttons.push('-',{
+                text: _('versionx.backtoresource'),
+                handler: function() {
+                    window.location.href = '?a='+back[0]+'&id='+back[1];
+                }
+            });
+        }
+    }
     Ext.applyIf(config,{
         renderTo: 'versionx',
         cls: 'container',
@@ -26,12 +44,7 @@ VersionX.page.Resource = function(config) {
             border: false,
             width: '98%'
         }],
-        buttons: [{
-            text: _('versionx.back'),
-            handler: function () {
-                window.location.href = '?a='+MODx.request['a'];
-            }
-        }]
+        buttons: buttons
     });
     VersionX.page.Resource.superclass.constructor.call(this,config);
 };

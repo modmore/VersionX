@@ -88,7 +88,8 @@ Ext.extend(VersionX.grid.Resources,MODx.grid.Grid,{
             text: _('versionx.menu.viewdetails'),
             handler: function(grid, rowIndex, e) {
                 var eid = d.version_id;
-                window.location.href = '?a='+MODx.request['a']+'&action=resource&vid='+eid;
+                var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
+                window.location.href = '?a='+VersionX.action+'&action=resource&vid='+eid+backTo;
             }
         });
         if (m.length > 0) {
