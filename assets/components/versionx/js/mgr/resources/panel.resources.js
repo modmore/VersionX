@@ -16,19 +16,21 @@ VersionX.panel.Resources = function(config) {
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-resources',
                     fieldLabel: _('resource'),
-                    name: 'resource',
+                    name: 'fltr_resource',
                     width: 200,
-                    id: 'res-f-resource'
+                    id: 'res-f-resource',
+                    value: (VersionX.inVersion) ? MODx.request.id : ''
+                    
                 },{
                     xtype: 'modx-combo-user',
                     fieldLabel: _('user'),
-                    name: 'user',
+                    name: 'fltr_user',
                     width: 200,
                     id: 'res-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
-                    name: 'from',
+                    name: 'fltr_from',
                     width: 200,
                     id: 'res-f-from'
                 }]
@@ -39,19 +41,19 @@ VersionX.panel.Resources = function(config) {
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-context',
                     fieldLabel: _('context'),
-                    name: 'context_key',
+                    name: 'fltr_context_key',
                     width: 200,
                     id: 'res-f-context'
                 },{
                     xtype: 'modx-combo-class-map',
                     fieldLabel: _('class_key'),
-                    name: 'class',
+                    name: 'fltr_class',
                     width: 200,
                     id: 'res-f-class'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
-                    name: 'until',
+                    name: 'fltr_until',
                     width: 200,
                     id: 'res-f-until'
                 }]
@@ -107,7 +109,7 @@ Ext.extend(VersionX.panel.Resources,MODx.Panel,{
     },
     resetFilter: function() {
         g = Ext.getCmp('versionx-grid-resources');
-        g.baseParams['resource'] = '';
+        g.baseParams['resource'] = (VersionX.inVersion) ? MODx.request.id : '';
         g.baseParams['context'] = '';
         g.baseParams['class'] = '';
         g.baseParams['user'] = '';
