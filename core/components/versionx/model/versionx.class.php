@@ -164,7 +164,7 @@ class VersionX {
         if (method_exists($resource,'getTemplateVars'))
             $tvs = $resource->getTemplateVars();
         else
-            $tvs = $this::getTemplateVars($resource);
+            $tvs = call_user_func(array($this,'getTemplateVars'),$resource);
 
         $tvArray = array();
         /* @var modTemplateVar $tv */
@@ -486,7 +486,7 @@ class VersionX {
         /* Get rid of root level excluded vars
         While an IDE may report this as an error, it's usually not - it just doesn't know where to look. 
         */
-        $exclude = $class::$excludeFields;
+        $exclude = call_user_func(array($class,'getExcludeFields'));
         foreach ($exclude as $ex) { if (isset($lastVersionArray[$ex])) { unset($lastVersionArray[$ex]); } }
         
         /* Loop over array */

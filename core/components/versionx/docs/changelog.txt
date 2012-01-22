@@ -1,6 +1,12 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
 ++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev11     ++
+++   Released on 2012-01-22   ++
+++++++++++++++++++++++++++++++++
+Fix/re-introduce support for PHP 5.2
+
+++++++++++++++++++++++++++++++++
 ++   VersionX 2.0.0-dev10     ++
 ++   Released on 2012-01-21   ++
 ++++++++++++++++++++++++++++++++

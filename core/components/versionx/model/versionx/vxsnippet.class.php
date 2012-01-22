@@ -29,5 +29,13 @@ class vxSnippet extends xPDOObject {
         'mode',
         'marked',
     );
+    /**
+     * Gets the excluded fields.
+     * @static
+     * @return array
+     */
+    public static function getExcludeFields () {
+        return self::$excludeFields;
+    }
 }
 ?>
