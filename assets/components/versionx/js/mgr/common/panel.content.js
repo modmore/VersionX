@@ -1,7 +1,7 @@
-VersionX.panel.ResourcesDetail.Content = function(config) {
+Ext.ns('VersionX.panel.Common');
+VersionX.panel.Common.ContentPanel = function(config) {
     config = config || {};
     Ext.apply(config,{
-        id: 'versionx-panel-resourcesdetail-content',
         items: [{
             layout: 'column',
             border: false,
@@ -21,7 +21,7 @@ VersionX.panel.ResourcesDetail.Content = function(config) {
                     xtype: 'panel',
                     border: false,
                     style: 'padding: 15px 10px 10px 10px;',
-                    html: (config.vxRecord) ? ((config.vxRecord.content) ? config.vxRecord.content : '<em>Empty</em>') : '<em>No Version Chosen</em>'
+                    html: (config.vxRecord) ? ((config.vxRecord[config.vxContentField]) ? config.vxRecord[config.vxContentField] : '<em>Empty</em>') : '<em>No Version Chosen</em>'
                 }]
             }]
         }]
@@ -45,12 +45,12 @@ VersionX.panel.ResourcesDetail.Content = function(config) {
                 xtype: 'panel',
                 border: false,
                 style: 'padding: 15px 10px 10px 10px;',
-                html: (config.vxRecordCmp) ? ((config.vxRecordCmp.content) ? config.vxRecordCmp.content : '<em>Empty</em>') : '<em>No Version Chosen</em>'
+                html: (config.vxRecordCmp) ? ((config.vxRecordCmp[config.vxContentField]) ? config.vxRecordCmp[config.vxContentField] : '<em>Empty</em>') : '<em>No Version Chosen</em>'
             }]
         });
     }
     
-    VersionX.panel.ResourcesDetail.Content.superclass.constructor.call(this,config);
+    VersionX.panel.Common.ContentPanel.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.ResourcesDetail.Content,MODx.Panel,{});
-Ext.reg('versionx-panel-resourcesdetail-content',VersionX.panel.ResourcesDetail.Content);
+Ext.extend(VersionX.panel.Common.ContentPanel,MODx.Panel,{});
+Ext.reg('versionx-panel-common-contentpanel',VersionX.panel.Common.ContentPanel);
