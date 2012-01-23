@@ -80,10 +80,11 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                     title: _('versionx.resources.detail.tabs.resource-content'),
                     items: [{
                         id: 'versionx-panel-resourcesdetail-content',
-                        xtype: 'versionx-panel-resourcesdetail-content',
+                        xtype: 'versionx-panel-common-contentpanel',
                         border: false,
                         vxRecord: config.vxRecord,
-                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined
+                        vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
+                        vxContentField: 'content'
                     }]
                 },{
                     title: _('versionx.resources.detail.tabs.template-variables'),
