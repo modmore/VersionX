@@ -1,5 +1,7 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Fix filtering on Resource panel.
+
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.0.0-dev11     ++
 ++   Released on 2012-01-22   ++
