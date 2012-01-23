@@ -40,6 +40,10 @@ $_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
 $_lang['versionx.resources.detail.grid.columns.field-name'] = 'Field Name';
 $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver #[[+id]]]';
 
+$_lang['versionx.templates.text'] = 'Temlates define the look and feel of your site\'s resources. You can use the options below to filter the result set to dive into the history of edits.';
+$_lang['versionx.templates.detail'] = 'Template Details';
+$_lang['versionx.templates.detail.text'] = 'Below you can find the details for the Template Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
 $_lang['versionx.backtoresource'] = 'Back to Resource';
@@ -52,6 +56,7 @@ $_lang['versionx.filter.dateuntil'] = 'Until';
 
 $_lang['versionx.version_id'] = 'Version ID';
 $_lang['versionx.content_id'] = '[[+what]] ID';
+$_lang['versionx.content_name'] = '[[+what]] Name';
 $_lang['versionx.mode'] = 'Mode';
 $_lang['versionx.mode.new'] = 'Create';
 $_lang['versionx.mode.upd'] = 'Update';
