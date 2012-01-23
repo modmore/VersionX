@@ -25,6 +25,7 @@ VersionX.panel.Resources = function(config) {
                     xtype: 'modx-combo-user',
                     fieldLabel: _('user'),
                     name: 'fltr_user',
+                    hiddenName: 'fltr_user',
                     width: 200,
                     id: 'res-f-user'
                 },{
