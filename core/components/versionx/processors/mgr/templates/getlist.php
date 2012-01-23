@@ -17,9 +17,9 @@ $until = $modx->getOption('until',$scriptProperties,null);
 $results = array();
 
 $c = $modx->newQuery('vxTemplate');
-$c->innerJoin('modUser','User','User.id = vxTemplate.user');
-$c->innerJoin('modUserProfile','Profile','Profile.internalKey = User.id');
-$c->innerJoin('modCategory','Category','Category.id = vxTemplate.category');
+$c->leftJoin('modUser','User','User.id = vxTemplate.user');
+$c->leftJoin('modUserProfile','Profile','Profile.internalKey = User.id');
+$c->leftJoin('modCategory','Category','Category.id = vxTemplate.category');
 $c->select(array('version_id','content_id','saved','mode','marked','templatename','vxTemplate.category','categoryname'=>'Category.category','User.username'));
 
 /* Filter */

@@ -18,8 +18,8 @@ $until = $modx->getOption('until',$scriptProperties,null);
 $results = array();
 
 $c = $modx->newQuery('vxResource');
-$c->innerJoin('modUser','User');
-$c->innerJoin('modUserProfile','Profile','Profile.internalKey = User.id');
+$c->leftJoin('modUser','User');
+$c->leftJoin('modUserProfile','Profile','Profile.internalKey = User.id');
 $c->select(array('version_id','content_id','saved','mode','marked','title','context_key','class','User.username'));
 
 /* Filter */
