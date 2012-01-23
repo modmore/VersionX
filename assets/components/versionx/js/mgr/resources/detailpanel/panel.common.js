@@ -6,7 +6,7 @@ VersionX.panel.ResourcesDetail.Common = function(config) {
             border: false,
             items: [
                 {
-                    xtype: (typeof config.vxGridXType != 'undefined') ? config.vxGridXType : 'versionx-grid-resourcesdetail-common',
+                    xtype: (typeof config.vxGridXType != 'undefined') ? config.vxGridXType : 'versionx-grid-common-detailgrid',
                     vxRecord: config.vxRecord,
                     vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
                     vxFieldMap: config.vxFieldMap

@@ -1,4 +1,6 @@
-VersionX.grid.ResourcesDetail.Common = function(config) {
+Ext.ns('VersionX.grid.Common');
+
+VersionX.grid.Common.DetailGrid = function(config) {
     config = config || {};
     Ext.apply(config,{
         autoHeight: true,
@@ -51,7 +53,7 @@ VersionX.grid.ResourcesDetail.Common = function(config) {
         });
     }
 
-    VersionX.grid.ResourcesDetail.Common.superclass.constructor.call(this,config);
+    VersionX.grid.Common.DetailGrid.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.grid.ResourcesDetail.Common,MODx.grid.LocalGrid,{});
-Ext.reg('versionx-grid-resourcesdetail-common',VersionX.grid.ResourcesDetail.Common);
+Ext.extend(VersionX.grid.Common.DetailGrid,MODx.grid.LocalGrid,{});
+Ext.reg('versionx-grid-common-detailgrid',VersionX.grid.Common.DetailGrid);
