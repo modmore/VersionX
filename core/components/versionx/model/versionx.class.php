@@ -30,6 +30,7 @@ class VersionX {
     public $config = array();
     
     public $debug = false;
+    public $action = null;
 
 
     /**
@@ -50,6 +51,7 @@ class VersionX {
             'model_path' => $basePath.'model/',
             'processors_path' => $basePath.'processors/',
             'elements_path' => $basePath.'elements/',
+            'templates_path' => $basePath.'templates/',
             'assets_path' => $assetsPath,
             'js_url' => $assetsUrl.'js/',
             'css_url' => $assetsUrl.'css/',
@@ -529,6 +531,93 @@ class VersionX {
         /* If we got here, there was a last version but it seemed nothing changes.
         Return false to indicate to NOT save a new version. */
         return false;
+    }
+
+    /**
+     * Outputs the JavaScript needed to add a tab to the panels.
+     *
+     * @param string $class
+     */
+    public function outputVersionsTab ($class = 'vxResource') {
+        if (!class_exists($class)) {
+            $path = $this->config['model_path'].'versionx/'.strtolower($class).'.class.php';
+            if (file_exists($path)) {
+                require_once ($path);
+            } 
+            if (!class_exists($class)) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX::outputVersionsTab] Error loading class '.$class);
+                return;
+            }
+        }
+        $langs = $this->_getLangs();
+        $action = $this->getAction();
+        $jsurl = $this->config['js_url'].'mgr/';
+        
+        /* Load class & set inVersion to true, indicating we're not looking at the VersionX controller. */
+        $this->modx->regClientStartupScript($jsurl.'versionx.class.js');
+        $this->modx->regClientStartupHTMLBlock('
+            <script type="text/javascript">
+                VersionX.config = '.$this->modx->toJSON($this->config).';
+                VersionX.inVersion = true;
+                VersionX.action = '.$action.';
+                '.$langs.'
+            </script>
+        ');
+        
+        /* Get the different individual JS to add to the page */
+        $tabjs = call_user_func(array($class,'getTabJavascript'));
+        if (is_array($tabjs)) {
+            foreach ($tabjs as $js) {
+                $this->modx->regClientStartupScript($jsurl.$js);
+            }
+        }
+        
+        /* Get the template and register it */
+        $tplName = call_user_func(array($class,'getTabTpl'));
+        $tplFile = $this->config['templates_path'] . $tplName . '.tpl';
+        if (file_exists($tplFile)) {
+            $tpl = file_get_contents($tplFile);
+            if (!empty($tpl)) {
+                $this->modx->regClientStartupHTMLBlock($tpl);
+            }
+        }
+        
+        
+    }
+
+    /**
+     * Gets language strings for use on non-VersionX controllers.
+     * @return string
+     */
+    private function _getLangs() {
+        $langs = '';
+        $entries = $this->modx->lexicon->loadCache('versionx');
+        foreach ($entries as $e => $v) {
+            $v = htmlentities($v);
+            $langs .= "MODx.lang['$e'] = \"$v\";";
+        }
+        return $langs;
+    }
+
+    /**
+     * Gets the action ID for the VersionX controller.
+     * 
+     * @return An|null|object
+     */
+    public function getAction() {
+        $action = $this->action;
+        if (!$action) {
+            /* @var modAction $action */
+            $action = $this->modx->getObject('modAction',array(
+                'namespace' => 'versionx',
+                'controller' => 'controllers/index',
+            ));
+            if ($action) {
+                $action = $action->get('id');
+                $this->action = $action;
+            } 
+        }
+        return $action;
     }
 
 }

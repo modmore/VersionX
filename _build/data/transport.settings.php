@@ -3,6 +3,7 @@
 $s = array(
     'debug' => false,
     'formtabs.resource' => true,
+    'formtabs.template' => true,
 );
 
 $settings = array();

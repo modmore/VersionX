@@ -34,6 +34,13 @@ class vxResource extends xPDOObject {
         'editedon',
         'editedby',
     );
+    
+    public static $tabJavascript = array(
+        'resources/panel.resources.js',
+        'resources/grid.resources.js',
+    );
+    
+    public static $tabTpl = 'mgr/tabs/resources';
 
     /**
      * Gets the excluded fields.
@@ -42,6 +49,24 @@ class vxResource extends xPDOObject {
      */
     public static function getExcludeFields () {
         return self::$excludeFields;
+    }
+
+    /**
+     * Gets the Javascript filenames that are required for tabs.
+     * @static
+     * @return array
+     */
+    public static function getTabJavascript() {
+        return self::$tabJavascript;
+    }
+
+    /**
+     * Gets the tab template file name.
+     * @static
+     * @return string
+     */
+    public static function getTabTpl() {
+        return self::$tabTpl;
     }
 }
 ?>

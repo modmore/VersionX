@@ -2,7 +2,16 @@
 
 $events = array();
 
-$e = array('OnDocFormSave','OnTempFormSave','OnTVFormSave','OnChunkFormSave','OnSnipFormSave','OnPluginFormSave','OnDocFormPrerender');
+$e = array(
+    'OnDocFormSave',
+    'OnTempFormSave',
+    'OnTVFormSave',
+    'OnChunkFormSave',
+    'OnSnipFormSave',
+    'OnPluginFormSave',
+    'OnDocFormPrerender',
+    'OnTempFormPrerender',
+);
 
 foreach ($e as $ev) {
     $events[$ev] = $modx->newObject('modPluginEvent');

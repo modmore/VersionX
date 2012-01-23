@@ -31,6 +31,7 @@
 */
 
 $eventName = $modx->event->name;
+echo $eventName;
 
 switch($eventName) {
     case 'OnDocFormSave':
@@ -60,62 +61,18 @@ switch($eventName) {
 
     /* Add tabs */
     case 'OnDocFormPrerender':
-        if ($mode == 'upd' && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $jsurl = $modx->getOption('versionx.assets_url',null,$modx->getOption('assets_url').'components/versionx/').'js/mgr/';
-            
-            $langs = '';
-            $entries = $modx->lexicon->loadCache('versionx');
-            foreach ($entries as $e => $v) {
-                $v = htmlentities($v);
-                $langs .= "MODx.lang['$e'] = \"$v\";";
-            }
-            
-            $action = $modx->getObject('modAction',array(
-                'namespace' => 'versionx',
-                'controller' => 'controllers/index',
-            ));
-            if ($action) $action = $action->get('id');
-            
-            /* Load class & set inVersion to true */
-            $modx->regClientStartupScript($jsurl.'versionx.class.js');
-            $modx->regClientStartupHTMLBlock('
-                <script type="text/javascript">
-                    VersionX.config = '.$modx->toJSON($modx->versionx->config).';
-                    VersionX.inVersion = true;
-                    VersionX.action = '.$action.';
-                    '.$langs.'
-                </script>');
-            /* Load other JS */
-            $modx->regClientStartupScript($jsurl.'resources/panel.resources.js');
-            $modx->regClientStartupScript($jsurl.'resources/grid.resources.js');
-            
-            /* Create versions tab */
-            $createtab = '<script type="text/javascript">
-                MODx.on("ready",function() {
-                    MODx.addTab("modx-resource-tabs",{
-                        title: \'Versions\',
-                        id: \'versionx-resource-tab\',
-                        width: \'95%\',
-                        items: [{
-                            xtype: \'versionx-panel-resources\',
-                            layout: \'anchor\',
-                            width: 500
-                        },{
-                            html: \'<hr />\',
-                            width: \'95%\'
-                        },{
-                            layout: \'anchor\',
-                            anchor: \'1\',
-                            items: [{
-                                xtype: \'versionx-grid-resources\'
-                            }]
-                        }]
-                    });
-                });
-            </script>';
-            $modx->regClientStartupHTMLBlock($createtab);
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxResource'); 
         }
         break;
+    
+    case 'OnTempFormPrerender':
+        echo $mode;
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxTemplate'); 
+        }
+        break;
+    
 }
 if (isset($result) && $result === true)
     return;
