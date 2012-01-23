@@ -66,6 +66,38 @@ switch ($_REQUEST['action']) {
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/combo.versions.resources.js');        
     break;
     
+    case 'template':
+        /* If an ID was passed, fetch that version into a record array. */
+        if (intval($_REQUEST['vid']) > 0) {
+            $v = $versionx->getVersionDetails('vxTemplate',intval($_REQUEST['vid']));
+            if ($v !== false)
+                $v['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($v['content'])));
+                $modx->regClientStartupHTMLBlock('
+                    <script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>
+                    <style type="text/css">
+                        .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
+                        .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
+                    </style>
+                ');
+        }
+        /* If an ID to compare to was passed, fetch that aswell. */
+        if (intval($_REQUEST['cmid']) > 0) {
+            $v = $versionx->getVersionDetails('vxTemplate',intval($_REQUEST['cmid']));
+            if ($v !== false)
+            {
+                $v['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($v['content'])));
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
+            }
+        }
+
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.template.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/panel.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/grid.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/panel.content.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/detailpanel.templates.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/combo.versions.templates.js'); 
+    break;
+    
     case 'index':
     default:
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');

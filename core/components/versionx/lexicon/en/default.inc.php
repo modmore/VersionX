@@ -40,6 +40,12 @@ $_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
 $_lang['versionx.resources.detail.grid.columns.field-name'] = 'Field Name';
 $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver #[[+id]]]';
 
+$_lang['versionx.templates.detail.tabs.version-details'] = 'Version Details';
+$_lang['versionx.templates.detail.tabs.fields'] = 'Fields';
+$_lang['versionx.templates.detail.tabs.content'] = 'Content';
+$_lang['versionx.templates.detail.tabs.properties'] = 'Properties';
+$_lang['versionx.templates.detail.tabs.properties.off'] = 'Sorry, we can\'t show you this tab yet';
+
 $_lang['versionx.templates.text'] = 'Temlates define the look and feel of your site\'s resources. You can use the options below to filter the result set to dive into the history of edits.';
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Below you can find the details for the Template Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
