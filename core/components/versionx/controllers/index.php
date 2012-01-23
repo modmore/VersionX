@@ -58,10 +58,10 @@ switch ($_REQUEST['action']) {
         }
 
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.resource.js');
-        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/panel.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/panel.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/grid.common.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/panel.content.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel/panel.tvs.js');
-        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/grid.common.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/detailpanel.v21.resources.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/combo.versions.resources.js');        
     break;
