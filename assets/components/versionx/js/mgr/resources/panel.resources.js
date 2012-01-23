@@ -117,7 +117,14 @@ Ext.extend(VersionX.panel.Resources,MODx.Panel,{
         g.baseParams['until'] = '';
         g.getBottomToolbar().changePage(1);
         g.refresh();
-        Ext.getCmp('versionx-panel-resources').getForm().reset()
+        
+        // Reset Fields
+        Ext.getCmp('res-f-resource').reset();
+        Ext.getCmp('res-f-context').reset();
+        Ext.getCmp('res-f-class').reset();
+        Ext.getCmp('res-f-user').reset();
+        Ext.getCmp('res-f-from').reset();
+        Ext.getCmp('res-f-until').reset();
     }
 });
 Ext.reg('versionx-panel-resources',VersionX.panel.Resources);
