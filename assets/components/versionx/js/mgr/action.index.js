@@ -40,9 +40,6 @@ VersionX.page.Index = function(config) {
                     items: [{
                         title: _('resources'),
                         items: [{
-                            html: '<p>'+_('versionx.resources.text')+'</p>',
-                            padding: '0 0 10px 0'
-                        },{
                             xtype: 'versionx-panel-resources'
                         },{
                             html: '<hr />'
@@ -52,9 +49,6 @@ VersionX.page.Index = function(config) {
                     },{
                         title: _('templates'),
                         items: [{
-                            html: '<p>'+_('versionx.templates.text')+'</p>',
-                            padding: '0 0 10px 0'
-                        },{
                             xtype: 'versionx-panel-templates'
                         },{
                             html: '<hr />'
