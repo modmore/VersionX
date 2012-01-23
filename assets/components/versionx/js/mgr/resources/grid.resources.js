@@ -11,7 +11,8 @@ VersionX.grid.Resources = function(config) {
         params: [],
         viewConfig: {
             forceFit: true,
-            enableRowBody: true
+            enableRowBody: true,
+            emptyText: _('versionx.error.noresults')
         },
 		fields: [
             {name: 'version_id', type: 'int'},
