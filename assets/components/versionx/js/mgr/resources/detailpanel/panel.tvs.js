@@ -32,7 +32,7 @@ VersionX.panel.ResourcesDetail.TVs = function(config) {
     
     Ext.apply(config,{
         items: [{
-            xtype: 'versionx-grid-resourcesdetail-common',
+            xtype: 'versionx-grid-common-detailgrid',
             vxRecord: config.vxRecord,
             vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
             data: data

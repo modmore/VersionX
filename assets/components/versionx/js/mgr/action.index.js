@@ -51,11 +51,16 @@ VersionX.page.Index = function(config) {
                         }]
                     },{
                         title: _('templates'),
-                        tabTip: _('versionx.tabtip.notyet',{what: _('templates')}),
                         items: [{
-                            //xtype: 'versionx-grid-templates'
-                        }],
-                        disabled: true
+                            html: '<p>'+_('versionx.templates.text')+'</p>',
+                            padding: '0 0 10px 0'
+                        },{
+                            xtype: 'versionx-panel-templates'
+                        },{
+                            html: '<hr />'
+                        },{
+                            xtype: 'versionx-grid-templates'
+                        }]
                     },{
                         title: _('tmplvars'),
                         tabTip: _('versionx.tabtip.notyet',{what: _('tmplvars')}),
