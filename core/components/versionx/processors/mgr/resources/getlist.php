@@ -50,16 +50,11 @@ foreach ($collection as $res) {
     $results[] = $ta;
 }
 
-if (!empty($results)) {
-    $returnArray = array(
-        'success' => true,
-        'total' => $total,
-        'results' => $results
-    );
-    return $modx->toJSON($returnArray);
-}
-else {
-    return $modx->error->failure($modx->lexicon('versionx.error.noresults'));
-}
+$returnArray = array(
+    'success' => true,
+    'total' => $total,
+    'results' => $results
+);
+return $modx->toJSON($returnArray);
 
 ?>
