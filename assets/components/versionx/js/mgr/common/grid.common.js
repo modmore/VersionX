@@ -36,11 +36,19 @@ VersionX.grid.Common.DetailGrid = function(config) {
         
         var length = config.vxFieldMap.length;
         for ( var i = 0; i < length; i++ ) {
-            config.data.push([
-                _(config.vxFieldMap[i].lexicon),
-                config.vxRecord[config.vxFieldMap[i].key],
-                config.vxRecordCmp ? config.vxRecordCmp[config.vxFieldMap[i].key] : ''
-            ]);
+            if (config.vxFieldMap[i].enumerate) {
+                config.data.push([
+                    _(config.vxFieldMap[i].lexicon),
+                    this.flattenObject(config.vxRecord[config.vxFieldMap[i].key]),
+                    config.vxRecordCmp ? this.flattenObject(config.vxRecordCmp[config.vxFieldMap[i].key]) : ''
+                ]);
+            } else {
+                config.data.push([
+                    _(config.vxFieldMap[i].lexicon),
+                    config.vxRecord[config.vxFieldMap[i].key],
+                    config.vxRecordCmp ? config.vxRecordCmp[config.vxFieldMap[i].key] : ''
+                ]);
+            }
         }
     }
 
@@ -55,5 +63,18 @@ VersionX.grid.Common.DetailGrid = function(config) {
 
     VersionX.grid.Common.DetailGrid.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.grid.Common.DetailGrid,MODx.grid.LocalGrid,{});
+Ext.extend(VersionX.grid.Common.DetailGrid,MODx.grid.LocalGrid,{
+    flattenObject: function(obj, prefix) {
+        prefix = prefix || '';
+        response = '';
+        for ( var k in obj ) {
+            if ( typeof obj[k] == 'object' ) {
+                response = response + this.flattenObject(obj[k], k+'.');
+            } else {
+                response = response + (prefix + k) + ": " + obj[k] + "<br />";
+            }
+        }
+        return response;
+    }
+});
 Ext.reg('versionx-grid-common-detailgrid',VersionX.grid.Common.DetailGrid);
