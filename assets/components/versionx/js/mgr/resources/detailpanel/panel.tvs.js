@@ -7,7 +7,7 @@ VersionX.panel.ResourcesDetail.TVs = function(config) {
         if ( typeof config.vxRecord.tvs[key].caption != 'undefined' ) {
             data.push([
                 config.vxRecord.tvs[key].id,
-                config.vxRecord.tvs[key].version,
+                config.vxRecord.tvs[key].version ? config.vxRecord.tvs[key].version : 'N/A',
                 config.vxRecord.tvs[key].caption,
                 config.vxRecord.tvs[key].value
             ]);
@@ -33,7 +33,7 @@ VersionX.panel.ResourcesDetail.TVs = function(config) {
             if ( typeof config.vxRecordCmp.tvs[key].caption != 'undefined' ) {
                 dataCmp.push([
                 config.vxRecordCmp.tvs[key].id,
-                config.vxRecordCmp.tvs[key].version,
+                config.vxRecordCmp.tvs[key].version ? config.vxRecordCmp.tvs[key].version : 'N/A',
                 config.vxRecordCmp.tvs[key].caption,
                 config.vxRecordCmp.tvs[key].value
                 ]);

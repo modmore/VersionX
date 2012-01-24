@@ -177,15 +177,10 @@ class VersionX {
             $this->newTemplateVarVersion($tv);
             
             // Get the most current version of the TV
-            $tvQuery = $this->modx->newQuery('vxTemplateVar');
-            $tvQuery->where(array('content_id' => $tv->get('id')))
-                ->sortby('saved', 'DESC')
-                ->limit(1);
-            $tvVersion = $this->modx->getObject('vxTemplateVar', $tvQuery);
-            if ($tvVersion instanceof vxTemplateVar) {            
+            $tvVersion = $this->getMostRecentVersionOf('vxTemplateVar', $tv->get('id'));
+            if ($tvVersion instanceof vxTemplateVar) {
                 $tvArr['version'] = $tvVersion->get('version_id');
             }
-            
             $tvArray[] = $tvArr;
         }
         $version->set('tvs',$tvArray);
@@ -195,7 +190,6 @@ class VersionX {
         }
         return true;
     }
-
 
     /**
      * Creates a new version of a Template.
@@ -396,13 +390,15 @@ class VersionX {
                 $vArray['publishedon'] = ($vArray['publishedon'] != 0) ? date($df,strtotime($vArray['publishedon'])) : '';
                 $vArray['pub_date'] = ($vArray['pub_date'] != 0) ? date($df,strtotime($vArray['pub_date'])) : '';
                 $vArray['unpub_date'] = ($vArray['unpub_date'] != 0) ? date($df,strtotime($vArray['unpub_date'])) : '';
-
+                
                 /* Get TV captions */
                 $tvArray = array();
                 foreach ($vArray['tvs'] as $tv) {
                     if (!$tvArray[$tv['id']]) {
+                        
                         // Look up TV by it's version #
                         if (isset($tv['version'])) {
+                            /* @var modTemplateVar $vxTVObj */
                             $vxTVObj = $this->modx->getObject('vxTemplateVar', array('version_id' => $tv['version']));
                             if ($vxTVObj instanceof vxTemplateVar) {
                                 $tvArray[$vxTVObj->get('content_id')] = array_merge($tv,array(
@@ -411,14 +407,28 @@ class VersionX {
                             }
                         }
 
-                        // If lookup above did nothing, get details of the currently-active TV
+                        // If lookup above did nothing, get details of the most recent revision
+                        // (an invalid/deleted version # was stored in the vxResource tv field)
+                        if (!$tvArray[$tv['id']]) {
+                            /* @var modTemplateVar $vxTVObj */
+                            $vxTVObj = $this->getMostRecentVersionOf('vxTemplateVar',$tv['id']);
+                            if ($vxTVObj instanceof vxTemplateVar) {
+                                $tvArray[$vxTVObj->get('content_id')] = array_merge($tv,array(
+                                    'caption' => $vxTVObj->get('caption'),
+                                    'version' => $vxTVObj->get('version_id')
+                                ));
+                            }
+                        }
+                        
+                        // If both lookups above did nothing, get details of the currently-active TV
+                        // (no version information was stored in the vxResource tv field)
                         if (!$tvArray[$tv['id']]) {
                             /* @var modTemplateVar $tvObj */
                             $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
                             if ($tvObj instanceof modTemplateVar) {
                                 $tvArray[$tv['id']] = array_merge($tv,array(
                                     'caption' => $tvObj->get('caption'),
-                                    'version' => 0
+                                    'version' => NULL
                                 ));
                             }
                         }
@@ -481,6 +491,22 @@ class VersionX {
         }
         $c->sortby('tvtpl.rank,modTemplateVar.rank');
         return $resource->xpdo->getCollection('modTemplateVar', $c);
+    }
+    
+    /**
+     * Retrieve the most recently-saved version of a given type and content_id
+     * @param string $class
+     * @param string $content_id
+     * @return xPDOObject
+     */
+    public function getMostRecentVersionOf($class, $content_id)
+    {
+        // Get the most current version of the TV
+        $verQuery = $this->modx->newQuery($class);
+        $verQuery->where(array('content_id' => $content_id))
+            ->sortby('saved', 'DESC')
+            ->limit(1);
+        return $this->modx->getObject($class, $verQuery);
     }
 
     /**
