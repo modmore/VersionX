@@ -17,6 +17,8 @@ VersionX.grid.TemplateVariables = function(config) {
         fields: [
             {name: 'version_id', type: 'int'},
             {name: 'content_id', type: 'int'},
+            {name: 'name', type: 'string'},
+            {name: 'categoryname', type: 'string'},
             {name: 'saved', type: 'string'},
             {name: 'username', type: 'string'},
             {name: 'mode', type: 'string'},
@@ -28,27 +30,37 @@ VersionX.grid.TemplateVariables = function(config) {
 			header: _('versionx.version_id'),
 			dataIndex: 'version_id',
 			sortable: true,
-			width: .1
+			width: .07
 		},{
-			header: _('versionx.content_id',{what: _('tmplvar')}),
+			header: _('versionx.content_id',{what: _('tv')}),
 			dataIndex: 'content_id',
 		    sortable: true,
-			width: .1
+			width: .05
+		},{
+			header: _('name'),
+			dataIndex: 'name',
+		    sortable: true,
+			width: .3
+		},{
+			header: _('category'),
+			dataIndex: 'categoryname',
+		    sortable: true,
+			width: .15
 		},{
 			header: _('versionx.saved'),
 			dataIndex: 'saved',
 			sortable: true,
-			width: .2
+			width: .15
 		},{
 			header: _('user'),
 			dataIndex: 'username',
 		    sortable: true,
-			width: .2
+			width: .1
 		},{
 			header: _('versionx.mode'),
 			dataIndex: 'mode',
 		    sortable: true,
-			width: .1,
+			width: .05,
             renderer: function (val) { return _('versionx.mode.'+val); }
 		},{
 			header: _('versionx.marked'),
