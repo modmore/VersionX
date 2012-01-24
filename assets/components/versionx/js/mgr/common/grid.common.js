@@ -71,7 +71,7 @@ Ext.extend(VersionX.grid.Common.DetailGrid,MODx.grid.LocalGrid,{
             if ( typeof obj[k] == 'object' ) {
                 response = response + this.flattenObject(obj[k], k+'.');
             } else {
-                response = response + (prefix + k) + ": " + obj[k] + "<br />";
+                response = response + (prefix + k) + ": " + (obj[k]?obj[k]:_('versionx.common.empty')) + "<br />";
             }
         }
         return response;

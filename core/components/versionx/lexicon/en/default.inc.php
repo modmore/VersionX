@@ -23,6 +23,8 @@
 $_lang['versionx'] = 'VersionX';
 $_lang['versionx.menu_desc'] = 'Keeps track of your valuable content.';
 
+$_lang['versionx.common.empty'] = '&lt;empty&gt;';
+
 $_lang['versionx.home'] = 'VersionX';
 $_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component. Please note that, while the interface for Chunks, Snippets and Plugins are not yet included, they are actually being recorded and stored in the database for future use.';
 
