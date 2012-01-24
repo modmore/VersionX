@@ -171,7 +171,22 @@ class VersionX {
         $tvArray = array();
         /* @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
-            $tvArray[] = $tv->get(array('id','value'));
+            $tvArr = $tv->get(array('id','value'));
+            
+            // Ensure there is a version of the TV saved
+            $this->newTemplateVarVersion($tv);
+            
+            // Get the most current version of the TV
+            $tvQuery = $this->modx->newQuery('vxTemplateVar');
+            $tvQuery->where(array('content_id' => $tv->get('id')))
+                ->sortby('saved', 'DESC')
+                ->limit(1);
+            $tvVersion = $this->modx->getObject('vxTemplateVar', $tvQuery);
+            if ($tvVersion instanceof vxTemplateVar) {            
+                $tvArr['version'] = $tvVersion->get('version_id');
+            }
+            
+            $tvArray[] = $tvArr;
         }
         $version->set('tvs',$tvArray);
 
