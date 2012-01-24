@@ -2,7 +2,7 @@ Ext.ns('VersionX.grid.Common');
 
 VersionX.grid.Common.DetailGrid = function(config) {
     config = config || {};
-    Ext.apply(config,{
+    Ext.applyIf(config,{
         autoHeight: true,
         width: '98%',
         viewConfig: {

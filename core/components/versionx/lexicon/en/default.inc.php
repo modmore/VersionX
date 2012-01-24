@@ -39,6 +39,11 @@ $_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
 $_lang['versionx.resources.detail.grid.columns.field-name'] = 'Field Name';
 $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver #[[+id]]]';
 
+$_lang['versionx.resources.detail.tvgrid.columns.tv-id'] = 'ID';
+$_lang['versionx.resources.detail.tvgrid.columns.tv-version'] = 'Ver';
+$_lang['versionx.resources.detail.tvgrid.columns.tv-name'] = 'Caption';
+$_lang['versionx.resources.detail.tvgrid.columns.tv-value'] = 'Value';
+
 $_lang['versionx.templates.detail.tabs.version-details'] = 'Version Details';
 $_lang['versionx.templates.detail.tabs.fields'] = 'Fields';
 $_lang['versionx.templates.detail.tabs.content'] = 'Content';
