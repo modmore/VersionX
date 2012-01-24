@@ -104,6 +104,26 @@ switch ($_REQUEST['action']) {
         if (intval($_REQUEST['vid']) > 0) {
             $v = $versionx->getVersionDetails('vxTemplateVar',intval($_REQUEST['vid']));
             if ($v !== false)
+                
+                // Decode JSON stored in the input_properties field
+                // @TODO DRY
+                if ( is_array($v['input_properties']) ) {
+                    foreach ( $v['input_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['input_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                // Decode JSON stored in the output_properties field
+                // @TODO DRY
+                if ( is_array($v['output_properties']) ) {
+                    foreach ( $v['output_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['output_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                
                 $modx->regClientStartupHTMLBlock('
                     <script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>
                     <style type="text/css">
@@ -117,6 +137,26 @@ switch ($_REQUEST['action']) {
             $v = $versionx->getVersionDetails('vxTemplateVar',intval($_REQUEST['cmid']));
             if ($v !== false)
             {
+                
+                // Decode JSON stored in the input_properties field
+                // @TODO DRY
+                if ( is_array($v['input_properties']) ) {
+                    foreach ( $v['input_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['input_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                // Decode JSON stored in the output_properties field
+                // @TODO DRY
+                if ( is_array($v['output_properties']) ) {
+                    foreach ( $v['output_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['output_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
             }
         }
