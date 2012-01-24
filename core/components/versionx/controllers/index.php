@@ -107,7 +107,9 @@ switch ($_REQUEST['action']) {
         /* Templates */
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/panel.templates.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/grid.templates.js');
-
+        /* Template Variables */
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/panel.templatevars.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/grid.templatevars.js');
     break;
 }
 
