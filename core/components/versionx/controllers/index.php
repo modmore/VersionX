@@ -35,6 +35,7 @@ $modx->regClientStartupHTMLBlock('
     });
 </script>');
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
+$modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/json2.js');
 
 switch ($_REQUEST['action']) {
     case 'resource':
