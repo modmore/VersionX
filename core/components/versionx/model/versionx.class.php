@@ -400,16 +400,31 @@ class VersionX {
                 /* Get TV captions */
                 $tvArray = array();
                 foreach ($vArray['tvs'] as $tv) {
-                    if (!$this->tvs[$tv['id']]) {
-                        /* @var modTemplateVar $tvObj */
-                        $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
-                        if ($tvObj instanceof modTemplateVar) {
-                            $this->tvs[$tv['id']] = $tvObj->get('caption');
+                    if (!$tvArray[$tv['id']]) {
+                        // Look up TV by it's version #
+                        if (isset($tv['version'])) {
+                            $vxTVObj = $this->modx->getObject('vxTemplateVar', array('version_id' => $tv['version']));
+                            if ($vxTVObj instanceof vxTemplateVar) {
+                                $tvArray[$vxTVObj->get('content_id')] = array_merge($tv,array(
+                                    'caption' => $vxTVObj->get('caption'),
+                                ));
+                            }
+                        }
+
+                        // If lookup above did nothing, get details of the currently-active TV
+                        if (!$tvArray[$tv['id']]) {
+                            /* @var modTemplateVar $tvObj */
+                            $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
+                            if ($tvObj instanceof modTemplateVar) {
+                                $tvArray[$tv['id']] = array_merge($tv,array(
+                                    'caption' => $tvObj->get('caption'),
+                                    'version' => 0
+                                ));
+                            }
                         }
                     }
-                    $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
                 }
-                $vArray['tvs'] = $tvArray;
+                $vArray['tvs'] = array_values($tvArray);
             }
 
             /* @var modUserProfile $up */
