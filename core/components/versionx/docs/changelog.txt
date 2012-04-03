@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-dev12     ++
+++   Released on 2012-04-03   ++
+++++++++++++++++++++++++++++++++
 Add new "Versions" tab to Templates panel.
 Normalize/refactor process of adding tabs to non-component panels through the plugin. 
 Add Templates tab to VersionX component. (Thanks Adam!)
