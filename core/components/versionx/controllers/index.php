@@ -36,6 +36,7 @@ $modx->regClientStartupHTMLBlock('
 </script>');
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
 
+if (!isset($_REQUEST['action'])) $_REQUEST['action'] = 'index';
 switch ($_REQUEST['action']) {
     case 'resource':
         /* If an ID was passed, fetch that version into a record array. */
