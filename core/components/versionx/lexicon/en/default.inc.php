@@ -61,7 +61,7 @@ $_lang['versionx.templatevars.detail.tabs.properties.off'] = 'Sorry, we can\'t s
 $_lang['versionx.templatevars.detail'] = 'Template Variable Details';
 $_lang['versionx.templatevars.detail.input-type'] = 'Input Type';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Input Properties';
-$_lang['versionx.templatevars.detail.default-text'] = 'Default Text';
+$_lang['versionx.templatevars.detail.default-text'] = 'Default Value';
 $_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
 

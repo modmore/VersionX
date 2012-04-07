@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Add Dutch translation (Thanks @Engelbert!)
 Add new "Template Variables" tab to component. (Thanks Adam!)
 Prevent E_NOTICE errors on main controller.
 
