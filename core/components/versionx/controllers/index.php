@@ -17,6 +17,8 @@
  * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
+ * @var modX $modx
+ * @var modAction $action
  */
 
 require_once dirname(dirname(__FILE__)).'/model/versionx.class.php';
@@ -26,6 +28,7 @@ $action = $modx->getObject('modAction',array(
     'namespace' => 'versionx',
     'controller' => 'controllers/index',
 ));
+
 if ($action) $action = $action->get('id');
 $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
