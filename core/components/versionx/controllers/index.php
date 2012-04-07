@@ -35,6 +35,7 @@ $modx->regClientStartupHTMLBlock('
     });
 </script>');
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
+$modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/json2.js');
 
 switch ($_REQUEST['action']) {
     case 'resource':
@@ -98,6 +99,75 @@ switch ($_REQUEST['action']) {
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/combo.versions.templates.js'); 
     break;
     
+    case 'templatevar':
+        /* If an ID was passed, fetch that version into a record array. */
+        if (intval($_REQUEST['vid']) > 0) {
+            $v = $versionx->getVersionDetails('vxTemplateVar',intval($_REQUEST['vid']));
+            if ($v !== false)
+                
+                // Decode JSON stored in the input_properties field
+                // @TODO DRY
+                if ( is_array($v['input_properties']) ) {
+                    foreach ( $v['input_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['input_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                // Decode JSON stored in the output_properties field
+                // @TODO DRY
+                if ( is_array($v['output_properties']) ) {
+                    foreach ( $v['output_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['output_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                
+                $modx->regClientStartupHTMLBlock('
+                    <script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>
+                    <style type="text/css">
+                        .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
+                        .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
+                    </style>
+                ');
+        }
+        /* If an ID to compare to was passed, fetch that aswell. */
+        if (intval($_REQUEST['cmid']) > 0) {
+            $v = $versionx->getVersionDetails('vxTemplateVar',intval($_REQUEST['cmid']));
+            if ($v !== false)
+            {
+                
+                // Decode JSON stored in the input_properties field
+                // @TODO DRY
+                if ( is_array($v['input_properties']) ) {
+                    foreach ( $v['input_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['input_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                // Decode JSON stored in the output_properties field
+                // @TODO DRY
+                if ( is_array($v['output_properties']) ) {
+                    foreach ( $v['output_properties'] as $key=>$value ) {
+                        if ( $decoded = json_decode($value) ) {
+                            $v['output_properties'][$key] = $decoded;
+                        }
+                    }
+                }
+                
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
+            }
+        }
+
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.templatevar.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/panel.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/grid.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/detailpanel.templatevars.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/combo.versions.templatevars.js'); 
+    break;
+    
     case 'index':
     default:
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
@@ -107,7 +177,9 @@ switch ($_REQUEST['action']) {
         /* Templates */
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/panel.templates.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templates/grid.templates.js');
-
+        /* Template Variables */
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/panel.templatevars.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/grid.templatevars.js');
     break;
 }
 

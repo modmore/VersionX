@@ -57,11 +57,13 @@ VersionX.page.Index = function(config) {
                         }]
                     },{
                         title: _('tmplvars'),
-                        tabTip: _('versionx.tabtip.notyet',{what: _('tmplvars')}),
                         items: [{
-                            //xtype: 'versionx-grid-templatevars'
-                        }],
-                        disabled: true
+                            xtype: 'versionx-panel-templatevars'
+                        },{
+                            html: '<hr />'
+                        },{
+                            xtype: 'versionx-grid-templatevars'
+                        }]
                     },{
                         title: _('chunks'),
                         tabTip: _('versionx.tabtip.notyet',{what: _('chunks')}),
