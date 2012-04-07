@@ -36,28 +36,31 @@ $modx->regClientStartupHTMLBlock('
         VersionX.config = '.$modx->toJSON($versionx->config).';
         VersionX.action = '.$action.';
     });
-</script>');
+</script>
+
+<style type="text/css">
+    .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
+    .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
+</style>');
+
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/json2.js');
 
+
+$versionid = (isset($_REQUEST['vid'])) ? (int)$_REQUEST['vid'] : false;
+$compareid = (isset($_REQUEST['cmid'])) ? (int)$_REQUEST['cmid'] : false;
 if (!isset($_REQUEST['action'])) $_REQUEST['action'] = 'index';
 switch ($_REQUEST['action']) {
     case 'resource':
         /* If an ID was passed, fetch that version into a record array. */
-        if (intval($_REQUEST['vid']) > 0) {
-            $v = $versionx->getVersionDetails('vxResource',intval($_REQUEST['vid']),true);
+        if ($versionid > 0) {
+            $v = $versionx->getVersionDetails('vxResource',$versionid,true);
             if ($v !== false)
-                $modx->regClientStartupHTMLBlock('
-                    <script type="text/javascript">VersionX.record = '.$v.'; </script>
-                    <style type="text/css">
-                        .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-                        .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
-                    </style>
-                ');
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$v.'; </script>');
         }
         /* If an ID to compare to was passed, fetch that aswell. */
-        if (intval($_REQUEST['cmid']) > 0) {
-            $v = $versionx->getVersionDetails('vxResource',intval($_REQUEST['cmid']),true);
+        if ($compareid > 0) {
+            $v = $versionx->getVersionDetails('vxResource',$compareid,true);
             if ($v !== false)
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$v.'; </script>');
         }
@@ -73,21 +76,16 @@ switch ($_REQUEST['action']) {
     
     case 'template':
         /* If an ID was passed, fetch that version into a record array. */
-        if (intval($_REQUEST['vid']) > 0) {
-            $v = $versionx->getVersionDetails('vxTemplate',intval($_REQUEST['vid']));
-            if ($v !== false)
+        if ($versionid > 0) {
+            $v = $versionx->getVersionDetails('vxTemplate',$versionid);
+            if ($v !== false) {
                 $v['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($v['content'])));
-                $modx->regClientStartupHTMLBlock('
-                    <script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>
-                    <style type="text/css">
-                        .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-                        .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
-                    </style>
-                ');
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>');
+            }
         }
         /* If an ID to compare to was passed, fetch that aswell. */
-        if (intval($_REQUEST['cmid']) > 0) {
-            $v = $versionx->getVersionDetails('vxTemplate',intval($_REQUEST['cmid']));
+        if ($compareid > 0) {
+            $v = $versionx->getVersionDetails('vxTemplate',$compareid);
             if ($v !== false)
             {
                 $v['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($v['content'])));
@@ -105,62 +103,16 @@ switch ($_REQUEST['action']) {
     
     case 'templatevar':
         /* If an ID was passed, fetch that version into a record array. */
-        if (intval($_REQUEST['vid']) > 0) {
-            $v = $versionx->getVersionDetails('vxTemplateVar',intval($_REQUEST['vid']));
-            if ($v !== false)
-                
-                // Decode JSON stored in the input_properties field
-                // @TODO DRY
-                if ( is_array($v['input_properties']) ) {
-                    foreach ( $v['input_properties'] as $key=>$value ) {
-                        if ( $decoded = json_decode($value) ) {
-                            $v['input_properties'][$key] = $decoded;
-                        }
-                    }
-                }
-                // Decode JSON stored in the output_properties field
-                // @TODO DRY
-                if ( is_array($v['output_properties']) ) {
-                    foreach ( $v['output_properties'] as $key=>$value ) {
-                        if ( $decoded = json_decode($value) ) {
-                            $v['output_properties'][$key] = $decoded;
-                        }
-                    }
-                }
-                
-                $modx->regClientStartupHTMLBlock('
-                    <script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>
-                    <style type="text/css">
-                        .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-                        .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
-                    </style>
-                ');
+        if ($versionid > 0) {
+            $v = $versionx->getVersionDetails('vxTemplateVar',$versionid);
+            if ($v !== false) {
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>');
+            }
         }
         /* If an ID to compare to was passed, fetch that aswell. */
-        if (intval($_REQUEST['cmid']) > 0) {
-            $v = $versionx->getVersionDetails('vxTemplateVar',intval($_REQUEST['cmid']));
-            if ($v !== false)
-            {
-                
-                // Decode JSON stored in the input_properties field
-                // @TODO DRY
-                if ( is_array($v['input_properties']) ) {
-                    foreach ( $v['input_properties'] as $key=>$value ) {
-                        if ( $decoded = json_decode($value) ) {
-                            $v['input_properties'][$key] = $decoded;
-                        }
-                    }
-                }
-                // Decode JSON stored in the output_properties field
-                // @TODO DRY
-                if ( is_array($v['output_properties']) ) {
-                    foreach ( $v['output_properties'] as $key=>$value ) {
-                        if ( $decoded = json_decode($value) ) {
-                            $v['output_properties'][$key] = $decoded;
-                        }
-                    }
-                }
-                
+        if ($compareid > 0) {
+            $v = $versionx->getVersionDetails('vxTemplateVar',$compareid);
+            if ($v !== false) {
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
             }
         }

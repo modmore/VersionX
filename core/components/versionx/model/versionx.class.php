@@ -345,56 +345,74 @@ class VersionX {
             $vArray = $v->toArray();
             $vArray['mode'] = $this->modx->lexicon('versionx.mode.'.$vArray['mode']);
 
-            /* Resource specific processing */
-            if ($class == 'vxResource') {
-                $vArray = array_merge($vArray,$vArray['fields']);
+            /* Class specific processing */
+            switch ($class) {
+                case 'vxResource':
+                    $vArray = array_merge($vArray,$vArray['fields']);
 
-                if ($vArray['parent'] != 0) {
-                    /* @var modResource $parent */
-                    $parent = $this->modx->getObject('modResource',$vArray['parent']);
-                    if ($parent instanceof modResource) $vArray['parent'] = $parent->get('pagetitle') .' ('.$vArray['parent'].')';
-                }
+                    if ($vArray['parent'] != 0) {
+                        /* @var modResource $parent */
+                        $parent = $this->modx->getObject('modResource',$vArray['parent']);
+                        if ($parent instanceof modResource) $vArray['parent'] = $parent->get('pagetitle') .' ('.$vArray['parent'].')';
+                    }
 
-                /* Process content type */
-                /* @var modContentType $ct */
-                $ct = $this->modx->getObject('modContentType',$vArray['content_type']);
-                if ($ct instanceof modContentType)
-                    $vArray['content_type'] = $ct->get('name');
+                    /* Process content type */
+                    /* @var modContentType $ct */
+                    $ct = $this->modx->getObject('modContentType',$vArray['content_type']);
+                    if ($ct instanceof modContentType)
+                        $vArray['content_type'] = $ct->get('name');
 
-                $vArray['content'] = nl2br(htmlentities($vArray['content']));
+                    $vArray['content'] = nl2br(htmlentities($vArray['content']));
 
-                if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
-                else $vArray['content_dispo'] = $this->modx->lexicon('inline');
+                    if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
+                    else $vArray['content_dispo'] = $this->modx->lexicon('inline');
 
-                /* Process boolean values */
-                $vArray['published'] = (intval($vArray['published'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                $vArray['hidemenu'] = (intval($vArray['hidemenu'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                $vArray['isfolder'] = (intval($vArray['isfolder'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                $vArray['richtext'] = (intval($vArray['richtext'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                $vArray['searchable'] = (intval($vArray['searchable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                $vArray['cacheable'] = (intval($vArray['cacheable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                $vArray['deleted'] = (intval($vArray['deleted'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    /* Process boolean values */
+                    $vArray['published'] = (intval($vArray['published'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    $vArray['hidemenu'] = (intval($vArray['hidemenu'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    $vArray['isfolder'] = (intval($vArray['isfolder'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    $vArray['richtext'] = (intval($vArray['richtext'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    $vArray['searchable'] = (intval($vArray['searchable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    $vArray['cacheable'] = (intval($vArray['cacheable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+                    $vArray['deleted'] = (intval($vArray['deleted'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
 
-                /* Process time stamps */
-                $df = $this->modx->config['manager_date_format'].' '.$this->modx->config['manager_time_format'];
-                $vArray['saved'] = ($vArray['saved'] != 0) ? date($df,strtotime($vArray['saved'])) : '';
-                $vArray['publishedon'] = ($vArray['publishedon'] != 0) ? date($df,strtotime($vArray['publishedon'])) : '';
-                $vArray['pub_date'] = ($vArray['pub_date'] != 0) ? date($df,strtotime($vArray['pub_date'])) : '';
-                $vArray['unpub_date'] = ($vArray['unpub_date'] != 0) ? date($df,strtotime($vArray['unpub_date'])) : '';
+                    /* Process time stamps */
+                    $df = $this->modx->config['manager_date_format'].' '.$this->modx->config['manager_time_format'];
+                    $vArray['saved'] = ($vArray['saved'] != 0) ? date($df,strtotime($vArray['saved'])) : '';
+                    $vArray['publishedon'] = ($vArray['publishedon'] != 0) ? date($df,strtotime($vArray['publishedon'])) : '';
+                    $vArray['pub_date'] = ($vArray['pub_date'] != 0) ? date($df,strtotime($vArray['pub_date'])) : '';
+                    $vArray['unpub_date'] = ($vArray['unpub_date'] != 0) ? date($df,strtotime($vArray['unpub_date'])) : '';
 
-                /* Get TV captions */
-                $tvArray = array();
-                foreach ($vArray['tvs'] as $tv) {
-                    if (!$this->tvs[$tv['id']]) {
-                        /* @var modTemplateVar $tvObj */
-                        $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
-                        if ($tvObj instanceof modTemplateVar) {
-                            $this->tvs[$tv['id']] = $tvObj->get('caption');
+                    /* Get TV captions */
+                    $tvArray = array();
+                    foreach ($vArray['tvs'] as $tv) {
+                        if (!$this->tvs[$tv['id']]) {
+                            /* @var modTemplateVar $tvObj */
+                            $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
+                            if ($tvObj instanceof modTemplateVar) {
+                                $this->tvs[$tv['id']] = $tvObj->get('caption');
+                            }
+                        }
+                        $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
+                    }
+                    $vArray['tvs'] = $tvArray;
+                    break;
+                case 'vxTemplateVar':
+                    if (is_array($vArray['input_properties'])) {
+                        foreach ($vArray['input_properties'] as $key => $value) {
+                            if ($decoded = $this->modx->fromJSON($value)) {
+                                $vArray['input_properties'][$key] = $decoded;
+                            }
                         }
                     }
-                    $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
-                }
-                $vArray['tvs'] = $tvArray;
+                    if (is_array($vArray['output_properties'])) {
+                        foreach ($vArray['output_properties'] as $key => $value) {
+                            if ($decoded = $this->modx->fromJSON($value)) {
+                                $vArray['output_properties'][$key] = $decoded;
+                            }
+                        }
+                    }
+                    break;
             }
 
             /* @var modUserProfile $up */
