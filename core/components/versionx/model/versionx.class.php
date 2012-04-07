@@ -618,7 +618,7 @@ class VersionX {
     /**
      * Gets the action ID for the VersionX controller.
      * 
-     * @return An|null|object
+     * @return int
      */
     public function getAction() {
         $action = $this->action;

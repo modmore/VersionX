@@ -26,7 +26,6 @@ $versionx = new VersionX($modx);
 $versionx->initialize('mgr');
 
 $action = $versionx->getAction();
-if ($action) $action = $action->get('id');
 
 $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
