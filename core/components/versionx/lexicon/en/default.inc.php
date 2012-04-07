@@ -23,8 +23,12 @@
 $_lang['versionx'] = 'VersionX';
 $_lang['versionx.menu_desc'] = 'Keeps track of your valuable content.';
 
+$_lang['versionx.common.empty'] = '&lt;empty&gt;';
+
 $_lang['versionx.home'] = 'VersionX';
 $_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component. Please note that, while the interface for Chunks, Snippets and Plugins are not yet included, they are actually being recorded and stored in the database for future use.';
+
+$_lang['versionx.common.detail.text'] = 'Below you can find the details for the [[+what]] Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
 
 $_lang['versionx.resources.detail'] = 'Resource Details';
 $_lang['versionx.resources.detail.text'] = 'Below you can find the details for the Resource Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
@@ -47,6 +51,19 @@ $_lang['versionx.templates.detail.tabs.properties.off'] = 'Sorry, we can\'t show
 
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Below you can find the details for the Template Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+
+$_lang['versionx.templatevars.detail.tabs.version-details'] = 'Version Details';
+$_lang['versionx.templatevars.detail.tabs.input-options'] = 'Input Options';
+$_lang['versionx.templatevars.detail.tabs.output-options'] = 'Output Options';
+$_lang['versionx.templatevars.detail.tabs.properties'] = 'Properties';
+$_lang['versionx.templatevars.detail.tabs.properties.off'] = 'Sorry, we can\'t show you this tab yet';
+
+$_lang['versionx.templatevars.detail'] = 'Template Variable Details';
+$_lang['versionx.templatevars.detail.input-type'] = 'Input Type';
+$_lang['versionx.templatevars.detail.input-properties'] = 'Input Properties';
+$_lang['versionx.templatevars.detail.default-text'] = 'Default Text';
+$_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
+$_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';

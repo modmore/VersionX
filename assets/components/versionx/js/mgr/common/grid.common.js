@@ -36,11 +36,19 @@ VersionX.grid.Common.DetailGrid = function(config) {
         
         var length = config.vxFieldMap.length;
         for ( var i = 0; i < length; i++ ) {
-            config.data.push([
-                _(config.vxFieldMap[i].lexicon),
-                config.vxRecord[config.vxFieldMap[i].key],
-                config.vxRecordCmp ? config.vxRecordCmp[config.vxFieldMap[i].key] : ''
-            ]);
+            if (config.vxFieldMap[i].enumerate) {
+                config.data.push([
+                    _(config.vxFieldMap[i].lexicon),
+                    '<pre>'+JSON.stringify(config.vxRecord[config.vxFieldMap[i].key], null, 2) + '</pre>',
+                    config.vxRecordCmp ? '<pre>'+JSON.stringify(config.vxRecordCmp[config.vxFieldMap[i].key], null, 2) + '</pre>' : ''
+                ]);
+            } else {
+                config.data.push([
+                    _(config.vxFieldMap[i].lexicon),
+                    config.vxRecord[config.vxFieldMap[i].key],
+                    config.vxRecordCmp ? config.vxRecordCmp[config.vxFieldMap[i].key] : ''
+                ]);
+            }
         }
     }
 
