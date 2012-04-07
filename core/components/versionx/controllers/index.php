@@ -24,12 +24,10 @@
 require_once dirname(dirname(__FILE__)).'/model/versionx.class.php';
 $versionx = new VersionX($modx);
 $versionx->initialize('mgr');
-$action = $modx->getObject('modAction',array(
-    'namespace' => 'versionx',
-    'controller' => 'controllers/index',
-));
 
+$action = $versionx->getAction();
 if ($action) $action = $action->get('id');
+
 $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
     Ext.onReady(function() {
@@ -40,7 +38,9 @@ $modx->regClientStartupHTMLBlock('
 
 <style type="text/css">
     .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-    .vx-added .x-form-item-label { color: green; } .vx-changed .x-form-item-label { color: #dd6600; } .vx-removed .x-form-item-label { color: #ff0000; }
+    .vx-added .x-form-item-label { color: green; }
+    .vx-changed .x-form-item-label { color: #dd6600; }
+    .vx-removed .x-form-item-label { color: #ff0000; }
 </style>');
 
 $modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');

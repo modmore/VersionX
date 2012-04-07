@@ -36,8 +36,6 @@ class VersionX {
     /**
      * @param \modX $modx
      * @param array $config
-     * @return \VersionX
-     *
      */
     function __construct(modX &$modx,array $config = array()) {
         $this->modx =& $modx;
