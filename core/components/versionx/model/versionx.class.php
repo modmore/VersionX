@@ -384,7 +384,7 @@ class VersionX {
                     /* Get TV captions */
                     $tvArray = array();
                     foreach ($vArray['tvs'] as $tv) {
-                        if (!$this->tvs[$tv['id']]) {
+                        if (!isset($this->tvs[$tv['id']]) || empty($this->tvs[$tv['id']])) {
                             /* @var modTemplateVar $tvObj */
                             $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
                             if ($tvObj instanceof modTemplateVar) {
