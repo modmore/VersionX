@@ -11,20 +11,57 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
         },{
             layout: 'form',
             cls: 'main-wrapper',
-            labelWidth: 125,
             items: [{
-                xtype: 'versionx-combo-resourceversions',
-                fieldLabel: _('versionx.compare_to'),
-                labelStyle: 'padding: 7px 0 0 5px;',
-                name: 'compare_to',
-                baseParams: {
-                    resource: (VersionX.record) ? VersionX.record['content_id'] : 0,
-                    current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                    action: 'mgr/resources/get_versions'
-                },
-                listeners: {
-                    'select': this.compareVersion
-                }
+                layout: 'column',
+                border: false,
+                items: [{
+                    columnWidth: .5,
+                    layout: 'form',
+                    border: false,
+                    labelWidth: 125,
+                    items: [{
+                        xtype: 'versionx-combo-resourceversions',
+                        fieldLabel: _('versionx.compare_to'),
+                        labelStyle: 'padding: 7px 0 0 5px;',
+                        name: 'compare_to',
+                        baseParams: {
+                            resource: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                            current: (VersionX.record) ? VersionX.record['version_id'] : 0,
+                            action: 'mgr/resources/get_versions'
+                        },
+                        listeners: {
+                            'select': this.compareVersion
+                        }
+                    }]
+                },{
+                    columnWidth: .5,
+                    layout: 'form',
+                    labelWidth: 125,
+                    border: false,
+                    items: [{
+                        xtype: 'button',
+                        text: _('versionx.resources.revert.options'),
+                        handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
+                            this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                        },
+                        scope: this,
+                        menu: (VersionX.record && VersionX.cmrecord) ?
+                            [{
+                                text: _('versionx.resources.revert',{id: VersionX.record['version_id']}),
+                                handler: function() {
+                                    this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                                },
+                                scope: this
+                            },{
+                                text: _('versionx.resources.revert',{id: VersionX.cmrecord['version_id']}),
+                                handler: function() {
+                                    this.revertVersion((VersionX.cmrecord) ? VersionX.cmrecord['version_id'] : 0);
+                                },
+                                scope: this
+                            }] : undefined
+                    }]
+
+                }]
             },{
                 xtype: 'panel',
                 bodyStyle: 'height: 12px',
@@ -131,6 +168,20 @@ Ext.extend(VersionX.panel.ResourcesDetail.Main,MODx.FormPanel,{
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=resource&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+    },
+
+    revertVersion: function(version) {
+        if (version < 1) { console.log('Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.resources.revert.confirm'),
+            text: _('versionx.resources.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: VersionX.record.content_id,
+                action: 'mgr/resources/revert'
+            }
+        });
     }
 });
 Ext.reg('versionx-panel-resourcesdetail',VersionX.panel.ResourcesDetail.Main);

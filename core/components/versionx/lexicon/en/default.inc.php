@@ -32,6 +32,10 @@ $_lang['versionx.common.detail.text'] = 'Below you can find the details for the 
 
 $_lang['versionx.resources.detail'] = 'Resource Details';
 $_lang['versionx.resources.detail.text'] = 'Below you can find the details for the Resource Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+$_lang['versionx.resources.revert'] = 'Revert Resource to Version #[[+id]]';
+$_lang['versionx.resources.revert.options'] = 'Revert Resource';
+$_lang['versionx.resources.revert.confirm'] = 'Are you sure?';
+$_lang['versionx.resources.revert.confirm.text'] = 'Are you sure you want to confirm to Version #[[+id]]? This will overwrite ALL fields and Template Variables currently set for the resource.';
 
 $_lang['versionx.resources.detail.tabs.version-details'] = 'Version Details';
 $_lang['versionx.resources.detail.tabs.resource-fields'] = 'Fields';
@@ -82,6 +86,7 @@ $_lang['versionx.mode'] = 'Mode';
 $_lang['versionx.mode.new'] = 'Create';
 $_lang['versionx.mode.upd'] = 'Update';
 $_lang['versionx.mode.snapshot'] = 'Snapshot';
+$_lang['versionx.mode.revert'] = 'Reverted';
 $_lang['versionx.saved'] = 'Saved On';
 $_lang['versionx.title'] = 'Title';
 $_lang['versionx.marked'] = 'Marked';

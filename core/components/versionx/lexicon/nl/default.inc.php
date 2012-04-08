@@ -35,6 +35,10 @@ $_lang['versionx.common.detail.text'] = 'Hieronder vind u de details voor de ges
 
 $_lang['versionx.resources.detail'] = 'Resource Details';
 $_lang['versionx.resources.detail.text'] = 'Hieronder vindt u de gegevens van het Resource Versie die u hebt geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.resources.revert'] = 'Herstel Resource naar Versie #[[+id]]';
+$_lang['versionx.resources.revert.options'] = 'Herstel Resource';
+$_lang['versionx.resources.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.resources.revert.confirm.text'] = 'Weet u zeker dat u deze resource wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en Template Variabelen welke nu ingesteld zijn.';
 
 $_lang['versionx.resources.detail.tabs.version-details'] = 'Versie Details';
 $_lang['versionx.resources.detail.tabs.resource-fields'] = 'Velden';
@@ -85,6 +89,7 @@ $_lang['versionx.mode'] = 'Modus';
 $_lang['versionx.mode.new'] = 'Nieuw';
 $_lang['versionx.mode.upd'] = 'Bewerkt';
 $_lang['versionx.mode.snapshot'] = 'Snapshot';
+$_lang['versionx.mode.revert'] = 'Hersteld';
 $_lang['versionx.saved'] = 'Opgeslagen Op';
 $_lang['versionx.title'] = 'Titel';
 $_lang['versionx.marked'] = 'Gemarkeerd';

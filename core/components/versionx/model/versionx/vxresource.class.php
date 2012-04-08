@@ -68,5 +68,38 @@ class vxResource extends xPDOObject {
     public static function getTabTpl() {
         return self::$tabTpl;
     }
+
+    public function revert(array $options = array()) {
+        if (!$this->get('content_id')) {
+            return false;
+        }
+
+        /* @var modResource $resource */
+        $resource = $this->xpdo->getObject('modResource',$this->get('content_id'));
+        if (!($resource instanceof modResource)) {
+            /* Could not find the resource, so we'll assume it was deleted. We'll create a new resource and force that ID. */
+            $resource = $this->xpdo->newObject($this->get('class'));
+            $resource->set('id', $this->get('content_id'));
+        }
+
+        $content = $this->get('content');
+        $fields = $this->get('fields');
+        $tvs = $this->get('tvs');
+
+        $resource->setContent($content);
+        foreach ($fields as $key => $value) {
+            if (in_array($key, array('id', 'type'))) { continue; }
+            $resource->set($key, $value);
+        }
+
+        foreach ($tvs as $tv) {
+            if (!$resource->setTVValue($tv['id'], $tv['value'])) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/revert] Resource: ' . $this->get('content_id') . ' | Unable of setting TV ' . $tv['id'] . ' to ' . $tv['value']);
+                return false;
+            }
+        }
+
+        return $resource->save();
+    }
 }
 ?>

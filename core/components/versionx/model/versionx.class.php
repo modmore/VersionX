@@ -130,16 +130,18 @@ class VersionX {
     /**
      * Creates a new version of a Resource.
      *
-     * @param \modResource $resource
+     * @param int|modResource $resource
      * @param string $mode
      * @return bool
      *
      */
-    public function newResourceVersion(modResource $resource, $mode = 'upd') {
-        if (!($resource instanceof modResource)) { return false; }
-
-        // We're retrieving the resource again to clean up raw post data we don't want.
-        $resource = $this->modx->getObject('modResource',$resource->get('id'));
+    public function newResourceVersion($resource, $mode = 'upd') {
+        if ($resource instanceof modResource) {
+            // We're retrieving the resource again to clean up raw post data we don't want.
+            $resource = $this->modx->getObject('modResource',$resource->get('id'));
+        } else {
+            $resource = $this->modx->getObject('modResource',(int)$resource);
+        }
 
         $rArray = $resource->toArray();
 
