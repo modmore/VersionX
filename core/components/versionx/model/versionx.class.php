@@ -608,12 +608,8 @@ class VersionX {
      * @return string
      */
     private function _getLangs() {
-        $langs = '';
         $entries = $this->modx->lexicon->loadCache('versionx');
-        foreach ($entries as $e => $v) {
-            $v = htmlentities($v);
-            $langs .= "MODx.lang['$e'] = \"$v\";";
-        }
+		$langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
         return $langs;
     }
 
