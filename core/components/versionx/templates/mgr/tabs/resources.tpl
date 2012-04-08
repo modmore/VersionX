@@ -1,7 +1,7 @@
 <script type="text/javascript">
     MODx.on("ready",function() {
         MODx.addTab("modx-resource-tabs",{
-            title: 'Versions',
+            title: _('versionx.tabheader'),
             id: 'versionx-resource-tab',
             width: '95%',
             items: [{

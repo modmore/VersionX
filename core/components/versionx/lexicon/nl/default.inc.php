@@ -26,6 +26,7 @@
  */
 
 $_lang['versionx'] = 'VersionX';
+$_lang['versionx.tabheader'] = 'Versies';
 $_lang['versionx.menu_desc'] = 'Een eenvoudig versie beheer systeem.';
 
 $_lang['versionx.home'] = 'VersionX';
