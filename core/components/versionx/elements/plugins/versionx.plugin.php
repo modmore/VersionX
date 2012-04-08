@@ -31,26 +31,31 @@
 */
 
 $eventName = $modx->event->name;
-echo $eventName;
 
 switch($eventName) {
     case 'OnDocFormSave':
-        $result = $modx->versionx->newResourceVersion($resource, $mode);
+        if ($modx->getOption('versionx.enable.resources',null,true))
+            $result = $modx->versionx->newResourceVersion($resource, $mode);
         break;
     case 'OnTempFormSave':
-        $result = $modx->versionx->newTemplateVersion($template, $mode);
+        if ($modx->getOption('versionx.enable.templates',null,true))
+            $result = $modx->versionx->newTemplateVersion($template, $mode);
         break;
     case 'OnTVFormSave':
-        $result = $modx->versionx->newTemplateVarVersion($tv, $mode);
+        if ($modx->getOption('versionx.enable.templatevariables',null,true))
+            $result = $modx->versionx->newTemplateVarVersion($tv, $mode);
         break;
     case 'OnChunkFormSave':
-        $result = $modx->versionx->newChunkVersion($chunk, $mode);
+        if ($modx->getOption('versionx.enable.chunks',null,true))
+            $result = $modx->versionx->newChunkVersion($chunk, $mode);
         break;
     case 'OnSnipFormSave':
-        $result = $modx->versionx->newSnippetVersion($snippet, $mode);
+        if ($modx->getOption('versionx.enable.snippets',null,true))
+            $result = $modx->versionx->newSnippetVersion($snippet, $mode);
         break;
     case 'OnPluginFormSave':
-        $result = $modx->versionx->newPluginVersion($plugin, $mode);
+        if ($modx->getOption('versionx.enable.plugins',null,true))
+            $result = $modx->versionx->newPluginVersion($plugin, $mode);
         break;
     
     case 'OnBeforeManagerPageInit':

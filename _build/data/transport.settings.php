@@ -4,6 +4,13 @@ $s = array(
     'debug' => false,
     'formtabs.resource' => true,
     'formtabs.template' => true,
+
+    'enable.resources' => true,
+    'enable.templates' => true,
+    'enable.templatevariables' => true,
+    'enable.chunks' => true,
+    'enable.snippets' => true,
+    'enable.plugins' => true,
 );
 
 $settings = array();
