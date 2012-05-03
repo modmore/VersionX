@@ -72,7 +72,6 @@ switch($eventName) {
         break;
     
     case 'OnTempFormPrerender':
-        echo $mode;
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
             $result = $modx->versionx->outputVersionsTab('vxTemplate'); 
         }
@@ -82,6 +81,6 @@ switch($eventName) {
 if (isset($result) && $result === true)
     return;
 elseif (isset($result)) {
-    return $modx->log(modX::LOG_LEVEL_ERROR,'An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'false' : $result);
+    $modx->log(modX::LOG_LEVEL_ERROR,'An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'false' : $result);
+    return;
 }
-?>
