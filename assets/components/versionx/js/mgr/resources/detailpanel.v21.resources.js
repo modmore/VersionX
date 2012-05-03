@@ -180,6 +180,14 @@ Ext.extend(VersionX.panel.ResourcesDetail.Main,MODx.FormPanel,{
                 version_id: version,
                 content_id: VersionX.record.content_id,
                 action: 'mgr/resources/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.resources.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
             }
         });
     }

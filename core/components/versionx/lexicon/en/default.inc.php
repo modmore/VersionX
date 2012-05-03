@@ -38,6 +38,7 @@ $_lang['versionx.resources.revert'] = 'Revert Resource to Version #[[+id]]';
 $_lang['versionx.resources.revert.options'] = 'Revert Resource';
 $_lang['versionx.resources.revert.confirm'] = 'Are you sure?';
 $_lang['versionx.resources.revert.confirm.text'] = 'Are you sure you want to confirm to Version #[[+id]]? This will overwrite ALL fields and Template Variables currently set for the resource.';
+$_lang['versionx.resources.reverted'] = 'Resource has been Reverted';
 
 $_lang['versionx.resources.detail.tabs.version-details'] = 'Version Details';
 $_lang['versionx.resources.detail.tabs.resource-fields'] = 'Fields';

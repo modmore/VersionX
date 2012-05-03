@@ -41,6 +41,7 @@ $_lang['versionx.resources.revert'] = 'Herstel Resource naar Versie #[[+id]]';
 $_lang['versionx.resources.revert.options'] = 'Herstel Resource';
 $_lang['versionx.resources.revert.confirm'] = 'Weet u het zeker?';
 $_lang['versionx.resources.revert.confirm.text'] = 'Weet u zeker dat u deze resource wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en Template Variabelen welke nu ingesteld zijn.';
+$_lang['versionx.resources.reverted'] = 'Resource is Hersteld';
 
 $_lang['versionx.resources.detail.tabs.version-details'] = 'Versie Details';
 $_lang['versionx.resources.detail.tabs.resource-fields'] = 'Velden';
