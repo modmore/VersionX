@@ -336,7 +336,7 @@ class VersionX {
      * @param int $id
      * @param bool $json
      * @param string $prefix
-     * @return false|array
+     * @return bool|array
      */
     public function getVersionDetails($class = 'vxResource',$id = 0, $json = false, $prefix = '') {
         $v = $this->modx->getObject($class,$id);
@@ -390,7 +390,9 @@ class VersionX {
                             /* @var modTemplateVar $tvObj */
                             $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
                             if ($tvObj instanceof modTemplateVar) {
-                                $this->tvs[$tv['id']] = $tvObj->get('caption');
+                                $caption = $tvObj->get('caption');
+                                if (empty($caption)) $caption = $tvObj->get('name');
+                                $this->tvs[$tv['id']] = $caption;
                             }
                         }
                         $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
