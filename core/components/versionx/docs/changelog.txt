@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-rc1      ++
+++   Released on 2012-05-03   ++
+++++++++++++++++++++++++++++++++
 If TVs don't have a caption, make sure to fall back to its name.
 Add status message on reverting a Resource.
 
