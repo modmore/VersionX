@@ -24,7 +24,7 @@
 
 $_lang['versionx'] = 'VersionX';
 $_lang['versionx.tabheader'] = 'Versionen';
-$_lang['versionx.menu_desc'] = 'Sichert den wertvollen Content.';
+$_lang['versionx.menu_desc'] = 'Sichert Ihren wertvollen Content.';
 
 $_lang['versionx.common.empty'] = '&lt;leer&gt;';
 
