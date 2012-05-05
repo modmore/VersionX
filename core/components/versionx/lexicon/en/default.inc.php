@@ -70,7 +70,7 @@ $_lang['versionx.templatevars.detail.input-type'] = 'Input Type';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Input Properties';
 $_lang['versionx.templatevars.detail.default-text'] = 'Default Value';
 $_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
-$_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
+$_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties'; /* does this even exist? */
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
