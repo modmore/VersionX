@@ -79,8 +79,8 @@ $_lang['versionx.back'] = 'Zurück zur Übersicht';
 $_lang['versionx.backtoresource'] = 'Zurück zur Ressource';
 $_lang['versionx.compare_to'] = 'Vergleichen mit';
 $_lang['versionx.compare_this_version_to'] = 'Diese Version vergleichen mit';
-$_lang['versionx.filter'] = 'Filter [[+what]]';
-$_lang['versionx.filter.reset'] = 'Filter zurücksetzten';
+$_lang['versionx.filter'] = '[[+what]] filtern';
+$_lang['versionx.filter.reset'] = 'Filter zurücksetzen';
 $_lang['versionx.filter.datefrom'] = 'Von';
 $_lang['versionx.filter.dateuntil'] = 'Bis';
 
