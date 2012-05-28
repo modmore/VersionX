@@ -9,6 +9,7 @@ $dir = $modx->getOption('dir',$scriptProperties,'desc');
 
 /* Filter data */
 $chunk = $modx->getOption('chunk',$scriptProperties,null);
+$search = $modx->getOption('search',$scriptProperties,null);
 $category = $modx->getOption('category',$scriptProperties,null);
 $user = $modx->getOption('user',$scriptProperties,null);
 $from = $modx->getOption('from',$scriptProperties,null);
@@ -23,8 +24,10 @@ $c->leftJoin('modCategory','Category','Category.id = vxChunk.category');
 $c->select(array('version_id','content_id','saved','mode','marked','name','vxChunk.category','categoryname'=>'Category.category','User.username'));
 
 /* Filter */
+if ($search)
+    $c->where(array('name:LIKE' => "%$search%"));
 if ($chunk)
-    $c->where(array('name:LIKE' => "%$chunk%"));
+    $c->where(array('content_id' => $chunk));
 if ($category)
     $c->where(array('vxChunk.category' => $category));
 if ($user)

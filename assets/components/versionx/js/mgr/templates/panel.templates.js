@@ -91,7 +91,7 @@ Ext.extend(VersionX.panel.Templates,MODx.Panel,{
         g = Ext.getCmp('versionx-grid-templates');
         if (g) {
             fRes = Ext.getCmp('tpl-f-template').getValue();
-            g.baseParams['template'] = fRes;
+            g.baseParams['search'] = fRes;
             fCat = Ext.getCmp('tpl-f-category').getValue();
             g.baseParams['category'] = fCat;
             fUsr = Ext.getCmp('tpl-f-user').getValue();

@@ -8,6 +8,7 @@ $sort = $modx->getOption('sort',$scriptProperties,'saved');
 $dir = $modx->getOption('dir',$scriptProperties,'desc');
 
 /* Filter data */
+$search = $modx->getOption('search',$scriptProperties,null);
 $resource = $modx->getOption('resource',$scriptProperties,null);
 $context = $modx->getOption('context',$scriptProperties,null);
 $class = $modx->getOption('class',$scriptProperties,null);
@@ -23,8 +24,10 @@ $c->leftJoin('modUserProfile','Profile','Profile.internalKey = User.id');
 $c->select(array('version_id','content_id','saved','mode','marked','title','context_key','class','User.username'));
 
 /* Filter */
+if ($search)
+    $c->where(array('title:LIKE' => "%$search%"));
 if ($resource)
-    $c->where(array('title:LIKE' => "%$resource%"));
+    $c->where(array('content_id' => $resource));
 if ($context)
     $c->where(array('context_key' => $context));
 if ($class)

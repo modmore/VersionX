@@ -8,6 +8,7 @@ $sort = $modx->getOption('sort',$scriptProperties,'saved');
 $dir = $modx->getOption('dir',$scriptProperties,'desc');
 
 /* Filter data */
+$search = $modx->getOption('search',$scriptProperties,null);
 $template = $modx->getOption('template',$scriptProperties,null);
 $category = $modx->getOption('category',$scriptProperties,null);
 $user = $modx->getOption('user',$scriptProperties,null);
@@ -23,8 +24,10 @@ $c->leftJoin('modCategory','Category','Category.id = vxTemplate.category');
 $c->select(array('version_id','content_id','saved','mode','marked','templatename','vxTemplate.category','categoryname'=>'Category.category','User.username'));
 
 /* Filter */
+if ($search)
+    $c->where(array('templatename:LIKE' => "%$search%"));
 if ($template)
-    $c->where(array('templatename:LIKE' => "%$template%"));
+    $c->where(array('content_id' => $template));
 if ($category)
     $c->where(array('vxTemplate.category' => $category));
 if ($user)

@@ -91,7 +91,7 @@ Ext.extend(VersionX.panel.TemplateVariables,MODx.Panel,{
         g = Ext.getCmp('versionx-grid-templatevars');
         if (g) {
             fRes = Ext.getCmp('tmplvar-f-templatevar').getValue();
-            g.baseParams['templatevar'] = fRes;
+            g.baseParams['search'] = fRes;
             fCat = Ext.getCmp('tmplvar-f-category').getValue();
             g.baseParams['category'] = fCat;
             fUsr = Ext.getCmp('tmplvar-f-user').getValue();

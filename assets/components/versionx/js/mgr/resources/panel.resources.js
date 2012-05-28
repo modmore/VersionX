@@ -93,7 +93,7 @@ Ext.extend(VersionX.panel.Resources,MODx.Panel,{
         g = Ext.getCmp('versionx-grid-resources');
         if (g) {
             fRes = Ext.getCmp('res-f-resource').getValue();
-            g.baseParams['resource'] = fRes;
+            g.baseParams['search'] = fRes;
             fCtx = Ext.getCmp('res-f-context').getValue();
             g.baseParams['context'] = fCtx;
             fCls = Ext.getCmp('res-f-class').getValue();

@@ -91,7 +91,7 @@ Ext.extend(VersionX.panel.Chunks,MODx.Panel,{
         g = Ext.getCmp('versionx-grid-chunks');
         if (g) {
             fRes = Ext.getCmp('chk-f-chunk').getValue();
-            g.baseParams['chunk'] = fRes;
+            g.baseParams['search'] = fRes;
             fCat = Ext.getCmp('chk-f-category').getValue();
             g.baseParams['category'] = fCat;
             fUsr = Ext.getCmp('chk-f-user').getValue();
