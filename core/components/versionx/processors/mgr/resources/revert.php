@@ -23,9 +23,11 @@ if (!($version instanceof vxResource)) {
 
 if (!$version->revert()) {
     return $modx->error->failure('An error occured while reverting the version.');
+} else {
+    $modx->runProcessor('system/clearcache');
 }
 
-$modx->logManagerAction('vxresource/revert',$version->get('class'),$version->get('title') .  '(' . $version->get('content_id') . ')');
+$modx->logManagerAction('vxresource/revert',$version->get('class'),$version->get('title') .  '(' . $version->get('content_id') . ' => ' . $versionId . ')');
 $modx->versionx->newResourceVersion($resourceId, 'revert');
 
 return $modx->error->success();

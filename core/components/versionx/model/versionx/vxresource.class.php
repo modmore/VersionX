@@ -69,6 +69,12 @@ class vxResource extends xPDOObject {
         return self::$tabTpl;
     }
 
+    /**
+     * Reverts a resource to the selected version.
+     * @param array $options
+     *
+     * @return bool
+     */
     public function revert(array $options = array()) {
         if (!$this->get('content_id')) {
             return false;
@@ -102,4 +108,4 @@ class vxResource extends xPDOObject {
         return $resource->save();
     }
 }
-?>
+

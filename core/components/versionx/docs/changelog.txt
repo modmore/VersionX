@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+#22 Make sure the cache gets cleared when reverting a resource.
 #26 Fix critical issue handling static resources.
 #24/#9 Added German translation (Thanks @exside!)
 Fix "upd" message being logged to the error log.
