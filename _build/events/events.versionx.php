@@ -13,6 +13,7 @@ $e = array(
     'OnDocFormPrerender',
     'OnTempFormPrerender',
     'OnTVFormPrerender',
+    'OnChunkFormPrerender',
 );
 
 foreach ($e as $ev) {

@@ -29,6 +29,14 @@ class vxChunk extends xPDOObject {
         'mode',
         'marked',
     );
+
+    public static $tabJavascript = array(
+        'chunks/panel.chunks.js',
+        'chunks/grid.chunks.js',
+    );
+
+    public static $tabTpl = 'mgr/tabs/chunks';
+
     /**
      * Gets the excluded fields.
      * @static
@@ -37,5 +45,21 @@ class vxChunk extends xPDOObject {
     public static function getExcludeFields () {
         return self::$excludeFields;
     }
+
+    /**
+     * @static
+     * @return array
+     */
+    public static function getTabJavascript() {
+        return self::$tabJavascript;
+    }
+
+    /**
+     * Gets the tab template file name.
+     * @static
+     * @return string
+     */
+    public static function getTabTpl() {
+        return self::$tabTpl;
+    }
 }
-?>

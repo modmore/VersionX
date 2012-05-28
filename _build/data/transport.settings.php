@@ -5,6 +5,7 @@ $s = array(
     'formtabs.resource' => true,
     'formtabs.template' => true,
     'formtabs.templatevariables' => true,
+    'formtabs.chunk' => true,
 
     'enable.resources' => true,
     'enable.templates' => true,

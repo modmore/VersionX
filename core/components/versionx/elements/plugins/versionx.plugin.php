@@ -82,7 +82,14 @@ switch($eventName) {
             $result = $modx->versionx->outputVersionsTab('vxTemplateVar');
         }
         break;
-    
+
+
+    case 'OnChunkFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxChunk');
+        }
+        break;
+
 }
 if (isset($result) && $result === true)
     return;
