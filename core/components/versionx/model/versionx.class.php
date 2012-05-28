@@ -130,7 +130,7 @@ class VersionX {
     /**
      * Creates a new version of a Resource.
      *
-     * @param int|modResource $resource
+     * @param int|modResource|modStaticResource $resource
      * @param string $mode
      * @return bool
      *
@@ -155,7 +155,7 @@ class VersionX {
             'title' => $rArray[$this->modx->getOption('resource_tree_node_name',null,'pagetitle')],
             'context_key' => $rArray['context_key'],
             'class' => $rArray['class_key'],
-            'content' => $resource->getContent(),
+            'content' => $resource->get('content'),
         );
 
         $version->fromArray($v);
