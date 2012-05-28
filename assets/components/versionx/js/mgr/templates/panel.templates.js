@@ -14,7 +14,7 @@ VersionX.panel.Templates = function(config) {
                 layout: 'form',
                 border: false,
                 items: [{
-                    xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-template', //'versionx-combo-templates',
+                    xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-templates',
                     fieldLabel: _('template'),
                     name: 'fltr_template',
                     width: 200,

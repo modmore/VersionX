@@ -24,7 +24,7 @@ $c->select(array('version_id','content_id','saved','mode','marked','title','cont
 
 /* Filter */
 if ($resource)
-    $c->where(array('content_id' => $resource));
+    $c->where(array('title:LIKE' => "%$resource%"));
 if ($context)
     $c->where(array('context_key' => $context));
 if ($class)

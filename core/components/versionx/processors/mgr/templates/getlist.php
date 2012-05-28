@@ -24,7 +24,7 @@ $c->select(array('version_id','content_id','saved','mode','marked','templatename
 
 /* Filter */
 if ($template)
-    $c->where(array('content_id' => $template));
+    $c->where(array('templatename:LIKE' => "%$template%"));
 if ($category)
     $c->where(array('vxTemplate.category' => $category));
 if ($user)
