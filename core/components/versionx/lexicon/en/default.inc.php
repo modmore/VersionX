@@ -37,8 +37,8 @@ $_lang['versionx.resources.detail.text'] = 'Below you can find the details for t
 $_lang['versionx.resources.revert'] = 'Revert Resource to Version #[[+id]]';
 $_lang['versionx.resources.revert.options'] = 'Revert Resource';
 $_lang['versionx.resources.revert.confirm'] = 'Are you sure?';
-$_lang['versionx.resources.revert.confirm.text'] = 'Are you sure you want to confirm to Version #[[+id]]? This will overwrite ALL fields and Template Variables currently set for the resource.';
-$_lang['versionx.resources.reverted'] = 'Resource has been Reverted';
+$_lang['versionx.resources.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite ALL fields and Template Variables currently set for the resource and replace them with the ones in the version you selected.';
+$_lang['versionx.resources.reverted'] = 'Resource has been successfully reverted!';
 
 $_lang['versionx.resources.detail.tabs.version-details'] = 'Version Details';
 $_lang['versionx.resources.detail.tabs.resource-fields'] = 'Fields';
@@ -70,7 +70,7 @@ $_lang['versionx.templatevars.detail.input-type'] = 'Input Type';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Input Properties';
 $_lang['versionx.templatevars.detail.default-text'] = 'Default Value';
 $_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
-$_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
+$_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties'; /* does this even exist? */
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
