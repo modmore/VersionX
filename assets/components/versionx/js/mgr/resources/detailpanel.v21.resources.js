@@ -79,7 +79,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                     }
                 },
                 items: [{
-                    title: _('versionx.resources.detail.tabs.version-details'),
+                    title: _('versionx.common.version-details'),
                     items: [{
                         id: 'versionx-panel-resourcesdetail-versioninfo',
                         xtype: 'versionx-panel-common-detailpanel',

@@ -44,7 +44,7 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
                     }
                 },
                 items: [{
-                    title: _('versionx.templatevars.detail.tabs.version-details'),
+                    title: _('versionx.common.version-details'),
                     items: [{
                         id: 'versionx-panel-templatevarsdetail-versioninfo',
                         xtype: 'versionx-panel-common-detailpanel',

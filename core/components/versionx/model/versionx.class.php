@@ -415,6 +415,14 @@ class VersionX {
                         }
                     }
                     break;
+
+                case 'vxTemplate':
+                    $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['content'])));
+                    break;
+
+                case 'vxChunk':
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    break;
             }
 
             /* @var modUserProfile $up */
@@ -637,4 +645,4 @@ class VersionX {
     }
 
 }
-?>
+

@@ -1,11 +1,11 @@
-VersionX.panel.TemplatesDetail.Main = function(config) {
+VersionX.panel.ChunksDetail = function(config) {
     config = config || {};
     Ext.apply(config,{
-        id: 'versionx-panel-templatesdetail',
+        id: 'versionx-panel-chunksdetail',
         border: false,
         layout: 'form',
         items: [{
-            html: '<p>'+_('versionx.templates.detail.text')+'</p>',
+            html: '<p>'+_('versionx.chunks.detail.text')+'</p>',
             border: false,
             bodyCssClass: 'panel-desc'
         },{
@@ -13,14 +13,14 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
             cls: 'main-wrapper',
             labelWidth: 125,
             items: [{
-                xtype: 'versionx-combo-templateversions',
+                xtype: 'versionx-combo-chunkversions',
                 fieldLabel: _('versionx.compare_to'),
                 labelStyle: 'padding: 7px 0 0 5px;',
                 name: 'compare_to',
                 baseParams: {
-                    template: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                    chunk: (VersionX.record) ? VersionX.record['content_id'] : 0,
                     current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                    action: 'mgr/templates/get_versions'
+                    action: 'mgr/chunks/get_versions'
                 },
                 listeners: {
                     'select': this.compareVersion
@@ -44,7 +44,7 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                 items: [{
                     title: _('versionx.common.version-details'),
                     items: [{
-                        id: 'versionx-panel-templatesdetail-versioninfo',
+                        id: 'versionx-panel-chunksdetail-versioninfo',
                         xtype: 'versionx-panel-common-detailpanel',
                         vxRecord: config.vxRecord,
                         vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
@@ -56,31 +56,31 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.fields'),
+                    title: _('versionx.chunks.detail.tabs.fields'),
                     items: [{
-                        id: 'versionx-panel-templatesdetail-template-fields',
+                        id: 'versionx-panel-chunksdetail-chunk-fields',
                         xtype: 'versionx-panel-common-detailpanel',
                         vxRecord: config.vxRecord,
                         vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
                         vxFieldMap: [
-                            { key: 'templatename', lexicon:'name' },
+                            { key: 'name', lexicon:'name' },
                             { key: 'description', lexicon:'description' },
                             { key: 'category', lexicon:'category' }
                         ]
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.content'),
+                    title: _('versionx.chunks.detail.tabs.content'),
                     items: [{
-                        id: 'versionx-panel-templatesdetail-content',
+                        id: 'versionx-panel-chunksdetail-content',
                         xtype: 'versionx-panel-common-contentpanel',
                         border: false,
                         vxRecord: config.vxRecord,
                         vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
-                        vxContentField: 'content'
+                        vxContentField: 'snippet'
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.properties'),
-                    tabTip: _('versionx.templates.detail.tabs.properties.off'),
+                    title: _('versionx.chunks.detail.tabs.properties'),
+                    tabTip: _('versionx.chunks.detail.tabs.properties.off'),
                     items: [],
                     disabled: true
                 }]
@@ -89,13 +89,13 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
         listeners: {
         }
     });
-    VersionX.panel.TemplatesDetail.Main.superclass.constructor.call(this,config);
+    VersionX.panel.ChunksDetail.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.TemplatesDetail.Main,MODx.FormPanel,{
+Ext.extend(VersionX.panel.ChunksDetail,MODx.FormPanel,{
     compareVersion: function (tf, nv, ov) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
-        window.location.href = '?a='+VersionX.action+'&action=template&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+        window.location.href = '?a='+VersionX.action+'&action=chunk&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
     }
 });
-Ext.reg('versionx-panel-templatesdetail',VersionX.panel.TemplatesDetail.Main);
+Ext.reg('versionx-panel-chunksdetail',VersionX.panel.ChunksDetail);

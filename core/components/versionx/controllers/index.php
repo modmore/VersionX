@@ -78,16 +78,13 @@ switch ($_REQUEST['action']) {
         if ($versionid > 0) {
             $v = $versionx->getVersionDetails('vxTemplate',$versionid);
             if ($v !== false) {
-                $v['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($v['content'])));
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>');
             }
         }
         /* If an ID to compare to was passed, fetch that aswell. */
         if ($compareid > 0) {
             $v = $versionx->getVersionDetails('vxTemplate',$compareid);
-            if ($v !== false)
-            {
-                $v['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($v['content'])));
+            if ($v !== false) {
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
             }
         }
@@ -122,10 +119,33 @@ switch ($_REQUEST['action']) {
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/detailpanel.templatevars.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/combo.versions.templatevars.js'); 
     break;
+
+    case 'chunk':
+        /* If an ID was passed, fetch that version into a record array. */
+        if ($versionid > 0) {
+            $v = $versionx->getVersionDetails('vxChunk',$versionid);
+            if ($v !== false) {
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>');
+            }
+        }
+        /* If an ID to compare to was passed, fetch that aswell. */
+        if ($compareid > 0) {
+            $v = $versionx->getVersionDetails('vxChunk',$compareid);
+            if ($v !== false) {
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
+            }
+        }
+
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.chunk.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/panel.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/grid.common.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/panel.content.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/chunks/detailpanel.chunks.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/chunks/combo.versions.chunks.js');
+    break;
     
     case 'index':
     default:
-        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
         /* Resources */
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/panel.resources.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/resources/grid.resources.js');
@@ -135,7 +155,12 @@ switch ($_REQUEST['action']) {
         /* Template Variables */
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/panel.templatevars.js');
         $modx->regClientStartupScript($versionx->config['js_url'].'mgr/templatevars/grid.templatevars.js');
-    break;
+        /* Chunks */
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/chunks/panel.chunks.js');
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/chunks/grid.chunks.js');
+
+        $modx->regClientStartupScript($versionx->config['js_url'].'mgr/action.index.js');
+        break;
 }
 
 

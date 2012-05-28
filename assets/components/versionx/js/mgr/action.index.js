@@ -66,11 +66,13 @@ VersionX.page.Index = function(config) {
                         }]
                     },{
                         title: _('chunks'),
-                        tabTip: _('versionx.tabtip.notyet',{what: _('chunks')}),
                         items: [{
-                            //xtype: 'versionx-grid-chunks'
-                        }],
-                        disabled: true
+                            xtype: 'versionx-panel-chunks'
+                        },{
+                            html: '<hr />'
+                        },{
+                            xtype: 'versionx-grid-chunks'
+                        }]
                     },{
                         title: _('snippets'),
                         tabTip: _('versionx.tabtip.notyet',{what: _('snippets')}),
