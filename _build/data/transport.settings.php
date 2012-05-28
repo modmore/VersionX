@@ -4,6 +4,7 @@ $s = array(
     'debug' => false,
     'formtabs.resource' => true,
     'formtabs.template' => true,
+    'formtabs.templatevariables' => true,
 
     'enable.resources' => true,
     'enable.templates' => true,

@@ -16,14 +16,12 @@ VersionX.page.Template = function(config) {
     });
     if (MODx.request.backTo) {
         var back = MODx.request.backTo.split('-');
-        if (back[0] == MODx.action['templatevars/update']) {
-            buttons.push('-',{
-                text: _('versionx.backtotemplatevars'),
-                handler: function() {
-                    window.location.href = '?a='+back[0]+'&id='+back[1];
-                }
-            });
-        }
+        buttons.push('-',{
+            text: _('versionx.backto', {what: _('tv')}),
+            handler: function() {
+                window.location.href = '?a='+back[0]+'&id='+back[1];
+            }
+        });
     }
     Ext.applyIf(config,{
         renderTo: 'versionx',

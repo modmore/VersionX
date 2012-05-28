@@ -9,8 +9,10 @@ $e = array(
     'OnChunkFormSave',
     'OnSnipFormSave',
     'OnPluginFormSave',
+
     'OnDocFormPrerender',
     'OnTempFormPrerender',
+    'OnTVFormPrerender',
 );
 
 foreach ($e as $ev) {

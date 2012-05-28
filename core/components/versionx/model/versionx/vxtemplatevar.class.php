@@ -29,6 +29,19 @@ class vxTemplateVar extends xPDOObject {
         'mode',
         'marked',
     );
+
+    public static $tabJavascript = array(
+        'templatevars/panel.templatevars.js',
+        'templatevars/grid.templatevars.js',
+    );
+
+    public static $tabTpl = 'mgr/tabs/templatevars';
+    /**
+     * Gets the Javascript filenames that are required for tabs.
+     * @static
+     * @return array
+     */
+
     /**
      * Gets the excluded fields.
      * @static
@@ -36,6 +49,19 @@ class vxTemplateVar extends xPDOObject {
      */
     public static function getExcludeFields () {
         return self::$excludeFields;
+    }
+
+    public static function getTabJavascript() {
+        return self::$tabJavascript;
+    }
+
+    /**
+     * Gets the tab template file name.
+     * @static
+     * @return string
+     */
+    public static function getTabTpl() {
+        return self::$tabTpl;
     }
 }
 ?>

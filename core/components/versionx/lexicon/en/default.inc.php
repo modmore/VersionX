@@ -74,7 +74,7 @@ $_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
-$_lang['versionx.backtoresource'] = 'Back to Resource';
+$_lang['versionx.backto'] = 'Back to [[+what]]';
 $_lang['versionx.compare_to'] = 'Compare To';
 $_lang['versionx.compare_this_version_to'] = 'Compare this version to';
 $_lang['versionx.filter'] = 'Filter [[+what]]';

@@ -76,6 +76,12 @@ switch($eventName) {
             $result = $modx->versionx->outputVersionsTab('vxTemplate'); 
         }
         break;
+
+    case 'OnTVFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxTemplateVar');
+        }
+        break;
     
 }
 if (isset($result) && $result === true)
