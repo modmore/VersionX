@@ -72,7 +72,7 @@ $_lang['versionx.templatevars.detail.input-type'] = 'Eingabetyp';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Eingabe-Optionswerte';
 $_lang['versionx.templatevars.detail.default-text'] = 'Standardwert';
 $_lang['versionx.templatevars.detail.output-type'] = 'Ausgabetyp';
-$_lang['versionx.templatevars.detail.output-properties'] = 'Ausgabe-Optionswerte'; /* does this even exist? */
+$_lang['versionx.templatevars.detail.output-properties'] = 'Ausgabe-Optionswerte';
 
 $_lang['versionx.menu.viewdetails'] = 'Version Details ansehen';
 $_lang['versionx.back'] = 'Zurück zur Übersicht';
@@ -98,5 +98,3 @@ $_lang['versionx.marked'] = 'Markiert';
 
 $_lang['versionx.error.noresults'] = 'Für Ihre Anfrage konnten keine Resultate gefunden werden.';
 $_lang['versionx.tabtip.notyet'] = 'Sorry, leider können wir die History für [[+what]] noch nicht anzeigen. Veränderungen werden jedoch bereits jetzt in die Datenbank geschrieben, sobald diese Funktionen implementiert sind, werden sie hier angezeigt!';
-
-?>

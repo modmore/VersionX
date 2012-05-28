@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Added German translation (Thanks @exside!)
 Fix "upd" message being logged to the error log.
 Added Russian translation (Thanks Ivan Klimchuk!)
 
