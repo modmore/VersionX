@@ -37,6 +37,11 @@ VersionX.grid.TemplateVariables = function(config) {
 		    sortable: true,
 			width: .05
 		},{
+			header: _('versionx.saved'),
+			dataIndex: 'saved',
+			sortable: true,
+			width: .15
+		},{
 			header: _('name'),
 			dataIndex: 'name',
 		    sortable: true,
@@ -45,11 +50,6 @@ VersionX.grid.TemplateVariables = function(config) {
 			header: _('category'),
 			dataIndex: 'categoryname',
 		    sortable: true,
-			width: .15
-		},{
-			header: _('versionx.saved'),
-			dataIndex: 'saved',
-			sortable: true,
 			width: .15
 		},{
 			header: _('user'),
