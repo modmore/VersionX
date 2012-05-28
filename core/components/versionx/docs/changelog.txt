@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Add Recent Resource Changes dashboard widget for 2.2+.
 Add Chunks UI to the component, and tabs to the update panel.
 Change TV grid to follow same column order as others
 Change object field behavior from searching on IP to searching on name

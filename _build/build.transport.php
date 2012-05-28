@@ -143,6 +143,9 @@ $vehicle->resolve('php',array(
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'setupoptions.resolver.php',
 ));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'dashboardwidgets.resolver.php',
+));
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();
 $builder->putVehicle($vehicle);
@@ -170,4 +173,3 @@ $totalTime = sprintf("%2.4f s", $totalTime);
 
 $modx->log(modX::LOG_LEVEL_INFO,"\n<br />Package Built.<br />\nExecution time: {$totalTime}\n");
 
-?>

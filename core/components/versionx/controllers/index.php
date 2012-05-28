@@ -25,27 +25,6 @@ require_once dirname(dirname(__FILE__)).'/model/versionx.class.php';
 $versionx = new VersionX($modx);
 $versionx->initialize('mgr');
 
-$action = $versionx->getAction();
-
-$modx->regClientStartupHTMLBlock('
-<script type="text/javascript">
-    Ext.onReady(function() {
-        VersionX.config = '.$modx->toJSON($versionx->config).';
-        VersionX.action = '.$action.';
-    });
-</script>
-
-<style type="text/css">
-    .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-    .vx-added .x-form-item-label { color: green; }
-    .vx-changed .x-form-item-label { color: #dd6600; }
-    .vx-removed .x-form-item-label { color: #ff0000; }
-</style>');
-
-$modx->regClientStartupScript($versionx->config['js_url'].'mgr/versionx.class.js');
-$modx->regClientStartupScript($versionx->config['js_url'].'mgr/common/json2.js');
-
-
 $versionid = (isset($_REQUEST['vid'])) ? (int)$_REQUEST['vid'] : false;
 $compareid = (isset($_REQUEST['cmid'])) ? (int)$_REQUEST['cmid'] : false;
 if (!isset($_REQUEST['action'])) $_REQUEST['action'] = 'index';

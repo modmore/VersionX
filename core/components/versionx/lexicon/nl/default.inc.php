@@ -106,4 +106,6 @@ $_lang['versionx.marked'] = 'Gemarkeerd';
 $_lang['versionx.error.noresults'] = 'Geen resultaten gevonden voor uw zoekopdracht.';
 $_lang['versionx.tabtip.notyet'] = 'Sorry, we kunnen uw [[+what]] geschiedenis nog niet laten zien. Wees gerust, veranderingen worden nu al gecontroleerd, en zodra we dit tabblad toevoegen zullen ook deze gegevens beschikbaar komen';
 
-?>
+$_lang['versionx.widget.resources'] = 'Recente Resource Wijzigingen';
+$_lang['versionx.widget.resources.desc'] = '(Onderdeel van VersionX) Genereert een tabel met daarin alle laatste wijzigingen aan resources binnen de site..';
+$_lang['versionx.widget.resources.update'] = 'Bewerk Resource';

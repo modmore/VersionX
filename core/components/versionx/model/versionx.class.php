@@ -71,7 +71,25 @@ class VersionX {
     public function initialize($ctx = 'web') {
         switch ($ctx) {
             case 'mgr':
+                $action = $this->getAction();
 
+                $this->modx->regClientStartupHTMLBlock('
+                <script type="text/javascript">
+                    Ext.onReady(function() {
+                        VersionX.config = '.$this->modx->toJSON($this->config).';
+                        VersionX.action = '.$action.';
+                    });
+                </script>
+
+                <style type="text/css">
+                    .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
+                    .vx-added .x-form-item-label { color: green; }
+                    .vx-changed .x-form-item-label { color: #dd6600; }
+                    .vx-removed .x-form-item-label { color: #ff0000; }
+                </style>');
+
+                $this->modx->regClientStartupScript($this->config['js_url'].'mgr/versionx.class.js');
+                $this->modx->regClientStartupScript($this->config['js_url'].'mgr/common/json2.js');
             break;
         }
         return true;
@@ -393,6 +411,8 @@ class VersionX {
                                 $caption = $tvObj->get('caption');
                                 if (empty($caption)) $caption = $tvObj->get('name');
                                 $this->tvs[$tv['id']] = $caption;
+                            } else {
+                                $this->tvs[$tv['id']] = 'tv'.$tv['id'];
                             }
                         }
                         $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
@@ -617,7 +637,7 @@ class VersionX {
      * Gets language strings for use on non-VersionX controllers.
      * @return string
      */
-    private function _getLangs() {
+    public function _getLangs() {
         $entries = $this->modx->lexicon->loadCache('versionx');
 		$langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
         return $langs;
