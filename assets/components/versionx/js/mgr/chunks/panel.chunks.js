@@ -10,14 +10,14 @@ VersionX.panel.Chunks = function(config) {
             layout: 'column',
             border: false,
             items: [{
-                columnWidth: '48%',
+                columnWidth:.5,
                 layout: 'form',
                 border: false,
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-chunks',
                     fieldLabel: _('chunk'),
                     name: 'fltr_chunk',
-                    width: 200,
+                    width: '95%',
                     id: 'chk-f-chunk',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                     
@@ -26,24 +26,24 @@ VersionX.panel.Chunks = function(config) {
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
-                    width: 200,
+                    anchor: '1',
                     id: 'chk-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
                     name: 'fltr_from',
-                    width: 200,
+                    anchor: '1',
                     id: 'chk-f-from'
                 }]
             },{
-                columnWidth: '48%',
+                columnWidth:.5,
                 layout: 'form',
                 border: false,
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-category',
                     fieldLabel: _('category'),
                     name: 'fltr_category',
-                    width: 200,
+                    anchor: '1',
                     id: 'chk-f-category'
                 },{ 
                     fieldLabel: '',
@@ -53,7 +53,7 @@ VersionX.panel.Chunks = function(config) {
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
-                    width: 200,
+                    anchor: '1',
                     id: 'chk-f-until'
                 }]
             }]
@@ -61,21 +61,32 @@ VersionX.panel.Chunks = function(config) {
             layout: 'column',
             padding: '10px 0 0 0',
             border: false,
+            defaults: {
+                border: false
+            },
             items: [{
-                columnWidth: '30%',
-                border: false,
+                width: 90,
+                items: [{
+                    border: false,
+                    html: '&nbsp;'
+                }]
+            },{
                 items: [{
                     xtype: 'button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('chunks')})
                 }]
             },{
-                columnWidth: '30%',
-                border: false,
                 items: [{
                      xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
+                }]
+            },{
+                columnWidth: 1,
+                items: [{
+                    html: '&nbsp;',
+                    border: false
                 }]
             }]
         }],

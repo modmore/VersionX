@@ -10,14 +10,14 @@ VersionX.panel.Templates = function(config) {
             layout: 'column',
             border: false,
             items: [{
-                columnWidth: '48%',
+                columnWidth:.5,
                 layout: 'form',
                 border: false,
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-templates',
                     fieldLabel: _('template'),
                     name: 'fltr_template',
-                    width: 200,
+                    width: '95%',
                     id: 'tpl-f-template',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                     
@@ -26,34 +26,30 @@ VersionX.panel.Templates = function(config) {
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
-                    width: 200,
+                    anchor: '1',
                     id: 'tpl-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
                     name: 'fltr_from',
-                    width: 200,
+                    anchor: '1',
                     id: 'tpl-f-from'
                 }]
             },{
-                columnWidth: '48%',
+                columnWidth:.5,
                 layout: 'form',
                 border: false,
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-category',
                     fieldLabel: _('category'),
                     name: 'fltr_category',
-                    width: 200,
+                    anchor: '1',
                     id: 'tpl-f-category'
-                },{ 
-                    fieldLabel: '',
-                    style: 'height: 36px !important',
-                    border: false
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
-                    width: 200,
+                    anchor: '1',
                     id: 'tpl-f-until'
                 }]
             }]
@@ -61,21 +57,32 @@ VersionX.panel.Templates = function(config) {
             layout: 'column',
             padding: '10px 0 0 0',
             border: false,
+            defaults: {
+                border: false
+            },
             items: [{
-                columnWidth: '30%',
-                border: false,
+                width: 90,
+                items: [{
+                    border: false,
+                    html: '&nbsp;'
+                }]
+            },{
                 items: [{
                     xtype: 'button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('templates')})
                 }]
             },{
-                columnWidth: '30%',
-                border: false,
                 items: [{
-                     xtype: 'button',
+                    xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
+                }]
+            },{
+                columnWidth: 1,
+                items: [{
+                    html: '&nbsp;',
+                    border: false
                 }]
             }]
         }],

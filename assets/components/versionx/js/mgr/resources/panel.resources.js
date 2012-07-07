@@ -10,52 +10,51 @@ VersionX.panel.Resources = function(config) {
             layout: 'column',
             border: false,
             items: [{
-                columnWidth: '48%',
+                columnWidth:.5,
                 layout: 'form',
                 border: false,
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-resources',
                     fieldLabel: _('resource'),
                     name: 'fltr_resource',
-                    width: 200,
+                    width: '95%',
                     id: 'res-f-resource',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
-                    
                 },{
                     xtype: 'modx-combo-user',
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
-                    width: 200,
+                    anchor: '1',
                     id: 'res-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
                     name: 'fltr_from',
-                    width: 200,
+                    anchor: '1',
                     id: 'res-f-from'
                 }]
             },{
-                columnWidth: '48%',
+                columnWidth:.5,
                 layout: 'form',
                 border: false,
                 items: [{
                     xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-context',
                     fieldLabel: _('context'),
                     name: 'fltr_context_key',
-                    width: 200,
+                    anchor: '1',
                     id: 'res-f-context'
                 },{
                     xtype: 'modx-combo-class-map',
                     fieldLabel: _('class_key'),
                     name: 'fltr_class',
-                    width: 200,
+                    anchor: '1',
                     id: 'res-f-class'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
-                    width: 200,
+                    anchor: '1',
                     id: 'res-f-until'
                 }]
             }]
@@ -63,21 +62,32 @@ VersionX.panel.Resources = function(config) {
             layout: 'column',
             padding: '10px 0 0 0',
             border: false,
+            defaults: {
+                border: false
+            },
             items: [{
-                columnWidth: '30%',
-                border: false,
+                width: 90,
+                items: [{
+                    border: false,
+                    html: '&nbsp;'
+                }]
+            },{
                 items: [{
                     xtype: 'button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('resources')})
                 }]
             },{
-                columnWidth: '30%',
-                border: false,
                 items: [{
-                     xtype: 'button',
+                    xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
+                }]
+            },{
+                columnWidth: 1,
+                items: [{
+                    html: '&nbsp;',
+                    border: false
                 }]
             }]
         }],

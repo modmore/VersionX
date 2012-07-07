@@ -1,5 +1,7 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Re-align form buttons and tiny bit of UI cleanup.
+#31 Fix action bar and VersionX component in IE
 #29 Fix issue with empty grids until applying a filter in 2.2.4.
 
 ++++++++++++++++++++++++++++++++

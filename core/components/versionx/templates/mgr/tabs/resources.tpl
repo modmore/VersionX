@@ -6,7 +6,7 @@
             width: '95%',
             items: [{
                 xtype: 'versionx-panel-resources',
-                layout: 'anchor',
+                //layout: 'anchor',
                 width: 500
             },{
                 html: '<hr />',
