@@ -24,14 +24,14 @@ $c->leftJoin('modCategory','Category','Category.id = vxTemplateVar.category');
 $c->select(array('version_id','content_id','name','saved','mode','marked','vxTemplateVar.category','categoryname'=>'Category.category','User.username'));
 
 /* Filter */
-if ($tv)
-    $c->where(array('content_id' => $tv));
 if ($search)
     $c->where(array('name:LIKE' => "%$search%"));
+if ($tv)
+    $c->where(array('content_id' => (int)$tv));
 if ($category)
-    $c->where(array('vxTemplateVar.category' => $category));
-if ($user)
-    $c->where(array('user' => $user));
+    $c->where(array('vxTemplateVar.category' => (int)$category));
+if ($user && is_numeric($user))
+    $c->where(array('user' => (int)$user));
 if ($from)
     $c->where(array('saved:>' => $from));
 if ($until)
@@ -58,4 +58,3 @@ $returnArray = array(
 );
 return $modx->toJSON($returnArray);
 
-?>
