@@ -91,32 +91,26 @@ VersionX.panel.TemplateVariables = function(config) {
             }]
         }],
         listeners: {
-            'success': function (res) {
-            }
+            'success': function () {}
         }
     });
     VersionX.panel.TemplateVariables.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.TemplateVariables,MODx.Panel,{
     doFilter: function() {
-        g = Ext.getCmp('versionx-grid-templatevars');
+        var g = Ext.getCmp('versionx-grid-templatevars');
         if (g) {
-            fRes = Ext.getCmp('tmplvar-f-templatevar').getValue();
-            g.baseParams['search'] = fRes;
-            fCat = Ext.getCmp('tmplvar-f-category').getValue();
-            g.baseParams['category'] = fCat;
-            fUsr = Ext.getCmp('tmplvar-f-user').getValue();
-            g.baseParams['user'] = fUsr;
-            fFrm = Ext.getCmp('tmplvar-f-from').getValue();
-            g.baseParams['from'] = fFrm;
-            fUnt = Ext.getCmp('tmplvar-f-until').getValue();
-            g.baseParams['until'] = fUnt;
+            g.baseParams['search'] = Ext.getCmp('tmplvar-f-templatevar').getValue();
+            g.baseParams['category'] = Ext.getCmp('tmplvar-f-category').getValue();
+            g.baseParams['user'] = Ext.getCmp('tmplvar-f-user').getValue();
+            g.baseParams['from'] = Ext.getCmp('tmplvar-f-from').getValue();
+            g.baseParams['until'] = Ext.getCmp('tmplvar-f-until').getValue();
             g.getBottomToolbar().changePage(1);
             g.refresh();
         }
     },
     resetFilter: function() {
-        g = Ext.getCmp('versionx-grid-templatevars');
+        var g = Ext.getCmp('versionx-grid-templatevars');
         g.baseParams['templatevar'] = (VersionX.inVersion) ? MODx.request.id : '';
         g.baseParams['category'] = '';
         g.baseParams['user'] = '';

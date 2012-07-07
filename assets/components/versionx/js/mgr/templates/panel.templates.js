@@ -87,32 +87,26 @@ VersionX.panel.Templates = function(config) {
             }]
         }],
         listeners: {
-            'success': function (res) {
-            }
+            'success': function () {}
         }
     });
     VersionX.panel.Templates.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.Templates,MODx.Panel,{
     doFilter: function() {
-        g = Ext.getCmp('versionx-grid-templates');
+        var g = Ext.getCmp('versionx-grid-templates');
         if (g) {
-            fRes = Ext.getCmp('tpl-f-template').getValue();
-            g.baseParams['search'] = fRes;
-            fCat = Ext.getCmp('tpl-f-category').getValue();
-            g.baseParams['category'] = fCat;
-            fUsr = Ext.getCmp('tpl-f-user').getValue();
-            g.baseParams['user'] = fUsr;
-            fFrm = Ext.getCmp('tpl-f-from').getValue();
-            g.baseParams['from'] = fFrm;
-            fUnt = Ext.getCmp('tpl-f-until').getValue();
-            g.baseParams['until'] = fUnt;
+            g.baseParams['search'] = Ext.getCmp('tpl-f-template').getValue();
+            g.baseParams['category'] = Ext.getCmp('tpl-f-category').getValue();
+            g.baseParams['user'] = Ext.getCmp('tpl-f-user').getValue();
+            g.baseParams['from'] = Ext.getCmp('tpl-f-from').getValue();
+            g.baseParams['until'] = Ext.getCmp('tpl-f-until').getValue();
             g.getBottomToolbar().changePage(1);
             g.refresh();
         }
     },
     resetFilter: function() {
-        g = Ext.getCmp('versionx-grid-templates');
+        var g = Ext.getCmp('versionx-grid-templates');
         g.baseParams['template'] = (VersionX.inVersion) ? MODx.request.id : '';
         g.baseParams['category'] = '';
         g.baseParams['user'] = '';

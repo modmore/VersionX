@@ -92,34 +92,27 @@ VersionX.panel.Resources = function(config) {
             }]
         }],
         listeners: {
-            'success': function (res) {
-            }
+            'success': function () {}
         }
     });
     VersionX.panel.Resources.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.Resources,MODx.Panel,{
     doFilter: function() {
-        g = Ext.getCmp('versionx-grid-resources');
+        var g = Ext.getCmp('versionx-grid-resources');
         if (g) {
-            fRes = Ext.getCmp('res-f-resource').getValue();
-            g.baseParams['search'] = fRes;
-            fCtx = Ext.getCmp('res-f-context').getValue();
-            g.baseParams['context'] = fCtx;
-            fCls = Ext.getCmp('res-f-class').getValue();
-            g.baseParams['class'] = fCls;
-            fUsr = Ext.getCmp('res-f-user').getValue();
-            g.baseParams['user'] = fUsr;
-            fFrm = Ext.getCmp('res-f-from').getValue();
-            g.baseParams['from'] = fFrm;
-            fUnt = Ext.getCmp('res-f-until').getValue();
-            g.baseParams['until'] = fUnt;
+            g.baseParams['search'] = Ext.getCmp('res-f-resource').getValue();
+            g.baseParams['context'] = Ext.getCmp('res-f-context').getValue();
+            g.baseParams['class'] = Ext.getCmp('res-f-class').getValue();
+            g.baseParams['user'] = Ext.getCmp('res-f-user').getValue();
+            g.baseParams['from'] = Ext.getCmp('res-f-from').getValue();
+            g.baseParams['until'] = Ext.getCmp('res-f-until').getValue();
             g.getBottomToolbar().changePage(1);
             g.refresh();
         }
     },
     resetFilter: function() {
-        g = Ext.getCmp('versionx-grid-resources');
+        var g = Ext.getCmp('versionx-grid-resources');
         g.baseParams['resource'] = (VersionX.inVersion) ? MODx.request.id : '';
         g.baseParams['context'] = '';
         g.baseParams['class'] = '';

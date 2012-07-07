@@ -112,7 +112,7 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
     VersionX.panel.TemplateVariablesDetail.Main.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.TemplateVariablesDetail.Main,MODx.FormPanel,{
-    compareVersion: function (tf, nv, ov) {
+    compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=templatevar&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;

@@ -92,7 +92,7 @@ VersionX.panel.ChunksDetail = function(config) {
     VersionX.panel.ChunksDetail.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.ChunksDetail,MODx.FormPanel,{
-    compareVersion: function (tf, nv, ov) {
+    compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=chunk&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
