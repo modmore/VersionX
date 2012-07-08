@@ -25,8 +25,8 @@ $_lang['versionx.tabheader'] = 'Versions';
 $_lang['versionx.menu_desc'] = 'Keeps track of your valuable content.';
 
 $_lang['versionx.home'] = 'VersionX';
-$_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component. Please note that, while the interface for Chunks, Snippets and Plugins are not yet included, they are actually being recorded and stored in the database for future use.<br /><br />
-While VersionX is free to use (and open source), a lot of time has gone into development, maintenance and offering support. Please <a href="http://www.markhamstra.com/open-source/versionx/">consider making a donation</a> to support VersionX going forward.';
+$_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component. <br /><br />
+VersionX is free software, however your help is needed to keep the development going. If VersionX has proven helpful, please <a href="http://www.markhamstra.com/open-source/versionx/">consider making a donation</a> to support VersionX. Thank you.';
 
 $_lang['versionx.common.empty'] = '&lt;empty&gt;';
 $_lang['versionx.common.version-details'] = 'Version Details';
