@@ -3,9 +3,6 @@
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
     case xPDOTransport::ACTION_UPGRADE:
-    case xPDOTransport::ACTION_UNINSTALL: 
-    break;
-}
 
 $output = <<<HTML
 <p>If you already have resources and elements in place, you can let the setup process create a snapshot of them to the VersionX database, providing you with a baseline to start comparing from. The system will check for existing versions and only create a snapshot when needed.</p>
@@ -28,5 +25,11 @@ $output = <<<HTML
         <label for="vx_snapshot_tmplvars" style="display: inline;">Template Variables</label>
 </div>
 HTML;
+    break;
+    default:
+    case xPDOTransport::ACTION_UNINSTALL:
+        $output = '';
+    break;
+}
 
 return $output;

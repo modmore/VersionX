@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+#27 Fix resolvers preventing proper uninstall
 Clean up javascript to satisfy PhpStorm's JS validation.
 Re-align form buttons and tiny bit of UI cleanup.
 #31 Fix action bar and VersionX component in IE
