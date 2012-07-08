@@ -75,11 +75,13 @@ VersionX.page.Index = function(config) {
                         }]
                     },{
                         title: _('snippets'),
-                        tabTip: _('versionx.tabtip.notyet',{what: _('snippets')}),
                         items: [{
-                            //xtype: 'versionx-grid-snippets'
-                        }],
-                        disabled: true
+                            xtype: 'versionx-panel-snippets'
+                        },{
+                            html: '<hr />'
+                        },{
+                            xtype: 'versionx-grid-snippets'
+                        }]
                     },{
                         title: _('plugins'),
                         tabTip: _('versionx.tabtip.notyet',{what: _('plugins')}),

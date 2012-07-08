@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Add Snippets UI to the component and as tab on the snippets update panel.
 #16 Add a cachebust to javascripts based on version number to eliminate browser cache issues.
 #32 Fix E_NOTICE error in VersionX.checkLastVersion possibly causing install/save issues.
 #27 Fix resolvers preventing proper uninstall

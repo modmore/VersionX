@@ -28,7 +28,8 @@ class VersionX {
     private $chunks;
     private $tvs = array();
     public $config = array();
-    
+    public $categoryCache = array();
+
     public $debug = false;
     public $action = null;
 
@@ -447,6 +448,11 @@ class VersionX {
                 case 'vxChunk':
                     $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
                     break;
+
+                case 'vxSnippet':
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
+                    break;
             }
 
             /* @var modUserProfile $up */
@@ -680,6 +686,25 @@ class VersionX {
             } 
         }
         return $action;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return string
+     */
+    public function getCategory($id) {
+        if (!$id || $id == 0) return '';
+        if (isset($this->categoryCache[$id])) {
+            return $this->categoryCache[$id];
+        }
+        /* @var modCategory $category */
+        $category = $this->modx->getObject('modCategory',(int)$id);
+        if ($category) {
+            return $this->categoryCache[$id] = $category->get('category') . " ($id)";
+        } else {
+            return (string)$id;
+        }
     }
 
 }

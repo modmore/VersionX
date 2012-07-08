@@ -90,6 +90,12 @@ switch($eventName) {
         }
         break;
 
+    case 'OnSnipFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxSnippet');
+        }
+        break;
+
 }
 if (isset($result) && $result === true)
     return;
