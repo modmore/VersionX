@@ -533,52 +533,66 @@ class VersionX {
         $newVersionArray = $version->toArray();
         $lastVersionArray = $lastVersion->toArray();
 
-        /* Get rid of root level excluded vars
-        While an IDE may report this as an error, it's usually not - it just doesn't know where to look. 
-        */
+        /* Get rid of excluded vars for the specific object. */
         $exclude = call_user_func(array($class,'getExcludeFields'));
-        foreach ($exclude as $ex) { if (isset($lastVersionArray[$ex])) { unset($lastVersionArray[$ex]); } }
-        
-        /* Loop over array */
-        foreach ($lastVersionArray as $key => $value) {
+        if ($this->debug) $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Exclude fields: ' . print_r($exclude, true));
+        foreach ($exclude as $key => $value) {
             if (is_array($value)) {
-                foreach ($value as $k2 => $v2) {
-                    if (!is_string($k2) || !in_array($k2,$exclude)) {
-                        if (is_array($v2)) {
-                            $v2string = '';
-                            foreach ($v2 as $val) {
-                                $v2string .= (is_array($val)) ? implode('',$val) : $val;
-                            }
-                            $v2 = $v2string;
-                        }
-                        if (is_array($newVersionArray[$key][$k2])) {
-                            $v2string = '';
-                            foreach ($newVersionArray[$key][$k2] as $val) {
-                                $v2string .= (is_array($val)) ? implode('',$val) : $val;
-                            }
-                            $newVersionArray[$key][$k2] = $v2string;
-                        }
-                        if ($newVersionArray[$key][$k2] != $v2) {
-                            /* Hey, something's different! 
-                            Return true indicating to save a new version. */
-                            if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: Change found in {$k2}: {$newVersionArray[$key][$k2]}  - - -  {$v2}");
-                            return true;
-                        }
+                foreach ($value as $subfield) {
+                    if (isset($newVersionArray[$key]) && isset($newVersionArray[$key][$subfield])) {
+                        unset ($newVersionArray[$key][$subfield]);
+                    }
+                    if (isset($lastVersionArray[$key]) && isset($lastVersionArray[$key][$subfield])) {
+                        unset ($lastVersionArray[$key][$subfield]);
                     }
                 }
             } else {
-                if ($newVersionArray[$key] != $value) {
-                    /* Hey, something's different! 
-                    Return true indicating to save a new version. */
-                    if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: Change found in {$key}: {$newVersionArray[$key]}  - - -  {$value}");
-                    return true;
-                }
+                if (isset($lastVersionArray[$value])) { unset($lastVersionArray[$value]); }
+                if (isset($newVersionArray[$value])) { unset($newVersionArray[$value]); }
             }
         }
-        if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: No changes found.");
+
+        $newVersionFlat = $this->flattenArray($newVersionArray);
+        $lastVersionFlat = $this->flattenArray($lastVersionArray);
+
+        if ($this->debug) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New: ' . print_r($newVersionArray, true));
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New Flattened: ' . $newVersionFlat);
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last: ' . print_r($lastVersionArray, true));
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last Flattened: ' . $newVersionFlat);
+        }
+
+        /* If the flattened arrays don't match there's a difference and we return true to indicate we need to save. */
+        if ($newVersionFlat != $lastVersionFlat) {
+            return true;
+        }
+
+        if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Not saving a {$class} for ID {$version->get('content_id')}: No changes found.");
         /* If we got here, there was a last version but it seemed nothing changes.
         Return false to indicate to NOT save a new version. */
         return false;
+    }
+
+    /**
+     * Flattens an array recursively.
+     * @param array $array
+     *
+     * @return array|string
+     */
+    public function flattenArray(array $array = array()) {
+        if (!is_array($array)) return (string)$array;
+
+        $string = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = '{' . $this->flattenArray($value) .'}';
+            }
+            if (!empty($value)) {
+                $string[] = $key . ':' . $value;
+            }
+        }
+        $string = implode(',',$string);
+        return $string;
     }
 
     /**
