@@ -148,6 +148,30 @@ switch ($_REQUEST['action']) {
         $scripts[] = $versionx->config['js_url'].'mgr/snippets/detailpanel.snippets.js';
         $scripts[] = $versionx->config['js_url'].'mgr/snippets/combo.versions.snippets.js';
     break;
+
+    case 'plugin':
+        /* If an ID was passed, fetch that version into a record array. */
+        if ($versionid > 0) {
+            $v = $versionx->getVersionDetails('vxPlugin',$versionid);
+            if ($v !== false) {
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$modx->toJSON($v).'; </script>');
+            }
+        }
+        /* If an ID to compare to was passed, fetch that aswell. */
+        if ($compareid > 0) {
+            $v = $versionx->getVersionDetails('vxPlugin',$compareid);
+            if ($v !== false) {
+                $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$modx->toJSON($v).'; </script>');
+            }
+        }
+
+        $scripts[] = $versionx->config['js_url'].'mgr/action.plugin.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/common/panel.common.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/common/grid.common.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/common/panel.content.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/plugins/detailpanel.plugins.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/plugins/combo.versions.plugins.js';
+    break;
     
     case 'index':
     default:
@@ -161,6 +185,8 @@ switch ($_REQUEST['action']) {
         $scripts[] = $versionx->config['js_url'].'mgr/chunks/grid.chunks.js';
         $scripts[] = $versionx->config['js_url'].'mgr/snippets/panel.snippets.js';
         $scripts[] = $versionx->config['js_url'].'mgr/snippets/grid.snippets.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/plugins/panel.plugins.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/plugins/grid.plugins.js';
         $scripts[] = $versionx->config['js_url'].'mgr/action.index.js';
         break;
 }

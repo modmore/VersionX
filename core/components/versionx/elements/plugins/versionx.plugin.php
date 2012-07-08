@@ -96,6 +96,12 @@ switch($eventName) {
         }
         break;
 
+    case 'OnPluginFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxPlugin');
+        }
+        break;
+
 }
 if (isset($result) && $result === true)
     return;

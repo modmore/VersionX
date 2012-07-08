@@ -425,6 +425,7 @@ class VersionX {
                     $vArray['tvs'] = $tvArray;
                     break;
                 case 'vxTemplateVar':
+                    $vArray['category'] = $this->getCategory($vArray['category']);
                     if (is_array($vArray['input_properties'])) {
                         foreach ($vArray['input_properties'] as $key => $value) {
                             if ($decoded = $this->modx->fromJSON($value)) {
@@ -443,14 +444,21 @@ class VersionX {
 
                 case 'vxTemplate':
                     $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['content'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxChunk':
                     $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxSnippet':
                     $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
+                    break;
+
+                case 'vxPlugin':
+                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['plugincode'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
             }

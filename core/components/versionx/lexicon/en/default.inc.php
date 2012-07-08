@@ -70,6 +70,9 @@ $_lang['versionx.chunks.detail.text'] = 'Below you can find the details for the 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
 $_lang['versionx.snippets.detail.text'] = 'Below you can find the details for the Snippet Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
 
+$_lang['versionx.plugins.detail'] = 'Plugin Details';
+$_lang['versionx.plugins.detail.text'] = 'Below you can find the details for the Plugin Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
 $_lang['versionx.backto'] = 'Back to [[+what]]';
