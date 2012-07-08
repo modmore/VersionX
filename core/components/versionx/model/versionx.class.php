@@ -57,6 +57,10 @@ class VersionX {
             'connector_url' => $assetsUrl.'connector.php',
         ),$config);
 
+        require_once dirname(dirname(__FILE__)) . '/docs/version.inc.php';
+        if (defined('VERSIONX_FULLVERSION')) {
+            $this->config['version'] = VERSIONX_FULLVERSION;
+        }
         $modelpath = $this->config['model_path'];
         $this->modx->addPackage('versionx',$modelpath);
         $this->modx->lexicon->load('versionx:default');
