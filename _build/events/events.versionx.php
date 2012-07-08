@@ -14,6 +14,8 @@ $e = array(
     'OnTempFormPrerender',
     'OnTVFormPrerender',
     'OnChunkFormPrerender',
+    'OnSnipFormPrerender',
+    'OnPluginFormPrerender',
 );
 
 foreach ($e as $ev) {
@@ -28,4 +30,3 @@ foreach ($e as $ev) {
 return $events;
 
 
-?>
