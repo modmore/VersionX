@@ -44,8 +44,6 @@ $_lang['versionx.resources.revert.confirm'] = 'Are you sure?';
 $_lang['versionx.resources.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite ALL fields and Template Variables currently set for the resource and replace them with the ones in the version you selected.';
 $_lang['versionx.resources.reverted'] = 'Resource has been successfully reverted!';
 
-$_lang['versionx.resources.detail.tabs.resource-fields'] = 'Fields';
-$_lang['versionx.resources.detail.tabs.resource-content'] = 'Content';
 $_lang['versionx.resources.detail.tabs.resource-content.columnheader'] = 'Content for Version #[[+id]]';
 $_lang['versionx.resources.detail.tabs.template-variables'] = 'Template Variables';
 $_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
@@ -53,17 +51,11 @@ $_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';
 $_lang['versionx.resources.detail.grid.columns.field-name'] = 'Field Name';
 $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver #[[+id]]]';
 
-$_lang['versionx.templates.detail.tabs.fields'] = 'Fields';
-$_lang['versionx.templates.detail.tabs.content'] = 'Content';
-$_lang['versionx.templates.detail.tabs.properties'] = 'Properties';
-$_lang['versionx.templates.detail.tabs.properties.off'] = 'Sorry, we can\'t show you this tab yet';
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Below you can find the details for the Template Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Input Options';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Output Options';
-$_lang['versionx.templatevars.detail.tabs.properties'] = 'Properties';
-$_lang['versionx.templatevars.detail.tabs.properties.off'] = 'Sorry, we can\'t show you this tab yet';
 
 $_lang['versionx.templatevars.detail'] = 'Template Variable Details';
 $_lang['versionx.templatevars.detail.input-type'] = 'Input Type';
@@ -72,10 +64,6 @@ $_lang['versionx.templatevars.detail.default-text'] = 'Default Value';
 $_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
 
-$_lang['versionx.chunks.detail.tabs.fields'] = 'Fields';
-$_lang['versionx.chunks.detail.tabs.content'] = 'Content';
-$_lang['versionx.chunks.detail.tabs.properties'] = 'Properties';
-$_lang['versionx.chunks.detail.tabs.properties.off'] = 'Sorry, we can\'t show you this tab yet';
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
 $_lang['versionx.chunks.detail.text'] = 'Below you can find the details for the Chunk Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
 

@@ -93,7 +93,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.resources.detail.tabs.resource-fields'),
+                    title: _('versionx.common.fields'),
                     items: [{
                         id: 'versionx-panel-resourcesdetail-resource-fields',
                         xtype: 'versionx-panel-common-detailpanel',
@@ -114,7 +114,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.resources.detail.tabs.resource-content'),
+                    title: _('versionx.common.content'),
                     items: [{
                         id: 'versionx-panel-resourcesdetail-content',
                         xtype: 'versionx-panel-common-contentpanel',
@@ -125,7 +125,6 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                     }]
                 },{
                     title: _('versionx.resources.detail.tabs.template-variables'),
-                    // If this tab contains vertical tabs, enable this ---> bodyStyle: 'padding: 0 !important;',
                     items: [{
                         id: 'versionx-panel-resourcesdetail-tvs',
                         xtype: 'versionx-panel-resourcesdetail-tvs',

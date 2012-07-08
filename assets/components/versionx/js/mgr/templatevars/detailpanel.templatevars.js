@@ -58,7 +58,7 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('general_information'),
+                    title: _('versionx.common.fields'),
                     items: [{
                         id: 'versionx-panel-templatevarsdetail-generalinformation',
                         xtype: 'versionx-panel-common-detailpanel',
@@ -74,8 +74,8 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.templatevars.detail.tabs.properties'),
-                    tabTip: _('versionx.templatevars.detail.tabs.properties.off'),
+                    title: _('versionx.common.properties'),
+                    tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
                 },{

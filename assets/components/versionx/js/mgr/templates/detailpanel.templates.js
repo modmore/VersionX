@@ -56,7 +56,7 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.fields'),
+                    title: _('versionx.common.fields'),
                     items: [{
                         id: 'versionx-panel-templatesdetail-template-fields',
                         xtype: 'versionx-panel-common-detailpanel',
@@ -69,7 +69,7 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.content'),
+                    title: _('versionx.common.content'),
                     items: [{
                         id: 'versionx-panel-templatesdetail-content',
                         xtype: 'versionx-panel-common-contentpanel',
@@ -79,8 +79,8 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         vxContentField: 'content'
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.properties'),
-                    tabTip: _('versionx.templates.detail.tabs.properties.off'),
+                    title: _('versionx.common.properties'),
+                    tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
                 }]

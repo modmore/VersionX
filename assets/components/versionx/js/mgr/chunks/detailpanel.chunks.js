@@ -56,7 +56,7 @@ VersionX.panel.ChunksDetail = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.chunks.detail.tabs.fields'),
+                    title: _('versionx.common.fields'),
                     items: [{
                         id: 'versionx-panel-chunksdetail-chunk-fields',
                         xtype: 'versionx-panel-common-detailpanel',
@@ -69,7 +69,7 @@ VersionX.panel.ChunksDetail = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.chunks.detail.tabs.content'),
+                    title: _('versionx.common.content'),
                     items: [{
                         id: 'versionx-panel-chunksdetail-content',
                         xtype: 'versionx-panel-common-contentpanel',
@@ -79,8 +79,8 @@ VersionX.panel.ChunksDetail = function(config) {
                         vxContentField: 'snippet'
                     }]
                 },{
-                    title: _('versionx.chunks.detail.tabs.properties'),
-                    tabTip: _('versionx.chunks.detail.tabs.properties.off'),
+                    title: _('versionx.common.properties'),
+                    tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
                 }]
