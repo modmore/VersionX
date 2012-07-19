@@ -66,7 +66,8 @@ class VersionX {
         $this->modx->addPackage('versionx',$modelpath);
         $this->modx->lexicon->load('versionx:default');
         
-        $this->debug = $this->modx->getOption('versionx.debug',null,false); 
+        $this->debug = $this->modx->getOption('versionx.debug',null,false);
+        $this->getAction();
     }
 
     /**
@@ -76,13 +77,11 @@ class VersionX {
     public function initialize($ctx = 'web') {
         switch ($ctx) {
             case 'mgr':
-                $action = $this->getAction();
-
                 $this->modx->regClientStartupHTMLBlock('
                 <script type="text/javascript">
                     Ext.onReady(function() {
                         VersionX.config = '.$this->modx->toJSON($this->config).';
-                        VersionX.action = '.$action.';
+                        VersionX.action = '.$this->action.';
                     });
                 </script>
 
@@ -100,7 +99,6 @@ class VersionX {
         return true;
     }
 
-    /* getChunk & _GetTplChunk by splittingred */
     /**
     * Gets a Chunk and caches it; also falls back to file-based templates
     * for easier debugging.
@@ -109,6 +107,7 @@ class VersionX {
     * @param string $name The name of the Chunk
     * @param array $properties The properties for the Chunk
     * @return string The processed content of the Chunk
+    * @author Shaun "splittingred" McCormick
     */
     public function getChunk($name,$properties = array()) {
         $chunk = null;
@@ -134,8 +133,8 @@ class VersionX {
     * @access private
     * @param string $name The name of the Chunk. Will parse to name.chunk.tpl
     * @param string $postFix The postfix to append to the name
-    * @return modChunk/boolean Returns the modChunk object if found, otherwise
-    * false.
+    * @return modChunk/boolean Returns the modChunk object if found, otherwise false.
+    * @author Shaun "splittingred" McCormick
     */
     private function _getTplChunk($name,$postFix = '.tpl') {
         $chunk = false;

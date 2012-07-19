@@ -106,6 +106,6 @@ switch($eventName) {
 if (isset($result) && $result === true)
     return;
 elseif (isset($result)) {
-    $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'false' : $result);
+    $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
     return;
 }

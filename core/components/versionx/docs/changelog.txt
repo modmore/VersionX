@@ -1,6 +1,12 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
 ++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-rc4       ++
+++   Released on 2012-07-19   ++
+++++++++++++++++++++++++++++++++
+Fix critical issue on Firefox (possibly others too) affecting TVs.
+
+++++++++++++++++++++++++++++++++
 ++   VersionX 2.0.0-rc3       ++
 ++   Released on 2012-07-08   ++
 ++++++++++++++++++++++++++++++++
