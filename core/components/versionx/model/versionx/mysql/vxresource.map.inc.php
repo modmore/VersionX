@@ -23,7 +23,9 @@
 */
 $xpdo_meta_map['vxResource']= array (
   'package' => 'versionx',
+  'version' => NULL,
   'table' => 'versionx_resource',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
     'version_id' => NULL,
@@ -32,6 +34,9 @@ $xpdo_meta_map['vxResource']= array (
     'user' => 0,
     'mode' => 'update',
     'marked' => 0,
+    'version_notes' => NULL,
+    'version_number' => 1,
+    'version_sendto' => NULL,
     'title' => 'Unnamed',
     'context_key' => 'web',
     'class' => 'modDocument',
@@ -90,6 +95,25 @@ $xpdo_meta_map['vxResource']= array (
       'precision' => '1',
       'phptype' => 'boolean',
       'default' => 0,
+    ),
+    'version_notes' => 
+    array (
+      'dbtype' => 'mediumtext',
+      'phptype' => 'string',
+      'null' => false,
+    ),
+    'version_number' => 
+    array (
+      'dbtype' => 'decimal(5,2)',
+      'phptype' => 'decimal',
+      'default' => 1,
+      'null' => false,
+    ),
+    'version_sendto' => 
+    array (
+      'dbtype' => 'mediumtext',
+      'phptype' => 'string',
+      'null' => false,
     ),
     'title' => 
     array (

@@ -36,7 +36,10 @@
         <field key="user" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
         <field key="mode" dbtype="varchar" precision="24" phptype="string" null="false" default="update" />
         <field key="marked" dbtype="tinyint" precision="1" phptype="boolean" default="0" />
-
+        
+        <field key="version_notes" dbtype="mediumtext" phptype="string" null="true" />
+        <field key="version_number" dbtype="decimal(5,2)" phptype="decimal" default="1.0" null="false" />
+        <field key="version_sendto" dbtype="mediumtext" phptype="string" null="true" />
         <field key="title" dbtype="varchar" precision="255" phptype="string" null="false" default="Unnamed" />
         <field key="context_key" dbtype="varchar" precision="255" phptype="string" null="false" default="web" />
         <field key="class" dbtype="varchar" precision="255" phptype="string" null="false" default="modDocument" />

@@ -33,9 +33,19 @@
 $eventName = $modx->event->name;
 
 switch($eventName) {
+    
+    case 'OnBeforeDocFormSave':
+         /**
+         * ADDED - This is for workflow - allowing drafts
+         */
+        if ( $modx->getOption('versionx.workflow.resource',null,true) ){
+            $result = $modx->versionx->resourceWorkflow($resource, $resource->get('version_publish'));
+        }
+        break;
     case 'OnDocFormSave':
-        if ($modx->getOption('versionx.enable.resources',null,true))
+        if ($modx->getOption('versionx.enable.resources',null,true)){
             $result = $modx->versionx->newResourceVersion($resource, $mode);
+        }
         break;
     case 'OnTempFormSave':
         if ($modx->getOption('versionx.enable.templates',null,true))
@@ -66,11 +76,27 @@ switch($eventName) {
 
     /* Add tabs */
     case 'OnDocFormPrerender':
+        $loadConfig = TRUE;
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxResource'); 
+            $result = $modx->versionx->outputVersionsTab('vxResource');
+            $loadConfig = FALSE; 
+        }
+        // Add work flow:
+        if ( ($mode == modSystemEvent::MODE_NEW || $mode == modSystemEvent::MODE_UPD ) && $modx->getOption('versionx.workflow.resource',null,true)) {
+            $result = $modx->versionx->outputVersionsFields('vxResource', $loadConfig); 
+            
+            if ( $mode == modSystemEvent::MODE_UPD ) {
+                // set the current draft data for the resource:
+                // $result = $modx->versionx->setCurrentWorkflowData($resource);
+            }
         }
         break;
-    
+    case 'OnDocFormRender':
+        if ( $mode == modSystemEvent::MODE_UPD ) {
+            // set the current draft data for the resource:
+            $result = $modx->versionx->setCurrentWorkflowData($resource);
+        }
+        break;
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
             $result = $modx->versionx->outputVersionsTab('vxTemplate'); 
@@ -103,9 +129,9 @@ switch($eventName) {
         break;
 
 }
-if (isset($result) && $result === true)
+if (isset($result) && $result === true) {
     return;
-elseif (isset($result)) {
+} else if (isset($result)) {
     $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
     return;
 }

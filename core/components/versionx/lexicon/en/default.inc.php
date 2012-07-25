@@ -101,3 +101,28 @@ $_lang['versionx.tabtip.notyet'] = 'Sorry, we can\'t show you your [[+what]] his
 $_lang['versionx.widget.resources'] = 'Recent Resource Changes';
 $_lang['versionx.widget.resources.desc'] = '(Part of VersionX) Shows a grid with the most recent resource changes for all users.';
 $_lang['versionx.widget.resources.update'] = 'Update Resource';
+
+// Added by Josh Gulledge 7-25-12
+// workflow:
+$_lang['versionx.workflow'] = 'Workflow';
+$_lang['versionx.workflow.onsave'] = 'On Save do the following';
+$_lang['versionx.workflow.onsave.help'] = 'Drafts are not visible to the public until they are published.';
+$_lang['versionx.workflow.revisiontype'] = 'Revision Type';
+$_lang['versionx.workflow.revisiontype.help'] = 'Minor revisions small typo corrections<br />Major revisions would be adding or remove paragraphs';
+$_lang['versionx.workflow.sendto'] = 'Send submit/approve to';
+$_lang['versionx.workflow.sendto.help'] = 'A comma separated list of email addresses';
+$_lang['versionx.workflow.notes'] = 'Version Comment/Note';
+$_lang['versionx.workflow.notes.help'] = 'Send a comment on submit for approval';
+$_lang['versionx.workflow.previewbutton'] = 'Preview Draft';
+// combo boxes
+$_lang['versionx.workflow.combo.draft'] = 'Save changes as Draft';
+$_lang['versionx.workflow.combo.submitapproval'] = 'Submit for Approval';
+$_lang['versionx.workflow.combo.published'] = 'Save changes as Published';
+$_lang['versionx.workflow.combo.unpublish'] = 'UnPublished Resource';
+$_lang['versionx.workflow.combo.approvedraft'] = 'Approve Draft';
+$_lang['versionx.workflow.combo.rejectdraft'] = 'Reject Draft';
+$_lang['versionx.workflow.combo.minorrevision'] = 'Minor Revision';
+$_lang['versionx.workflow.combo.majorrevision'] = 'Major Revision';
+// $_lang['versionx.workflow.combo.'] = '';
+
+

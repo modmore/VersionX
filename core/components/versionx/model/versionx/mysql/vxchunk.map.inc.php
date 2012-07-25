@@ -23,7 +23,9 @@
 */
 $xpdo_meta_map['vxChunk']= array (
   'package' => 'versionx',
+  'version' => NULL,
   'table' => 'versionx_chunk',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
     'version_id' => NULL,

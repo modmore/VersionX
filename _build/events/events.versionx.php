@@ -3,6 +3,7 @@
 $events = array();
 
 $e = array(
+    'OnBeforeDocFormSave',
     'OnDocFormSave',
     'OnTempFormSave',
     'OnTVFormSave',
@@ -11,6 +12,7 @@ $e = array(
     'OnPluginFormSave',
 
     'OnDocFormPrerender',
+    'OnDocFormRender',
     'OnTempFormPrerender',
     'OnTVFormPrerender',
     'OnChunkFormPrerender',
