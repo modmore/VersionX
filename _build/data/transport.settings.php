@@ -15,6 +15,12 @@ $s = array(
     'enable.chunks' => true,
     'enable.snippets' => true,
     'enable.plugins' => true,
+    // workflow:
+    'workflow.resource' => TRUE,
+    'workflow.resource.notice.approvetpl' => 'VersionxApproveEmailTpl',
+    'workflow.resource.notice.submittpl' => 'VersionxSubmitEmailTpl',
+    'workflow.resource.notice.email' => ''
+    
 );
 
 $settings = array();
@@ -26,7 +32,7 @@ foreach ($s as $key => $value) {
 
     $parts = explode('.',$key);
     if (count($parts) == 1) { $area = 'Default'; }
-    else { $area = $parts[0]; }
+    else { $area = ucfirst($parts[0]); }
     
     $settings['versionx.'.$key] = $modx->newObject('modSystemSetting');
     $settings['versionx.'.$key]->set('key', 'versionx.'.$key);
@@ -37,6 +43,17 @@ foreach ($s as $key => $value) {
         'area' => $area
     ));
 }
+/**
+ * $settings['groupeletters.batchSize']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.batchSize']->fromArray(array (
+    'key' => 'groupeletters.batchSize',
+    'value' => '20',
+    'xtype' => 'textfield',
+    'namespace' => 'groupeletters',
+    'area' => 'Batch Settings',
+), '', true, true);
+ * 
+ */
 
 return $settings;
 

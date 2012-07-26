@@ -103,6 +103,45 @@ $_lang['versionx.widget.resources.desc'] = '(Part of VersionX) Shows a grid with
 $_lang['versionx.widget.resources.update'] = 'Update Resource';
 
 // Added by Josh Gulledge 7-25-12
+// system settings:
+$_lang['setting_versionx.debug'] = 'Debug';
+$_lang['setting_versionx.debug_desc'] = 'Set to true to see debug messages';
+$_lang['setting_versionx.formtabs.resource'] = 'Resource Tab';
+$_lang['setting_versionx.formtabs.resource_desc'] = 'Set to true to show VersionX as as a tab when editing a Resource';
+$_lang['setting_versionx.formtabs.template'] = 'Template Tab';
+$_lang['setting_versionx.formtabs.template_desc'] = 'Set to true to show VersionX as as a tab when editing a Template';
+$_lang['setting_versionx.formtabs.templatevariables'] = 'TV Tab';
+$_lang['setting_versionx.formtabs.templatevariables_desc'] = 'Set to true to show VersionX as as a tab when editing a Template Variable';
+$_lang['setting_versionx.formtabs.chunk'] = 'Chunk Tab';
+$_lang['setting_versionx.formtabs.chunk_desc'] = 'Set to true to show VersionX as as a tab when editing a Chunk';
+$_lang['setting_versionx.formtabs.snippet'] = 'Snippet Tab';
+$_lang['setting_versionx.formtabs.snippet_desc'] = 'Set to true to show VersionX as as a tab when editing a Snippet';
+$_lang['setting_versionx.formtabs.plugin'] = 'Plugin Tab';
+$_lang['setting_versionx.formtabs.plugin_desc'] = 'Set to true to show VersionX as as a tab when editing a Plugin';
+
+$_lang['setting_versionx.enable.resources'] = 'Enable Resources';
+$_lang['setting_versionx.enable.resources_desc'] = 'Set to true to enable VersionX to version Resources';
+$_lang['setting_versionx.enable.templates'] = 'Enable Templates';
+$_lang['setting_versionx.enable.templates_desc'] = 'Set to true to enable VersionX to version Templates';
+$_lang['setting_versionx.enable.templatevariables'] = 'Enable Tvs';
+$_lang['setting_versionx.enable.templatevariables_desc'] = 'Set to true to enable VersionX to version Template Variables';
+$_lang['setting_versionx.enable.chunks'] = 'Enable Chunks';
+$_lang['setting_versionx.enable.chunks_desc'] = 'Set to true to enable VersionX to version Chunks';
+$_lang['setting_versionx.enable.snippets'] = 'Enable Snippets';
+$_lang['setting_versionx.enable.snippets_desc'] = 'Set to true to enable VersionX to version Snippets';
+$_lang['setting_versionx.enable.plugins'] = 'Enable Plugins';
+$_lang['setting_versionx.enable.plugins_desc'] = 'Set to true to enable VersionX to version Plugins';
+
+$_lang['setting_versionx.workflow.resource'] = 'Workflow Resources';
+$_lang['setting_versionx.workflow.resource_desc'] = 'Set to true to enable a workflow on Resources';
+$_lang['setting_versionx.workflow.resource.notice.approvetpl'] = 'Approve Email Tpl';
+$_lang['setting_versionx.workflow.resource.notice.approvetpl_desc'] = 'The name of the Chunk that will be the approval email';
+$_lang['setting_versionx.workflow.resource.notice.submittpl'] = 'Submit Email Tpl';
+$_lang['setting_versionx.workflow.resource.notice.submittpl_desc'] = 'The name of the Chunk that will be the submitted email';
+$_lang['setting_versionx.workflow.resource.notice.email'] = 'Email Address';
+$_lang['setting_versionx.workflow.resource.notice.email_desc'] = 'Comma separated list of emails that will reviece the submit notice';
+
+
 // workflow:
 $_lang['versionx.workflow'] = 'Workflow';
 $_lang['versionx.workflow.onsave'] = 'On Save do the following';

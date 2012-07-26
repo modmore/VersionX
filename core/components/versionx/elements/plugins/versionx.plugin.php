@@ -83,7 +83,11 @@ switch($eventName) {
         }
         // Add work flow:
         if ( ($mode == modSystemEvent::MODE_NEW || $mode == modSystemEvent::MODE_UPD ) && $modx->getOption('versionx.workflow.resource',null,true)) {
-            $result = $modx->versionx->outputVersionsFields('vxResource', $loadConfig); 
+            $url = NULL;
+            if ( $mode == modSystemEvent::MODE_UPD ) {
+                $url = $modx->makeUrl($resource->get('id'),'',array('preview'=>'latestDraft'), 'full');
+            }
+            $result = $modx->versionx->outputVersionsFields('vxResource', $url, $loadConfig); 
             
             if ( $mode == modSystemEvent::MODE_UPD ) {
                 // set the current draft data for the resource:

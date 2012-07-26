@@ -186,7 +186,8 @@ class VersionX {
         switch ($mode) {
             case 'approve':
                 // send email to submitter
-                $this->sendNote($resource->get('version_sendto'), 'Page Approved', 'Page has been approved  -  '.$resource->get('version_notes'));
+                $emailProperties = $resource->toArray();
+                $this->sendNote($resource->get('version_sendto'), 'approve', $emailProperties);//$resource->get('version_notes')
             case 'publish':
                 // set to published and act as normal versionx
                 $this->resource->set('published', 1 );
@@ -211,11 +212,15 @@ class VersionX {
             case 'reject':
                 // @TODO
                 // send email to submitter and revert
+                $emailProperties = $resource->toArray();
+                $this->sendNote($resource->get('version_sendto'), 'reject', $emailProperties);
             case 'submitted':
-                // send email to approver 
-                $this->sendNote($resource->get('version_sendto'), 'Page Submitted', 'Page has been submitted  -  '.$resource->get('version_notes'));
+                // send email to approver
+                $emailProperties = $resource->toArray(); 
+                $this->sendNote($resource->get('version_sendto'), 'submitted', $emailProperties);
             case 'draft':
             default:
+                // if new set to 0 $this->resource->set('published', 0 );
                 // make new version
                 if ($this->newResourceVersion($this->resource, $mode, FALSE)) {
                     //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$mode.'] created version');
@@ -804,8 +809,11 @@ class VersionX {
      * Outputs the JavaScript needed to add custom fields to existing panels.
      *
      * @param string $class
+     * @param string $url
+     * @param (boolean) $loadConfig
+     * @return void
      */
-    public function outputVersionsFields ($class = 'vxResource', $loadConfig=FALSE) {
+    public function outputVersionsFields ($class = 'vxResource', $url, $loadConfig=FALSE) {
         if (!class_exists($class)) {
             $path = $this->config['model_path'].'versionx/'.strtolower($class).'.class.php';
             if (file_exists($path)) {
@@ -833,7 +841,11 @@ class VersionX {
                 </script>
             ');
         }
-        
+        $this->modx->regClientStartupHTMLBlock('
+        <script type="text/javascript">
+            VersionX.draftUrl = "'.$url.'";
+        </script>
+        ');
         /* Get the template and register it */
         $tplName = call_user_func(array($class,'getFieldsTpl'));
         $tplFile = $this->config['templates_path'] . $tplName . '.tpl';
@@ -897,38 +909,66 @@ class VersionX {
     }
     /**
      * Send email note
+     * @param (string) $to - comma separted list of any extra to's
+     * @param (String) $type - submit, approve, or reject
+     * @param (Array) $emailProperties
+     *  
      */
-    public function sendNote($to, $subject, $message, $chunk='versionxNotice') {
+    public function sendNote($to, $type, $emailProperties) {
         /* load mail service */
         $this->modx->getService('mail', 'mail.modPHPMailer');
-
+        // default to is set in settings - @TODO: make this dynamic in future version
+        $defaultTo = $this->modx->getOption('versionx.workflow.resource.notice.email');
         /* set HTML */
         $emailHtml = $message;
         $this->modx->mail->setHTML($emailHtml);
-        $emailFrom = $to;
-        $emailFromName = 'webmaster';
-        /* set email main properties */
-        $this->modx->mail->set(modMail::MAIL_BODY,$emailHtml );
-        $this->modx->mail->set(modMail::MAIL_FROM, $emailFrom);// current user email
-        $this->modx->mail->set(modMail::MAIL_FROM_NAME, $emailFromName);// current user
-        //$this->modx->mail->set(modMail::MAIL_SENDER, $emailFrom);
-        $this->modx->mail->set(modMail::MAIL_SUBJECT, $subject);
-        
-        /* add to: with support for multiple addresses */
-        $emailList = explode(',',$to);
-        foreach ($emailList as $email) {
-            $this->modx->mail->address('to',$email);
+        $chunk = $subject = '';
+        $managerUrl = MODX_MANAGER_URL.'?a='.$this->getAction().'&amp;id='.$emailProperties['id'];
+        switch ($type) {
+            case 'approve':
+                $subject = $this->modx->lexicon('versionx.workflow.notice.approvesubject');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxApproveEmailTpl');
+                break;
+            case 'reject':
+                $subject = $this->modx->lexicon('versionx.workflow.notice.rejectsubject');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxApproveEmailTpl');
+                break;
+            case 'submit':
+            default:
+                $subject = $this->modx->lexicon('versionx.workflow.notice.submitsubject');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxSubmitEmailTpl');
+                // make urls:
+                $emailProperties['approveUrl'] = $managerUrl;
+                $emailProperties['rejectUrl'] = $managerUrl;
+                break;
         }
+        // build email properties:
+        //$resource->get('version_notes')
+        // 
         
-        $sent = $this->modx->mail->send();
-        $this->modx->mail->reset(array(
-            modMail::MAIL_CHARSET => $this->modx->getOption('mail_charset',null,'UTF-8'),
-            modMail::MAIL_ENCODING => $this->modx->getOption('mail_encoding',null,'8bit'),
-        ));
-
-        if (!$sent) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX] '.print_r($this->modx->mail->mailer->ErrorInfo,true));
+        // $emailProperties
+        $this->modx->getService('mail', 'mail.modPHPMailer');
+        $this->modx->mail->set(modMail::MAIL_BODY, $this->modx->getChunk($chunk, $emailProperties ));
+        $this->modx->mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender') );
+        $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name') );
+        $this->modx->mail->set(modMail::MAIL_SENDER, $this->modx->getOption('site_name') );
+        $this->modx->mail->set(modMail::MAIL_SUBJECT, $subject );
+        $this->modx->mail->address('to', $defaultTo );
+        // $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
+        if ( !empty($to) ){
+            $emailList = explode(',',$to);
+            foreach ($emailList as $email) {
+                $this->modx->mail->address('to',$email);
+            }
         }
+        $this->modx->mail->setHTML(true);
+        
+        if (!$this->modx->mail->send()) {
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'Versionx->sendNote() - An error occurred while trying to send email to '.$subscriber->get('email'));
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX] '.print_r($this->modx->mail->mailer->ErrorInfo,true));
+        }
+        $this->modx->mail->reset();
+        
     }
 }
 

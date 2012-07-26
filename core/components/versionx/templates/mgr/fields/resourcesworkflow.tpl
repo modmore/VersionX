@@ -135,6 +135,9 @@ wkCmp = new wkCmp();
                 ,labelAlign: 'top'
                 ,border: false
                 ,msgTarget: 'under'
+                /* does not work ,listeners: {
+                    'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                }*/
             }
             ,items:[{
                     columnWidth: .33
@@ -211,14 +214,18 @@ wkCmp = new wkCmp();
                             xtype: 'tbbutton'
                             ,text: _('versionx.workflow.previewbutton')
                             ,handler: function(f){
-                                f.disable();
+                                if (VersionX.draftUrl == '' ) {
+                                    f.disable();
+                                } else {
+                                    window.open(VersionX.draftUrl);
+                                }
                             }
                         }]
                 }]
         };
         
         
-        var resourcePanel = Ext.getCmp('modx-resource-settings');
+        var resourcePanel = Ext.getCmp('modx-resource-settings');// 'modx-panel-resource');// 
         if ( resourcePanel && !wkLoaded ) {
             resourcePanel.add(wkObject);
             wkLoaded = true;
