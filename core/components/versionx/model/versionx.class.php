@@ -915,13 +915,8 @@ class VersionX {
      *  
      */
     public function sendNote($to, $type, $emailProperties) {
-        /* load mail service */
-        $this->modx->getService('mail', 'mail.modPHPMailer');
         // default to is set in settings - @TODO: make this dynamic in future version
         $defaultTo = $this->modx->getOption('versionx.workflow.resource.notice.email');
-        /* set HTML */
-        $emailHtml = $message;
-        $this->modx->mail->setHTML($emailHtml);
         $chunk = $subject = '';
         $managerUrl = MODX_MANAGER_URL.'?a='.$this->getAction().'&amp;id='.$emailProperties['id'];
         switch ($type) {
@@ -964,8 +959,8 @@ class VersionX {
         $this->modx->mail->setHTML(true);
         
         if (!$this->modx->mail->send()) {
-             $this->modx->log(modX::LOG_LEVEL_ERROR,'Versionx->sendNote() - An error occurred while trying to send email to '.$subscriber->get('email'));
-             $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX] '.print_r($this->modx->mail->mailer->ErrorInfo,true));
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'Versionx->sendNote() - An error occurred while trying to send email to '.$defaultTo);
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'[Versionx->sendNote] Error: '.print_r($this->modx->mail->mailer->ErrorInfo,true));
         }
         $this->modx->mail->reset();
         
