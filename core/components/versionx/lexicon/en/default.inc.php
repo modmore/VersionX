@@ -163,5 +163,7 @@ $_lang['versionx.workflow.combo.rejectdraft'] = 'Reject Draft';
 $_lang['versionx.workflow.combo.minorrevision'] = 'Minor Revision';
 $_lang['versionx.workflow.combo.majorrevision'] = 'Major Revision';
 // $_lang['versionx.workflow.combo.'] = '';
-
+$_lang['versionx.workflow.notice.approvesubject'] = 'Your contribution has been approved';
+$_lang['versionx.workflow.notice.rejectsubject'] = 'Your contribution has been declined';
+$_lang['versionx.workflow.notice.submitsubject'] = 'A contribution has been submitted';
 

@@ -106,7 +106,13 @@ class VersionX {
         }
         return true;
     }
-
+    /**
+     * is debug 
+     * @return boolean - the internal debug
+     */
+    public function isDebug() {
+        return $this->debug;
+    }
     /**
     * Gets a Chunk and caches it; also falls back to file-based templates
     * for easier debugging.
@@ -192,7 +198,7 @@ class VersionX {
                 // set to published and act as normal versionx
                 $this->resource->set('published', 1 );
                 if ( $this->newResourceVersion($this->resource, $mode, FALSE)) {
-                    
+                    $this->created_new_version = TRUE;
                 } else {
                     return FALSE;
                 }
@@ -201,7 +207,7 @@ class VersionX {
                 // set publish to 0 and act as normal versionx
                 $this->resource->set('published', 0 );
                 if ( $this->newResourceVersion($this->resource, $mode, FALSE)) {
-                    
+                    $this->created_new_version = TRUE;
                 } else {
                     return FALSE;
                 }
@@ -210,10 +216,24 @@ class VersionX {
             // below should set resource to the most current published version if it exists:
             // this is so any changes are not actually made to the resource but only the draft
             case 'reject':
-                // @TODO
-                // send email to submitter and revert
+                // mark the submitted draft as rejected
+                $rejectVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+                $rejectVersion->set('mode', 'reject');
+                $rejectVersion->set('version_notes', $resource->get('version_notes')."\r\n\r\n".$rejectVersion->get('version_notes'));
+                $rejectVersion->save();
+                $this->created_new_version = TRUE;
+                
+                // send email to submitter of decline notice
                 $emailProperties = $resource->toArray();
                 $this->sendNote($resource->get('version_sendto'), 'reject', $emailProperties);
+                // revert to last published
+                $currentVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'published');
+                if ( $currentVersion ) {
+                    $this->resource = $currentVersion->retrieveData($this->resource, 'published');
+                    //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive last published version?');
+                }
+                // @TODO: need to refresh the page/data so the editor can see the last published version 
+                break;
             case 'submitted':
                 // send email to approver
                 $emailProperties = $resource->toArray(); 
@@ -227,7 +247,16 @@ class VersionX {
                     $this->created_new_version = TRUE;
                     $currentVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'published');
                     if ( $currentVersion ) {
-                        $this->resource = $currentVersion->retrieveData($this->resource, 'draft');
+                        $tmp = array(
+                                'version_publish' => 'draft',// reset this so on every save there is not a notice sent
+                                'version_notes' => $this->resource->get('version_notes'),
+                                'version_sendto' => $this->resource->get('version_sendto'),
+                                'version_revisiontype' => 'minor',
+                            );
+                        $this->resource = $currentVersion->retrieveData($this->resource, 'published');
+                        // this set the version info but we need to change this back to the user input or default:
+                        $this->resource->fromArray($tmp);
+                        
                         //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive last published version?');
                     }
                 } else {
@@ -241,15 +270,20 @@ class VersionX {
     /**
      * get current workflow version
      * @param (int) resource_id
-     * @param (String) $type - last is for the last record excluding reject or publish which is the last un/published version
+     * @param (String) $type - last is for the last record excluding reject or publish 
+     *      which is the last un/published version
+     * @param (int) $version_id - optionally set the verison ID you want to retrieve data from
+     *      set type to specific
      * @return (Object) $currentVersion
      */
-    public function getCurrentWorkflowVersion($resource_id, $type='last') {
+    public function getCurrentWorkflowVersion($resource_id, $type='last', $version_id=0) {
         $c = $this->modx->newQuery('vxResource');
         //
         $c->where(array('content_id' => $resource_id));
         if ( $type == 'last' ) {
             $c->where(array('mode:!=' => 'reject'));
+        } else if ( $type == 'specific' && $version_id > 0 ) {
+            $c->where(array('version_id' => $version_id));
         } else {
             $c->where(array('mode:IN' => array('upd','publish','approve','unpublish')));
         }
@@ -303,7 +337,17 @@ class VersionX {
         }
 
         $rArray = $resource->toArray();
-
+        // get the last version number and increment it:
+        $lastVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+        $version_number = 1.0;
+        if ( $lastVersion ) {
+            $version_number = $lastVersion->get('version_number');
+            if ( isset($rArray['version_revisiontype']) && $rArray['version_revisiontype'] == 'major' ) {
+                $version_number = floor($version_number + 1);
+            } else {
+                $version_number += 0.01;
+            }
+        }
         /* @var vxResource $version */
         $version = $this->modx->newObject('vxResource');
 
@@ -316,7 +360,7 @@ class VersionX {
             'class' => $rArray['class_key'],
             'content' => $resource->get('content'),
             'version_notes' => $resource->get('version_notes'),
-            'version_number' => 1.01,
+            'version_number' => $version_number,
             'version_sendto' => $resource->get('version_sendto')
         );
 
@@ -915,26 +959,35 @@ class VersionX {
      *  
      */
     public function sendNote($to, $type, $emailProperties) {
-        // default to is set in settings - @TODO: make this dynamic in future version
+        // defaultTo is set in settings - @TODO: make this dynamic in future version
         $defaultTo = $this->modx->getOption('versionx.workflow.resource.notice.email');
         $chunk = $subject = '';
-        $managerUrl = MODX_MANAGER_URL.'?a='.$this->getAction().'&amp;id='.$emailProperties['id'];
+        $managerUrl = MODX_SITE_URL.MODX_MANAGER_URL.'?a='.$this->getAction().'&amp;id='.$emailProperties['id'];
+        $emailProperties['username'] = $this->modx->getLoginUserName();
+        // full name
+        $profile = $this->modx->user->getOne('Profile');
+        $emailProperties['fullname'] = $profile->get('fullname');
+        $emailProperties['useremail'] = $profile->get('email');
+        
         switch ($type) {
             case 'approve':
+                //$defaultTo = 
+                
                 $subject = $this->modx->lexicon('versionx.workflow.notice.approvesubject');
-                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxApproveEmailTpl');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.approvetpl',null,'VersionxApproveEmailTpl');
                 break;
             case 'reject':
                 $subject = $this->modx->lexicon('versionx.workflow.notice.rejectsubject');
-                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxApproveEmailTpl');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.rejecttpl',null,'VersionxApproveEmailTpl');
                 break;
             case 'submit':
             default:
                 $subject = $this->modx->lexicon('versionx.workflow.notice.submitsubject');
                 $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxSubmitEmailTpl');
                 // make urls:
-                $emailProperties['approveUrl'] = $managerUrl;
-                $emailProperties['rejectUrl'] = $managerUrl;
+                $emailProperties['approveUrl'] = $managerUrl.'&amp;version_publish=approve';
+                $emailProperties['rejectUrl'] = $managerUrl.'&amp;version_publish=reject';
+                $emailProperties['previewUrl'] = $this->modx->makeUrl($emailProperties['id'],'',array('vxPreview'=>'latestDraft'), 'full');
                 break;
         }
         // build email properties:
@@ -946,14 +999,14 @@ class VersionX {
         $this->modx->mail->set(modMail::MAIL_BODY, $this->modx->getChunk($chunk, $emailProperties ));
         $this->modx->mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender') );
         $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name') );
-        $this->modx->mail->set(modMail::MAIL_SENDER, $this->modx->getOption('site_name') );
+        $this->modx->mail->set(modMail::MAIL_SENDER, $this->modx->getOption('emailsender') );
         $this->modx->mail->set(modMail::MAIL_SUBJECT, $subject );
         $this->modx->mail->address('to', $defaultTo );
         // $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
         if ( !empty($to) ){
             $emailList = explode(',',$to);
             foreach ($emailList as $email) {
-                $this->modx->mail->address('to',$email);
+                //$this->modx->mail->address('to',$email);
             }
         }
         $this->modx->mail->setHTML(true);

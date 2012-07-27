@@ -85,7 +85,7 @@ switch($eventName) {
         if ( ($mode == modSystemEvent::MODE_NEW || $mode == modSystemEvent::MODE_UPD ) && $modx->getOption('versionx.workflow.resource',null,true)) {
             $url = NULL;
             if ( $mode == modSystemEvent::MODE_UPD ) {
-                $url = $modx->makeUrl($resource->get('id'),'',array('preview'=>'latestDraft'), 'full');
+                $url = $modx->makeUrl($resource->get('id'),'',array('vxPreview'=>'latestDraft'), 'full');
             }
             $result = $modx->versionx->outputVersionsFields('vxResource', $url, $loadConfig); 
             
@@ -131,7 +131,30 @@ switch($eventName) {
             $result = $modx->versionx->outputVersionsTab('vxPlugin');
         }
         break;
-
+    /* allow preview */
+    case 'OnLoadWebDocument':
+        /**
+         * ADDED - This is for workflow/version previewing drafts or older versions
+         */
+        // @TODO: validate that user can see versions
+        if ( isset($_GET['vxPreview']) && !empty($_GET['vxPreview']) ){
+            if ( is_numeric($_GET['vxPreview']) ) {
+                if ( $modx->versionx->isDebug() ) {
+                    $modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive specific draft data: '.$_GET['vxPreview']);
+                }
+                $previewVersion = $modx->versionx->getCurrentWorkflowVersion($modx->resource->get('id'), 'specific', $_GET['vxPreview']);
+            } else { // if ( $_GET['vxPreview'] == 'latestDraft' ) {
+                $previewVersion = $modx->versionx->getCurrentWorkflowVersion($modx->resource->get('id'), 'last');
+            }
+            if ( $previewVersion ) {
+                $modx->resource = $previewVersion->retrieveData($modx->resource, 'last');
+                if ( $modx->versionx->isDebug() ) {
+                    $modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive last draft data: '.
+                        $previewVersion->get('version_id').' to preview - pagetitle: '.$modx->resource->get('pagetitle'));
+                }
+            }
+        }
+        
 }
 if (isset($result) && $result === true) {
     return;

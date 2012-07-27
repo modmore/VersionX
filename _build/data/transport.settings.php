@@ -43,17 +43,6 @@ foreach ($s as $key => $value) {
         'area' => $area
     ));
 }
-/**
- * $settings['groupeletters.batchSize']= $modx->newObject('modSystemSetting');
-$settings['groupeletters.batchSize']->fromArray(array (
-    'key' => 'groupeletters.batchSize',
-    'value' => '20',
-    'xtype' => 'textfield',
-    'namespace' => 'groupeletters',
-    'area' => 'Batch Settings',
-), '', true, true);
- * 
- */
 
 return $settings;
 
