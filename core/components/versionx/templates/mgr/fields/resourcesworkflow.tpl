@@ -144,7 +144,15 @@ wkCmp = new wkCmp();
                     ,layout: 'form'
                     ,border: false
                     ,id: 'modx-resource-main-left2'
-                    ,defaults: { msgTarget: 'under' }
+                    ,defaults: { msgTarget: 'under'
+                    ,listeners: {
+			            'expand': { fn:function(p) {
+				            	Ext.getCmp('modx-panel-resource').markDirty();
+				        	 }
+				         	,scope:this
+				        }
+					} 
+				}
                     ,items: [{
                         xtype: 'workflow-onsave-combo'
                         ,fieldLabel: _('versionx.workflow.onsave')
@@ -163,7 +171,16 @@ wkCmp = new wkCmp();
                     ,border: false
                     ,id: 'modx-resource-main-center'
                     ,style: ''
-                    ,defaults: { msgTarget: 'under' }
+                    ,defaults: { 
+                    	msgTarget: 'under'
+                    	,listeners: {
+				            'render': function(c) {
+						      c.getEl().on('keyup', function() {
+						        Ext.getCmp('modx-panel-resource').markDirty();
+						      }, c);
+						    }
+						}
+                    }
                     ,items: [{
                         xtype: 'workflow-revisiontype-combo'
                         ,fieldLabel: _('versionx.workflow.revisiontype')
@@ -181,7 +198,16 @@ wkCmp = new wkCmp();
                     ,border: false
                     ,id: 'modx-resource-main-right2'
                     ,style: 'margin-right: 0'
-                    ,defaults: { msgTarget: 'under' }
+                    ,defaults: { 
+                    	msgTarget: 'under'
+                    	,listeners: {
+	                    	'render': function(c) {
+						      c.getEl().on('keyup', function() {
+						        Ext.getCmp('modx-panel-resource').markDirty();
+						      }, c);
+						    }
+						}
+                    }
                     ,items: [{
                             xtype: 'textfield'
                             ,fieldLabel: _('versionx.workflow.sendto') + ' Send to '
@@ -193,7 +219,16 @@ wkCmp = new wkCmp();
                     columnWidth: .67
                     ,layout: 'form'
                     ,id: 'modx-resource-main-notes'
-                    ,defaults: { msgTarget: 'under' }
+                    ,defaults: { 
+                    	msgTarget: 'under'
+                    	,listeners: {
+				            'render': function(c) {
+						      c.getEl().on('keyup', function() {
+						        Ext.getCmp('modx-panel-resource').markDirty();
+						      }, c);
+						    }
+						}
+                    }
                     ,items: [{
                             xtype: 'textarea'
                             ,fieldLabel: _('versionx.workflow.notes')
@@ -209,7 +244,9 @@ wkCmp = new wkCmp();
                     ,border: false
                     ,id: 'modx-resource-main-right3'
                     ,style: 'margin-right: 0'
-                    ,defaults: { msgTarget: 'under' }
+                    ,defaults: { 
+                    	msgTarget: 'under'
+                    }
                     ,items: [{
                             xtype: 'tbbutton'
                             ,text: _('versionx.workflow.previewbutton')
