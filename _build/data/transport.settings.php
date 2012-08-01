@@ -19,6 +19,7 @@ $s = array(
     'workflow.resource' => TRUE,
     'workflow.resource.notice.approvetpl' => 'VersionxApproveEmailTpl',
     'workflow.resource.notice.submittpl' => 'VersionxSubmitEmailTpl',
+    'workflow.resource.notice.rejecttpl' => 'VersionxRejectEmailTpl',
     'workflow.resource.notice.email' => ''
     
 );

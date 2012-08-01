@@ -11,14 +11,31 @@ Ext.reg('wkcmp',wkCmp);
 /**
  * onsave combo data: 
  */ 
+
+if ( VersionX.config.publish_document ) {
+    var onsaveData = [
+        [1, _('versionx.workflow.combo.draft'), 'draft' ],// note that id for the record is the first element
+        [2, _('versionx.workflow.combo.published'), 'publish'],
+        [3, _('versionx.workflow.combo.unpublish'), 'unpublish' ],
+        [4, _('versionx.workflow.combo.approvedraft'), 'approve'],
+        [5, _('versionx.workflow.combo.rejectdraft'), 'reject']
+    ];
+} else {
+    var onsaveData = [
+        [1, _('versionx.workflow.combo.draft'), 'draft' ],
+        [2, _('versionx.workflow.combo.submitapproval'), 'submitted']
+    ];
+}
 var onsaveStore = new Ext.data.ArrayStore({
-    fields: ['name', 'code'],
+    fields: ['id', 'name', 'code'],
+    data: onsaveData,
     idIndex: 0 // id for each record will be the first element
 });
 // create a Record constructor:
 var rt = Ext.data.Record.create([
-    {name: 'name'},
-    {code: 'code'}
+    'id',
+    'name',
+    'code'
 ]);
 var onsaveStore = new Ext.data.Store({
     // explicitly create reader
@@ -28,42 +45,24 @@ var onsaveStore = new Ext.data.Store({
         rt // recordType
     )
 });
-if ( VersionX.config.publish_document ) {
-    var onsaveData = [
-        [1, 'draft' ],// note that id for the record is the first element
-        [2, 'publish'],
-        [3, 'unpublish'],
-        [4, 'approve'],
-        [5, 'reject']
-        /*[1, _('versionx.workflow.combo.draft'), 'draft' ],// note that id for the record is the first element
-        [2, _('versionx.workflow.combo.published'), 'publish'],
-        [3, _('versionx.workflow.combo.unpublish'), 'unpublish' ],
-        [4, _('versionx.workflow.combo.approvedraft'), 'approve'],
-        [5, _('versionx.workflow.combo.rejectdraft'), 'reject']
-        */
-    ];
-} else {
-    var onsaveData = [
-        [1, 'draft' ],
-        [2, 'submitted']
-        /*
-        [1, _('versionx.workflow.combo.draft'), 'draft' ],
-        [2, _('versionx.workflow.combo.submitapproval'), 'submitted']
-        */
-    ];
-}
-
 onsaveStore.loadData(onsaveData);
 
 /**
  * revision type combo data:
  */
+
+var revisiontypeData = [
+    [1, _('versionx.workflow.combo.minorrevision'), 'minor' ],
+    [2, _('versionx.workflow.combo.majorrevision'), 'major']
+];
 var revisiontypeStore = new Ext.data.ArrayStore({
-    fields: ['name', 'code'],
+    fields: ['id', 'name','code'],
+    data: revisiontypeData,
     idIndex: 0 // id for each record will be the first element
 });
 // create a Record constructor:
 var revisiontypeRt = Ext.data.Record.create([
+    'id',
     'name',
     'code'
 ]);
@@ -75,14 +74,6 @@ var revisiontypeStore = new Ext.data.Store({
         revisiontypeRt // recordType
     )
 });
-var revisiontypeData = [
-    [1, 'minor' ],
-    [2, 'major']
-    /*
-    [1, _('versionx.workflow.combo.minorrevision'), 'minor' ],
-    [2, _('versionx.workflow.combo.majorrevision'), 'major']
-    */
-];
 revisiontypeStore.loadData(revisiontypeData);
 
 var wkLoaded = false;
@@ -94,11 +85,13 @@ wkCmp = new wkCmp();
         wkCmp.combo.OnSave = function(config) {
             config = config || {};
             Ext.applyIf(config,{
-                store: onsaveData//['Save as Draft', 'Submit for Approval','Published','Approve Draft','Reject Draft']
+                store: onsaveStore//['Save as Draft', 'Submit for Approval','Published','Approve Draft','Reject Draft']
                 ,mode: 'local'
                 ,editable: false
-                ,valueField: 'code'  
+                ,fields: ['id', 'name', 'code']
                 ,displayField: 'code'
+                ,valueField: 'code'
+                ,value: 'draft'
                 ,minChars : 0  
             });
             wkCmp.combo.OnSave.superclass.constructor.call(this,config);
@@ -107,15 +100,16 @@ wkCmp = new wkCmp();
         Ext.extend(wkCmp.combo.OnSave,MODx.combo.ComboBox);
         Ext.reg('workflow-onsave-combo', wkCmp.combo.OnSave);
         
-        
         wkCmp.combo.RevisionType = function(config) {
             config = config || {};
             Ext.applyIf(config,{
-                store: revisiontypeData
+                store: revisiontypeStore
                 ,mode: 'local'
                 ,editable: false
+                ,fields: ['id', 'name', 'code']
                 ,valueField: 'code'  
                 ,displayField: 'code'
+                ,value: 'minor'
                 ,minChars : 0
             });
             wkCmp.combo.RevisionType.superclass.constructor.call(this,config);
@@ -144,21 +138,24 @@ wkCmp = new wkCmp();
                     ,layout: 'form'
                     ,border: false
                     ,id: 'modx-resource-main-left2'
-                    ,defaults: { msgTarget: 'under'
-                    ,listeners: {
-			            'expand': { fn:function(p) {
-				            	Ext.getCmp('modx-panel-resource').markDirty();
-				        	 }
-				         	,scope:this
-				        }
-					} 
-				}
+                    ,defaults: { 
+                    	msgTarget: 'under'
+	                    ,listeners: {
+				            'expand': { fn:function(p) {
+					            	Ext.getCmp('modx-panel-resource').markDirty();
+					        	 }
+					         	,scope:this
+					        }
+						} 
+					}
                     ,items: [{
                         xtype: 'workflow-onsave-combo'
                         ,fieldLabel: _('versionx.workflow.onsave')
                         ,description: _('versionx.workflow.onsave.help')
                         ,name: 'version_publish'
-                        ,value: 1
+                        ,fields: ['id', 'name', 'code']
+                        ,valueField: 'code'
+                        //,value: 'draft'
                         //,inputValue: 'Draft'
                         ,left:0
                         ,renderer: 'value'
@@ -186,7 +183,7 @@ wkCmp = new wkCmp();
                         ,fieldLabel: _('versionx.workflow.revisiontype')
                         ,description: _('versionx.workflow.revisiontype.help')
                         ,name: 'version_revisiontype'
-                        ,value: 1
+                        //,value:'minor'
                         ,left:0
                         ,renderer: 'value'
                         ,anchor: '100%'

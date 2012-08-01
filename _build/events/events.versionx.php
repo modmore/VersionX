@@ -18,6 +18,8 @@ $e = array(
     'OnChunkFormPrerender',
     'OnSnipFormPrerender',
     'OnPluginFormPrerender',
+    'OnLoadWebDocument',
+    
 );
 
 foreach ($e as $ev) {

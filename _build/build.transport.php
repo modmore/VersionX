@@ -62,6 +62,11 @@ $modx->getService('lexicon','modLexicon');
 $category= $modx->newObject('modCategory');
 $category->set('id',1);
 $category->set('category',PKG_NAME);
+$attr = array(xPDOTransport::UNIQUE_KEY => 'category',
+    xPDOTransport::PRESERVE_KEYS => false,
+    xPDOTransport::UPDATE_OBJECT => true,
+    xPDOTransport::RELATED_OBJECTS => true,
+);
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in category.'); flush();
 
 /* Settings */
@@ -110,11 +115,29 @@ if (is_array($snippets)) {
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($snippets).' snippets.'); flush();
 unset($snippets);*/
 
+/**
+ * Add Chunks
+ */
+$modx->log(modX::LOG_LEVEL_INFO,'Adding in chunks.');
+/* note: Chunks' default properties are set in transport.chunks.php */    
+$chunks = include $sources['data'].'transport.chunks.php';
+if (is_array($chunks)) {
+    $category->addMany($chunks, 'Chunks');
+} else {
+    $modx->log(modX::LOG_LEVEL_FATAL,'Adding chunks failed.'); 
+}
+
+$attr[xPDOTransport::RELATED_OBJECT_ATTRIBUTES]['Chunks'] = array(
+        xPDOTransport::PRESERVE_KEYS => false,
+        xPDOTransport::UPDATE_OBJECT => true,
+        xPDOTransport::UNIQUE_KEY => 'name',
+    );
+
 /* Add actions */
 require_once ($sources['data'].'transport.actions.php');
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in actions');
 
-/* create category vehicle */
+/* create category vehicle * /
 $attr = array(
     xPDOTransport::UNIQUE_KEY => 'category',
     xPDOTransport::PRESERVE_KEYS => false,
@@ -126,8 +149,8 @@ $attr = array(
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
-    ),*/
-);
+    ),* /
+);*/
 $vehicle = $builder->createVehicle($category,$attr);
 $vehicle->resolve('file',array(
     'source' => $sources['source_core'],

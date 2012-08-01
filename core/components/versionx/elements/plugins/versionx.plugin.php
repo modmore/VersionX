@@ -56,8 +56,9 @@ switch($eventName) {
             $result = $modx->versionx->newTemplateVarVersion($tv, $mode);
         break;
     case 'OnChunkFormSave':
-        if ($modx->getOption('versionx.enable.chunks',null,true))
+        if ($modx->getOption('versionx.enable.chunks',null,true) && is_object($chunk) ) {
             $result = $modx->versionx->newChunkVersion($chunk, $mode);
+        }
         break;
     case 'OnSnipFormSave':
         if ($modx->getOption('versionx.enable.snippets',null,true))
@@ -84,11 +85,10 @@ switch($eventName) {
         // Add work flow:
         if ( ($mode == modSystemEvent::MODE_NEW || $mode == modSystemEvent::MODE_UPD ) && $modx->getOption('versionx.workflow.resource',null,true)) {
             $url = NULL;
-            if ( $mode == modSystemEvent::MODE_UPD ) {
+            if ($resource && $mode == modSystemEvent::MODE_UPD ) {
                 $url = $modx->makeUrl($resource->get('id'),'',array('vxPreview'=>'latestDraft'), 'full');
             }
             $result = $modx->versionx->outputVersionsFields('vxResource', $url, $loadConfig); 
-            
             if ( $mode == modSystemEvent::MODE_UPD ) {
                 // set the current draft data for the resource:
                 // $result = $modx->versionx->setCurrentWorkflowData($resource);

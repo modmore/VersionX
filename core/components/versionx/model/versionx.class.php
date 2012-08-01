@@ -978,7 +978,7 @@ class VersionX {
                 break;
             case 'reject':
                 $subject = $this->modx->lexicon('versionx.workflow.notice.rejectsubject');
-                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.rejecttpl',null,'VersionxApproveEmailTpl');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.rejecttpl',null,'VersionxRejectEmailTpl');
                 break;
             case 'submit':
             default:
