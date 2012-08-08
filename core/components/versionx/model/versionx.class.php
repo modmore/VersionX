@@ -225,7 +225,7 @@ class VersionX {
                 
                 // send email to submitter of decline notice
                 $emailProperties = $resource->toArray();
-                $this->sendNote($resource->get('version_sendto'), 'reject', $emailProperties);
+                $this->sendNote($resource->get('version_sendto'), 'reject', $emailProperties, $rejectVersion->get('user'));
                 // revert to last published
                 $currentVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'published');
                 if ( $currentVersion ) {
@@ -282,6 +282,8 @@ class VersionX {
         $c->where(array('content_id' => $resource_id));
         if ( $type == 'last' ) {
             $c->where(array('mode:!=' => 'reject'));
+        } else if ( $type == 'reject' ) {
+            $c->where(array('mode' => 'reject'));
         } else if ( $type == 'specific' && $version_id > 0 ) {
             $c->where(array('version_id' => $version_id));
         } else {
@@ -956,12 +958,13 @@ class VersionX {
      * @param (string) $to - comma separted list of any extra to's
      * @param (String) $type - submit, approve, or reject
      * @param (Array) $emailProperties
-     *  
+     * @param (int) $user_id the user id to send a note to
      */
-    public function sendNote($to, $type, $emailProperties) {
+    public function sendNote($to, $type, $emailProperties, $user_id=0) {
         // defaultTo is set in settings - @TODO: make this dynamic in future version
         $defaultTo = $this->modx->getOption('versionx.workflow.resource.notice.email');
         $chunk = $subject = '';
+        // @TODO  need the page edit Action ID not the versionx cmp action ID:
         $managerUrl = MODX_SITE_URL.MODX_MANAGER_URL.'?a='.$this->getAction().'&amp;id='.$emailProperties['id'];
         $emailProperties['username'] = $this->modx->getLoginUserName();
         // full name
@@ -971,12 +974,30 @@ class VersionX {
         
         switch ($type) {
             case 'approve':
+                // send to the person that submitted the draft:
                 //$defaultTo = 
+                if ( $user_id == 0 ) {
+                    $draftVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+                    $user_id = $draftVersion->get('user');
+                }
+                $draftUser = $this->modx->getObject('modUser', array('id' => $user_id ));
+                
+                $profile = $draftUser->getOne('Profile');
+                $defaultTo = $profile->get('email');
                 
                 $subject = $this->modx->lexicon('versionx.workflow.notice.approvesubject');
                 $chunk = $this->modx->getOption('versionx.workflow.resource.notice.approvetpl',null,'VersionxApproveEmailTpl');
                 break;
             case 'reject':
+                if ( $user_id == 0 ) {
+                    $draftVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+                    $user_id = $draftVersion->get('user');
+                }
+                $draftUser = $this->modx->getObject('modUser', array('id' => $user_id ));
+                
+                $profile = $draftUser->getOne('Profile');
+                $defaultTo = $profile->get('email');
+                
                 $subject = $this->modx->lexicon('versionx.workflow.notice.rejectsubject');
                 $chunk = $this->modx->getOption('versionx.workflow.resource.notice.rejecttpl',null,'VersionxRejectEmailTpl');
                 break;

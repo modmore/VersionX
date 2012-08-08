@@ -89,8 +89,16 @@ $_lang['versionx.content_name'] = '[[+what]] Name';
 $_lang['versionx.mode'] = 'Mode';
 $_lang['versionx.mode.new'] = 'Create';
 $_lang['versionx.mode.upd'] = 'Update';
+$_lang['versionx.mode.update'] = 'Update';
 $_lang['versionx.mode.snapshot'] = 'Snapshot';
 $_lang['versionx.mode.revert'] = 'Reverted';
+$_lang['versionx.mode.draft'] = 'Draft';
+$_lang['versionx.mode.approve'] = 'Approved';
+$_lang['versionx.mode.publish'] = 'Publish';
+$_lang['versionx.mode.unpublish'] = 'Unpublish';
+$_lang['versionx.mode.submitted'] = 'Submitted';
+$_lang['versionx.mode.reject'] = 'Rejected';
+
 $_lang['versionx.saved'] = 'Saved On';
 $_lang['versionx.title'] = 'Title';
 $_lang['versionx.marked'] = 'Marked';
