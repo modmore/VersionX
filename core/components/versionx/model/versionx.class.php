@@ -977,7 +977,7 @@ class VersionX {
                 // send to the person that submitted the draft:
                 //$defaultTo = 
                 if ( $user_id == 0 ) {
-                    $draftVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+                    $draftVersion = $this->getCurrentWorkflowVersion($emailProperties['id'], 'last');
                     $user_id = $draftVersion->get('user');
                 }
                 $draftUser = $this->modx->getObject('modUser', array('id' => $user_id ));
@@ -990,7 +990,7 @@ class VersionX {
                 break;
             case 'reject':
                 if ( $user_id == 0 ) {
-                    $draftVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+                    $draftVersion = $this->getCurrentWorkflowVersion($emailProperties['id'], 'reject');
                     $user_id = $draftVersion->get('user');
                 }
                 $draftUser = $this->modx->getObject('modUser', array('id' => $user_id ));
