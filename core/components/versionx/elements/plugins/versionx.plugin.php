@@ -96,7 +96,7 @@ switch($eventName) {
         }
         break;
     case 'OnDocFormRender':
-        if ( $mode == modSystemEvent::MODE_UPD ) {
+        if ( $mode == modSystemEvent::MODE_UPD && !isset($_REQUEST['reload']) ) {
             // set the current draft data for the resource:
             $result = $modx->versionx->setCurrentWorkflowData($resource);
         }

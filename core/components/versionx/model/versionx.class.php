@@ -977,6 +977,7 @@ class VersionX {
                 // send to the person that submitted the draft:
                 //$defaultTo = 
                 if ( $user_id == 0 ) {
+                    // the last draft user
                     $draftVersion = $this->getCurrentWorkflowVersion($emailProperties['id'], 'last');
                     $user_id = $draftVersion->get('user');
                 }
