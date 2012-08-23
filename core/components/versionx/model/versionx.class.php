@@ -242,7 +242,7 @@ class VersionX {
             default:
                 // if new set to 0 $this->resource->set('published', 0 );
                 // make new version
-                if ($this->newResourceVersion($this->resource, $mode, FALSE)) {
+                if ($this->newResourceVersion($this->resource, $mode, FALSE, TRUE)) {
                     //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$mode.'] created version');
                     $this->created_new_version = TRUE;
                     $currentVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'published');
@@ -322,10 +322,11 @@ class VersionX {
      * @param int|modResource|modStaticResource $resource
      * @param string $mode
      * @param (bool) $cleanup
+     * @param (bool) $post_values - get post TV values not the current published resource values
      * @return bool
      *
      */
-    public function newResourceVersion($resource, $mode = 'upd', $cleanup=TRUE) {
+    public function newResourceVersion($resource, $mode = 'upd', $cleanup=TRUE, $post_values=FALSE) {
         if ( $this->created_new_version ) {
             return TRUE;
         }
@@ -370,7 +371,7 @@ class VersionX {
 
         unset ($rArray['id'],$rArray['content']);
         $version->set('fields',$rArray);
-
+        // for drafts or submit we - these are existing TVs, we want what was entered in
         if (method_exists($resource,'getTemplateVars')) {
             $tvs = $resource->getTemplateVars();
         } else {
@@ -379,7 +380,13 @@ class VersionX {
         $tvArray = array();
         /* @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
-            $tvArray[] = $tv->get(array('id','value'));
+            $tmp = $tv->get(array('id','value'));
+            // get the raw post value for a draft
+            if ( $post_values && isset($_POST['tv'.$tmp['id']]) ) {
+                $tmp['value'] = $_POST['tv'.$tmp['id']];
+            }
+            
+            $tvArray[] = $tmp;//$tv->get(array('id','value'));
         }
         $version->set('tvs',$tvArray);
 
@@ -1028,7 +1035,7 @@ class VersionX {
         if ( !empty($to) ){
             $emailList = explode(',',$to);
             foreach ($emailList as $email) {
-                //$this->modx->mail->address('to',$email);
+                $this->modx->mail->address('to',$email);
             }
         }
         $this->modx->mail->setHTML(true);
