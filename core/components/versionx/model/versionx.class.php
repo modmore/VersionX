@@ -381,15 +381,20 @@ class VersionX {
         /* @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
             $tmp = $tv->get(array('id','value'));
-            // get the raw post value for a draft
+            // get the raw post value for a draft - 
+            // @TODO respect @INHERIT and other values? process them?
             if ( $post_values && isset($_POST['tv'.$tmp['id']]) ) {
-                $tmp['value'] = $_POST['tv'.$tmp['id']];
+                // this is the processed value
+                $processed_value = '';
+                $processed_value = $resource->getTVValue($tmp['id']);
+                if ( $processed_value != $_POST['tv'.$tmp['id']] ) {
+                    $tmp['value'] = $_POST['tv'.$tmp['id']];
+                }
             }
             
             $tvArray[] = $tmp;//$tv->get(array('id','value'));
         }
         $version->set('tvs',$tvArray);
-
         if ($this->checkLastVersion('vxResource', $version, $this->debug)) {
             return $version->save();
         }

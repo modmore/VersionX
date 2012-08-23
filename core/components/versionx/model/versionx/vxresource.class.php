@@ -120,11 +120,9 @@ class vxResource extends xPDOObject {
         }
 
         foreach ($tvs as $tv) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$type.'] Resource: ' .
-                     $this->get('content_id') . ' | Setting TV ' . $tv['id'] . ' to ' . $tv['value']);
+            // $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$type.'] Resource: ' . $this->get('content_id') . ' | Setting TV ' . $tv['id'] . ' to ' . $tv['value']);
             if (!$resource->setTVValue($tv['id'], $tv['value'])) {
-                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$type.'] Resource: ' .
-                     $this->get('content_id') . ' | Unable of setting TV ' . $tv['id'] . ' to ' . $tv['value']);
+                // $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$type.'] Resource: ' . $this->get('content_id') . ' | Unable of setting TV ' . $tv['id'] . ' to ' . $tv['value']);
                 return false;
             }
         }
