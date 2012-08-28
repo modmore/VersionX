@@ -23,7 +23,9 @@
 */
 $xpdo_meta_map['vxSnippet']= array (
   'package' => 'versionx',
+  'version' => NULL,
   'table' => 'versionx_snippet',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
     'version_id' => NULL,

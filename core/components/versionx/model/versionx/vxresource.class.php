@@ -22,6 +22,11 @@
  *
 */
 class vxResource extends xPDOObject {
+    /**
+     * @param (array) $tv_values - the tv values of the current draft
+     */
+    protected $tv_values = array();
+    
     public static $excludeFields = array(
         'version_id',
         'saved',
@@ -44,6 +49,7 @@ class vxResource extends xPDOObject {
     
     public static $tabTpl = 'mgr/tabs/resources';
 
+    public static $fieldsTpl = 'mgr/fields/resourcesworkflow';
     /**
      * Gets the excluded fields.
      * @static
@@ -70,7 +76,14 @@ class vxResource extends xPDOObject {
     public static function getTabTpl() {
         return self::$tabTpl;
     }
-
+    /**
+     * Gets the fields template file name.
+     * @static
+     * @return string
+     */
+    public static function getFieldsTpl() {
+        return self::$fieldsTpl;
+    }
     /**
      * Reverts a resource to the selected version.
      * @param array $options
@@ -90,6 +103,17 @@ class vxResource extends xPDOObject {
             $resource->set('id', $this->get('content_id'));
         }
 
+        $resource = $this->retrieveData($resource);
+
+        return $resource->save();
+    }
+    /**
+     * get current workflow draft and set data to resource
+     * restore data from versionx to resource
+     * @param (object) $resource
+     * @return (object) $resource
+     */
+    public function retrieveData($resource, $type='revert') {
         $content = $this->get('content');
         $fields = $this->get('fields');
         $tvs = $this->get('tvs');
@@ -101,13 +125,23 @@ class vxResource extends xPDOObject {
         }
 
         foreach ($tvs as $tv) {
-            if (!$resource->setTVValue($tv['id'], $tv['value'])) {
-                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/revert] Resource: ' . $this->get('content_id') . ' | Unable of setting TV ' . $tv['id'] . ' to ' . $tv['value']);
-                return false;
+            // $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$type.'] Resource: ' . $this->get('content_id') . ' | Setting TV ' . $tv['id'] . ' to ' . $tv['value']);
+            if ( $type == 'revert' ) {
+                if (!$resource->setTVValue($tv['id'], $tv['value'])) {
+                    // $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$type.'] Resource: ' . $this->get('content_id') . ' | Unable of setting TV ' . $tv['id'] . ' to ' . $tv['value']);
+                    return false;
+                }
             }
+            // save data to an array:
+            $this->tv_values[$tv['id']] = $tv['value'];
         }
-
-        return $resource->save();
+        return $resource;
     }
+    /**
+     * Get the TV Value array(ID => Value )
+     */
+     public function getTVs() {
+         return $this->tv_values;
+     }
 }
 

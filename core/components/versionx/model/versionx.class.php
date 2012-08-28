@@ -25,14 +25,24 @@
 
 class VersionX {
     public $modx;
-    private $chunks;
-    private $tvs = array();
+    protected $chunks;
+    protected $tvs = array();
     public $config = array();
     public $categoryCache = array();
 
     public $debug = false;
     public $action = null;
-
+    
+    /**
+     * @param (array) $tv_values - the tv values of the current draft
+     */
+    protected $tv_values = array();
+    /**
+     * if true then a new vesion has already been created
+     * @param boolean
+     * 
+     */
+    protected $created_new_version = FALSE;
 
     /**
      * @param \modX $modx
@@ -56,6 +66,8 @@ class VersionX {
             'css_url' => $assetsUrl.'css/',
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
+            'publish_document' => $this->modx->hasPermission('publish_document'),
+            
         ),$config);
 
         require_once dirname(dirname(__FILE__)) . '/docs/version.inc.php';
@@ -98,7 +110,13 @@ class VersionX {
         }
         return true;
     }
-
+    /**
+     * is debug 
+     * @return boolean - the internal debug
+     */
+    public function isDebug() {
+        return $this->debug;
+    }
     /**
     * Gets a Chunk and caches it; also falls back to file-based templates
     * for easier debugging.
@@ -148,25 +166,259 @@ class VersionX {
         }
         return $chunk;
     }
-
+    /**
+     * Workflow:
+     *  1. Create a draft - this stores the data in versionx but would get the 
+     *      last "published" versionx and put these fields into existing resource
+     *  2. Publish - this would proceed as normal/default and create a new versionx record
+     *  3. Submit for approval - this would do the same as Create a draft 
+     *      but also send out an email to admins/editors
+     *  4. Approve draft would do the same as Publish and send out an email to submitter
+     *  5. Reject draft this would set the last published version to Published and create new record in versionx
+     *  Note does not save the new record but retains it in class and then saveResourceWorkflow 
+     *      will save object OnDocFormSave - this is to make sure all perms and system passed so not to save bad data! 
+     * mode - upd, draft, submit, approved, rejected,
+     * 
+     * @param int|modResource|modStaticResource $resource
+     * @param string $mode
+     * @param string $event - beforeSave | afterSave - save
+     * @return bool  
+     *
+     */
+    public function resourceWorkflow($resource, $mode = 'draft',$run='beforeSave') {
+        if ($resource instanceof modResource) {
+            $this->resource = &$resource;
+        } else {
+            // $resource = $this->modx->getObject('modResource',(int)$resource);
+            return false;
+        }
+        // $this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$mode.'] Mode: ' .$mode.' -- '.$_POST['version_publish']);
+        if ( $run == 'beforeSave' ) {
+            switch ($mode) {
+                case 'approve':
+                case 'publish':
+                    // set to published and act as normal versionx
+                    $this->resource->set('published', 1 );
+                    break;
+                case 'unpublish':
+                    // set publish to 0 and act as normal versionx
+                    $this->resource->set('published', 0 );
+                    break;
+                case 'reject':
+                // below should set resource to the most current published version if it exists:
+                // this is so any changes are not actually made to the resource but only the draft
+                    // mark the submitted draft as rejected
+                    $rejectVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+                    $rejectVersion->set('mode', 'reject');
+                    $rejectVersion->set('version_notes', $resource->get('version_notes')."\r\n\r\n".$rejectVersion->get('version_notes'));
+                    $rejectVersion->save();
+                    $this->created_new_version = TRUE;
+                    
+                    // send email to submitter of decline notice
+                    $emailProperties = $resource->toArray();
+                    $this->sendNote($resource->get('version_sendto'), 'reject', $emailProperties, $rejectVersion->get('user'));
+                    // revert to last published
+                    $currentVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'published');
+                    if ( $currentVersion ) {
+                        $this->resource = $currentVersion->retrieveData($this->resource, 'published');
+                        //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive last published version?');
+                    }
+                    // @TODO: need to refresh the page/data so the editor can see the last published version 
+                    break;
+                case 'submitted':
+                    // send email to approver
+                    $emailProperties = $resource->toArray(); 
+                    $this->sendNote($resource->get('version_sendto'), 'submitted', $emailProperties);
+                case 'draft':
+                default:
+                    // if new set to 0 $this->resource->set('published', 0 );
+                    // make new version
+                    if ($this->newResourceVersion($this->resource, $mode, FALSE, TRUE)) {
+                        //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource/'.$mode.'] created version');
+                        $this->created_new_version = TRUE;
+                        $currentVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'published');
+                        if ( $currentVersion ) {
+                            $tmp = array(
+                                    'version_publish' => 'draft',// reset this so on every save there is not a notice sent
+                                    'version_notes' => $this->resource->get('version_notes'),
+                                    'version_sendto' => $this->resource->get('version_sendto'),
+                                    'version_revisiontype' => 'minor',
+                                );
+                            $this->resource = $currentVersion->retrieveData($this->resource);// 'published');
+                            // $this->tv_values = $currentVersion->getTVs();
+                            // this set the version info but we need to change this back to the user input or default:
+                            $this->resource->fromArray($tmp);
+                            
+                            //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive last published version?');
+                        }
+                    } else {
+                        return FALSE;
+                    }
+                    break;
+            }
+        } else {
+            switch ($mode) {
+                case 'approve':
+                    // send email to submitter
+                    $emailProperties = $resource->toArray();
+                    $this->sendNote($resource->get('version_sendto'), 'approve', $emailProperties);//$resource->get('version_notes')
+                case 'publish':
+                    // set to published and act as normal versionx
+                    $this->resource->set('published', 1 );
+                    // save after the resource has been processed and saved - for the TVs
+                    if ( $this->newResourceVersion($this->resource, $mode, FALSE)) {
+                        $this->created_new_version = TRUE;
+                    } else {
+                        return FALSE;
+                    }
+                    break;
+                case 'unpublish':
+                    // set publish to 0 and act as normal versionx
+                    $this->resource->set('published', 0 );
+                    if ( $this->newResourceVersion($this->resource, $mode, FALSE)) {
+                        $this->created_new_version = TRUE;
+                    } else {
+                        return FALSE;
+                    }
+                    break;
+                
+                // below should set resource to the most current published version if it exists:
+                // this is so any changes are not actually made to the resource but only the draft
+                case 'reject':
+                    // @TODO: need to refresh the page/data so the editor can see the last published version 
+                    break;
+                case 'submitted':
+                case 'draft':
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
+    /**
+     * get current workflow version
+     * @param (int) resource_id
+     * @param (String) $type - last is for the last record excluding reject or publish 
+     *      which is the last un/published version
+     * @param (int) $version_id - optionally set the verison ID you want to retrieve data from
+     *      set type to specific
+     * @return (Object) $currentVersion
+     */
+    public function getCurrentWorkflowVersion($resource_id, $type='last', $version_id=0) {
+        $c = $this->modx->newQuery('vxResource');
+        //
+        $c->where(array('content_id' => $resource_id));
+        if ( $type == 'last' ) {
+            $c->where(array('mode:!=' => 'reject'));
+        } else if ( $type == 'reject' ) {
+            $c->where(array('mode' => 'reject'));
+        } else if ( $type == 'specific' && $version_id > 0 ) {
+            $c->where(array('version_id' => $version_id));
+        } else {
+            $c->where(array('mode:IN' => array('upd','publish','approve','unpublish')));
+        }
+        
+        $c->sortby('version_id','DESC');
+        $c->limit(1);
+        
+        $currentVersion = $this->modx->getObject('vxResource', $c);
+        return $currentVersion;
+    }
+    /**
+     * set current resource to current workflow draft for editing:
+     * @param (Object) $resource
+     * @return (boolean)
+     */
+    public function setCurrentWorkflowData($resource) {
+        if ($resource instanceof modResource) {
+            $this->resource = &$resource;
+        } else {
+            // $resource = $this->modx->getObject('modResource',(int)$resource);
+            return false;
+        }
+        
+        $currentVersion = $this->getCurrentWorkflowVersion($this->resource->get('id'));
+        if ( $currentVersion ) {
+            // don't reload data if the last version is currently published
+            $mode = $currentVersion->get('mode');
+            if ( !in_array($mode, array('upd','publish','approve')) ){
+                $this->resource = $currentVersion->retrieveData($this->resource, 'draft');
+                // load the TV Values of the current draft
+                $this->tv_values = $currentVersion->getTVs();
+            } 
+        }
+        return TRUE;
+    }
+    /**
+     * Set the TV Values of the current draft - do not save them in the DB!
+     * 
+     * @param int|modResource|modStaticResource $resource
+     * @param string $mode
+     * @return bool  
+     *
+     */
+    public function setCurrentTVValues(&$categories) {
+        //$categories = &$categories;
+        foreach ($categories as $n => $category) {
+            //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource]->Category: '.print_r($category,TRUE));
+            foreach ($category['tvs'] as $x => $tv) {
+                //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource]->TV: '.$tv->id.' - nv: '.$this->tv_values[$tv->id]);//print_r($tv,TRUE));;
+                if ( isset($this->tv_values[$tv->id])) {
+                    //$this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource]->SET Value: '.$this->tv_values[$tv->id].' Default: '. $tv->get('default_text').' -VALUE: '. $tv->get('value'));//print_r($tv,TRUE));;
+                    // $categories[$n]['tvs'][$x]['default_text'] = $this->tv_values['value'];
+                    //echo '<br>'.$tv->default_text;
+                    // buld a form element? formElement
+                    if ( $tv->get('default_text') == $this->tv_values[$tv->id] || $tv->get('value') == $this->tv_values[$tv->id] ) {
+                        continue;
+                    }
+                    if ( $this->tv_values[$tv->id] == '@INHERIT') {
+                        $this->tv_values[$tv->id] = $tv->get('default_text');
+                    }
+                    $tv->set('formElement', str_replace($tv->get('value'), $this->tv_values[$tv->id], $tv->get('formElement')) );
+                    //$tv->set('default_text', $this->tv_values[$tv->id]); - do not override this is need to reset values
+                    $tv->set('value', $this->tv_values[$tv->id]);
+                    $categories[$n]['tvs'][$x] = $tv;
+                }
+            }
+        }
+        //foreach ($this->tv_values as $id => $value ) {}
+        return $categories;
+    }
+    
     /**
      * Creates a new version of a Resource.
      *
      * @param int|modResource|modStaticResource $resource
      * @param string $mode
-     * @return bool
-     *
+     * @param (bool) $cleanup
+     * @param (bool) $post_values - get post TV values not the current published resource values
+     * @return boolean
      */
-    public function newResourceVersion($resource, $mode = 'upd') {
-        if ($resource instanceof modResource) {
-            // We're retrieving the resource again to clean up raw post data we don't want.
-            $resource = $this->modx->getObject('modResource',$resource->get('id'));
-        } else {
-            $resource = $this->modx->getObject('modResource',(int)$resource);
+    public function newResourceVersion($resource, $mode = 'upd', $cleanup=TRUE, $post_values=FALSE) {
+        if ( $this->created_new_version ) {
+            return TRUE;
+        }
+        if ( $cleanup ) {
+            if ($resource instanceof modResource) {
+                // We're retrieving the resource again to clean up raw post data we don't want.
+                $resource = $this->modx->getObject('modResource',$resource->get('id'));
+            } else {
+                $resource = $this->modx->getObject('modResource',(int)$resource);
+            }
         }
 
         $rArray = $resource->toArray();
-
+        // get the last version number and increment it:
+        $lastVersion = $this->getCurrentWorkflowVersion($resource->get('id'), 'last');
+        $version_number = 1.0;
+        if ( $lastVersion ) {
+            $version_number = $lastVersion->get('version_number');
+            if ( isset($rArray['version_revisiontype']) && $rArray['version_revisiontype'] == 'major' ) {
+                $version_number = floor($version_number + 1);
+            } else {
+                $version_number += 0.01;
+            }
+        }
         /* @var vxResource $version */
         $version = $this->modx->newObject('vxResource');
 
@@ -178,26 +430,48 @@ class VersionX {
             'context_key' => $rArray['context_key'],
             'class' => $rArray['class_key'],
             'content' => $resource->get('content'),
+            'version_notes' => $resource->get('version_notes'),
+            'version_number' => $version_number,
+            'version_sendto' => $resource->get('version_sendto')
         );
 
         $version->fromArray($v);
 
         unset ($rArray['id'],$rArray['content']);
         $version->set('fields',$rArray);
-
-        if (method_exists($resource,'getTemplateVars'))
+        // for drafts or submit we - these are existing TVs, we want what was entered in
+        if (method_exists($resource,'getTemplateVars')) {
+            // $this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] use resource->getTemplateVars() ');
             $tvs = $resource->getTemplateVars();
-        else
+        } else {
+            // $this->modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] use this->');
             $tvs = call_user_func(array($this,'getTemplateVars'),$resource);
-
+        }
         $tvArray = array();
         /* @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
-            $tvArray[] = $tv->get(array('id','value'));
+            $tmp = $tv->get(array('id','value'));
+            // get the raw post value for a draft - 
+            if ( $post_values && isset($_POST['tv'.$tmp['id']]) ) {
+                // this is the processed value
+                $processed_value = '';
+                $processed_value = $resource->getTVValue($tmp['id']);
+                
+                /**
+                 * @TODO Fix the Gallery Extras is causing an error when calling on $resource->getTVValue() Here, why? And nothing in the error log
+                 * Repsonse:
+                 * {"success":false,"message":"\/core\/components\/gallery\/elements\/tv\/output\/\n","total":0,"data":[],"object":[]}
+                 * Uninstall Gallery and works great? 
+                 */
+                if ( $processed_value != $_POST['tv'.$tmp['id']] ) {
+                    $tmp['value'] = $_POST['tv'.$tmp['id']];
+                }
+            }
+            
+            $tvArray[] = $tmp;//$tv->get(array('id','value'));
         }
         $version->set('tvs',$tvArray);
-
-        if($this->checkLastVersion('vxResource', $version, $this->debug)) {
+        if ($this->checkLastVersion('vxResource', $version, $this->debug)) {
             return $version->save();
         }
         return true;
@@ -384,7 +658,9 @@ class VersionX {
                     if ($ct instanceof modContentType)
                         $vArray['content_type'] = $ct->get('name');
 
-                    $vArray['content'] = nl2br(htmlentities($vArray['content']));
+                    //$vArray['content'] = nl2br(htmlentities($vArray['content']));
+                    $vArray['content'] = $vArray['content'];
+                    // $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Set Content for ID: ".$id.' -- '.$vArray['content'] );
 
                     if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
                     else $vArray['content_dispo'] = $this->modx->lexicon('inline');
@@ -407,6 +683,7 @@ class VersionX {
 
                     /* Get TV captions */
                     $tvArray = array();
+                    // @TODO - invalid array?
                     foreach ($vArray['tvs'] as $tv) {
                         if (!isset($this->tvs[$tv['id']]) || empty($this->tvs[$tv['id']])) {
                             /* @var modTemplateVar $tvObj */
@@ -663,6 +940,58 @@ class VersionX {
         
         
     }
+    /**
+     * Outputs the JavaScript needed to add custom fields to existing panels.
+     *
+     * @param string $class
+     * @param string $url
+     * @param (boolean) $loadConfig
+     * @return void
+     */
+    public function outputVersionsFields ($class = 'vxResource', $url, $loadConfig=FALSE) {
+        if (!class_exists($class)) {
+            $path = $this->config['model_path'].'versionx/'.strtolower($class).'.class.php';
+            if (file_exists($path)) {
+                require_once ($path);
+            } 
+            if (!class_exists($class)) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX::outputVersionsFields] Error loading class '.$class);
+                return;
+            }
+        }
+        
+        /* Load class & set inVersion to true, indicating we're not looking at the VersionX controller. */
+        if ( $loadConfig ){
+            $langs = $this->_getLangs();
+            $action = $this->getAction();
+            $jsurl = $this->config['js_url'].'mgr/';
+            
+            $this->modx->regClientStartupScript($jsurl.'versionx.class.js');
+            $this->modx->regClientStartupHTMLBlock('
+                <script type="text/javascript">
+                    VersionX.config = '.$this->modx->toJSON($this->config).';
+                    VersionX.inVersion = true;
+                    VersionX.action = '.$action.';
+                    '.$langs.'
+                </script>
+            ');
+        }
+        $this->modx->regClientStartupHTMLBlock('
+        <script type="text/javascript">
+            VersionX.draftUrl = "'.$url.'";
+        </script>
+        ');
+        /* Get the template and register it */
+        $tplName = call_user_func(array($class,'getFieldsTpl'));
+        $tplFile = $this->config['templates_path'] . $tplName . '.tpl';
+        if (file_exists($tplFile)) {
+            $tpl = file_get_contents($tplFile);
+            if (!empty($tpl)) {
+                $this->modx->regClientStartupHTMLBlock($tpl);
+            }
+        }
+        
+    }
 
     /**
      * Gets language strings for use on non-VersionX controllers.
@@ -713,6 +1042,92 @@ class VersionX {
             return (string)$id;
         }
     }
-
+    /**
+     * Send email note
+     * @param (string) $to - comma separted list of any extra to's
+     * @param (String) $type - submit, approve, or reject
+     * @param (Array) $emailProperties
+     * @param (int) $user_id the user id to send a note to
+     */
+    public function sendNote($to, $type, $emailProperties, $user_id=0) {
+        // defaultTo is set in settings - @TODO: make this dynamic in future version
+        $defaultTo = $this->modx->getOption('versionx.workflow.resource.notice.email');
+        $chunk = $subject = '';
+        // @TODO  need the page edit Action ID not the versionx cmp action ID:
+        $managerUrl = MODX_SITE_URL.MODX_MANAGER_URL.'?a='.$this->getAction().'&amp;id='.$emailProperties['id'];
+        $emailProperties['username'] = $this->modx->getLoginUserName();
+        // full name
+        $profile = $this->modx->user->getOne('Profile');
+        $emailProperties['fullname'] = $profile->get('fullname');
+        $emailProperties['useremail'] = $profile->get('email');
+        
+        switch ($type) {
+            case 'approve':
+                // send to the person that submitted the draft:
+                //$defaultTo = 
+                if ( $user_id == 0 ) {
+                    // the last draft user
+                    $draftVersion = $this->getCurrentWorkflowVersion($emailProperties['id'], 'last');
+                    $user_id = $draftVersion->get('user');
+                }
+                $draftUser = $this->modx->getObject('modUser', array('id' => $user_id ));
+                
+                $profile = $draftUser->getOne('Profile');
+                $defaultTo = $profile->get('email');
+                
+                $subject = $this->modx->lexicon('versionx.workflow.notice.approvesubject');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.approvetpl',null,'VersionxApproveEmailTpl');
+                break;
+            case 'reject':
+                if ( $user_id == 0 ) {
+                    $draftVersion = $this->getCurrentWorkflowVersion($emailProperties['id'], 'reject');
+                    $user_id = $draftVersion->get('user');
+                }
+                $draftUser = $this->modx->getObject('modUser', array('id' => $user_id ));
+                
+                $profile = $draftUser->getOne('Profile');
+                $defaultTo = $profile->get('email');
+                
+                $subject = $this->modx->lexicon('versionx.workflow.notice.rejectsubject');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.rejecttpl',null,'VersionxRejectEmailTpl');
+                break;
+            case 'submit':
+            default:
+                $subject = $this->modx->lexicon('versionx.workflow.notice.submitsubject');
+                $chunk = $this->modx->getOption('versionx.workflow.resource.notice.submittpl',null,'VersionxSubmitEmailTpl');
+                // make urls:
+                $emailProperties['approveUrl'] = $managerUrl.'&amp;version_publish=approve';
+                $emailProperties['rejectUrl'] = $managerUrl.'&amp;version_publish=reject';
+                $emailProperties['previewUrl'] = $this->modx->makeUrl($emailProperties['id'],'',array('vxPreview'=>'latestDraft'), 'full');
+                break;
+        }
+        // build email properties:
+        //$resource->get('version_notes')
+        // 
+        
+        // $emailProperties
+        $this->modx->getService('mail', 'mail.modPHPMailer');
+        $this->modx->mail->set(modMail::MAIL_BODY, $this->modx->getChunk($chunk, $emailProperties ));
+        $this->modx->mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender') );
+        $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name') );
+        $this->modx->mail->set(modMail::MAIL_SENDER, $this->modx->getOption('emailsender') );
+        $this->modx->mail->set(modMail::MAIL_SUBJECT, $subject );
+        $this->modx->mail->address('to', $defaultTo );
+        // $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
+        if ( !empty($to) ){
+            $emailList = explode(',',$to);
+            foreach ($emailList as $email) {
+                $this->modx->mail->address('to',$email);
+            }
+        }
+        $this->modx->mail->setHTML(true);
+        
+        if (!$this->modx->mail->send()) {
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'Versionx->sendNote() - An error occurred while trying to send email to '.$defaultTo);
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'[Versionx->sendNote] Error: '.print_r($this->modx->mail->mailer->ErrorInfo,true));
+        }
+        $this->modx->mail->reset();
+        
+    }
 }
 

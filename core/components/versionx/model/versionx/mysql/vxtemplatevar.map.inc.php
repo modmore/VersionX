@@ -23,7 +23,9 @@
 */
 $xpdo_meta_map['vxTemplateVar']= array (
   'package' => 'versionx',
+  'version' => NULL,
   'table' => 'versionx_templatevar',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
     'version_id' => NULL,

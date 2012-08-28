@@ -1,6 +1,35 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
 ++++++++++++++++++++++++++++++++
+++   VersionX 2.0.0-rc5       ++
+++   Released on 2012-08-01   ++
+++++++++++++++++++++++++++++++++
+Added Workflow for Resources:
+    • Allow users to be contributors – they can submit changes but they do not go 
+        live/published until an Admin/Editor approves them.
+    • Allow all users to save a Draft copy for existing Published documents/resources 
+        and preview the draft.  Then when they are ready they can  publish the draft it 
+        or send the draft for approval it will send out a notice.  Admin/Editor can 
+        approve or reject submitted draft and send a notice back to the submitter.
+    • Also made major and minor versions and store in db table: version_number: 
+        1.01 and increment by 0.01 for minor changes and 1 for major changes.
+    • The work flow can be turned on/off in system settings
+    • Allow preview of unpublished drafts and old versions 
+
+Others Notes:
+    - added to lexicon/en
+    - added templates/mgr/fields
+    - added to db table vxResource: version_number, version_notes, version_sendto 
+    - added to versionx.class.php, verionx.plugin.php and vxresource.class.php
+    - added system event: OnBeforeDocFormSave, OnDocFormRender and OnLoadWebDocument for plugin and to post in draft data
+        OnResourceTVFormRender - to load TV Values of Drafts
+    - added system settings: 
+        versionx.workflow.resource, versionx.workflow.resource.notice.approvetpl,
+        versionx.workflow.resource.notice.submittpl, versionx.workflow.resource.notice.email
+    - added 3 chunks for email notices
+
+
+++++++++++++++++++++++++++++++++
 ++   VersionX 2.0.0-rc4       ++
 ++   Released on 2012-07-19   ++
 ++++++++++++++++++++++++++++++++

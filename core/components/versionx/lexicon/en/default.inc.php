@@ -89,8 +89,16 @@ $_lang['versionx.content_name'] = '[[+what]] Name';
 $_lang['versionx.mode'] = 'Mode';
 $_lang['versionx.mode.new'] = 'Create';
 $_lang['versionx.mode.upd'] = 'Update';
+$_lang['versionx.mode.update'] = 'Update';
 $_lang['versionx.mode.snapshot'] = 'Snapshot';
 $_lang['versionx.mode.revert'] = 'Reverted';
+$_lang['versionx.mode.draft'] = 'Draft';
+$_lang['versionx.mode.approve'] = 'Approved';
+$_lang['versionx.mode.publish'] = 'Publish';
+$_lang['versionx.mode.unpublish'] = 'Unpublish';
+$_lang['versionx.mode.submitted'] = 'Submitted';
+$_lang['versionx.mode.reject'] = 'Rejected';
+
 $_lang['versionx.saved'] = 'Saved On';
 $_lang['versionx.title'] = 'Title';
 $_lang['versionx.marked'] = 'Marked';
@@ -101,3 +109,71 @@ $_lang['versionx.tabtip.notyet'] = 'Sorry, we can\'t show you your [[+what]] his
 $_lang['versionx.widget.resources'] = 'Recent Resource Changes';
 $_lang['versionx.widget.resources.desc'] = '(Part of VersionX) Shows a grid with the most recent resource changes for all users.';
 $_lang['versionx.widget.resources.update'] = 'Update Resource';
+
+// Added by Josh Gulledge 7-25-12
+// system settings:
+$_lang['setting_versionx.debug'] = 'Debug';
+$_lang['setting_versionx.debug_desc'] = 'Set to true to see debug messages';
+$_lang['setting_versionx.formtabs.resource'] = 'Resource Tab';
+$_lang['setting_versionx.formtabs.resource_desc'] = 'Set to true to show VersionX as as a tab when editing a Resource';
+$_lang['setting_versionx.formtabs.template'] = 'Template Tab';
+$_lang['setting_versionx.formtabs.template_desc'] = 'Set to true to show VersionX as as a tab when editing a Template';
+$_lang['setting_versionx.formtabs.templatevariables'] = 'TV Tab';
+$_lang['setting_versionx.formtabs.templatevariables_desc'] = 'Set to true to show VersionX as as a tab when editing a Template Variable';
+$_lang['setting_versionx.formtabs.chunk'] = 'Chunk Tab';
+$_lang['setting_versionx.formtabs.chunk_desc'] = 'Set to true to show VersionX as as a tab when editing a Chunk';
+$_lang['setting_versionx.formtabs.snippet'] = 'Snippet Tab';
+$_lang['setting_versionx.formtabs.snippet_desc'] = 'Set to true to show VersionX as as a tab when editing a Snippet';
+$_lang['setting_versionx.formtabs.plugin'] = 'Plugin Tab';
+$_lang['setting_versionx.formtabs.plugin_desc'] = 'Set to true to show VersionX as as a tab when editing a Plugin';
+
+$_lang['setting_versionx.enable.resources'] = 'Enable Resources';
+$_lang['setting_versionx.enable.resources_desc'] = 'Set to true to enable VersionX to version Resources';
+$_lang['setting_versionx.enable.templates'] = 'Enable Templates';
+$_lang['setting_versionx.enable.templates_desc'] = 'Set to true to enable VersionX to version Templates';
+$_lang['setting_versionx.enable.templatevariables'] = 'Enable Tvs';
+$_lang['setting_versionx.enable.templatevariables_desc'] = 'Set to true to enable VersionX to version Template Variables';
+$_lang['setting_versionx.enable.chunks'] = 'Enable Chunks';
+$_lang['setting_versionx.enable.chunks_desc'] = 'Set to true to enable VersionX to version Chunks';
+$_lang['setting_versionx.enable.snippets'] = 'Enable Snippets';
+$_lang['setting_versionx.enable.snippets_desc'] = 'Set to true to enable VersionX to version Snippets';
+$_lang['setting_versionx.enable.plugins'] = 'Enable Plugins';
+$_lang['setting_versionx.enable.plugins_desc'] = 'Set to true to enable VersionX to version Plugins';
+
+$_lang['setting_versionx.workflow.resource'] = 'Workflow Resources';
+$_lang['setting_versionx.workflow.resource_desc'] = 'Set to true to enable a workflow on Resources';
+$_lang['setting_versionx.workflow.resource.notice.approvetpl'] = 'Approve Email Tpl';
+$_lang['setting_versionx.workflow.resource.notice.approvetpl_desc'] = 'The name of the Chunk that will be the approval email';
+$_lang['setting_versionx.workflow.resource.notice.rejecttpl'] = 'Reject Email Tpl';
+$_lang['setting_versionx.workflow.resource.notice.rejecttpl_desc'] = 'The name of the Chunk that will be the reject/decline email';
+$_lang['setting_versionx.workflow.resource.notice.submittpl'] = 'Submit Email Tpl';
+$_lang['setting_versionx.workflow.resource.notice.submittpl_desc'] = 'The name of the Chunk that will be the submitted email';
+$_lang['setting_versionx.workflow.resource.notice.email'] = 'Email Address';
+$_lang['setting_versionx.workflow.resource.notice.email_desc'] = 'Comma separated list of emails that will reviece the submit notice';
+
+
+// workflow:
+$_lang['versionx.workflow'] = 'Workflow';
+$_lang['versionx.workflow.onsave'] = 'On Save do the following';
+$_lang['versionx.workflow.onsave.help'] = 'Drafts are not visible to the public until they are published.';
+$_lang['versionx.workflow.revisiontype'] = 'Revision Type';
+$_lang['versionx.workflow.revisiontype.help'] = 'Minor revisions small typo corrections<br />Major revisions would be adding or remove paragraphs';
+$_lang['versionx.workflow.sendto'] = 'Send submit/approve to';
+$_lang['versionx.workflow.sendto.help'] = 'A comma separated list of email addresses';
+$_lang['versionx.workflow.notes'] = 'Version Comment/Note';
+$_lang['versionx.workflow.notes.help'] = 'Send a comment on submit for approval';
+$_lang['versionx.workflow.previewbutton'] = 'Preview Draft';
+// combo boxes
+$_lang['versionx.workflow.combo.draft'] = 'Save changes as Draft';
+$_lang['versionx.workflow.combo.submitapproval'] = 'Submit for Approval';
+$_lang['versionx.workflow.combo.published'] = 'Save changes as Published';
+$_lang['versionx.workflow.combo.unpublish'] = 'UnPublished Resource';
+$_lang['versionx.workflow.combo.approvedraft'] = 'Approve Draft';
+$_lang['versionx.workflow.combo.rejectdraft'] = 'Reject Draft';
+$_lang['versionx.workflow.combo.minorrevision'] = 'Minor Revision';
+$_lang['versionx.workflow.combo.majorrevision'] = 'Major Revision';
+// $_lang['versionx.workflow.combo.'] = '';
+$_lang['versionx.workflow.notice.approvesubject'] = 'Your contribution has been approved';
+$_lang['versionx.workflow.notice.rejectsubject'] = 'Your contribution has been declined';
+$_lang['versionx.workflow.notice.submitsubject'] = 'A contribution has been submitted';
+

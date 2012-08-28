@@ -27,6 +27,17 @@
 if ($object->xpdo) {
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_UPGRADE:
+            /**
+             * 
+             * ALTER TABLE `modx`.`modx_versionx_resource`     
+             * ADD COLUMN `version_notes` MEDIUMTEXT NOT NULL AFTER `marked`,     
+             * ADD COLUMN `version_number` DECIMAL(5,2) DEFAULT '1' NOT NULL AFTER `version_notes`,     
+             * ADD COLUMN `version_sendto` MEDIUMTEXT NOT NULL AFTER `version_number`;
+             */
+            $modx->exec("ALTER TABLE {$modx->getTableName('vxResource')}
+                ADD COLUMN `version_notes` MEDIUMTEXT NOT NULL AFTER `marked`,
+                ADD COLUMN `version_number` DECIMAL(5,2) DEFAULT '1' NOT NULL AFTER `version_notes`,
+                ADD COLUMN `version_sendto` MEDIUMTEXT NOT NULL AFTER `version_number`");
         case xPDOTransport::ACTION_INSTALL:
             $modx =& $object->xpdo;
 

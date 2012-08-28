@@ -33,9 +33,25 @@
 $eventName = $modx->event->name;
 
 switch($eventName) {
+    
+    case 'OnBeforeDocFormSave':
+         /**
+         * ADDED - This is for workflow - allowing drafts
+          * can this prevent a save? - only on falure or return false
+         */
+        if ( $modx->getOption('versionx.workflow.resource',null,true) ){
+            $result = $modx->versionx->resourceWorkflow($resource, $resource->get('version_publish'));
+        }
+        break;
     case 'OnDocFormSave':
-        if ($modx->getOption('versionx.enable.resources',null,true))
-            $result = $modx->versionx->newResourceVersion($resource, $mode);
+        if ($modx->getOption('versionx.enable.resources',null,true)){
+            $vxmode = $resource->get('version_publish');
+            if ( $modx->getOption('versionx.workflow.resource',null,true) ){
+                $result = $modx->versionx->resourceWorkflow($resource, $resource->get('version_publish'), 'afterSave');
+            } else {
+                $result = $modx->versionx->newResourceVersion($resource, $mode);
+            }
+        }
         break;
     case 'OnTempFormSave':
         if ($modx->getOption('versionx.enable.templates',null,true))
@@ -46,8 +62,9 @@ switch($eventName) {
             $result = $modx->versionx->newTemplateVarVersion($tv, $mode);
         break;
     case 'OnChunkFormSave':
-        if ($modx->getOption('versionx.enable.chunks',null,true))
+        if ($modx->getOption('versionx.enable.chunks',null,true) && is_object($chunk) ) {
             $result = $modx->versionx->newChunkVersion($chunk, $mode);
+        }
         break;
     case 'OnSnipFormSave':
         if ($modx->getOption('versionx.enable.snippets',null,true))
@@ -66,11 +83,39 @@ switch($eventName) {
 
     /* Add tabs */
     case 'OnDocFormPrerender':
+        $loadConfig = TRUE;
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxResource'); 
+            $result = $modx->versionx->outputVersionsTab('vxResource');
+            $loadConfig = FALSE; 
+        }
+        // Add work flow:
+        if ( ($mode == modSystemEvent::MODE_NEW || $mode == modSystemEvent::MODE_UPD ) && $modx->getOption('versionx.workflow.resource',null,true)) {
+            $url = NULL;
+            if ($resource && $mode == modSystemEvent::MODE_UPD ) {
+                $url = $modx->makeUrl($resource->get('id'),'',array('vxPreview'=>'latestDraft'), 'full');
+            }
+            $result = $modx->versionx->outputVersionsFields('vxResource', $url, $loadConfig); 
+            if ( $mode == modSystemEvent::MODE_UPD ) {
+                // set the current draft data for the resource:
+                //$result = $modx->versionx->setCurrentWorkflowData($resource);
+            }
         }
         break;
-    
+    case 'OnDocFormRender':
+        if ( $mode == modSystemEvent::MODE_UPD && !isset($_REQUEST['reload']) ) {
+            // set the current draft data for the resource:
+            $result = $modx->versionx->setCurrentWorkflowData($resource);
+        }
+        break;
+    case 'OnResourceTVFormRender':
+        // load the Draft TV Values to the form - do not set them!
+        //$vxmode = $resource->get('version_publish');
+        if ( $modx->getOption('versionx.workflow.resource',null,true) ){
+            $categories = $modx->versionx->setCurrentTVValues($categories);
+            //$finalCategories = $categories = array();
+            $result = TRUE;
+        }
+        break;
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
             $result = $modx->versionx->outputVersionsTab('vxTemplate'); 
@@ -101,11 +146,36 @@ switch($eventName) {
             $result = $modx->versionx->outputVersionsTab('vxPlugin');
         }
         break;
-
+    /* allow preview */
+    case 'OnLoadWebDocument':
+        /**
+         * ADDED - This is for workflow/version previewing drafts or older versions
+         */
+        // @TODO: validate that user can see versions
+        if ( isset($_GET['vxPreview']) && !empty($_GET['vxPreview']) ){
+            if ( is_numeric($_GET['vxPreview']) ) {
+                if ( $modx->versionx->isDebug() ) {
+                    $modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive specific draft data: '.$_GET['vxPreview']);
+                }
+                $previewVersion = $modx->versionx->getCurrentWorkflowVersion($modx->resource->get('id'), 'specific', $_GET['vxPreview']);
+            } else { // if ( $_GET['vxPreview'] == 'latestDraft' ) {
+                $previewVersion = $modx->versionx->getCurrentWorkflowVersion($modx->resource->get('id'), 'last');
+            }
+            if ( $previewVersion ) {
+                $modx->resource = $previewVersion->retrieveData($modx->resource, 'last');
+                if ( $modx->versionx->isDebug() ) {
+                    $modx->log(xPDO::LOG_LEVEL_ERROR, '[VersionX:vxResource] retreive last draft data: '.
+                        $previewVersion->get('version_id').' to preview - pagetitle: '.$modx->resource->get('pagetitle'));
+                }
+            }
+        }
+        break;
+        
+        
 }
-if (isset($result) && $result === true)
+if (isset($result) && $result === true) {
     return;
-elseif (isset($result)) {
+} else if (isset($result)) {
     $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
     return;
 }

@@ -21,7 +21,7 @@ $results = array();
 $c = $modx->newQuery('vxResource');
 $c->leftJoin('modUser','User');
 $c->leftJoin('modUserProfile','Profile','Profile.internalKey = User.id');
-$c->select(array('version_id','content_id','saved','mode','marked','title','context_key','class','User.username'));
+$c->select(array('version_id','content_id','version_notes','version_number','saved','mode','marked','title','context_key','class','User.username'));
 
 /* Filter */
 if ($search)
