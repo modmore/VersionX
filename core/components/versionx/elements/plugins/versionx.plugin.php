@@ -37,6 +37,7 @@ switch($eventName) {
     case 'OnBeforeDocFormSave':
          /**
          * ADDED - This is for workflow - allowing drafts
+          * can this prevent a save? - only on falure or return false
          */
         if ( $modx->getOption('versionx.workflow.resource',null,true) ){
             $result = $modx->versionx->resourceWorkflow($resource, $resource->get('version_publish'));
@@ -44,7 +45,12 @@ switch($eventName) {
         break;
     case 'OnDocFormSave':
         if ($modx->getOption('versionx.enable.resources',null,true)){
-            $result = $modx->versionx->newResourceVersion($resource, $mode);
+            $vxmode = $resource->get('version_publish');
+            if ( $modx->getOption('versionx.workflow.resource',null,true) ){
+                $result = $modx->versionx->resourceWorkflow($resource, $resource->get('version_publish'), 'afterSave');
+            } else {
+                $result = $modx->versionx->newResourceVersion($resource, $mode);
+            }
         }
         break;
     case 'OnTempFormSave':
@@ -91,7 +97,7 @@ switch($eventName) {
             $result = $modx->versionx->outputVersionsFields('vxResource', $url, $loadConfig); 
             if ( $mode == modSystemEvent::MODE_UPD ) {
                 // set the current draft data for the resource:
-                // $result = $modx->versionx->setCurrentWorkflowData($resource);
+                //$result = $modx->versionx->setCurrentWorkflowData($resource);
             }
         }
         break;
@@ -99,6 +105,15 @@ switch($eventName) {
         if ( $mode == modSystemEvent::MODE_UPD && !isset($_REQUEST['reload']) ) {
             // set the current draft data for the resource:
             $result = $modx->versionx->setCurrentWorkflowData($resource);
+        }
+        break;
+    case 'OnResourceTVFormRender':
+        // load the Draft TV Values to the form - do not set them!
+        //$vxmode = $resource->get('version_publish');
+        if ( $modx->getOption('versionx.workflow.resource',null,true) ){
+            $categories = $modx->versionx->setCurrentTVValues($categories);
+            //$finalCategories = $categories = array();
+            $result = TRUE;
         }
         break;
     case 'OnTempFormPrerender':
@@ -154,6 +169,8 @@ switch($eventName) {
                 }
             }
         }
+        break;
+        
         
 }
 if (isset($result) && $result === true) {
