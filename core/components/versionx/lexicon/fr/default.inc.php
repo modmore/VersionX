@@ -25,8 +25,8 @@ $_lang['versionx.tabheader'] = 'Versions';
 $_lang['versionx.menu_desc'] = 'Conservez votre contenu.';
 
 $_lang['versionx.home'] = 'VersionX';
-$_lang['versionx.home.text'] = 'VersionX est un utilitaire pour MODX Revoltution qui vous aide à garder le contenu de vos ressources, modèles, chunks, snippets et plugins. Chaque sauvegarde est sauvegardée et peut facilement être restauré.. <br /><br />
-VersionX est gratuit, toutefois votre aide est souhaitée pour poursuivre le déveeloppement. Si VersionX ss\'avère être utile, n\'hésitez pas à <a href="http://www.markhamstra.com/open-source/versionx/">faire un don</a> de support. Merci.';
+$_lang['versionx.home.text'] = 'VersionX est un utilitaire pour MODX Revolution qui vous aide à garder le contenu de vos ressources, modèles, chunks, snippets et plugins. Chaque enregistrement est sauvegardé et peut facilement être restauré. <br /><br />
+VersionX est gratuit, toutefois votre aide est bienvenue pour poursuivre le développement. Si VersionX s\'avère utile pour vous, n\'hésitez pas à <a href="http://www.markhamstra.com/open-source/versionx/">faire un don</a> de support. Merci.';
 
 $_lang['versionx.common.empty'] = '&lt;vide&gt;';
 $_lang['versionx.common.version-details'] = 'Détails de version';
@@ -34,10 +34,10 @@ $_lang['versionx.common.detail.text'] = 'Ci-dessous les informations de la versi
 $_lang['versionx.common.fields'] = 'Champs';
 $_lang['versionx.common.content'] = 'Contenu';
 $_lang['versionx.common.properties'] = 'Propriétés';
-$_lang['versionx.common.properties.off'] = 'Désolé, cet onglet n\'est pas encore montrable';
+$_lang['versionx.common.properties.off'] = 'Désolé, cet onglet n\'est pas encore utilisable';
 
 $_lang['versionx.resources.detail'] = 'Détails de ressource';
-$_lang['versionx.resources.detail.text'] = 'Ci-dessous les informations de la version de la resource que vous avez sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulan ci-dessous pour sélectionner la version à comparer.';
+$_lang['versionx.resources.detail.text'] = 'Ci-dessous les informations de la version de la resource que vous avez sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulant ci-dessous pour sélectionner la version à comparer.';
 $_lang['versionx.resources.revert'] = 'Restaurer la ressource vers la version #[[+id]]';
 $_lang['versionx.resources.revert.options'] = 'Restaurer la ressource';
 $_lang['versionx.resources.revert.confirm'] = 'Êtes-vous sûr ?';
@@ -61,7 +61,7 @@ $_lang['versionx.templatevars.detail'] = 'Détails de variable de modèle';
 $_lang['versionx.templatevars.detail.input-type'] = 'Type d\'entrée';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Propriétés d\'entrées';
 $_lang['versionx.templatevars.detail.default-text'] = 'Valeur par défaut';
-$_lang['versionx.templatevars.detail.output-type'] = 'Type de sortie';
+$_lang['versionx.templatevars.detail.output-type'] = 'Type d\'affichage';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Propriétés d\'affichage';
 
 $_lang['versionx.chunks.detail'] = 'Détails de chunk';
@@ -79,7 +79,7 @@ $_lang['versionx.backto'] = 'Retour vers [[+what]]';
 $_lang['versionx.compare_to'] = 'Comparer à';
 $_lang['versionx.compare_this_version_to'] = 'Comparer cette version à';
 $_lang['versionx.filter'] = 'Filtrer [[+what]]';
-$_lang['versionx.filter.reset'] = 'Annuler les filtres';
+$_lang['versionx.filter.reset'] = 'Supprimer les filtres';
 $_lang['versionx.filter.datefrom'] = 'Depuis';
 $_lang['versionx.filter.dateuntil'] = 'Jusqu\'à';
 
