@@ -8,8 +8,8 @@ $sort = $modx->getOption('sort',$scriptProperties,'saved');
 $dir = $modx->getOption('dir',$scriptProperties,'desc');
 
 /* Filter data */
+$object = $modx->getOption('snippet',$scriptProperties,null);
 $search = $modx->getOption('search',$scriptProperties,null);
-$tv = $modx->getOption('templatevar',$scriptProperties,null);
 $category = $modx->getOption('category',$scriptProperties,null);
 $user = $modx->getOption('user',$scriptProperties,null);
 $from = $modx->getOption('from',$scriptProperties,null);
@@ -17,19 +17,19 @@ $until = $modx->getOption('until',$scriptProperties,null);
 
 $results = array();
 
-$c = $modx->newQuery('vxTemplateVar');
-$c->leftJoin('modUser','User','User.id = vxTemplateVar.user');
+$c = $modx->newQuery('vxSnippet');
+$c->leftJoin('modUser','User','User.id = vxSnippet.user');
 $c->leftJoin('modUserProfile','Profile','Profile.internalKey = User.id');
-$c->leftJoin('modCategory','Category','Category.id = vxTemplateVar.category');
-$c->select(array('version_id','content_id','name','saved','mode','marked','vxTemplateVar.category','categoryname'=>'Category.category','User.username'));
+$c->leftJoin('modCategory','Category','Category.id = vxSnippet.category');
+$c->select(array('version_id','content_id','saved','mode','marked','name','vxSnippet.category','categoryname'=>'Category.category','User.username'));
 
 /* Filter */
 if ($search)
     $c->where(array('name:LIKE' => "%$search%"));
-if ($tv)
-    $c->where(array('content_id' => (int)$tv));
+if ($object)
+    $c->where(array('content_id' => (int)$object));
 if ($category)
-    $c->where(array('vxTemplateVar.category' => (int)$category));
+    $c->where(array('vxSnippet.category' => (int)$category));
 if ($user && is_numeric($user))
     $c->where(array('user' => (int)$user));
 if ($from)
@@ -38,12 +38,12 @@ if ($until)
     $c->where(array('saved:<' => $until));
 
 
-$total = $modx->getCount('vxTemplateVar',$c);
+$total = $modx->getCount('vxSnippet',$c);
 
 $c->sortby($sort,$dir);
 $c->limit($limit,$start);
 
-$collection = $modx->getCollection('vxTemplateVar',$c);
+$collection = $modx->getCollection('vxSnippet',$c);
 
 /* @var vxResource $res */
 foreach ($collection as $res) {

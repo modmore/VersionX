@@ -28,11 +28,13 @@ class vxResource extends xPDOObject {
         'user',
         'mode',
         'marked',
-        
-        'createdon',
-        'createdby',
-        'editedon',
-        'editedby',
+
+        'fields' => array(
+            'createdon',
+            'createdby',
+            'editedon',
+            'editedby',
+        )
     );
     
     public static $tabJavascript = array(

@@ -56,7 +56,7 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.fields'),
+                    title: _('versionx.common.fields'),
                     items: [{
                         id: 'versionx-panel-templatesdetail-template-fields',
                         xtype: 'versionx-panel-common-detailpanel',
@@ -69,7 +69,7 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.content'),
+                    title: _('versionx.common.content'),
                     items: [{
                         id: 'versionx-panel-templatesdetail-content',
                         xtype: 'versionx-panel-common-contentpanel',
@@ -79,8 +79,8 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
                         vxContentField: 'content'
                     }]
                 },{
-                    title: _('versionx.templates.detail.tabs.properties'),
-                    tabTip: _('versionx.templates.detail.tabs.properties.off'),
+                    title: _('versionx.common.properties'),
+                    tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
                 }]
@@ -92,7 +92,7 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
     VersionX.panel.TemplatesDetail.Main.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.TemplatesDetail.Main,MODx.FormPanel,{
-    compareVersion: function (tf, nv, ov) {
+    compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=template&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;

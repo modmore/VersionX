@@ -20,10 +20,11 @@ $tstart = $mtime;
 set_time_limit(0);
 
 /* define package */
+require_once dirname(dirname(__FILE__)) . '/core/components/versionx/docs/version.inc.php';
 define('PKG_NAME','VersionX');
 define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-define('PKG_VERSION','2.0.0');
-define('PKG_RELEASE','rc2');
+define('PKG_VERSION',VERSIONX_VERSION);
+define('PKG_RELEASE',VERSIONX_RELEASE);
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources= array (

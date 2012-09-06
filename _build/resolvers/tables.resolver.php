@@ -25,27 +25,24 @@
 
 
 if ($object->xpdo) {
-    $modx =& $object->xpdo;
-
-    $modelPath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/').'model/';
-    $modx->addPackage('versionx',$modelPath);
-
-    $manager = $modx->getManager();
-    
-    $loglevel = $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
-
-    $objects = array('vxResource','vxTemplate','vxSnippet','vxChunk','vxPlugin','vxTemplateVar');
-
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_UPGRADE:
         case xPDOTransport::ACTION_INSTALL:
+            $modx =& $object->xpdo;
+
+            $modelPath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/').'model/';
+            $modx->addPackage('versionx',$modelPath);
+            $manager = $modx->getManager();
+            $loglevel = $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+
+            $objects = array('vxResource','vxTemplate','vxSnippet','vxChunk','vxPlugin','vxTemplateVar');
             foreach ($objects as $obj) {
                 $manager->createObjectContainer($obj);
             }
+            $modx->setLogLevel($loglevel);
         break;
     }
-    
-    $modx->setLogLevel($loglevel);
+
 }
 return true;
-?>
+

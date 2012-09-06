@@ -28,7 +28,8 @@ class VersionX {
     private $chunks;
     private $tvs = array();
     public $config = array();
-    
+    public $categoryCache = array();
+
     public $debug = false;
     public $action = null;
 
@@ -57,11 +58,16 @@ class VersionX {
             'connector_url' => $assetsUrl.'connector.php',
         ),$config);
 
+        require_once dirname(dirname(__FILE__)) . '/docs/version.inc.php';
+        if (defined('VERSIONX_FULLVERSION')) {
+            $this->config['version'] = VERSIONX_FULLVERSION;
+        }
         $modelpath = $this->config['model_path'];
         $this->modx->addPackage('versionx',$modelpath);
         $this->modx->lexicon->load('versionx:default');
         
-        $this->debug = $this->modx->getOption('versionx.debug',null,false); 
+        $this->debug = $this->modx->getOption('versionx.debug',null,false);
+        $this->getAction();
     }
 
     /**
@@ -71,13 +77,11 @@ class VersionX {
     public function initialize($ctx = 'web') {
         switch ($ctx) {
             case 'mgr':
-                $action = $this->getAction();
-
                 $this->modx->regClientStartupHTMLBlock('
                 <script type="text/javascript">
                     Ext.onReady(function() {
                         VersionX.config = '.$this->modx->toJSON($this->config).';
-                        VersionX.action = '.$action.';
+                        VersionX.action = '.$this->action.';
                     });
                 </script>
 
@@ -95,7 +99,6 @@ class VersionX {
         return true;
     }
 
-    /* getChunk & _GetTplChunk by splittingred */
     /**
     * Gets a Chunk and caches it; also falls back to file-based templates
     * for easier debugging.
@@ -104,6 +107,7 @@ class VersionX {
     * @param string $name The name of the Chunk
     * @param array $properties The properties for the Chunk
     * @return string The processed content of the Chunk
+    * @author Shaun "splittingred" McCormick
     */
     public function getChunk($name,$properties = array()) {
         $chunk = null;
@@ -129,8 +133,8 @@ class VersionX {
     * @access private
     * @param string $name The name of the Chunk. Will parse to name.chunk.tpl
     * @param string $postFix The postfix to append to the name
-    * @return modChunk/boolean Returns the modChunk object if found, otherwise
-    * false.
+    * @return modChunk/boolean Returns the modChunk object if found, otherwise false.
+    * @author Shaun "splittingred" McCormick
     */
     private function _getTplChunk($name,$postFix = '.tpl') {
         $chunk = false;
@@ -420,6 +424,7 @@ class VersionX {
                     $vArray['tvs'] = $tvArray;
                     break;
                 case 'vxTemplateVar':
+                    $vArray['category'] = $this->getCategory($vArray['category']);
                     if (is_array($vArray['input_properties'])) {
                         foreach ($vArray['input_properties'] as $key => $value) {
                             if ($decoded = $this->modx->fromJSON($value)) {
@@ -438,10 +443,22 @@ class VersionX {
 
                 case 'vxTemplate':
                     $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['content'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxChunk':
                     $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
+                    break;
+
+                case 'vxSnippet':
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
+                    break;
+
+                case 'vxPlugin':
+                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['plugincode'])));
+                    $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
             }
 
@@ -533,52 +550,66 @@ class VersionX {
         $newVersionArray = $version->toArray();
         $lastVersionArray = $lastVersion->toArray();
 
-        /* Get rid of root level excluded vars
-        While an IDE may report this as an error, it's usually not - it just doesn't know where to look. 
-        */
+        /* Get rid of excluded vars for the specific object. */
         $exclude = call_user_func(array($class,'getExcludeFields'));
-        foreach ($exclude as $ex) { if (isset($lastVersionArray[$ex])) { unset($lastVersionArray[$ex]); } }
-        
-        /* Loop over array */
-        foreach ($lastVersionArray as $key => $value) {
+        if ($this->debug) $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Exclude fields: ' . print_r($exclude, true));
+        foreach ($exclude as $key => $value) {
             if (is_array($value)) {
-                foreach ($value as $k2 => $v2) {
-                    if (!is_string($k2) || !in_array($k2,$exclude)) {
-                        if (is_array($v2)) {
-                            $v2string = '';
-                            foreach ($v2 as $val) {
-                                $v2string .= (is_array($val)) ? implode('',$val) : $val;
-                            }
-                            $v2 = $v2string;
-                        }
-                        if (is_array($newVersionArray[$key][$k2])) {
-                            $v2string = '';
-                            foreach ($newVersionArray[$key][$k2] as $val) {
-                                $v2string .= (is_array($val)) ? implode('',$val) : $val;
-                            }
-                            $newVersionArray[$key][$k2] = $v2string;
-                        }
-                        if ($newVersionArray[$key][$k2] != $v2) {
-                            /* Hey, something's different! 
-                            Return true indicating to save a new version. */
-                            if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: Change found in {$k2}: {$newVersionArray[$key][$k2]}  - - -  {$v2}");
-                            return true;
-                        }
+                foreach ($value as $subfield) {
+                    if (isset($newVersionArray[$key]) && isset($newVersionArray[$key][$subfield])) {
+                        unset ($newVersionArray[$key][$subfield]);
+                    }
+                    if (isset($lastVersionArray[$key]) && isset($lastVersionArray[$key][$subfield])) {
+                        unset ($lastVersionArray[$key][$subfield]);
                     }
                 }
             } else {
-                if ($newVersionArray[$key] != $value) {
-                    /* Hey, something's different! 
-                    Return true indicating to save a new version. */
-                    if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: Change found in {$key}: {$newVersionArray[$key]}  - - -  {$value}");
-                    return true;
-                }
+                if (isset($lastVersionArray[$value])) { unset($lastVersionArray[$value]); }
+                if (isset($newVersionArray[$value])) { unset($newVersionArray[$value]); }
             }
         }
-        if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: No changes found.");
+
+        $newVersionFlat = $this->flattenArray($newVersionArray);
+        $lastVersionFlat = $this->flattenArray($lastVersionArray);
+
+        if ($this->debug) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New: ' . print_r($newVersionArray, true));
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New Flattened: ' . $newVersionFlat);
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last: ' . print_r($lastVersionArray, true));
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last Flattened: ' . $newVersionFlat);
+        }
+
+        /* If the flattened arrays don't match there's a difference and we return true to indicate we need to save. */
+        if ($newVersionFlat != $lastVersionFlat) {
+            return true;
+        }
+
+        if ($this->debug) $this->modx->log(xPDO::LOG_LEVEL_ERROR,"[VersionX] Not saving a {$class} for ID {$version->get('content_id')}: No changes found.");
         /* If we got here, there was a last version but it seemed nothing changes.
         Return false to indicate to NOT save a new version. */
         return false;
+    }
+
+    /**
+     * Flattens an array recursively.
+     * @param array $array
+     *
+     * @return array|string
+     */
+    public function flattenArray(array $array = array()) {
+        if (!is_array($array)) return (string)$array;
+
+        $string = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = '{' . $this->flattenArray($value) .'}';
+            }
+            if (!empty($value)) {
+                $string[] = $key . ':' . $value;
+            }
+        }
+        $string = implode(',',$string);
+        return $string;
     }
 
     /**
@@ -662,6 +693,25 @@ class VersionX {
             } 
         }
         return $action;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return string
+     */
+    public function getCategory($id) {
+        if (!$id || $id == 0) return '';
+        if (isset($this->categoryCache[$id])) {
+            return $this->categoryCache[$id];
+        }
+        /* @var modCategory $category */
+        $category = $this->modx->getObject('modCategory',(int)$id);
+        if ($category) {
+            return $this->categoryCache[$id] = $category->get('category') . " ($id)";
+        } else {
+            return (string)$id;
+        }
     }
 
 }

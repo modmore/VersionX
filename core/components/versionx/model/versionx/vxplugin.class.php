@@ -29,6 +29,13 @@ class vxPlugin extends xPDOObject {
         'mode',
         'marked',
     );
+
+    public static $tabJavascript = array(
+        'plugins/panel.plugins.js',
+        'plugins/grid.plugins.js',
+    );
+
+    public static $tabTpl = 'mgr/tabs/plugins';
     /**
      * Gets the excluded fields.
      * @static
@@ -37,5 +44,20 @@ class vxPlugin extends xPDOObject {
     public static function getExcludeFields () {
         return self::$excludeFields;
     }
+    /**
+     * @static
+     * @return array
+     */
+    public static function getTabJavascript() {
+        return self::$tabJavascript;
+    }
+
+    /**
+     * Gets the tab template file name.
+     * @static
+     * @return string
+     */
+    public static function getTabTpl() {
+        return self::$tabTpl;
+    }
 }
-?>

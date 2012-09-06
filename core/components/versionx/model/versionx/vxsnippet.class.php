@@ -29,6 +29,13 @@ class vxSnippet extends xPDOObject {
         'mode',
         'marked',
     );
+
+    public static $tabJavascript = array(
+        'snippets/panel.snippets.js',
+        'snippets/grid.snippets.js',
+    );
+
+    public static $tabTpl = 'mgr/tabs/snippets';
     /**
      * Gets the excluded fields.
      * @static
@@ -37,5 +44,21 @@ class vxSnippet extends xPDOObject {
     public static function getExcludeFields () {
         return self::$excludeFields;
     }
+    /**
+     * @static
+     * @return array
+     */
+    public static function getTabJavascript() {
+        return self::$tabJavascript;
+    }
+
+    /**
+     * Gets the tab template file name.
+     * @static
+     * @return string
+     */
+    public static function getTabTpl() {
+        return self::$tabTpl;
+    }
 }
-?>
+

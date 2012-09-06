@@ -1,8 +1,8 @@
 
-VersionX.panel.Templates = function(config) {
+VersionX.panel.Plugins = function(config) {
     config = config || {};
     Ext.apply(config,{
-        id: 'versionx-panel-templates',
+        id: 'versionx-panel-plugins',
         border: false,
         forceLayout: true,
         width: '98%',
@@ -14,26 +14,25 @@ VersionX.panel.Templates = function(config) {
                 layout: 'form',
                 border: false,
                 items: [{
-                    xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-templates',
-                    fieldLabel: _('template'),
-                    name: 'fltr_template',
+                    xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-plugins',
+                    fieldLabel: _('plugin'),
+                    name: 'fltr_plugin',
                     width: '95%',
-                    id: 'tpl-f-template',
+                    id: 'chk-f-plugin',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
-                    
                 },{
                     xtype: 'modx-combo-user',
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
                     anchor: '1',
-                    id: 'tpl-f-user'
+                    id: 'chk-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
                     name: 'fltr_from',
                     anchor: '1',
-                    id: 'tpl-f-from'
+                    id: 'chk-f-from'
                 }]
             },{
                 columnWidth:.5,
@@ -44,13 +43,17 @@ VersionX.panel.Templates = function(config) {
                     fieldLabel: _('category'),
                     name: 'fltr_category',
                     anchor: '1',
-                    id: 'tpl-f-category'
+                    id: 'chk-f-category'
+                },{ 
+                    fieldLabel: '',
+                    style: 'height: 36px !important',
+                    border: false
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
                     anchor: '1',
-                    id: 'tpl-f-until'
+                    id: 'chk-f-until'
                 }]
             }]
         },{
@@ -70,11 +73,11 @@ VersionX.panel.Templates = function(config) {
                 items: [{
                     xtype: 'button',
                     handler: this.doFilter,
-                    text: _('versionx.filter',{what: _('templates')})
+                    text: _('versionx.filter',{what: _('plugins')})
                 }]
             },{
                 items: [{
-                    xtype: 'button',
+                     xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
                 }]
@@ -90,24 +93,24 @@ VersionX.panel.Templates = function(config) {
             'success': function () {}
         }
     });
-    VersionX.panel.Templates.superclass.constructor.call(this,config);
+    VersionX.panel.Plugins.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.Templates,MODx.Panel,{
+Ext.extend(VersionX.panel.Plugins,MODx.Panel,{
     doFilter: function() {
-        var g = Ext.getCmp('versionx-grid-templates');
+        var g = Ext.getCmp('versionx-grid-plugins');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('tpl-f-template').getValue();
-            g.baseParams['category'] = Ext.getCmp('tpl-f-category').getValue();
-            g.baseParams['user'] = Ext.getCmp('tpl-f-user').getValue();
-            g.baseParams['from'] = Ext.getCmp('tpl-f-from').getValue();
-            g.baseParams['until'] = Ext.getCmp('tpl-f-until').getValue();
+            g.baseParams['search'] = Ext.getCmp('chk-f-plugin').getValue();
+            g.baseParams['category'] = Ext.getCmp('chk-f-category').getValue();
+            g.baseParams['user'] = Ext.getCmp('chk-f-user').getValue();
+            g.baseParams['from'] = Ext.getCmp('chk-f-from').getValue();
+            g.baseParams['until'] = Ext.getCmp('chk-f-until').getValue();
             g.getBottomToolbar().changePage(1);
             g.refresh();
         }
     },
     resetFilter: function() {
-        var g = Ext.getCmp('versionx-grid-templates');
-        g.baseParams['template'] = (VersionX.inVersion) ? MODx.request.id : '';
+        var g = Ext.getCmp('versionx-grid-plugins');
+        g.baseParams['plugin'] = (VersionX.inVersion) ? MODx.request.id : '';
         g.baseParams['category'] = '';
         g.baseParams['user'] = '';
         g.baseParams['from'] = '';
@@ -115,11 +118,11 @@ Ext.extend(VersionX.panel.Templates,MODx.Panel,{
         g.getBottomToolbar().changePage(1);
         g.refresh();
 
-        Ext.getCmp('tpl-f-template').reset();
-        Ext.getCmp('tpl-f-category').reset();
-        Ext.getCmp('tpl-f-user').reset();
-        Ext.getCmp('tpl-f-from').reset();
-        Ext.getCmp('tpl-f-until').reset();
+        Ext.getCmp('chk-f-plugin').reset();
+        Ext.getCmp('chk-f-category').reset();
+        Ext.getCmp('chk-f-user').reset();
+        Ext.getCmp('chk-f-from').reset();
+        Ext.getCmp('chk-f-until').reset();
     }
 });
-Ext.reg('versionx-panel-templates',VersionX.panel.Templates);
+Ext.reg('versionx-panel-plugins',VersionX.panel.Plugins);
