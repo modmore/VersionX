@@ -1,5 +1,7 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+#36 Fix ID clashes in component.
+
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.0.0-rc4       ++
 ++   Released on 2012-07-19   ++

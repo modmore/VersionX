@@ -18,7 +18,7 @@ VersionX.panel.Snippets = function(config) {
                     fieldLabel: _('snippet'),
                     name: 'fltr_snippet',
                     width: '95%',
-                    id: 'chk-f-snippet',
+                    id: 'snippet-f-snippet',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                     
                 },{
@@ -27,13 +27,13 @@ VersionX.panel.Snippets = function(config) {
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
                     anchor: '1',
-                    id: 'chk-f-user'
+                    id: 'snippet-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
                     name: 'fltr_from',
                     anchor: '1',
-                    id: 'chk-f-from'
+                    id: 'snippet-f-from'
                 }]
             },{
                 columnWidth:.5,
@@ -44,7 +44,7 @@ VersionX.panel.Snippets = function(config) {
                     fieldLabel: _('category'),
                     name: 'fltr_category',
                     anchor: '1',
-                    id: 'chk-f-category'
+                    id: 'snippet-f-category'
                 },{ 
                     fieldLabel: '',
                     style: 'height: 36px !important',
@@ -54,7 +54,7 @@ VersionX.panel.Snippets = function(config) {
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
                     anchor: '1',
-                    id: 'chk-f-until'
+                    id: 'snippet-f-until'
                 }]
             }]
         },{
@@ -100,11 +100,11 @@ Ext.extend(VersionX.panel.Snippets,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-snippets');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('chk-f-snippet').getValue();
-            g.baseParams['category'] = Ext.getCmp('chk-f-category').getValue();
-            g.baseParams['user'] = Ext.getCmp('chk-f-user').getValue();
-            g.baseParams['from'] = Ext.getCmp('chk-f-from').getValue();
-            g.baseParams['until'] = Ext.getCmp('chk-f-until').getValue();
+            g.baseParams['search'] = Ext.getCmp('snippet-f-snippet').getValue();
+            g.baseParams['category'] = Ext.getCmp('snippet-f-category').getValue();
+            g.baseParams['user'] = Ext.getCmp('snippet-f-user').getValue();
+            g.baseParams['from'] = Ext.getCmp('snippet-f-from').getValue();
+            g.baseParams['until'] = Ext.getCmp('snippet-f-until').getValue();
             g.getBottomToolbar().changePage(1);
             g.refresh();
         }
@@ -119,11 +119,11 @@ Ext.extend(VersionX.panel.Snippets,MODx.Panel,{
         g.getBottomToolbar().changePage(1);
         g.refresh();
 
-        Ext.getCmp('chk-f-snippet').reset();
-        Ext.getCmp('chk-f-category').reset();
-        Ext.getCmp('chk-f-user').reset();
-        Ext.getCmp('chk-f-from').reset();
-        Ext.getCmp('chk-f-until').reset();
+        Ext.getCmp('snippet-f-snippet').reset();
+        Ext.getCmp('snippet-f-category').reset();
+        Ext.getCmp('snippet-f-user').reset();
+        Ext.getCmp('snippet-f-from').reset();
+        Ext.getCmp('snippet-f-until').reset();
     }
 });
 Ext.reg('versionx-panel-snippets',VersionX.panel.Snippets);
