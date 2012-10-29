@@ -32,6 +32,7 @@ class VersionX {
 
     public $debug = false;
     public $action = null;
+    public $charset = null;
 
 
     /**
@@ -384,7 +385,7 @@ class VersionX {
                     if ($ct instanceof modContentType)
                         $vArray['content_type'] = $ct->get('name');
 
-                    $vArray['content'] = nl2br(htmlentities($vArray['content']));
+                    $vArray['content'] = nl2br($this->htmlent($vArray['content']));
 
                     if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
                     else $vArray['content_dispo'] = $this->modx->lexicon('inline');
@@ -442,22 +443,22 @@ class VersionX {
                     break;
 
                 case 'vxTemplate':
-                    $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['content'])));
+                    $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['content'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxChunk':
-                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['snippet'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxSnippet':
-                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['snippet'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxPlugin':
-                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['plugincode'])));
+                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['plugincode'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
             }
@@ -712,6 +713,18 @@ class VersionX {
         } else {
             return (string)$id;
         }
+    }
+
+    /**
+     * Runs htmlentities() on the string with the proper character encoding.
+     * @param string $string
+     * @return string
+     */
+    public function htmlent($string = '') {
+        if ($this->charset === null) {
+            $this->charset = $this->modx->getOption('charset', null, 'UTF-8');
+        }
+        return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
 
 }
