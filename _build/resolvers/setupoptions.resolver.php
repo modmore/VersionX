@@ -25,10 +25,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         $modx->log(modX::LOG_LEVEL_INFO,'Starting snapshot process for selected objects...');
         /* If we wanted resources snapshot, make that */
         if (isset($options['vx_snapshot_resources']) && !empty($options['vx_snapshot_resources'])) {
-            $collection = $modx->getCollection('modResource');
+            $collection = $modx->getIterator('modResource');
             $modx->log(modX::LOG_LEVEL_INFO,'Resources loaded. Iterating over resources and storing snapshots..');
             $count = 0;
-            foreach ($collection as $object) {
+            foreach ($collection as $idx => $object) {
                 if ($versionx->newResourceVersion($object, 'snapshot')) {
                     $count++;
                 } else {
@@ -43,10 +43,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         /* If we wanted template snapshot, make that */
         if (isset($options['vx_snapshot_templates']) && !empty($options['vx_snapshot_templates'])) {
-            $collection = $modx->getCollection('modTemplate');
+            $collection = $modx->getIterator('modTemplate');
             $modx->log(modX::LOG_LEVEL_INFO,'Templates loaded. Iterating over templates and storing snapshots..');
             $count = 0;
-            foreach ($collection as $object) {
+            foreach ($collection as $idx => $object) {
                 if ($versionx->newTemplateVersion($object, 'snapshot')) { $count++; }
                 else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for template '.$object->get('id')); }
 
@@ -57,10 +57,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         /* If we wanted chunk snapshot, make that */
         if (isset($options['vx_snapshot_chunks']) && !empty($options['vx_snapshot_chunks'])) {
-            $collection = $modx->getCollection('modChunk');
+            $collection = $modx->getIterator('modChunk');
             $modx->log(modX::LOG_LEVEL_INFO,'Chunks loaded. Iterating over chunks and storing snapshots..');
             $count = 0;
-            foreach ($collection as $object) {
+            foreach ($collection as $idx => $object) {
                 if ($versionx->newChunkVersion($object, 'snapshot')) { $count++; }
                 else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for chunk '.$object->get('id')); }
 
@@ -71,10 +71,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         /* If we wanted snippet snapshot, make that */
         if (isset($options['vx_snapshot_snippets']) && !empty($options['vx_snapshot_snippets'])) {
-            $collection = $modx->getCollection('modSnippet');
+            $collection = $modx->getIterator('modSnippet');
             $modx->log(modX::LOG_LEVEL_INFO,'Snippets loaded. Iterating over snippets and storing snapshots..');
             $count = 0;
-            foreach ($collection as $object) {
+            foreach ($collection as $idx => $object) {
                 if ($versionx->newSnippetVersion($object, 'snapshot')) { $count++; }
                 else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Snippet '.$object->get('id')); }
 
@@ -85,10 +85,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         /* If we wanted plugins snapshot, make that */
         if (isset($options['vx_snapshot_plugins']) && !empty($options['vx_snapshot_plugins'])) {
-            $collection = $modx->getCollection('modPlugin');
+            $collection = $modx->getIterator('modPlugin');
             $modx->log(modX::LOG_LEVEL_INFO,'Plugins loaded. Iterating over Plugins and storing snapshots..');
             $count = 0;
-            foreach ($collection as $object) {
+            foreach ($collection as $idx => $object) {
                 if ($versionx->newPluginVersion($object, 'snapshot')) { $count++; }
                 else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Plugin '.$object->get('id')); }
 
@@ -99,10 +99,10 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         /* If we wanted tv snapshot, make that */
         if (isset($options['vx_snapshot_tmplvars']) && !empty($options['vx_snapshot_tmplvars'])) {
-            $collection = $modx->getCollection('modTemplateVar');
+            $collection = $modx->getIterator('modTemplateVar');
             $modx->log(modX::LOG_LEVEL_INFO,'Template Variables loaded. Iterating over Template Variables and storing snapshots..');
             $count = 0;
-            foreach ($collection as $object) {
+            foreach ($collection as $idx => $object) {
                 if ($versionx->newTemplateVarVersion($object, 'snapshot')) { $count++; }
                 else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Template Variable '.$object->get('id')); }
 
