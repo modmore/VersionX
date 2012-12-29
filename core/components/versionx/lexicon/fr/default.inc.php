@@ -53,6 +53,11 @@ $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Valeur de champ 
 
 $_lang['versionx.templates.detail'] = 'Détails de modèle';
 $_lang['versionx.templates.detail.text'] = 'Ci-dessous les informations de la version du modèle sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulant ci-dessous pour sélectionner la version à comparer.';
+$_lang['versionx.templates.revert'] = 'Restaurer le modèle vers la version #[[+id]]';
+$_lang['versionx.templates.revert.options'] = 'Restaurer le modèle';
+$_lang['versionx.templates.revert.confirm'] = 'Êtes-vous sûr ?';
+$_lang['versionx.templates.revert.confirm.text'] = 'Êtes-vous sûr de vouloir restaurer la version #[[+id]] ? Cette opération écrasera le contenu et les metadata actuellement définis pour ce modèle.';
+$_lang['versionx.templates.reverted'] = 'Modèle restauré avec succès!';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Options d\'entrée';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Options d\'affichage';
@@ -63,9 +68,19 @@ $_lang['versionx.templatevars.detail.input-properties'] = 'Propriétés d\'entr�
 $_lang['versionx.templatevars.detail.default-text'] = 'Valeur par défaut';
 $_lang['versionx.templatevars.detail.output-type'] = 'Type d\'affichage';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Propriétés d\'affichage';
+$_lang['versionx.templatevars.revert'] = 'Restaurer la variable de modèle vers la version #[[+id]]';
+$_lang['versionx.templatevars.revert.options'] = 'Restaurer la variable de modèle';
+$_lang['versionx.templatevars.revert.confirm'] = 'Êtes-vous sûr ?';
+$_lang['versionx.templatevars.revert.confirm.text'] = 'Êtes-vous sûr de vouloir restaurer la version #[[+id]] ? Cette opération écrasera le contenu et les metadata actuellement définis pour cette variable de modèle.';
+$_lang['versionx.templatevars.reverted'] = 'Variable de modèle restaurée avec succès!';
 
 $_lang['versionx.chunks.detail'] = 'Détails de chunk';
 $_lang['versionx.chunks.detail.text'] = 'Ci-dessous les informations de la version du chunk sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulant ci-dessous pour sélectionner la version à comparer.';
+$_lang['versionx.chunks.revert'] = 'Restaurer le chunk vers la version #[[+id]]';
+$_lang['versionx.chunks.revert.options'] = 'Restaurer le chunk';
+$_lang['versionx.chunks.revert.confirm'] = 'Êtes-vous sûr ?';
+$_lang['versionx.chunks.revert.confirm.text'] = 'Êtes-vous sûr de vouloir restaurer la version [[+id]] ? Cette opération écrasera le contenu et les metadata actuellement définis pour ce chunk.';
+$_lang['versionx.chunks.reverted'] = 'Chunk restauré avec succès!';
 
 $_lang['versionx.snippets.detail'] = 'Détails de snippet';
 $_lang['versionx.snippets.detail.text'] = 'Ci-dessous les informations de la version du snippet sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulant ci-dessous pour sélectionner la version à comparer.';
