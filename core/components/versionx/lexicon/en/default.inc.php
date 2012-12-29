@@ -68,6 +68,11 @@ $_lang['versionx.templatevars.detail.input-properties'] = 'Input Properties';
 $_lang['versionx.templatevars.detail.default-text'] = 'Default Value';
 $_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
+$_lang['versionx.templatevars.revert'] = 'Revert Template to Version #[[+id]]';
+$_lang['versionx.templatevars.revert.options'] = 'Revert Template Variable';
+$_lang['versionx.templatevars.revert.confirm'] = 'Are you sure?';
+$_lang['versionx.templatevars.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite the content and other metadata currently set for the Template Variable and replace them with the ones in the version you selected.';
+$_lang['versionx.templatevars.reverted'] = 'Template Variable has been successfully reverted!';
 
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
 $_lang['versionx.chunks.detail.text'] = 'Below you can find the details for the Chunk Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
@@ -79,9 +84,19 @@ $_lang['versionx.chunks.reverted'] = 'Chunk has been successfully reverted!';
 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
 $_lang['versionx.snippets.detail.text'] = 'Below you can find the details for the Snippet Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+$_lang['versionx.snippets.revert'] = 'Revert Snippet to Version #[[+id]]';
+$_lang['versionx.snippets.revert.options'] = 'Revert Snippet';
+$_lang['versionx.snippets.revert.confirm'] = 'Are you sure?';
+$_lang['versionx.snippets.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite the content and other metadata currently set for the Snippet and replace them with the ones in the version you selected.';
+$_lang['versionx.snippets.reverted'] = 'Snippet has been successfully reverted!';
 
 $_lang['versionx.plugins.detail'] = 'Plugin Details';
 $_lang['versionx.plugins.detail.text'] = 'Below you can find the details for the Plugin Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+$_lang['versionx.plugins.revert'] = 'Revert Plugin to Version #[[+id]]';
+$_lang['versionx.plugins.revert.options'] = 'Revert Plugin';
+$_lang['versionx.plugins.revert.confirm'] = 'Are you sure?';
+$_lang['versionx.plugins.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite the content and other metadata currently set for the Plugin and replace them with the ones in the version you selected.';
+$_lang['versionx.plugins.reverted'] = 'Plugin has been successfully reverted!';
 
 $_lang['versionx.menu.viewdetails'] = 'View Version Details';
 $_lang['versionx.back'] = 'Back to Overview';
