@@ -2,8 +2,8 @@ Ext.ns('VersionX.panel.TemplateVariablesDetail');
 
 VersionX.panel.TemplateVariablesDetail.Main = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-templatevarsdetail';
     Ext.apply(config,{
-        id: 'versionx-panel-templatevarsdetail',
         border: false,
         layout: 'form',
         items: [{
@@ -103,7 +103,13 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
                             { key: 'output_properties', lexicon:'versionx.templatevars.detail.output-properties', enumerate:true }
                         ]
                     }]
-                }]
+                }],
+                stateful: true,
+                stateId: config.id,
+                stateEvents: ['tabchange'],
+                getState: function() {
+                    return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                }
             }]
         }],
         listeners: {

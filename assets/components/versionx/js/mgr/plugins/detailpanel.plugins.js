@@ -1,7 +1,7 @@
 VersionX.panel.PluginsDetail = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-pluginsdetail';
     Ext.apply(config,{
-        id: 'versionx-panel-pluginsdetail',
         border: false,
         layout: 'form',
         items: [{
@@ -83,7 +83,13 @@ VersionX.panel.PluginsDetail = function(config) {
                     tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
-                }]
+                }],
+                stateful: true,
+                stateId: config.id,
+                stateEvents: ['tabchange'],
+                getState: function() {
+                    return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                }
             }]
         }],
         listeners: {

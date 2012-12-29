@@ -1,7 +1,7 @@
 VersionX.panel.ResourcesDetail.Main = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-resourcesdetail';
     Ext.apply(config,{
-        id: 'versionx-panel-resourcesdetail',
         border: false,
         layout: 'form',
         items: [{
@@ -154,7 +154,13 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                             { key: 'class_key', lexicon:'class_key' }
                         ]
                     }]
-                }]
+                }],
+                stateful: true,
+                stateId: config.id,
+                stateEvents: ['tabchange'],
+                getState: function() {
+                    return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                }
             }]
         }],
         listeners: {

@@ -5,6 +5,7 @@ Ext.onReady(function() {
 
 VersionX.page.Index = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-index';
     Ext.applyIf(config,{
         renderTo: 'versionx',
         cls: 'container',
@@ -91,7 +92,13 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-plugins'
                         }]
-                    }]
+                    }],
+                    stateful: true,
+                    stateId: config.id,
+                    stateEvents: ['tabchange'],
+                    getState: function() {
+                        return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                    }
                 }]
             }]
         }]
