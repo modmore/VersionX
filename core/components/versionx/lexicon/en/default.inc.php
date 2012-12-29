@@ -66,6 +66,11 @@ $_lang['versionx.templatevars.detail.output-properties'] = 'Output Properties';
 
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
 $_lang['versionx.chunks.detail.text'] = 'Below you can find the details for the Chunk Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+$_lang['versionx.chunks.revert'] = 'Revert Chunk to Version #[[+id]]';
+$_lang['versionx.chunks.revert.options'] = 'Revert Chunk';
+$_lang['versionx.chunks.revert.confirm'] = 'Are you sure?';
+$_lang['versionx.chunks.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite the content and other metadata currently set for the Chunk and replace them with the ones in the version you selected.';
+$_lang['versionx.chunks.reverted'] = 'Chunk has been successfully reverted!';
 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
 $_lang['versionx.snippets.detail.text'] = 'Below you can find the details for the Snippet Version you selected. To compare this Version with another one, use the combobox below to select another Version.';

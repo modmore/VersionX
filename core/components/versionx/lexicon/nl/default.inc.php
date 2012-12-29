@@ -71,6 +71,11 @@ $_lang['versionx.templatevars.detail.output-properties'] = 'Output Opties';
 
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
 $_lang['versionx.chunks.detail.text'] = 'Hieronder vindt u de gegevens van de Chunk Versie die u heeft geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.chunks.revert'] = 'Herstel Chunk naar Versie #[[+id]]';
+$_lang['versionx.chunks.revert.options'] = 'Herstel Chunk';
+$_lang['versionx.chunks.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.chunks.revert.confirm.text'] = 'Weet u zeker dat u deze Chunk wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.chunks.reverted'] = 'Chunk is Hersteld';
 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
 $_lang['versionx.snippets.detail.text'] = 'Hieronder vindt u de gegevens van de Snippet Versie die u heeft geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';

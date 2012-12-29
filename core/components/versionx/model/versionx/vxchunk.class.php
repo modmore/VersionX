@@ -62,4 +62,35 @@ class vxChunk extends xPDOObject {
     public static function getTabTpl() {
         return self::$tabTpl;
     }
+    
+    /**
+     * Reverts a chunk to the selected version.
+     * @param array $options
+     *
+     * @return bool
+     */
+    public function revert(array $options = array()) {
+        if (!$this->get('content_id')) {
+            return false;
+        }
+
+        /* @var modChunk $chunk */
+        $chunk = $this->xpdo->getObject('modChunk',$this->get('content_id'));
+        if (!($chunk instanceof modChunk)) {
+            /* Could not find the chunk, so we'll assume it was deleted. We'll create a new chunk and force that ID. */
+            $chunk = $this->xpdo->newObject($this->get('class'));
+            $chunk->set('id', $this->get('content_id'));
+        }
+
+        $chunk->fromArray(array(
+            'name' => $this->get('name'),
+            'description' => $this->get('description'),
+            'category' => ($this->xpdo->getCount('modCategory',array('id' => $this->get('category'))) > 0) ? $this->get('category') : 0,
+            'snippet' => $this->get('snippet'),
+            'locked' => $this->get('locked'),
+        ), '', true);
+
+
+        return $chunk->save();
+    }
 }

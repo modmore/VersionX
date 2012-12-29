@@ -1,5 +1,6 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Add ability to revert Chunks.
 #45 Implement tab states for easier back-and-forth in the component.
 #43 Improve setup process performance by using getIterator instead of getCollection.
 #44 Fix htmlentities() charset error.

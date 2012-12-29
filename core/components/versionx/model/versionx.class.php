@@ -268,12 +268,17 @@ class VersionX {
     /**
      * Create a new version of a Chunk.
      *
-     * @param \modChunk $chunk
+     * @param int|\modChunk $chunk
      * @param string $mode
      * @return bool
      */
-    public function newChunkVersion(modChunk $chunk, $mode = 'upd') {
-        if (!($chunk instanceof modChunk)) { return false; }
+    public function newChunkVersion($chunk, $mode = 'upd') {
+        if ($chunk instanceof modChunk) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $chunk = $this->modx->getObject('modChunk', $chunk->get('id'));
+        } else {
+            $chunk = $this->modx->getObject('modChunk', (int)$chunk);
+        }
 
         $cArray = $chunk->toArray();
 
@@ -540,7 +545,7 @@ class VersionX {
         $lastVersion = $this->modx->getCollection($class,$c);
         /* @var vxResource $lastVersion */
         $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
-        
+
         /* If there's no earlier version, we can go ahead and
          return true to indicate we need to save the version */
         if (!($lastVersion instanceof $class)) { 
