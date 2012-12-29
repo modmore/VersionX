@@ -78,7 +78,7 @@ class vxChunk extends xPDOObject {
         $chunk = $this->xpdo->getObject('modChunk',$this->get('content_id'));
         if (!($chunk instanceof modChunk)) {
             /* Could not find the chunk, so we'll assume it was deleted. We'll create a new chunk and force that ID. */
-            $chunk = $this->xpdo->newObject($this->get('class'));
+            $chunk = $this->xpdo->newObject('modChunk');
             $chunk->set('id', $this->get('content_id'));
         }
 

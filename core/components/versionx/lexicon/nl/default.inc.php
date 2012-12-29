@@ -58,6 +58,11 @@ $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Veld Waarde [Ver
 
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Hieronder vindt u de gegevens van de Template Versie die u hebt geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.templates.revert'] = 'Herstel Template naar Versie #[[+id]]';
+$_lang['versionx.templates.revert.options'] = 'Herstel Template';
+$_lang['versionx.templates.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.templates.revert.confirm.text'] = 'Weet u zeker dat u deze Template wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.templates.reverted'] = 'Template is Hersteld';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Input Opties';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Output Opties';

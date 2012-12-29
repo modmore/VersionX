@@ -53,6 +53,11 @@ $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Field Value [Ver
 
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Below you can find the details for the Template Version you selected. To compare this Version with another one, use the combobox below to select another Version.';
+$_lang['versionx.templates.revert'] = 'Revert Template to Version #[[+id]]';
+$_lang['versionx.templates.revert.options'] = 'Revert Template';
+$_lang['versionx.templates.revert.confirm'] = 'Are you sure?';
+$_lang['versionx.templates.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite the content and other metadata currently set for the Template and replace them with the ones in the version you selected.';
+$_lang['versionx.templates.reverted'] = 'Template has been successfully reverted!';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Input Options';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Output Options';

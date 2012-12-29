@@ -208,14 +208,18 @@ class VersionX {
     /**
      * Creates a new version of a Template.
      *
-     * @param \modTemplate $template
+     * @param int|\modTemplate $template
      * @param string $mode
      * @return bool
      *
      */
-    public function newTemplateVersion(modTemplate $template, $mode = 'upd') {
-        if (!($template instanceof modTemplate)) { return false; }
-
+    public function newTemplateVersion($template, $mode = 'upd') {
+        if ($template instanceof modTemplate) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $template = $this->modx->getObject('modTemplate', $template->get('id'));
+        } else {
+            $template = $this->modx->getObject('modTemplate', (int)$template);
+        }
         $tArray = $template->toArray();
 
         /* @var vxTemplate $version */
