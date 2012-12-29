@@ -722,7 +722,7 @@ class VersionX {
      */
     public function htmlent($string = '') {
         if ($this->charset === null) {
-            $this->charset = $this->modx->getOption('charset', null, 'UTF-8');
+            $this->charset = $this->modx->getOption('modx_charset', null, 'UTF-8');
         }
         return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
