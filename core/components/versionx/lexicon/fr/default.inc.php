@@ -84,9 +84,19 @@ $_lang['versionx.chunks.reverted'] = 'Chunk restauré avec succès!';
 
 $_lang['versionx.snippets.detail'] = 'Détails de snippet';
 $_lang['versionx.snippets.detail.text'] = 'Ci-dessous les informations de la version du snippet sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulant ci-dessous pour sélectionner la version à comparer.';
+$_lang['versionx.snippets.revert'] = 'Restaurer le snippet vers la version #[[+id]]';
+$_lang['versionx.snippets.revert.options'] = 'Restaurer le snippet';
+$_lang['versionx.snippets.revert.confirm'] = 'Êtes-vous sûr ?';
+$_lang['versionx.snippets.revert.confirm.text'] = 'Êtes-vous sûr de vouloir restaurer la version [[+id]] ? Cette opération écrasera le contenu et les metadata actuellement définis pour ce snippet.';
+$_lang['versionx.snippets.reverted'] = 'Snippet restauré avec succès!';
 
 $_lang['versionx.plugins.detail'] = 'Détails de plugin';
 $_lang['versionx.plugins.detail.text'] = 'Ci-dessous les informations de la version du plugin sélectionné. Pour comparer cette version à une autre, utilisez le menu déroulant ci-dessous pour sélectionner la version à comparer.';
+$_lang['versionx.plugins.revert'] = 'Restaurer le plugin vers la version #[[+id]]';
+$_lang['versionx.plugins.revert.options'] = 'Restaurer le  plugin';
+$_lang['versionx.plugins.revert.confirm'] = 'Êtes-vous sûr ?';
+$_lang['versionx.plugins.revert.confirm.text'] = 'Êtes-vous sûr de vouloir restaurer la version [[+id]] ? Cette opération écrasera le contenu et les metadata actuellement définis pour ce plugin.';
+$_lang['versionx.plugins.reverted'] = 'Plugin restauré avec succès!';
 
 $_lang['versionx.menu.viewdetails'] = 'Voir les détails de version';
 $_lang['versionx.back'] = 'Retour à l\'aperçu';
