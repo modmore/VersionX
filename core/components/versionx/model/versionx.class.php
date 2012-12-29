@@ -243,13 +243,18 @@ class VersionX {
     /**
      * Creates a new version of a Template Variable.
      *
-     * @param \modTemplateVar $tv
+     * @param int|\modTemplateVar $tv
      * @param string $mode
      * @return bool
      *
      */
-    public function newTemplateVarVersion(modTemplateVar $tv, $mode = 'upd') {
-        if (!($tv instanceof modTemplateVar)) { return false; }
+    public function newTemplateVarVersion($tv, $mode = 'upd') {
+        if ($tv instanceof modTemplateVar) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $tv = $this->modx->getObject('modTemplateVar', $tv->get('id'));
+        } else {
+            $tv = $this->modx->getObject('modTemplateVar', (int)$tv);
+        }
 
         $tArray = $tv->toArray();
 
@@ -306,12 +311,17 @@ class VersionX {
     /**
      * Creates a new version of a Snippet.
      *
-     * @param \modSnippet $snippet
+     * @param int|\modSnippet $snippet
      * @param string $mode
      * @return bool
      */
-    public function newSnippetVersion(modSnippet $snippet, $mode = 'upd') {
-        if (!($snippet instanceof modSnippet)) { return false; }
+    public function newSnippetVersion($snippet, $mode = 'upd') {
+        if ($snippet instanceof modSnippet) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $snippet = $this->modx->getObject('modSnippet', $snippet->get('id'));
+        } else {
+            $snippet = $this->modx->getObject('modSnippet', (int)$snippet);
+        }
 
         $sArray = $snippet->toArray();
 
@@ -335,13 +345,17 @@ class VersionX {
     /**
      * Creates a new version of a Plugin.
      *
-     * @param \modPlugin $plugin
+     * @param int|\modPlugin $plugin
      * @param string $mode
      * @return bool
      */
-    public function newPluginVersion(modPlugin $plugin, $mode = 'upd') {
-        if (!($plugin instanceof modPlugin)) { return false; }
-
+    public function newPluginVersion($plugin, $mode = 'upd') {
+        if ($plugin instanceof modPlugin) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $plugin = $this->modx->getObject('modPlugin', $plugin->get('id'));
+        } else {
+            $plugin = $this->modx->getObject('modPlugin', (int)$plugin);
+        }
         $pArray = $plugin->toArray();
 
         /* @var vxPlugin $version */

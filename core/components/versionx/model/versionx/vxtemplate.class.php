@@ -66,7 +66,7 @@ class vxTemplate extends xPDOObject {
     
     
     /**
-     * Reverts a chunk to the selected version.
+     * Reverts a template to the selected version.
      * @param array $options
      *
      * @return bool
