@@ -1,7 +1,7 @@
 VersionX.panel.SnippetsDetail = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-snippetsdetail';
     Ext.apply(config,{
-        id: 'versionx-panel-snippetsdetail',
         border: false,
         layout: 'form',
         items: [{
@@ -11,20 +11,44 @@ VersionX.panel.SnippetsDetail = function(config) {
         },{
             layout: 'form',
             cls: 'main-wrapper',
-            labelWidth: 125,
             items: [{
-                xtype: 'versionx-combo-snippetversions',
-                fieldLabel: _('versionx.compare_to'),
-                labelStyle: 'padding: 7px 0 0 5px;',
-                name: 'compare_to',
-                baseParams: {
-                    snippet: (VersionX.record) ? VersionX.record['content_id'] : 0,
-                    current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                    action: 'mgr/snippets/get_versions'
-                },
-                listeners: {
-                    'select': this.compareVersion
-                }
+                layout: 'hbox',
+                border: false,
+                items: [{
+                    xtype: 'versionx-combo-snippetversions',
+                    emptyText: _('versionx.compare_to'),
+                    labelStyle: 'padding: 7px 0 0 5px;',
+                    name: 'compare_to',
+                    baseParams: {
+                        snippet: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        current: (VersionX.record) ? VersionX.record['version_id'] : 0,
+                        action: 'mgr/snippets/get_versions'
+                    },
+                    listeners: {
+                        'select': this.compareVersion
+                    }
+                },{html: '&nbsp;', border: false, bodyStyle: 'margin-left: 10px;'},{
+                    xtype: 'button',
+                    text: _('versionx.snippets.revert.options'),
+                    handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
+                        this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                    },
+                    scope: this,
+                    menu: (VersionX.record && VersionX.cmrecord) ?
+                        [{
+                            text: _('versionx.snippets.revert',{id: VersionX.record['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                            },
+                            scope: this
+                        },{
+                            text: _('versionx.snippets.revert',{id: VersionX.cmrecord['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.cmrecord) ? VersionX.cmrecord['version_id'] : 0);
+                            },
+                            scope: this
+                        }] : undefined
+                }]
             },{
                 xtype: 'panel',
                 bodyStyle: 'height: 12px',
@@ -83,7 +107,13 @@ VersionX.panel.SnippetsDetail = function(config) {
                     tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
-                }]
+                }],
+                stateful: true,
+                stateId: config.id,
+                stateEvents: ['tabchange'],
+                getState: function() {
+                    return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                }
             }]
         }],
         listeners: {
@@ -96,6 +126,28 @@ Ext.extend(VersionX.panel.SnippetsDetail,MODx.FormPanel,{
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=snippet&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+    },
+
+    revertVersion: function(version) {
+        if (version < 1) { MODx.alert(_('error'),'Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.snippets.revert.confirm'),
+            text: _('versionx.snippets.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: VersionX.record.content_id,
+                action: 'mgr/snippets/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.snippets.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
+            }
+        });
     }
 });
 Ext.reg('versionx-panel-snippetsdetail',VersionX.panel.SnippetsDetail);

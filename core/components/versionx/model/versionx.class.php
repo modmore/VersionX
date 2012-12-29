@@ -32,6 +32,7 @@ class VersionX {
 
     public $debug = false;
     public $action = null;
+    public $charset = null;
 
 
     /**
@@ -207,14 +208,18 @@ class VersionX {
     /**
      * Creates a new version of a Template.
      *
-     * @param \modTemplate $template
+     * @param int|\modTemplate $template
      * @param string $mode
      * @return bool
      *
      */
-    public function newTemplateVersion(modTemplate $template, $mode = 'upd') {
-        if (!($template instanceof modTemplate)) { return false; }
-
+    public function newTemplateVersion($template, $mode = 'upd') {
+        if ($template instanceof modTemplate) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $template = $this->modx->getObject('modTemplate', $template->get('id'));
+        } else {
+            $template = $this->modx->getObject('modTemplate', (int)$template);
+        }
         $tArray = $template->toArray();
 
         /* @var vxTemplate $version */
@@ -238,13 +243,18 @@ class VersionX {
     /**
      * Creates a new version of a Template Variable.
      *
-     * @param \modTemplateVar $tv
+     * @param int|\modTemplateVar $tv
      * @param string $mode
      * @return bool
      *
      */
-    public function newTemplateVarVersion(modTemplateVar $tv, $mode = 'upd') {
-        if (!($tv instanceof modTemplateVar)) { return false; }
+    public function newTemplateVarVersion($tv, $mode = 'upd') {
+        if ($tv instanceof modTemplateVar) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $tv = $this->modx->getObject('modTemplateVar', $tv->get('id'));
+        } else {
+            $tv = $this->modx->getObject('modTemplateVar', (int)$tv);
+        }
 
         $tArray = $tv->toArray();
 
@@ -267,12 +277,17 @@ class VersionX {
     /**
      * Create a new version of a Chunk.
      *
-     * @param \modChunk $chunk
+     * @param int|\modChunk $chunk
      * @param string $mode
      * @return bool
      */
-    public function newChunkVersion(modChunk $chunk, $mode = 'upd') {
-        if (!($chunk instanceof modChunk)) { return false; }
+    public function newChunkVersion($chunk, $mode = 'upd') {
+        if ($chunk instanceof modChunk) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $chunk = $this->modx->getObject('modChunk', $chunk->get('id'));
+        } else {
+            $chunk = $this->modx->getObject('modChunk', (int)$chunk);
+        }
 
         $cArray = $chunk->toArray();
 
@@ -296,12 +311,17 @@ class VersionX {
     /**
      * Creates a new version of a Snippet.
      *
-     * @param \modSnippet $snippet
+     * @param int|\modSnippet $snippet
      * @param string $mode
      * @return bool
      */
-    public function newSnippetVersion(modSnippet $snippet, $mode = 'upd') {
-        if (!($snippet instanceof modSnippet)) { return false; }
+    public function newSnippetVersion($snippet, $mode = 'upd') {
+        if ($snippet instanceof modSnippet) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $snippet = $this->modx->getObject('modSnippet', $snippet->get('id'));
+        } else {
+            $snippet = $this->modx->getObject('modSnippet', (int)$snippet);
+        }
 
         $sArray = $snippet->toArray();
 
@@ -325,13 +345,17 @@ class VersionX {
     /**
      * Creates a new version of a Plugin.
      *
-     * @param \modPlugin $plugin
+     * @param int|\modPlugin $plugin
      * @param string $mode
      * @return bool
      */
-    public function newPluginVersion(modPlugin $plugin, $mode = 'upd') {
-        if (!($plugin instanceof modPlugin)) { return false; }
-
+    public function newPluginVersion($plugin, $mode = 'upd') {
+        if ($plugin instanceof modPlugin) {
+            /* Fetch it again to prevent getting stuck with raw post data */
+            $plugin = $this->modx->getObject('modPlugin', $plugin->get('id'));
+        } else {
+            $plugin = $this->modx->getObject('modPlugin', (int)$plugin);
+        }
         $pArray = $plugin->toArray();
 
         /* @var vxPlugin $version */
@@ -384,7 +408,7 @@ class VersionX {
                     if ($ct instanceof modContentType)
                         $vArray['content_type'] = $ct->get('name');
 
-                    $vArray['content'] = nl2br(htmlentities($vArray['content']));
+                    $vArray['content'] = nl2br($this->htmlent($vArray['content']));
 
                     if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
                     else $vArray['content_dispo'] = $this->modx->lexicon('inline');
@@ -442,22 +466,22 @@ class VersionX {
                     break;
 
                 case 'vxTemplate':
-                    $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['content'])));
+                    $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['content'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxChunk':
-                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['snippet'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxSnippet':
-                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['snippet'])));
+                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['snippet'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxPlugin':
-                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',htmlentities($vArray['plugincode'])));
+                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['plugincode'])));
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
             }
@@ -539,7 +563,7 @@ class VersionX {
         $lastVersion = $this->modx->getCollection($class,$c);
         /* @var vxResource $lastVersion */
         $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
-        
+
         /* If there's no earlier version, we can go ahead and
          return true to indicate we need to save the version */
         if (!($lastVersion instanceof $class)) { 
@@ -712,6 +736,18 @@ class VersionX {
         } else {
             return (string)$id;
         }
+    }
+
+    /**
+     * Runs htmlentities() on the string with the proper character encoding.
+     * @param string $string
+     * @return string
+     */
+    public function htmlent($string = '') {
+        if ($this->charset === null) {
+            $this->charset = $this->modx->getOption('modx_charset', null, 'UTF-8');
+        }
+        return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
 
 }

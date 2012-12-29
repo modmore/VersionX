@@ -55,11 +55,9 @@ $vehicle = $builder->createVehicle($menu,array (
             xPDOTransport::PRESERVE_KEYS => true,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => array ('namespace','controller'),
-            xPDOTRANSPORT::RELATED_OBJECTS => false
+            xPDOTransport::RELATED_OBJECTS => false
         ),
     ),
 ));
 $builder->putVehicle($vehicle);
 unset ($vehicle,$childActions,$action,$menu);
-
-?>

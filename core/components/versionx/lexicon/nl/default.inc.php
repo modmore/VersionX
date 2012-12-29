@@ -58,6 +58,11 @@ $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Veld Waarde [Ver
 
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Hieronder vindt u de gegevens van de Template Versie die u hebt geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.templates.revert'] = 'Herstel Template naar Versie #[[+id]]';
+$_lang['versionx.templates.revert.options'] = 'Herstel Template';
+$_lang['versionx.templates.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.templates.revert.confirm.text'] = 'Weet u zeker dat u deze Template wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.templates.reverted'] = 'Template is Hersteld';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Input Opties';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Output Opties';
@@ -68,15 +73,35 @@ $_lang['versionx.templatevars.detail.input-properties'] = 'Input Opties';
 $_lang['versionx.templatevars.detail.default-text'] = 'Standaard Waarde';
 $_lang['versionx.templatevars.detail.output-type'] = 'Output Type';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Output Opties';
+$_lang['versionx.templatevars.revert'] = 'Herstel Template Variabele naar Versie #[[+id]]';
+$_lang['versionx.templatevars.revert.options'] = 'Herstel Template Variabele';
+$_lang['versionx.templatevars.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.templatevars.revert.confirm.text'] = 'Weet u zeker dat u deze Template Variabele wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.templatevars.reverted'] = 'Template Variabele is Hersteld';
 
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
 $_lang['versionx.chunks.detail.text'] = 'Hieronder vindt u de gegevens van de Chunk Versie die u heeft geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.chunks.revert'] = 'Herstel Chunk naar Versie #[[+id]]';
+$_lang['versionx.chunks.revert.options'] = 'Herstel Chunk';
+$_lang['versionx.chunks.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.chunks.revert.confirm.text'] = 'Weet u zeker dat u deze Chunk wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.chunks.reverted'] = 'Chunk is Hersteld';
 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
 $_lang['versionx.snippets.detail.text'] = 'Hieronder vindt u de gegevens van de Snippet Versie die u heeft geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.snippets.revert'] = 'Herstel Snippet naar Versie #[[+id]]';
+$_lang['versionx.snippets.revert.options'] = 'Herstel Snippet';
+$_lang['versionx.snippets.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.snippets.revert.confirm.text'] = 'Weet u zeker dat u deze Snippet wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.snippets.reverted'] = 'Snippet is Hersteld';
 
 $_lang['versionx.plugins.detail'] = 'Plugin Details';
 $_lang['versionx.plugins.detail.text'] = 'Hieronder vindt u de gegevens van de Plugin Versie die u heeft geselecteerd. Om deze Versie te vergelijken met een andere, gebruik onderstaande combobox om een andere Versie te kiezen.';
+$_lang['versionx.plugins.revert'] = 'Herstel Plugin naar Versie #[[+id]]';
+$_lang['versionx.plugins.revert.options'] = 'Herstel Plugin';
+$_lang['versionx.plugins.revert.confirm'] = 'Weet u het zeker?';
+$_lang['versionx.plugins.revert.confirm.text'] = 'Weet u zeker dat u deze Plugin wilt herstellen naar Versie #[[+id]]? Dit overschrijft alle velden en metadata welke nu ingesteld zijn.';
+$_lang['versionx.plugins.reverted'] = 'Plugin is Hersteld';
 
 $_lang['versionx.menu.viewdetails'] = 'Bekijk Versie Details';
 $_lang['versionx.back'] = 'Terug naar het Overzicht';

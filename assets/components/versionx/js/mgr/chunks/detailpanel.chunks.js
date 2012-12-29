@@ -1,7 +1,7 @@
 VersionX.panel.ChunksDetail = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-chunksdetail';
     Ext.apply(config,{
-        id: 'versionx-panel-chunksdetail',
         border: false,
         layout: 'form',
         items: [{
@@ -11,20 +11,44 @@ VersionX.panel.ChunksDetail = function(config) {
         },{
             layout: 'form',
             cls: 'main-wrapper',
-            labelWidth: 125,
             items: [{
-                xtype: 'versionx-combo-chunkversions',
-                fieldLabel: _('versionx.compare_to'),
-                labelStyle: 'padding: 7px 0 0 5px;',
-                name: 'compare_to',
-                baseParams: {
-                    chunk: (VersionX.record) ? VersionX.record['content_id'] : 0,
-                    current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                    action: 'mgr/chunks/get_versions'
-                },
-                listeners: {
-                    'select': this.compareVersion
-                }
+                layout: 'hbox',
+                border: false,
+                items: [{
+                    xtype: 'versionx-combo-chunkversions',
+                    emptyText: _('versionx.compare_to'),
+                    labelStyle: 'padding: 7px 0 0 5px;',
+                    name: 'compare_to',
+                    baseParams: {
+                        chunk: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        current: (VersionX.record) ? VersionX.record['version_id'] : 0,
+                        action: 'mgr/chunks/get_versions'
+                    },
+                    listeners: {
+                        'select': this.compareVersion
+                    }
+                },{html: '&nbsp;', border: false, bodyStyle: 'margin-left: 10px;'},{
+                    xtype: 'button',
+                    text: _('versionx.chunks.revert.options'),
+                    handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
+                        this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                    },
+                    scope: this,
+                    menu: (VersionX.record && VersionX.cmrecord) ?
+                        [{
+                            text: _('versionx.chunks.revert',{id: VersionX.record['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                            },
+                            scope: this
+                        },{
+                            text: _('versionx.chunks.revert',{id: VersionX.cmrecord['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.cmrecord) ? VersionX.cmrecord['version_id'] : 0);
+                            },
+                            scope: this
+                        }] : undefined
+                }]
             },{
                 xtype: 'panel',
                 bodyStyle: 'height: 12px',
@@ -83,7 +107,13 @@ VersionX.panel.ChunksDetail = function(config) {
                     tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
-                }]
+                }],
+                stateful: true,
+                stateId: config.id,
+                stateEvents: ['tabchange'],
+                getState: function() {
+                    return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                }
             }]
         }],
         listeners: {
@@ -96,6 +126,28 @@ Ext.extend(VersionX.panel.ChunksDetail,MODx.FormPanel,{
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=chunk&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+    },
+
+    revertVersion: function(version) {
+        if (version < 1) { MODx.alert(_('error'), 'Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.chunks.revert.confirm'),
+            text: _('versionx.chunks.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: VersionX.record.content_id,
+                action: 'mgr/chunks/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.chunks.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
+            }
+        });
     }
 });
 Ext.reg('versionx-panel-chunksdetail',VersionX.panel.ChunksDetail);

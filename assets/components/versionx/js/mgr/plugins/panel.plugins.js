@@ -1,4 +1,3 @@
-
 VersionX.panel.Plugins = function(config) {
     config = config || {};
     Ext.apply(config,{
@@ -18,7 +17,7 @@ VersionX.panel.Plugins = function(config) {
                     fieldLabel: _('plugin'),
                     name: 'fltr_plugin',
                     width: '95%',
-                    id: 'chk-f-plugin',
+                    id: 'plugin-f-plugin',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                 },{
                     xtype: 'modx-combo-user',
@@ -26,13 +25,13 @@ VersionX.panel.Plugins = function(config) {
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
                     anchor: '1',
-                    id: 'chk-f-user'
+                    id: 'plugin-f-user'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.datefrom'),
                     name: 'fltr_from',
                     anchor: '1',
-                    id: 'chk-f-from'
+                    id: 'plugin-f-from'
                 }]
             },{
                 columnWidth:.5,
@@ -43,7 +42,7 @@ VersionX.panel.Plugins = function(config) {
                     fieldLabel: _('category'),
                     name: 'fltr_category',
                     anchor: '1',
-                    id: 'chk-f-category'
+                    id: 'plugin-f-category'
                 },{ 
                     fieldLabel: '',
                     style: 'height: 36px !important',
@@ -53,7 +52,7 @@ VersionX.panel.Plugins = function(config) {
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
                     anchor: '1',
-                    id: 'chk-f-until'
+                    id: 'plugin-f-until'
                 }]
             }]
         },{
@@ -99,11 +98,11 @@ Ext.extend(VersionX.panel.Plugins,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-plugins');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('chk-f-plugin').getValue();
-            g.baseParams['category'] = Ext.getCmp('chk-f-category').getValue();
-            g.baseParams['user'] = Ext.getCmp('chk-f-user').getValue();
-            g.baseParams['from'] = Ext.getCmp('chk-f-from').getValue();
-            g.baseParams['until'] = Ext.getCmp('chk-f-until').getValue();
+            g.baseParams['search'] = Ext.getCmp('plugin-f-plugin').getValue();
+            g.baseParams['category'] = Ext.getCmp('plugin-f-category').getValue();
+            g.baseParams['user'] = Ext.getCmp('plugin-f-user').getValue();
+            g.baseParams['from'] = Ext.getCmp('plugin-f-from').getValue();
+            g.baseParams['until'] = Ext.getCmp('plugin-f-until').getValue();
             g.getBottomToolbar().changePage(1);
             g.refresh();
         }
@@ -118,11 +117,11 @@ Ext.extend(VersionX.panel.Plugins,MODx.Panel,{
         g.getBottomToolbar().changePage(1);
         g.refresh();
 
-        Ext.getCmp('chk-f-plugin').reset();
-        Ext.getCmp('chk-f-category').reset();
-        Ext.getCmp('chk-f-user').reset();
-        Ext.getCmp('chk-f-from').reset();
-        Ext.getCmp('chk-f-until').reset();
+        Ext.getCmp('plugin-f-plugin').reset();
+        Ext.getCmp('plugin-f-category').reset();
+        Ext.getCmp('plugin-f-user').reset();
+        Ext.getCmp('plugin-f-from').reset();
+        Ext.getCmp('plugin-f-until').reset();
     }
 });
 Ext.reg('versionx-panel-plugins',VersionX.panel.Plugins);

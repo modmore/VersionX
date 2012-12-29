@@ -1,7 +1,7 @@
 VersionX.panel.ResourcesDetail.Main = function(config) {
     config = config || {};
+    config.id = config.id || 'versionx-panel-resourcesdetail';
     Ext.apply(config,{
-        id: 'versionx-panel-resourcesdetail',
         border: false,
         layout: 'form',
         items: [{
@@ -12,55 +12,42 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
             layout: 'form',
             cls: 'main-wrapper',
             items: [{
-                layout: 'column',
+                layout: 'hbox',
                 border: false,
                 items: [{
-                    columnWidth: .5,
-                    layout: 'form',
-                    border: false,
-                    labelWidth: 125,
-                    items: [{
-                        xtype: 'versionx-combo-resourceversions',
-                        fieldLabel: _('versionx.compare_to'),
-                        labelStyle: 'padding: 7px 0 0 5px;',
-                        name: 'compare_to',
-                        baseParams: {
-                            resource: (VersionX.record) ? VersionX.record['content_id'] : 0,
-                            current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                            action: 'mgr/resources/get_versions'
-                        },
-                        listeners: {
-                            'select': this.compareVersion
-                        }
-                    }]
-                },{
-                    columnWidth: .5,
-                    layout: 'form',
-                    labelWidth: 125,
-                    border: false,
-                    items: [{
-                        xtype: 'button',
-                        text: _('versionx.resources.revert.options'),
-                        handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
-                            this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
-                        },
-                        scope: this,
-                        menu: (VersionX.record && VersionX.cmrecord) ?
-                            [{
-                                text: _('versionx.resources.revert',{id: VersionX.record['version_id']}),
-                                handler: function() {
-                                    this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
-                                },
-                                scope: this
-                            },{
-                                text: _('versionx.resources.revert',{id: VersionX.cmrecord['version_id']}),
-                                handler: function() {
-                                    this.revertVersion((VersionX.cmrecord) ? VersionX.cmrecord['version_id'] : 0);
-                                },
-                                scope: this
-                            }] : undefined
-                    }]
-
+                    xtype: 'versionx-combo-resourceversions',
+                    emptyText: _('versionx.compare_to'),
+                    labelStyle: 'padding: 7px 0 0 5px;',
+                    name: 'compare_to',
+                    baseParams: {
+                        resource: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        current: (VersionX.record) ? VersionX.record['version_id'] : 0,
+                        action: 'mgr/resources/get_versions'
+                    },
+                    listeners: {
+                        'select': this.compareVersion
+                    }
+                },{html: '&nbsp;', border: false, bodyStyle: 'margin-left: 10px;'},{
+                    xtype: 'button',
+                    text: _('versionx.resources.revert.options'),
+                    handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
+                        this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                    },
+                    scope: this,
+                    menu: (VersionX.record && VersionX.cmrecord) ?
+                        [{
+                            text: _('versionx.resources.revert',{id: VersionX.record['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                            },
+                            scope: this
+                        },{
+                            text: _('versionx.resources.revert',{id: VersionX.cmrecord['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.cmrecord) ? VersionX.cmrecord['version_id'] : 0);
+                            },
+                            scope: this
+                        }] : undefined
                 }]
             },{
                 xtype: 'panel',
@@ -154,7 +141,13 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                             { key: 'class_key', lexicon:'class_key' }
                         ]
                     }]
-                }]
+                }],
+                stateful: true,
+                stateId: config.id,
+                stateEvents: ['tabchange'],
+                getState: function() {
+                    return { activeTab:this.items.indexOf(this.getActiveTab()) };
+                }
             }]
         }],
         listeners: {

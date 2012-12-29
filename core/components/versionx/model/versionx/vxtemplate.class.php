@@ -63,5 +63,35 @@ class vxTemplate extends xPDOObject {
     public static function getTabTpl() {
         return self::$tabTpl;
     }
+    
+    
+    /**
+     * Reverts a template to the selected version.
+     * @param array $options
+     *
+     * @return bool
+     */
+    public function revert(array $options = array()) {
+        if (!$this->get('content_id')) {
+            return false;
+        }
+
+        /* @var modTemplate $template */
+        $template = $this->xpdo->getObject('modTemplate',$this->get('content_id'));
+        if (!($template instanceof modTemplate)) {
+            /* Could not find the template, so we'll assume it was deleted. We'll create a new one and force that ID. */
+            $template = $this->xpdo->newObject('modTemplate');
+            $template->set('id', $this->get('content_id'));
+        }
+
+        $template->fromArray(array(
+            'templatename' => $this->get('templatename'),
+            'description' => $this->get('description'),
+            'category' => ($this->xpdo->getCount('modCategory',array('id' => $this->get('category'))) > 0) ? $this->get('category') : 0,
+            'content' => $this->get('content'),
+            'locked' => $this->get('locked'),
+        ), '', true);
+
+        return $template->save();
+    }
 }
-?>
