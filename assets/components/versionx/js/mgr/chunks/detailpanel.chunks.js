@@ -11,20 +11,23 @@ VersionX.panel.ChunksDetail = function(config) {
         },{
             layout: 'form',
             cls: 'main-wrapper',
-            labelWidth: 125,
             items: [{
-                xtype: 'versionx-combo-chunkversions',
-                fieldLabel: _('versionx.compare_to'),
-                labelStyle: 'padding: 7px 0 0 5px;',
-                name: 'compare_to',
-                baseParams: {
-                    chunk: (VersionX.record) ? VersionX.record['content_id'] : 0,
-                    current: (VersionX.record) ? VersionX.record['version_id'] : 0,
-                    action: 'mgr/chunks/get_versions'
-                },
-                listeners: {
-                    'select': this.compareVersion
-                }
+                layout: 'hbox',
+                border: false,
+                items: [{
+                    xtype: 'versionx-combo-chunkversions',
+                    emptyText: _('versionx.compare_to'),
+                    labelStyle: 'padding: 7px 0 0 5px;',
+                    name: 'compare_to',
+                    baseParams: {
+                        chunk: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        current: (VersionX.record) ? VersionX.record['version_id'] : 0,
+                        action: 'mgr/chunks/get_versions'
+                    },
+                    listeners: {
+                        'select': this.compareVersion
+                    }
+                }]
             },{
                 xtype: 'panel',
                 bodyStyle: 'height: 12px',
