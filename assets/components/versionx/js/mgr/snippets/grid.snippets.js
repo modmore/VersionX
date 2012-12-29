@@ -1,13 +1,12 @@
 
-VersionX.grid.ResourcesWidget = function(config) {
+VersionX.grid.Snippets = function(config) {
     config = config || {};
     Ext.applyIf(config,{
 		url: VersionX.config.connector_url,
-		id: 'versionx-grid-resources',
+		id: 'versionx-grid-snippets',
 		baseParams: {
-            action: 'mgr/resources/getlist',
-            resource: (VersionX.inVersion) ? MODx.request['id'] : 0,
-            uniqueOnly: 1
+            action: 'mgr/snippets/getlist',
+            snippet: (VersionX.inVersion) ? MODx.request['id'] : 0
         },
         params: [],
         viewConfig: {
@@ -22,15 +21,19 @@ VersionX.grid.ResourcesWidget = function(config) {
             {name: 'username', type: 'string'},
             {name: 'mode', type: 'string'},
             {name: 'marked', type: 'boolean'},
-            {name: 'title', type: 'string'},
-            {name: 'context_key', type: 'string'},
-            {name: 'class', type: 'string'}
+            {name: 'name', type: 'string'},
+            {name: 'category', type: 'int'},
+            {name: 'categoryname', type: 'string'}
         ],
         paging: true,
-        pageSize: 5,
 		remoteSort: true,
 		columns: [{
-			header: _('id'),
+			header: _('versionx.version_id'),
+			dataIndex: 'version_id',
+			sortable: true,
+			width: .1
+		},{
+			header: _('versionx.content_id',{what: _('snippet')}),
 			dataIndex: 'content_id',
 		    sortable: true,
 			width: .1
@@ -38,22 +41,27 @@ VersionX.grid.ResourcesWidget = function(config) {
 			header: _('versionx.saved'),
 			dataIndex: 'saved',
 			sortable: true,
-			width: .3
+			width: .2
 		},{
-			header: _('versionx.title'),
-			dataIndex: 'title',
+			header: _('versionx.content_name', {what: _('snippet')}),
+			dataIndex: 'name',
 		    sortable: true,
-			width: .3
+			width: .4
+		},{
+			header: _('category'),
+			dataIndex: 'categoryname',
+		    sortable: true,
+			width: .2
 		},{
 			header: _('user'),
 			dataIndex: 'username',
 		    sortable: true,
-			width: .15
+			width: .2
 		},{
 			header: _('versionx.mode'),
 			dataIndex: 'mode',
 		    sortable: true,
-			width: .15,
+			width: .1,
             renderer: function (val) { return _('versionx.mode.'+val); }
 		},{
 			header: _('versionx.marked'),
@@ -61,24 +69,12 @@ VersionX.grid.ResourcesWidget = function(config) {
 		    sortable: true,
 			width: .1,
             hidden: true
-		},{
-			header: _('context'),
-			dataIndex: 'context_key',
-		    sortable: true,
-			width: .1,
-            hidden: true
-		},{
-			header: _('class_key'),
-			dataIndex: 'class',
-		    sortable: true,
-			width: .2,
-            hidden: true
 		}]
 		,listeners: {}
     });
-    VersionX.grid.ResourcesWidget.superclass.constructor.call(this,config);
+    VersionX.grid.Snippets.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
+Ext.extend(VersionX.grid.Snippets,MODx.grid.Grid,{
     getMenu: function() {
         var r = this.getSelectionModel().getSelected();
         var d = r.data;
@@ -89,15 +85,7 @@ Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
             handler: function() {
                 var eid = d.version_id;
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
-                window.location.href = '?a='+VersionX.action+'&action=resource&vid='+eid+backTo;
-            }
-        },{
-            text: _('versionx.widget.resources.update'),
-            handler: function() {
-                var eid = d.content_id;
-                /* Be sure to be compatible for MODX 2.3 */
-                var action = (MODx.action && MODx.action['resource/update']) ? MODx.action['resource/update'] : 'resource/update';
-                window.location.href = '?a=' + action + '&id=' + eid;
+                window.location.href = '?a='+VersionX.action+'&action=snippet&vid='+eid+backTo;
             }
         });
         if (m.length > 0) {
@@ -105,4 +93,4 @@ Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
         }
     }
 });
-Ext.reg('versionx-grid-resources-widget',VersionX.grid.ResourcesWidget);
+Ext.reg('versionx-grid-snippets',VersionX.grid.Snippets);

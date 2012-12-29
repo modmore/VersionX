@@ -1,12 +1,12 @@
 <script type="text/javascript">
     MODx.on("ready",function() {
-        MODx.addTab("modx-resource-tabs",{
+        MODx.addTab("modx-snippet-tabs",{
             title: _('versionx.tabheader'),
-            id: 'versionx-resource-tab',
+            id: 'versionx-snippets-tab',
             width: '95%',
             items: [{
-                xtype: 'versionx-panel-resources',
-                //layout: 'anchor',
+                xtype: 'versionx-panel-snippets',
+                layout: 'anchor',
                 width: 500
             },{
                 html: '<hr />',
@@ -15,7 +15,7 @@
                 layout: 'anchor',
                 anchor: '1',
                 items: [{
-                    xtype: 'versionx-grid-resources'
+                    xtype: 'versionx-grid-snippets'
                 }]
             }]
         });

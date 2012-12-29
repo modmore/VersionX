@@ -82,7 +82,7 @@ Ext.extend(VersionX.grid.Chunks,MODx.grid.Grid,{
         var m = [];
         m.push({
             text: _('versionx.menu.viewdetails'),
-            handler: function(grid, rowIndex, e) {
+            handler: function() {
                 var eid = d.version_id;
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
                 window.location.href = '?a='+VersionX.action+'&action=chunk&vid='+eid+backTo;

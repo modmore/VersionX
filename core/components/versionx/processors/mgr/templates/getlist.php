@@ -27,11 +27,11 @@ $c->select(array('version_id','content_id','saved','mode','marked','templatename
 if ($search)
     $c->where(array('templatename:LIKE' => "%$search%"));
 if ($template)
-    $c->where(array('content_id' => $template));
+    $c->where(array('content_id' => (int)$template));
 if ($category)
-    $c->where(array('vxTemplate.category' => $category));
-if ($user)
-    $c->where(array('user' => $user));
+    $c->where(array('vxTemplate.category' => (int)$category));
+if ($user && is_numeric($user))
+    $c->where(array('user' => (int)$user));
 if ($from)
     $c->where(array('saved:>' => $from));
 if ($until)
@@ -58,4 +58,3 @@ $returnArray = array(
 );
 return $modx->toJSON($returnArray);
 
-?>

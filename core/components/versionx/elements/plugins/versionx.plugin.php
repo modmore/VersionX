@@ -90,10 +90,22 @@ switch($eventName) {
         }
         break;
 
+    case 'OnSnipFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxSnippet');
+        }
+        break;
+
+    case 'OnPluginFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
+            $result = $modx->versionx->outputVersionsTab('vxPlugin');
+        }
+        break;
+
 }
 if (isset($result) && $result === true)
     return;
 elseif (isset($result)) {
-    $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'false' : $result);
+    $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
     return;
 }

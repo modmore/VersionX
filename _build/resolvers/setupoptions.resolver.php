@@ -12,107 +12,107 @@ if (!isset($modx)) {
     $modx->setLogTarget('ECHO');
 }
 
-set_time_limit(0);
+switch ($options[xPDOTransport::PACKAGE_ACTION]) {
+    case xPDOTransport::ACTION_UPGRADE:
+    case xPDOTransport::ACTION_INSTALL:
+        @set_time_limit(0);
 
-/* @var VersionX $versionx */
-$corePath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/');
-$versionx = $modx->getService('versionx','VersionX',$corePath.'/model/');
-$versionx->initialize('mgr'); 
+        /* @var VersionX $versionx */
+        $corePath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/');
+        $versionx = $modx->getService('versionx','VersionX',$corePath.'/model/');
+        $versionx->initialize('mgr');
 
-/* If we wanted resources snapshot, make that */
-if (isset($options['vx_snapshot_resources']) && !empty($options['vx_snapshot_resources'])) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Retrieving all resources...');
-    $collection = $modx->getCollection('modResource');
-    $modx->log(modX::LOG_LEVEL_INFO,'Collection retrieved. Iterating over resources and storing snapshots..');
-    $count = 0;
-    foreach ($collection as $object) {
-        if ($versionx->newResourceVersion($object, 'snapshot')) {
-            $count++;
-        } else {
-            $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for resource '.$object->get('id'));
+        $modx->log(modX::LOG_LEVEL_INFO,'Starting snapshot process for selected objects...');
+        /* If we wanted resources snapshot, make that */
+        if (isset($options['vx_snapshot_resources']) && !empty($options['vx_snapshot_resources'])) {
+            $collection = $modx->getCollection('modResource');
+            $modx->log(modX::LOG_LEVEL_INFO,'Resources loaded. Iterating over resources and storing snapshots..');
+            $count = 0;
+            foreach ($collection as $object) {
+                if ($versionx->newResourceVersion($object, 'snapshot')) {
+                    $count++;
+                } else {
+                    $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for resource '.$object->get('id'));
+                }
+                if (is_int($count / 25)) {
+                    $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} resources so far.");
+                }
+            }
+            $modx->log(modX::LOG_LEVEL_WARN,'Checked '.$count.' resources and stored snapshots where needed.');
         }
-        if (is_int($count / 25)) {
-            $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} resources so far.");
+
+        /* If we wanted template snapshot, make that */
+        if (isset($options['vx_snapshot_templates']) && !empty($options['vx_snapshot_templates'])) {
+            $collection = $modx->getCollection('modTemplate');
+            $modx->log(modX::LOG_LEVEL_INFO,'Templates loaded. Iterating over templates and storing snapshots..');
+            $count = 0;
+            foreach ($collection as $object) {
+                if ($versionx->newTemplateVersion($object, 'snapshot')) { $count++; }
+                else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for template '.$object->get('id')); }
+
+                if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} templates so far."); }
+            }
+            $modx->log(modX::LOG_LEVEL_WARN,'Checked '.$count.' Templates and stored snapshots where needed.');
         }
-    }
-    $modx->log(modX::LOG_LEVEL_WARN,'Done creating Resource snapshots. A total of '.$count.' resources were checked to confirm a version was stored, and if needed a snapshot was stored.');
-}
 
-/* If we wanted template snapshot, make that */
-if (isset($options['vx_snapshot_templates']) && !empty($options['vx_snapshot_templates'])) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Retrieving all templates...');
-    $collection = $modx->getCollection('modTemplate');
-    $modx->log(modX::LOG_LEVEL_INFO,'Collection retrieved. Iterating over templates and storing snapshots..');
-    $count = 0;
-    foreach ($collection as $object) {
-        if ($versionx->newTemplateVersion($object, 'snapshot')) { $count++; }
-        else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for template '.$object->get('id')); }
-        
-        if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} templates so far."); }
-    }
-    $modx->log(modX::LOG_LEVEL_WARN,'Done creating Template snapshots. A total of '.$count.' templates were checked to confirm a version was stored, and if needed a snapshot was stored.');
-}
+        /* If we wanted chunk snapshot, make that */
+        if (isset($options['vx_snapshot_chunks']) && !empty($options['vx_snapshot_chunks'])) {
+            $collection = $modx->getCollection('modChunk');
+            $modx->log(modX::LOG_LEVEL_INFO,'Chunks loaded. Iterating over chunks and storing snapshots..');
+            $count = 0;
+            foreach ($collection as $object) {
+                if ($versionx->newChunkVersion($object, 'snapshot')) { $count++; }
+                else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for chunk '.$object->get('id')); }
 
-/* If we wanted chunk snapshot, make that */
-if (isset($options['vx_snapshot_chunks']) && !empty($options['vx_snapshot_chunks'])) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Retrieving all chunks...');
-    $collection = $modx->getCollection('modChunk');
-    $modx->log(modX::LOG_LEVEL_INFO,'Collection retrieved. Iterating over chunks and storing snapshots..');
-    $count = 0;
-    foreach ($collection as $object) {
-        if ($versionx->newChunkVersion($object, 'snapshot')) { $count++; }
-        else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for chunk '.$object->get('id')); }
-        
-        if (is_int($count / 25)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} chunks so far."); }
-    }
-    $modx->log(modX::LOG_LEVEL_WARN,'Done creating Chunk snapshots. A total of '.$count.' chunks were checked to confirm a version was stored, and if needed a snapshot was stored.');
-}
+                if (is_int($count / 25)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} chunks so far."); }
+            }
+            $modx->log(modX::LOG_LEVEL_WARN,'Checked '.$count.' Chunks and stored snapshots where needed.');
+        }
 
-/* If we wanted snippet snapshot, make that */
-if (isset($options['vx_snapshot_snippets']) && !empty($options['vx_snapshot_snippets'])) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Retrieving all Snippets...');
-    $collection = $modx->getCollection('modSnippet');
-    $modx->log(modX::LOG_LEVEL_INFO,'Collection retrieved. Iterating over snippets and storing snapshots..');
-    $count = 0;
-    foreach ($collection as $object) {
-        if ($versionx->newSnippetVersion($object, 'snapshot')) { $count++; }
-        else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Snippet '.$object->get('id')); }
-        
-        if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} snippets so far."); }
-    }
-    $modx->log(modX::LOG_LEVEL_WARN,'Done creating Snippet snapshots. A total of '.$count.' Snippets were checked to confirm a version was stored, and if needed a snapshot was stored.');
-}
+        /* If we wanted snippet snapshot, make that */
+        if (isset($options['vx_snapshot_snippets']) && !empty($options['vx_snapshot_snippets'])) {
+            $collection = $modx->getCollection('modSnippet');
+            $modx->log(modX::LOG_LEVEL_INFO,'Snippets loaded. Iterating over snippets and storing snapshots..');
+            $count = 0;
+            foreach ($collection as $object) {
+                if ($versionx->newSnippetVersion($object, 'snapshot')) { $count++; }
+                else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Snippet '.$object->get('id')); }
 
-/* If we wanted plugins snapshot, make that */
-if (isset($options['vx_snapshot_plugins']) && !empty($options['vx_snapshot_plugins'])) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Retrieving all Plugins...');
-    $collection = $modx->getCollection('modPlugin');
-    $modx->log(modX::LOG_LEVEL_INFO,'Collection retrieved. Iterating over Plugins and storing snapshots..');
-    $count = 0;
-    foreach ($collection as $object) {
-        if ($versionx->newPluginVersion($object, 'snapshot')) { $count++; }
-        else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Plugin '.$object->get('id')); }
-        
-        if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} Plugins so far."); }
-    }
-    $modx->log(modX::LOG_LEVEL_WARN,'Done creating Plugin snapshots. A total of '.$count.' Plugins were checked to confirm a version was stored, and if needed a snapshot was stored.');
-}
+                if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} snippets so far."); }
+            }
+            $modx->log(modX::LOG_LEVEL_WARN,'Checked '.$count.' Snippets and stored snapshots where needed.');
+        }
 
-/* If we wanted plugins snapshot, make that */
-if (isset($options['vx_snapshot_tmplvars']) && !empty($options['vx_snapshot_tmplvars'])) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Retrieving all Template Variables...');
-    $collection = $modx->getCollection('modTemplateVar');
-    $modx->log(modX::LOG_LEVEL_INFO,'Collection retrieved. Iterating over Template Variables and storing snapshots..');
-    $count = 0;
-    foreach ($collection as $object) {
-        if ($versionx->newTemplateVarVersion($object, 'snapshot')) { $count++; }
-        else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Template Variable '.$object->get('id')); }
-        
-        if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} Template Variables so far."); }
-    }
-    $modx->log(modX::LOG_LEVEL_WARN,'Done creating Template Variable snapshots. A total of '.$count.' Template Variables were checked to confirm a version was stored, and if needed a snapshot was stored.');
-}
+        /* If we wanted plugins snapshot, make that */
+        if (isset($options['vx_snapshot_plugins']) && !empty($options['vx_snapshot_plugins'])) {
+            $collection = $modx->getCollection('modPlugin');
+            $modx->log(modX::LOG_LEVEL_INFO,'Plugins loaded. Iterating over Plugins and storing snapshots..');
+            $count = 0;
+            foreach ($collection as $object) {
+                if ($versionx->newPluginVersion($object, 'snapshot')) { $count++; }
+                else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Plugin '.$object->get('id')); }
 
+                if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} Plugins so far."); }
+            }
+            $modx->log(modX::LOG_LEVEL_WARN,'Checked '.$count.' Plugins and stored snapshots where needed.');
+        }
+
+        /* If we wanted tv snapshot, make that */
+        if (isset($options['vx_snapshot_tmplvars']) && !empty($options['vx_snapshot_tmplvars'])) {
+            $collection = $modx->getCollection('modTemplateVar');
+            $modx->log(modX::LOG_LEVEL_INFO,'Template Variables loaded. Iterating over Template Variables and storing snapshots..');
+            $count = 0;
+            foreach ($collection as $object) {
+                if ($versionx->newTemplateVarVersion($object, 'snapshot')) { $count++; }
+                else { $modx->log(modX::LOG_LEVEL_WARN,'Error creating snapshot for Template Variable '.$object->get('id')); }
+
+                if (is_int($count / 10)) { $modx->log(modX::LOG_LEVEL_INFO,"Checked {$count} Template Variables so far."); }
+            }
+            $modx->log(modX::LOG_LEVEL_WARN,'Checked '.$count.' Template Variables and stored snapshots where needed.');
+        }
+
+    break;
+}
     
     
 return true;

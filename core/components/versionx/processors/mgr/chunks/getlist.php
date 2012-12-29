@@ -27,11 +27,11 @@ $c->select(array('version_id','content_id','saved','mode','marked','name','vxChu
 if ($search)
     $c->where(array('name:LIKE' => "%$search%"));
 if ($chunk)
-    $c->where(array('content_id' => $chunk));
+    $c->where(array('content_id' => (int)$chunk));
 if ($category)
-    $c->where(array('vxChunk.category' => $category));
-if ($user)
-    $c->where(array('user' => $user));
+    $c->where(array('vxChunk.category' => (int)$category));
+if ($user && is_numeric($user))
+    $c->where(array('user' => (int)$user));
 if ($from)
     $c->where(array('saved:>' => $from));
 if ($until)
@@ -58,4 +58,3 @@ $returnArray = array(
 );
 return $modx->toJSON($returnArray);
 
-?>

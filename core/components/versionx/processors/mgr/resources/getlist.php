@@ -26,14 +26,14 @@ $c->select(array('version_id','content_id','saved','mode','marked','title','cont
 /* Filter */
 if ($search)
     $c->where(array('title:LIKE' => "%$search%"));
-if ($resource)
-    $c->where(array('content_id' => $resource));
+if ($resource && is_numeric($resource))
+    $c->where(array('content_id' => (int)$resource));
 if ($context)
     $c->where(array('context_key' => $context));
 if ($class)
     $c->where(array('class' => $class));
-if ($user)
-    $c->where(array('user' => $user));
+if ($user && is_numeric($user))
+    $c->where(array('user' => (int)$user));
 if ($from)
     $c->where(array('saved:>' => $from));
 if ($until)
@@ -60,4 +60,3 @@ $returnArray = array(
 );
 return $modx->toJSON($returnArray);
 
-?>

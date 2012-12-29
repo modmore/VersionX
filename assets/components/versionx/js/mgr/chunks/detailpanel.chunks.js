@@ -56,7 +56,7 @@ VersionX.panel.ChunksDetail = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.chunks.detail.tabs.fields'),
+                    title: _('versionx.common.fields'),
                     items: [{
                         id: 'versionx-panel-chunksdetail-chunk-fields',
                         xtype: 'versionx-panel-common-detailpanel',
@@ -69,7 +69,7 @@ VersionX.panel.ChunksDetail = function(config) {
                         ]
                     }]
                 },{
-                    title: _('versionx.chunks.detail.tabs.content'),
+                    title: _('versionx.common.content'),
                     items: [{
                         id: 'versionx-panel-chunksdetail-content',
                         xtype: 'versionx-panel-common-contentpanel',
@@ -79,8 +79,8 @@ VersionX.panel.ChunksDetail = function(config) {
                         vxContentField: 'snippet'
                     }]
                 },{
-                    title: _('versionx.chunks.detail.tabs.properties'),
-                    tabTip: _('versionx.chunks.detail.tabs.properties.off'),
+                    title: _('versionx.common.properties'),
+                    tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
                 }]
@@ -92,7 +92,7 @@ VersionX.panel.ChunksDetail = function(config) {
     VersionX.panel.ChunksDetail.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.panel.ChunksDetail,MODx.FormPanel,{
-    compareVersion: function (tf, nv, ov) {
+    compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=chunk&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
