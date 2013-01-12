@@ -55,25 +55,49 @@ $_lang['versionx.resources.detail.grid.columns.field-value'] = 'Feldinhalt [Ver 
 
 $_lang['versionx.templates.detail'] = 'Template Details';
 $_lang['versionx.templates.detail.text'] = 'Unten finden Sie Details zur ausgewählten Template-Version. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
+$_lang['versionx.templates.revert'] = 'Template auf Version #[[+id]] zurücksetzen';
+$_lang['versionx.templates.revert.options'] = 'Template zurücksetzen';
+$_lang['versionx.templates.revert.confirm'] = 'Sicher?';
+$_lang['versionx.templates.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Templates und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.templates.reverted'] = 'Template erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Eingabe-Optionen';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Ausgabe-Optionen';
-
 $_lang['versionx.templatevars.detail'] = 'Template Variable Details';
 $_lang['versionx.templatevars.detail.input-type'] = 'Eingabetyp';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Eingabe-Optionswerte';
 $_lang['versionx.templatevars.detail.default-text'] = 'Standardwert';
 $_lang['versionx.templatevars.detail.output-type'] = 'Ausgabetyp';
 $_lang['versionx.templatevars.detail.output-properties'] = 'Ausgabe-Optionswerte';
+$_lang['versionx.templatevars.revert'] = 'Template Variable auf Version #[[+id]] zurücksetzen';
+$_lang['versionx.templatevars.revert.options'] = 'Template Variable zurücksetzen';
+$_lang['versionx.templatevars.revert.confirm'] = 'Sicher?';
+$_lang['versionx.templatevars.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieser Template Variable und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.templatevars.reverted'] = 'Template Variable erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
 $_lang['versionx.chunks.detail.text'] = 'Unten finden Sie Details zur ausgewählten Chunk-Version. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
+$_lang['versionx.chunks.revert'] = 'Chunk auf Version #[[+id]] zurücksetzen';
+$_lang['versionx.chunks.revert.options'] = 'Chunk zurücksetzen';
+$_lang['versionx.chunks.revert.confirm'] = 'Sicher?';
+$_lang['versionx.chunks.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Chunks und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.chunks.reverted'] = 'Chunk erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
 $_lang['versionx.snippets.detail.text'] = 'Unten finden Sie Details zur ausgewählten Snippet-Version. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
+$_lang['versionx.snippets.revert'] = 'Snippet auf Version #[[+id]] zurücksetzen';
+$_lang['versionx.snippets.revert.options'] = 'Snippet zurücksetzen';
+$_lang['versionx.snippets.revert.confirm'] = 'Sicher?';
+$_lang['versionx.snippets.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Snippets und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.snippets.reverted'] = 'Snippet erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.plugins.detail'] = 'Plugin Details';
 $_lang['versionx.plugins.detail.text'] = 'Unten finden Sie Details zur ausgewählten Plugin-Version. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
+$_lang['versionx.plugins.revert'] = 'Plugin auf Version #[[+id]] zurücksetzen';
+$_lang['versionx.plugins.revert.options'] = 'Plugin zurücksetzen';
+$_lang['versionx.plugins.revert.confirm'] = 'Sicher?';
+$_lang['versionx.plugins.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Plugins und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.plugins.reverted'] = 'Plugin erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.menu.viewdetails'] = 'Version Details ansehen';
 $_lang['versionx.back'] = 'Zurück zur Übersicht';
@@ -98,9 +122,8 @@ $_lang['versionx.title'] = 'Titel';
 $_lang['versionx.marked'] = 'Markiert';
 
 $_lang['versionx.error.noresults'] = 'Für Ihre Anfrage konnten keine Resultate gefunden werden.';
-$_lang['versionx.tabtip.notyet'] = 'Sorry, leider können wir die History für [[+what]] noch nicht anzeigen. Veränderungen werden jedoch bereits jetzt in die Datenbank geschrieben, sobald diese Funktionen implementiert sind, werden sie hier angezeigt!';
+$_lang['versionx.tabtip.notyet'] = 'Sorry, leider kann die History für [[+what]] noch nicht angezeigt werden. Veränderungen werden jedoch bereits jetzt in die Datenbank geschrieben, sobald diese Funktionen implementiert sind, werden sie hier angezeigt!';
 
-/* @todo 08/07/2012 translate these */
-$_lang['versionx.widget.resources'] = 'Recent Resource Changes';
-$_lang['versionx.widget.resources.desc'] = '(Part of VersionX) Shows a grid with the most recent resource changes for all users.';
-$_lang['versionx.widget.resources.update'] = 'Update Resource';
+$_lang['versionx.widget.resources'] = 'Kürzliche Resourcenveränderungen';
+$_lang['versionx.widget.resources.desc'] = '(Teil von VersionX) Zeigt eine Tabelle mit den letzten Änderungen aller User.';
+$_lang['versionx.widget.resources.update'] = 'Resource Aktualisieren';
