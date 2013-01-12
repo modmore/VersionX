@@ -704,19 +704,19 @@ class VersionX {
      * @return int
      */
     public function getAction() {
-        $action = $this->action;
-        if (!$action) {
+        if (!$this->action) {
             /* @var modAction $action */
             $action = $this->modx->getObject('modAction',array(
                 'namespace' => 'versionx',
                 'controller' => 'controllers/index',
             ));
             if ($action) {
-                $action = $action->get('id');
-                $this->action = $action;
-            } 
+                $this->action = $action->get('id');
+            } else {
+                $this->action = "0";
+            }
         }
-        return $action;
+        return $this->action;
     }
 
     /**
