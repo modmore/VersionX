@@ -60,4 +60,34 @@ class vxPlugin extends xPDOObject {
     public static function getTabTpl() {
         return self::$tabTpl;
     }
+    
+    /**
+     * Reverts a snippet to the selected version.
+     * @param array $options
+     *
+     * @return bool
+     */
+    public function revert(array $options = array()) {
+        if (!$this->get('content_id')) {
+            return false;
+        }
+
+        /* @var modPlugin $object */
+        $object = $this->xpdo->getObject('modPlugin',$this->get('content_id'));
+        if (!($object instanceof modPlugin)) {
+            /* Could not find the snippet, so we'll assume it was deleted. We'll create a new one and force that ID. */
+            $object = $this->xpdo->newObject('modPlugin');
+            $object->set('id', $this->get('content_id'));
+        }
+
+        $object->fromArray(array(
+            'name' => $this->get('name'),
+            'description' => $this->get('description'),
+            'category' => ($this->xpdo->getCount('modCategory',array('id' => $this->get('category'))) > 0) ? $this->get('category') : 0,
+            'plugincode' => $this->get('plugincode'),
+            'locked' => $this->get('locked'),
+        ), '', true);
+
+        return $object->save();
+    }
 }
