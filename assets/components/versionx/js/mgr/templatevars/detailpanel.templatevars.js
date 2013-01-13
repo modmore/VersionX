@@ -29,6 +29,27 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
                     listeners: {
                         'select': this.compareVersion
                     }
+                },{html: '&nbsp;', border: false, bodyStyle: 'margin-left: 10px;'},{
+                    xtype: 'button',
+                    text: _('versionx.templatevars.revert.options'),
+                    handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
+                        this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                    },
+                    scope: this,
+                    menu: (VersionX.record && VersionX.cmrecord) ?
+                        [{
+                            text: _('versionx.templatevars.revert',{id: VersionX.record['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
+                            },
+                            scope: this
+                        },{
+                            text: _('versionx.templatevars.revert',{id: VersionX.cmrecord['version_id']}),
+                            handler: function() {
+                                this.revertVersion((VersionX.cmrecord) ? VersionX.cmrecord['version_id'] : 0);
+                            },
+                            scope: this
+                        }] : undefined
                 }]
             },{
                 xtype: 'panel',
@@ -125,6 +146,28 @@ Ext.extend(VersionX.panel.TemplateVariablesDetail.Main,MODx.FormPanel,{
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
         window.location.href = '?a='+VersionX.action+'&action=templatevar&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+    },
+
+    revertVersion: function(version) {
+        if (version < 1) { MODx.alert(_('error'),'Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.templatevars.revert.confirm'),
+            text: _('versionx.templatevars.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: VersionX.record.content_id,
+                action: 'mgr/templatevars/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.templatevars.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
+            }
+        });
     }
 });
 Ext.reg('versionx-panel-templatevarsdetail',VersionX.panel.TemplateVariablesDetail.Main);

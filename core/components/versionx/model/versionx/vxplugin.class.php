@@ -86,6 +86,7 @@ class vxPlugin extends xPDOObject {
             'category' => ($this->xpdo->getCount('modCategory',array('id' => $this->get('category'))) > 0) ? $this->get('category') : 0,
             'plugincode' => $this->get('plugincode'),
             'locked' => $this->get('locked'),
+            'disabled' => $this->get('disabled'),
         ), '', true);
 
         return $object->save();

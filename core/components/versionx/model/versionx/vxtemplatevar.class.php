@@ -63,5 +63,39 @@ class vxTemplateVar extends xPDOObject {
     public static function getTabTpl() {
         return self::$tabTpl;
     }
+    
+    /**
+     * Reverts a snippet to the selected version.
+     * @param array $options
+     *
+     * @return bool
+     */
+    public function revert(array $options = array()) {
+        if (!$this->get('content_id')) {
+            return false;
+        }
+
+        /* @var modTemplateVar $object */
+        $object = $this->xpdo->getObject('modTemplateVar',$this->get('content_id'));
+        if (!($object instanceof modTemplateVar)) {
+            /* Could not find the TV, so we'll assume it was deleted. We'll create a new one and force that ID. */
+            $object = $this->xpdo->newObject('modTemplateVar');
+            $object->set('id', $this->get('content_id'));
+        }
+
+        $object->fromArray(array(
+            'name' => $this->get('name'),
+            'caption' => $this->get('caption'),
+            'description' => $this->get('description'),
+            'category' => ($this->xpdo->getCount('modCategory',array('id' => $this->get('category'))) > 0) ? $this->get('category') : 0,
+            'rank' => $this->get('rank'),
+            'display' => $this->get('display'),
+            'default_text' => $this->get('default_text'),
+            'properties' => $this->get('properties'),
+            'input_properties' => $this->get('input_properties'),
+            'output_properties' => $this->get('output_properties'),
+        ), '', true);
+
+        return $object->save();
+    }
 }
-?>
