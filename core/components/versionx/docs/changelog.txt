@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.1.0-pl        ++
+++   Released on 2013-01-14   ++
+++++++++++++++++++++++++++++++++
 #52 Prevent cutting off content because of non-breaking spaces.
 #42 Revert objects from the grid (both tabs and component)
 Add ability to revert Template Variables.
