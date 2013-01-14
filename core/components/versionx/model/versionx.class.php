@@ -408,7 +408,7 @@ class VersionX {
                     if ($ct instanceof modContentType)
                         $vArray['content_type'] = $ct->get('name');
 
-                    $vArray['content'] = nl2br($this->htmlent($vArray['content']));
+                    $vArray['content'] = $this->_prepareCodeView($vArray['content']);
 
                     if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
                     else $vArray['content_dispo'] = $this->modx->lexicon('inline');
@@ -466,22 +466,22 @@ class VersionX {
                     break;
 
                 case 'vxTemplate':
-                    $vArray['content'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['content'])));
+                    $vArray['content'] =  $this->_prepareCodeView($vArray['content']);
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxChunk':
-                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['snippet'])));
+                    $vArray['snippet'] =  $this->_prepareCodeView($vArray['snippet']);
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxSnippet':
-                    $vArray['snippet'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['snippet'])));
+                    $vArray['snippet'] =  $this->_prepareCodeView($vArray['snippet']);
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
 
                 case 'vxPlugin':
-                    $vArray['plugincode'] =  nl2br(str_replace(' ', '&nbsp;',$this->htmlent($vArray['plugincode'])));
+                    $vArray['plugincode'] =  $this->_prepareCodeView($vArray['plugincode']);
                     $vArray['category'] = $this->getCategory($vArray['category']);
                     break;
             }
@@ -501,6 +501,25 @@ class VersionX {
             return $vArray;
         }
         return false;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return string
+     */
+    private function _prepareCodeView($string) {
+        $lines = explode("\n",$string);
+        foreach ($lines as $idx => $line) {
+            $pos = 0;
+            while( substr($line, $pos, 1) == ' ') {
+                $pos++;
+            }
+            $lines[$idx] = str_repeat('&nbsp;', $pos) . $this->htmlent(substr($line, $pos));
+        }
+
+        $lines = implode('<br />', $lines);
+        return $lines;
     }
 
     /**
@@ -561,8 +580,8 @@ class VersionX {
         $c->limit(1);
 
         $lastVersion = $this->modx->getCollection($class,$c);
-        /* @var vxResource $lastVersion */
         $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
+        /* @var vxResource $lastVersion */
 
         /* If there's no earlier version, we can go ahead and
          return true to indicate we need to save the version */
