@@ -86,10 +86,38 @@ Ext.extend(VersionX.grid.TemplateVariables,MODx.grid.Grid,{
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
                 window.location.href = '?a='+VersionX.action+'&action=templatevar&vid='+eid+backTo;
             }
+        },'-',{
+            text: _('versionx.templatevars.revert', {id: d.version_id}),
+            handler: function() {
+                this.revertVersion(d.version_id, d.content_id)
+            },
+            scope: this
         });
         if (m.length > 0) {
             this.addContextMenuItem(m);
         }
+    },
+
+    revertVersion: function(version, content) {
+        if (version < 1) { MODx.alert(_('error'), 'Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.templatevars.revert.confirm'),
+            text: _('versionx.templatevars.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: content,
+                action: 'mgr/templatevars/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.templatevars.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
+            }
+        });
     }
 });
 Ext.reg('versionx-grid-templatevars',VersionX.grid.TemplateVariables);

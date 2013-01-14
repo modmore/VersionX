@@ -1,4 +1,3 @@
-
 VersionX.grid.Snippets = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -87,10 +86,38 @@ Ext.extend(VersionX.grid.Snippets,MODx.grid.Grid,{
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
                 window.location.href = '?a='+VersionX.action+'&action=snippet&vid='+eid+backTo;
             }
+        },'-',{
+            text: _('versionx.snippets.revert', {id: d.version_id}),
+            handler: function() {
+                this.revertVersion(d.version_id, d.content_id)
+            },
+            scope: this
         });
         if (m.length > 0) {
             this.addContextMenuItem(m);
         }
+    },
+
+    revertVersion: function(version, content) {
+        if (version < 1) { MODx.alert(_('error'), 'Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.snippets.revert.confirm'),
+            text: _('versionx.snippets.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: content,
+                action: 'mgr/snippets/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.snippets.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
+            }
+        });
     }
 });
 Ext.reg('versionx-grid-snippets',VersionX.grid.Snippets);

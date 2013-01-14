@@ -87,10 +87,38 @@ Ext.extend(VersionX.grid.Plugins,MODx.grid.Grid,{
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
                 window.location.href = '?a='+VersionX.action+'&action=plugin&vid='+eid+backTo;
             }
+        },'-',{
+            text: _('versionx.plugins.revert', {id: d.version_id}),
+            handler: function() {
+                this.revertVersion(d.version_id, d.content_id)
+            },
+            scope: this
         });
         if (m.length > 0) {
             this.addContextMenuItem(m);
         }
+    },
+
+    revertVersion: function(version, content) {
+        if (version < 1) { MODx.alert(_('error'), 'Version not properly defined: '+version); }
+        MODx.msg.confirm({
+            title: _('versionx.plugins.revert.confirm'),
+            text: _('versionx.plugins.revert.confirm.text',{id: version}),
+            url: VersionX.config.connector_url,
+            params: {
+                version_id: version,
+                content_id: content,
+                action: 'mgr/plugins/revert'
+            },
+            listeners: {
+                success: {fn: function() {
+                    MODx.msg.status({
+                        message: _('versionx.plugins.reverted'),
+                        delay: 4
+                    });
+                }, scope: this }
+            }
+        });
     }
 });
 Ext.reg('versionx-grid-plugins',VersionX.grid.Plugins);
