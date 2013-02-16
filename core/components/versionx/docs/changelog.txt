@@ -1,5 +1,10 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+Minor cleanup in terms of file locations and contents.
+Put VersionX on a good OOP diet:
+ * Abstract ExtJS actions to all extend the same base. Put inline in the controller file.
+ * Abstract ExtJS combos to all extend the same base. Also combined to one file.
+ * Create new vxBaseObject xPDO model that shares common fields and logic.
 Add Danish translation (thanks Jacob & Dennis at Better Collective!)
 
 ++++++++++++++++++++++++++++++++
