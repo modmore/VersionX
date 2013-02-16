@@ -39,3 +39,4 @@ VersionX.page.Base = function(config) {
     VersionX.page.Base.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.page.Base,MODx.Component);
+Ext.reg('versionx-page-base',VersionX.page.Base);

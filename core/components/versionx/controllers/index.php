@@ -27,7 +27,7 @@ if (!($versionX instanceof VersionX)) {
 $versionX->initialize('mgr');
 
 $scripts = array();
-$scripts[] = $versionX->config['js_url'].'mgr/actions/base.js';
+$scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
 $scripts[] = $versionX->config['js_url'].'mgr/widgets/combos.js';
 
 $versionId = (isset($_REQUEST['vid'])) ? (int)$_REQUEST['vid'] : false;
@@ -48,12 +48,16 @@ switch ($_REQUEST['action']) {
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$v.'; </script>');
         }
 
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/resource.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.content.js';
         $scripts[] = $versionX->config['js_url'].'mgr/resources/detailpanel/panel.tvs.js';
         $scripts[] = $versionX->config['js_url'].'mgr/resources/detailpanel.v21.resources.js';
+        $modx->regClientStartupHTMLBlock("<script type=\"text/javascript\">
+            Ext.applyIf(VersionX.panel, {ResourcesDetail:{}});
+            Ext.applyIf(VersionX.grid, {ResourcesDetail:{}});
+            Ext.onReady(function() { MODx.load({ xtype: 'versionx-page-base', type: 'resource' }); });
+        </script>");
     break;
     
     case 'template':
@@ -72,11 +76,13 @@ switch ($_REQUEST['action']) {
             }
         }
 
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/template.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.content.js';
         $scripts[] = $versionX->config['js_url'].'mgr/templates/detailpanel.templates.js';
+        $modx->regClientStartupHTMLBlock("<script type=\"text/javascript\">
+            Ext.onReady(function() { MODx.load({ xtype: 'versionx-page-base', type: 'template' }); });
+        </script>");
     break;
     
     case 'templatevar':
@@ -95,10 +101,12 @@ switch ($_REQUEST['action']) {
             }
         }
 
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/templatevar.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/templatevars/detailpanel.templatevars.js';
+        $modx->regClientStartupHTMLBlock("<script type=\"text/javascript\">
+            Ext.onReady(function() { MODx.load({ xtype: 'versionx-page-base', type: 'templatevar' }); });
+        </script>");
     break;
 
     case 'chunk':
@@ -117,11 +125,14 @@ switch ($_REQUEST['action']) {
             }
         }
 
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/chunk.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.content.js';
         $scripts[] = $versionX->config['js_url'].'mgr/chunks/detailpanel.chunks.js';
+
+        $modx->regClientStartupHTMLBlock("<script type=\"text/javascript\">
+            Ext.onReady(function() { MODx.load({ xtype: 'versionx-page-base', type: 'chunk' }); });
+        </script>");
     break;
 
     case 'snippet':
@@ -140,11 +151,13 @@ switch ($_REQUEST['action']) {
             }
         }
 
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/snippet.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.content.js';
         $scripts[] = $versionX->config['js_url'].'mgr/snippets/detailpanel.snippets.js';
+        $modx->regClientStartupHTMLBlock("<script type=\"text/javascript\">
+            Ext.onReady(function() { MODx.load({ xtype: 'versionx-page-base', type: 'snippet' }); });
+        </script>");
     break;
 
     case 'plugin':
@@ -163,11 +176,13 @@ switch ($_REQUEST['action']) {
             }
         }
 
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/plugin.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.content.js';
         $scripts[] = $versionX->config['js_url'].'mgr/plugins/detailpanel.plugins.js';
+        $modx->regClientStartupHTMLBlock("<script type=\"text/javascript\">
+            Ext.onReady(function() { MODx.load({ xtype: 'versionx-page-base', type: 'plugin' }); });
+        </script>");
     break;
     
     case 'index':
@@ -184,7 +199,7 @@ switch ($_REQUEST['action']) {
         $scripts[] = $versionX->config['js_url'].'mgr/snippets/grid.snippets.js';
         $scripts[] = $versionX->config['js_url'].'mgr/plugins/panel.plugins.js';
         $scripts[] = $versionX->config['js_url'].'mgr/plugins/grid.plugins.js';
-        $scripts[] = $versionX->config['js_url'].'mgr/actions/index.js';
+        $scripts[] = $versionX->config['js_url'].'mgr/action.index.js';
         break;
 }
 
