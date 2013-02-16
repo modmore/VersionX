@@ -71,6 +71,7 @@ switch ($_REQUEST['action']) {
             }
         }
 
+        $scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
         $scripts[] = $versionX->config['js_url'].'mgr/action.template.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
@@ -95,6 +96,7 @@ switch ($_REQUEST['action']) {
             }
         }
 
+        $scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
         $scripts[] = $versionX->config['js_url'].'mgr/action.templatevar.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
@@ -118,6 +120,7 @@ switch ($_REQUEST['action']) {
             }
         }
 
+        $scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
         $scripts[] = $versionX->config['js_url'].'mgr/action.chunk.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
@@ -142,6 +145,7 @@ switch ($_REQUEST['action']) {
             }
         }
 
+        $scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
         $scripts[] = $versionX->config['js_url'].'mgr/action.snippet.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
@@ -166,6 +170,7 @@ switch ($_REQUEST['action']) {
             }
         }
 
+        $scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
         $scripts[] = $versionX->config['js_url'].'mgr/action.plugin.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/panel.common.js';
         $scripts[] = $versionX->config['js_url'].'mgr/common/grid.common.js';
@@ -188,6 +193,7 @@ switch ($_REQUEST['action']) {
         $scripts[] = $versionX->config['js_url'].'mgr/snippets/grid.snippets.js';
         $scripts[] = $versionX->config['js_url'].'mgr/plugins/panel.plugins.js';
         $scripts[] = $versionX->config['js_url'].'mgr/plugins/grid.plugins.js';
+        $scripts[] = $versionX->config['js_url'].'mgr/action.base.js';
         $scripts[] = $versionX->config['js_url'].'mgr/action.index.js';
         break;
 }

@@ -1,51 +1,14 @@
-
-Ext.applyIf(VersionX.panel, {ChunksDetail:{}});
-Ext.applyIf(VersionX.grid, {ChunksDetail:{}});
-
 Ext.onReady(function() {
     Ext.QuickTips.init();
-    page = MODx.load({ xtype: 'versionx-page-chunk'});
+    var page = MODx.load({ xtype: 'versionx-page-chunk'});
     page.show();
 });
 
 VersionX.page.Chunk = function(config) {
     config = config || {};
-    var buttons = [];
-    buttons.push({
-        text: _('versionx.back'),
-        handler: function () {
-            window.location.href = '?a='+MODx.request['a'];
-        }
-    });
-    if (MODx.request.backTo) {
-        var back = MODx.request.backTo.split('-');
-        buttons.push('-',{
-            text: _('versionx.backto',{what: _('chunk')}),
-            handler: function() {
-                window.location.href = '?a='+back[0]+'&id='+back[1];
-            }
-        });
-    }
-    Ext.applyIf(config,{
-        renderTo: 'versionx',
-        cls: 'container',
-        components: [{
-            xtype: 'panel',
-            html: '<h2>'+_('versionx')+' '+_('versionx.chunks.detail')+'</h2>',
-            cls: 'modx-page-header',
-            border: false
-        },{
-            xtype: 'versionx-panel-chunksdetail',
-            cls: 'x-panel-body',
-            vxRecord: VersionX.record,
-            vxRecordCmp: VersionX.cmrecord,
-            border: false,
-            width: '98%'
-        }],
-        buttons: buttons
-    });
+    config.type = 'chunk';
     VersionX.page.Chunk.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.page.Chunk,MODx.Component);
+Ext.extend(VersionX.page.Chunk,VersionX.page.Base);
 Ext.reg('versionx-page-chunk',VersionX.page.Chunk);
 
