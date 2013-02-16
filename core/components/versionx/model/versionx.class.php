@@ -57,6 +57,9 @@ class VersionX {
             'css_url' => $assetsUrl.'css/',
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
+
+            'auto_save' => $this->modx->getOption('versionx.auto_save', null, true),
+            'auto_save_resources' => $this->modx->getOption('versionx.auto_save.resources', null, true),
         ),$config);
 
         require_once dirname(dirname(__FILE__)) . '/docs/version.inc.php';

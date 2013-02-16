@@ -126,3 +126,8 @@ $_lang['versionx.tabtip.notyet'] = 'Sorry, we can\'t show you your [[+what]] his
 $_lang['versionx.widget.resources'] = 'Recent Resource Changes';
 $_lang['versionx.widget.resources.desc'] = '(Part of VersionX) Shows a grid with the most recent resource changes for all users.';
 $_lang['versionx.widget.resources.update'] = 'Update Resource';
+
+$_lang['versionx.auto_save'] = 'Auto Draft Saving';
+$_lang['versionx.auto_saved'] = 'Draft stored at [[+when]]';
+$_lang['versionx.auto_saved.success'] = 'A draft of your edits has been saved. In the event where you need to access the draft, please see the Versions tab.';
+$_lang['versionx.auto_save.error'] = 'Uh oh.. something went wrong in an attempt to auto save your edits.';
