@@ -528,7 +528,8 @@ class VersionX {
      * Provides backwards compatibility for MODX 2.0.8 (min. supported version)
      * Only use if modResource::getTemplateVars is not available. 
      * This function is identical to modResource::getTemplateVars in the MODX model. 
-     * 
+     *
+     * @deprecated 2013-02-16 This method (and support for 2.0.8) will be discontinued.
      * @static
      * @param modResource $resource
      * @return array|null
