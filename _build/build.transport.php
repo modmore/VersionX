@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @param ntring $filename The name of the file.
+ * @param string $filename The name of the file.
  * @return string The file's content
  * @by splittingred
  */
