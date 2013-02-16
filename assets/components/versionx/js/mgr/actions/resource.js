@@ -4,6 +4,8 @@ Ext.onReady(function() {
     page.show();
 });
 
+Ext.applyIf(VersionX.panel, {ResourcesDetail:{}});
+Ext.applyIf(VersionX.grid, {ResourcesDetail:{}});
 VersionX.page.Resource = function(config) {
     config = config || {};
     config.type = 'resource';
