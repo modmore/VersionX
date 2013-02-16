@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -21,54 +21,45 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-class vxResource extends xPDOObject {
-    public static $excludeFields = array(
-        'version_id',
-        'saved',
-        'user',
-        'mode',
-        'marked',
-
-        'fields' => array(
-            'createdon',
-            'createdby',
-            'editedon',
-            'editedby',
-        )
-    );
-    
-    public static $tabJavascript = array(
-        'resources/panel.resources.js',
-        'resources/grid.resources.js',
-    );
-    
-    public static $tabTpl = 'mgr/tabs/resources';
-
+class vxResource extends vxBaseObject {
     /**
-     * Gets the excluded fields.
-     * @static
+     * {@inheritdoc}
      * @return array
      */
     public static function getExcludeFields () {
-        return self::$excludeFields;
+        return array(
+            'version_id',
+            'saved',
+            'user',
+            'mode',
+            'marked',
+
+            'fields' => array(
+                'createdon',
+                'createdby',
+                'editedon',
+                'editedby',
+            )
+        );
     }
 
     /**
-     * Gets the Javascript filenames that are required for tabs.
-     * @static
+     * {@inheritdoc}
      * @return array
      */
-    public static function getTabJavascript() {
-        return self::$tabJavascript;
+    public static function getTabJavascript () {
+        return array(
+            'resources/panel.resources.js',
+            'resources/grid.resources.js',
+        );
     }
 
     /**
-     * Gets the tab template file name.
-     * @static
+     * {@inheritdoc}
      * @return string
      */
     public static function getTabTpl() {
-        return self::$tabTpl;
+        return 'mgr/tabs/resources';
     }
 
     /**
@@ -110,4 +101,3 @@ class vxResource extends xPDOObject {
         return $resource->save();
     }
 }
-

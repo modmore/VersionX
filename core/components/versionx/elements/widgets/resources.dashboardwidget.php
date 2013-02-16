@@ -1,18 +1,25 @@
 <?php
 /**
- * @package mhdash
+ * @package versionx
  * @subpackage dashboard
  */
 class vxResourceHistoryWidget extends modDashboardWidgetInterface {
+    /**
+     * Renders the VersionX Resource History widget.
+     * @return string
+     */
     public function render() {
+        /** Load the VersionX class */
         $corePath = $this->modx->getOption('versionx.core_path',null,$this->modx->getOption('core_path').'components/versionx/');
-        require_once $corePath.'model/versionx.class.php';
-        $this->modx->versionx = new VersionX($this->modx);
-        $this->modx->versionx->initialize('mgr');
+        $versionX = $this->modx->getService('versionx', 'VersionX' , $corePath . 'model/versionx/');
+        if (!($versionX instanceof VersionX)) {
+            return 'Error loading VersionX class from ' . $corePath;
+        }
+        $versionX->initialize('mgr');
 
-        $langs = $this->modx->versionx->_getLangs();
-        
-        $vxUrl = $this->modx->versionx->config['assets_url'];
+        $langs = $versionX->_getLangs();
+        $vxUrl = $versionX->config['assets_url'];
+
         $this->modx->regClientStartupHTMLBlock('
             <script type="text/javascript" src="'.$vxUrl.'js/mgr/resources/widget.js" ></script>
             <script type="text/javascript">Ext.onReady(function() {

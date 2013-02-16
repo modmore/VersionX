@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -21,5 +21,37 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
+abstract class vxBaseObject extends xPDOObject {
+    /**
+     * Gets fields to exclude from comparisons between versions.
+     * @static
+     * @return array
+     */
+    public static function getExcludeFields () {
+        return array(
+            'version_id',
+            'saved',
+            'user',
+            'mode',
+            'marked',
+        );
+    }
+    /**
+     * Gets an array of javascript files needed for the version tabs.
+     *
+     * @static
+     * @return array
+     */
+    public static function getTabJavascript() {
+        return array();
+    }
 
-?>
+    /**
+     * Gets the tab template file name.
+     * @static
+     * @return string
+     */
+    public static function getTabTpl() {
+        return '';
+    }
+}

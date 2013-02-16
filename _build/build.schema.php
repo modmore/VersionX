@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -50,7 +50,7 @@ $generator->classTemplate= <<<EOD
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -69,15 +69,16 @@ $generator->classTemplate= <<<EOD
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-class [+class+] extends [+extends+] {}
-?>
+class [+class+] extends [+extends+] {
+
+}
 EOD;
     $generator->platformTemplate= <<<EOD
 <?php
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -97,15 +98,19 @@ EOD;
  *
 */
 require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\\\', '/') . '/[+class-lowercase+].class.php');
-class [+class+]_[+platform+] extends [+class+] {}
-?>
+/**
+ * [+platform+]-specific implementation of [+class+]
+ */
+class [+class+]_[+platform+] extends [+class+] {
+
+}
 EOD;
     $generator->mapHeader= <<<EOD
 <?php
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -124,6 +129,7 @@ EOD;
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
+
 EOD;
 
 $generator->parseSchema($sources['schema'].'versionx.mysql.schema.xml', $sources['model']);

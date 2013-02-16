@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -21,46 +21,26 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-class vxSnippet extends xPDOObject {
-    public static $excludeFields = array(
-        'version_id',
-        'saved',
-        'user',
-        'mode',
-        'marked',
-    );
-
-    public static $tabJavascript = array(
-        'snippets/panel.snippets.js',
-        'snippets/grid.snippets.js',
-    );
-
-    public static $tabTpl = 'mgr/tabs/snippets';
+class vxSnippet extends vxBaseObject {
     /**
-     * Gets the excluded fields.
-     * @static
+     * {@inheritdoc}
      * @return array
      */
-    public static function getExcludeFields () {
-        return self::$excludeFields;
-    }
-    /**
-     * @static
-     * @return array
-     */
-    public static function getTabJavascript() {
-        return self::$tabJavascript;
+    public static function getTabJavascript () {
+        return  array(
+            'snippets/panel.snippets.js',
+            'snippets/grid.snippets.js',
+        );
     }
 
     /**
-     * Gets the tab template file name.
-     * @static
+     * {@inheritdoc}
      * @return string
      */
-    public static function getTabTpl() {
-        return self::$tabTpl;
+    public static function getTabTpl () {
+        return 'mgr/tabs/snippets';
     }
-    
+
     /**
      * Reverts a snippet to the selected version.
      * @param array $options
@@ -91,4 +71,3 @@ class vxSnippet extends xPDOObject {
         return $object->save();
     }
 }
-

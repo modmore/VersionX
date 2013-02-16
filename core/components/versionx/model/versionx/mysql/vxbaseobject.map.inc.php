@@ -22,40 +22,48 @@
  *
 */
 
-$xpdo_meta_map['vxPlugin']= array (
+$xpdo_meta_map['vxBaseObject']= array (
   'package' => 'versionx',
   'version' => '1.1',
-  'table' => 'versionx_plugin',
-  'extends' => 'vxBaseObject',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
-    'name' => '',
-    'description' => 'Chunk',
-    'category' => 0,
-    'plugincode' => '',
-    'locked' => 0,
-    'properties' => NULL,
-    'disabled' => 0,
+    'version_id' => NULL,
+    'content_id' => NULL,
+    'saved' => 'CURRENT_TIMESTAMP',
+    'user' => 0,
+    'mode' => 'update',
+    'marked' => 0,
   ),
   'fieldMeta' => 
   array (
-    'name' => 
+    'version_id' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '50',
-      'phptype' => 'string',
+      'dbtype' => 'int',
+      'precision' => '11',
+      'phptype' => 'integer',
       'null' => false,
-      'default' => '',
+      'index' => 'pk',
+      'generated' => 'native',
+      'attributes' => 'unsigned',
     ),
-    'description' => 
+    'content_id' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'string',
+      'dbtype' => 'int',
+      'precision' => '11',
+      'phptype' => 'integer',
       'null' => false,
-      'default' => 'Chunk',
+      'index' => 'fk',
+      'attributes' => 'unsigned',
     ),
-    'category' => 
+    'saved' => 
+    array (
+      'dbtype' => 'timestamp',
+      'phptype' => 'timestamp',
+      'null' => false,
+      'default' => 'CURRENT_TIMESTAMP',
+    ),
+    'user' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
@@ -64,44 +72,63 @@ $xpdo_meta_map['vxPlugin']= array (
       'default' => 0,
       'index' => 'fk',
     ),
-    'plugincode' => 
+    'mode' => 
     array (
-      'dbtype' => 'mediumtext',
+      'dbtype' => 'varchar',
+      'precision' => '24',
       'phptype' => 'string',
       'null' => false,
-      'default' => '',
+      'default' => 'update',
     ),
-    'locked' => 
+    'marked' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
-      'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => false,
       'default' => 0,
     ),
-    'properties' => 
+  ),
+  'indexes' => 
+  array (
+    'PRIMARY' => 
     array (
-      'dbtype' => 'mediumtext',
-      'phptype' => 'array',
-      'null' => true,
+      'alias' => 'PRIMARY',
+      'primary' => true,
+      'unique' => true,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'version_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
-    'disabled' => 
+    'content_id' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '1',
-      'attributes' => 'unsigned',
-      'phptype' => 'boolean',
-      'null' => false,
-      'default' => 0,
+      'alias' => 'content_id',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'content_id' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'aggregates' => 
   array (
-    'Plugin' => 
+    'User' => 
     array (
-      'class' => 'modPlugin',
-      'local' => 'content_id',
+      'class' => 'modUser',
+      'local' => 'user',
       'foreign' => 'id',
       'owner' => 'foreign',
       'cardinality' => 'one',

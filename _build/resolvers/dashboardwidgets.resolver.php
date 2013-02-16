@@ -24,6 +24,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         $widget = $modx->getObject('modDashboardWidget',array('name' => 'versionx.widget.resources'));
         if (!$widget) {
+            /** @var modDashboardWidget $widget */
             $widget = $modx->newObject('modDashboardWidget');
             $widget->fromArray(array (
               'name' => 'versionx.widget.resources',
@@ -46,7 +47,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         break;
     case xPDOTransport::ACTION_UNINSTALL:
         $widget = $modx->getObject('modDashboardWidget',array('name' => 'versionx.widget.resources'));
-        if ($widget) {
+        if ($widget instanceof modDashboardWidget) {
             if ($widget->remove())
                 $modx->log(modX::LOG_LEVEL_WARN,'Removed VersionX Dashboard Widget.');
             else
