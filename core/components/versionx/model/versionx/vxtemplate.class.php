@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -21,50 +21,26 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-class vxTemplate extends xPDOObject {
-    public static $excludeFields = array(
-        'version_id',
-        'saved',
-        'user',
-        'mode',
-        'marked',
-    );
-    
-    public static $tabJavascript = array(
-        'templates/panel.templates.js',
-        'templates/grid.templates.js',
-    );
-    
-    public static $tabTpl = 'mgr/tabs/templates';
-    
+class vxTemplate extends vxBaseObject {
     /**
-     * Gets the excluded fields.
-     * @static
+     * {@inheritdoc}
      * @return array
      */
-    public static function getExcludeFields () {
-        return self::$excludeFields;
-    }
-    
-    /**
-     * Gets the Javascript filenames that are required for tabs.
-     * @static
-     * @return array
-     */
-    public static function getTabJavascript() {
-        return self::$tabJavascript;
+    public static function getTabJavascript () {
+        return array(
+            'templates/panel.templates.js',
+            'templates/grid.templates.js',
+        );
     }
 
     /**
-     * Gets the tab template file name.
-     * @static
+     * {@inheritdoc}
      * @return string
      */
-    public static function getTabTpl() {
-        return self::$tabTpl;
+    public static function getTabTpl () {
+        return 'mgr/tabs/templates';
     }
-    
-    
+
     /**
      * Reverts a template to the selected version.
      * @param array $options

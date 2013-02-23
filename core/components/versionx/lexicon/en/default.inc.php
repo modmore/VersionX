@@ -131,3 +131,32 @@ $_lang['versionx.auto_save'] = 'Auto Draft Saving';
 $_lang['versionx.auto_saved'] = 'Draft stored at [[+when]]';
 $_lang['versionx.auto_saved.success'] = 'A draft of your edits has been saved. In the event where you need to access the draft, please see the Versions tab.';
 $_lang['versionx.auto_save.error'] = 'Uh oh.. something went wrong in an attempt to auto save your edits.';
+
+// System Settings Added by Josh Gulledge 7-25-12, merged 2013-02-16
+$_lang['setting_versionx.debug'] = 'Debug';
+$_lang['setting_versionx.debug_desc'] = 'Set to true to see debug messages logged to the MODX Error Log.';
+$_lang['setting_versionx.formtabs.resource'] = 'Resource Tab';
+$_lang['setting_versionx.formtabs.resource_desc'] = 'Set to true to show VersionX as as a tab when editing a Resource';
+$_lang['setting_versionx.formtabs.template'] = 'Template Tab';
+$_lang['setting_versionx.formtabs.template_desc'] = 'Set to true to show VersionX as as a tab when editing a Template';
+$_lang['setting_versionx.formtabs.templatevariables'] = 'TV Tab';
+$_lang['setting_versionx.formtabs.templatevariables_desc'] = 'Set to true to show VersionX as as a tab when editing a Template Variable';
+$_lang['setting_versionx.formtabs.chunk'] = 'Chunk Tab';
+$_lang['setting_versionx.formtabs.chunk_desc'] = 'Set to true to show VersionX as as a tab when editing a Chunk';
+$_lang['setting_versionx.formtabs.snippet'] = 'Snippet Tab';
+$_lang['setting_versionx.formtabs.snippet_desc'] = 'Set to true to show VersionX as as a tab when editing a Snippet';
+$_lang['setting_versionx.formtabs.plugin'] = 'Plugin Tab';
+$_lang['setting_versionx.formtabs.plugin_desc'] = 'Set to true to show VersionX as as a tab when editing a Plugin';
+
+$_lang['setting_versionx.enable.resources'] = 'Enable Resources';
+$_lang['setting_versionx.enable.resources_desc'] = 'Set to true to enable VersionX to version Resources';
+$_lang['setting_versionx.enable.templates'] = 'Enable Templates';
+$_lang['setting_versionx.enable.templates_desc'] = 'Set to true to enable VersionX to version Templates';
+$_lang['setting_versionx.enable.templatevariables'] = 'Enable TVs';
+$_lang['setting_versionx.enable.templatevariables_desc'] = 'Set to true to enable VersionX to version Template Variables';
+$_lang['setting_versionx.enable.chunks'] = 'Enable Chunks';
+$_lang['setting_versionx.enable.chunks_desc'] = 'Set to true to enable VersionX to version Chunks';
+$_lang['setting_versionx.enable.snippets'] = 'Enable Snippets';
+$_lang['setting_versionx.enable.snippets_desc'] = 'Set to true to enable VersionX to version Snippets';
+$_lang['setting_versionx.enable.plugins'] = 'Enable Plugins';
+$_lang['setting_versionx.enable.plugins_desc'] = 'Set to true to enable VersionX to version Plugins';

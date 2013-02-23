@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -21,17 +21,14 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
+
 $xpdo_meta_map['vxTemplate']= array (
   'package' => 'versionx',
+  'version' => '1.1',
   'table' => 'versionx_template',
+  'extends' => 'vxBaseObject',
   'fields' => 
   array (
-    'version_id' => NULL,
-    'content_id' => NULL,
-    'saved' => 'CURRENT_TIMESTAMP',
-    'user' => 0,
-    'mode' => 'update',
-    'marked' => 0,
     'templatename' => NULL,
     'description' => 'Template',
     'category' => 0,
@@ -41,56 +38,6 @@ $xpdo_meta_map['vxTemplate']= array (
   ),
   'fieldMeta' => 
   array (
-    'version_id' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
-      'null' => false,
-      'index' => 'pk',
-      'generated' => 'native',
-      'attributes' => 'unsigned',
-    ),
-    'content_id' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
-      'null' => false,
-      'index' => 'fk',
-      'attributes' => 'unsigned',
-    ),
-    'saved' => 
-    array (
-      'dbtype' => 'timestamp',
-      'phptype' => 'timestamp',
-      'null' => false,
-      'default' => 'CURRENT_TIMESTAMP',
-    ),
-    'user' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
-      'null' => false,
-      'default' => 0,
-      'index' => 'fk',
-    ),
-    'mode' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '24',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => 'update',
-    ),
-    'marked' => 
-    array (
-      'dbtype' => 'tinyint',
-      'precision' => '1',
-      'phptype' => 'boolean',
-      'default' => 0,
-    ),
     'templatename' => 
     array (
       'dbtype' => 'varchar',
@@ -137,51 +84,8 @@ $xpdo_meta_map['vxTemplate']= array (
       'null' => true,
     ),
   ),
-  'indexes' => 
-  array (
-    'PRIMARY' => 
-    array (
-      'alias' => 'PRIMARY',
-      'primary' => true,
-      'unique' => true,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
-        'version_id' => 
-        array (
-          'length' => '',
-          'collation' => 'A',
-          'null' => false,
-        ),
-      ),
-    ),
-    'content_id' => 
-    array (
-      'alias' => 'content_id',
-      'primary' => false,
-      'unique' => false,
-      'type' => 'BTREE',
-      'columns' => 
-      array (
-        'content_id' => 
-        array (
-          'length' => '',
-          'collation' => 'A',
-          'null' => false,
-        ),
-      ),
-    ),
-  ),
   'aggregates' => 
   array (
-    'User' => 
-    array (
-      'class' => 'modUser',
-      'local' => 'user',
-      'foreign' => 'id',
-      'owner' => 'foreign',
-      'cardinality' => 'one',
-    ),
     'Template' => 
     array (
       'class' => 'modTemplate',

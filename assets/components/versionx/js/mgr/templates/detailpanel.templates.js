@@ -1,4 +1,4 @@
-VersionX.panel.TemplatesDetail.Main = function(config) {
+VersionX.panel.TemplatesDetail = function(config) {
     config = config || {};
     config.id = config.id || 'versionx-panel-templatesdetail';
     Ext.apply(config,{
@@ -119,9 +119,9 @@ VersionX.panel.TemplatesDetail.Main = function(config) {
         listeners: {
         }
     });
-    VersionX.panel.TemplatesDetail.Main.superclass.constructor.call(this,config);
+    VersionX.panel.TemplatesDetail.superclass.constructor.call(this,config);
 };
-Ext.extend(VersionX.panel.TemplatesDetail.Main,MODx.FormPanel,{
+Ext.extend(VersionX.panel.TemplatesDetail,MODx.FormPanel,{
     compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
@@ -150,4 +150,4 @@ Ext.extend(VersionX.panel.TemplatesDetail.Main,MODx.FormPanel,{
         });
     }
 });
-Ext.reg('versionx-panel-templatesdetail',VersionX.panel.TemplatesDetail.Main);
+Ext.reg('versionx-panel-templatesdetail',VersionX.panel.TemplatesDetail);

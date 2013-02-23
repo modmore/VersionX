@@ -25,14 +25,15 @@ require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
 require_once MODX_CONNECTORS_PATH.'index.php';
 
 $corePath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/');
-require_once $corePath.'model/versionx.class.php';
-$modx->versionx = new VersionX($modx);
+$versionX = $modx->getService('versionx', 'VersionX' , $corePath . 'model/versionx/');
+if (!($versionX instanceof VersionX)) {
+    return 'Error loading VersionX class from ' . $corePath;
+}
 
 $modx->lexicon->load('versionx:default');
 
 /* handle request */
-$path = $modx->getOption('processorsPath',$modx->versionx->config,$corePath.'processors/');
 $modx->request->handleRequest(array(
-    'processors_path' => $path,
+    'processors_path' => $corePath.'processors/',
     'location' => '',
 ));

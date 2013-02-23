@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -22,5 +22,9 @@
  *
 */
 require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/vxtemplatevar.class.php');
-class vxTemplateVar_mysql extends vxTemplateVar {}
-?>
+/**
+ * mysql-specific implementation of vxTemplateVar
+ */
+class vxTemplateVar_mysql extends vxTemplateVar {
+
+}

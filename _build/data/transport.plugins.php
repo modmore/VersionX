@@ -1,12 +1,12 @@
 <?php
 $plugins = array();
 
-/* create the plugin object */
+/** create the plugin object */
 $plugins[0] = $modx->newObject('modPlugin');
 $plugins[0]->set('id',1);
 $plugins[0]->set('name','VersionX');
 $plugins[0]->set('description','The plugin that enables VersionX of tracking your content.');
-$plugins[0]->set('plugincode', getSnippetContent($sources['plugins'] . 'included.versionx.plugin.php'));
+$plugins[0]->set('plugincode', getSnippetContent($sources['plugins'] . 'versionx.plugin.php'));
 $plugins[0]->set('category', 0);
 
 $events = include $sources['events'].'events.versionx.php';
@@ -19,5 +19,3 @@ if (is_array($events) && !empty($events)) {
 unset($events);
 
 return $plugins;
-
-?>

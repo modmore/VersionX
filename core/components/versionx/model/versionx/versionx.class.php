@@ -62,13 +62,15 @@ class VersionX {
             'auto_save_resources' => $this->modx->getOption('versionx.auto_save.resources', null, true),
         ),$config);
 
-        require_once dirname(dirname(__FILE__)) . '/docs/version.inc.php';
+        require_once dirname(dirname(dirname(__FILE__))) . '/docs/version.inc.php';
         if (defined('VERSIONX_FULLVERSION')) {
             $this->config['version'] = VERSIONX_FULLVERSION;
         }
         $modelpath = $this->config['model_path'];
         $this->modx->addPackage('versionx',$modelpath);
         $this->modx->lexicon->load('versionx:default');
+
+        $this->modx->loadClass('vxBaseObject', $modelpath . 'versionx/');
         
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
         $this->getAction();
@@ -529,7 +531,8 @@ class VersionX {
      * Provides backwards compatibility for MODX 2.0.8 (min. supported version)
      * Only use if modResource::getTemplateVars is not available. 
      * This function is identical to modResource::getTemplateVars in the MODX model. 
-     * 
+     *
+     * @deprecated 2013-02-16 This method (and support for 2.0.8) will be discontinued.
      * @static
      * @param modResource $resource
      * @return array|null

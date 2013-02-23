@@ -21,10 +21,10 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/vxtemplate.class.php');
+require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/vxbaseobject.class.php');
 /**
- * mysql-specific implementation of vxTemplate
+ * mysql-specific implementation of vxBaseObject
  */
-class vxTemplate_mysql extends vxTemplate {
+class vxBaseObject_mysql extends vxBaseObject {
 
 }

@@ -2,7 +2,7 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
+ * Copyright 2011-2013 by Mark Hamstra <hello@markhamstra.com>
  *
  * This file is part of VersionX, a real estate property listings component
  * for MODX Revolution.
@@ -21,48 +21,26 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-class vxChunk extends xPDOObject {
-    public static $excludeFields = array(
-        'version_id',
-        'saved',
-        'user',
-        'mode',
-        'marked',
-    );
-
-    public static $tabJavascript = array(
-        'chunks/panel.chunks.js',
-        'chunks/grid.chunks.js',
-    );
-
-    public static $tabTpl = 'mgr/tabs/chunks';
-
+class vxChunk extends vxBaseObject {
     /**
-     * Gets the excluded fields.
-     * @static
+     * {@inheritdoc}
      * @return array
      */
-    public static function getExcludeFields () {
-        return self::$excludeFields;
+    public static function getTabJavascript () {
+        return array(
+            'chunks/panel.chunks.js',
+            'chunks/grid.chunks.js',
+        );
     }
 
     /**
-     * @static
-     * @return array
-     */
-    public static function getTabJavascript() {
-        return self::$tabJavascript;
-    }
-
-    /**
-     * Gets the tab template file name.
-     * @static
+     * {@inheritdoc}
      * @return string
      */
-    public static function getTabTpl() {
-        return self::$tabTpl;
+    public static function getTabTpl () {
+        return 'mgr/tabs/chunks';
     }
-    
+
     /**
      * Reverts a chunk to the selected version.
      * @param array $options
