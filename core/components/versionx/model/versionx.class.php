@@ -289,6 +289,11 @@ class VersionX {
             $chunk = $this->modx->getObject('modChunk', (int)$chunk);
         }
 
+        // prevents resource groups from failing in MODX versions prior to 2.2.14 (see github #8992 + fix)
+        if (!($chunk instanceof modChunk)) {
+            return false;
+        }
+
         $cArray = $chunk->toArray();
 
         /* @var vxChunk $version */
