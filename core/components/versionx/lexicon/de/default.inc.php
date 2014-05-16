@@ -24,24 +24,24 @@
 
 $_lang['versionx'] = 'VersionX';
 $_lang['versionx.tabheader'] = 'Versionen';
-$_lang['versionx.menu_desc'] = 'Sichert Ihren wertvollen Content.';
+$_lang['versionx.menu_desc'] = 'Sichert Ihren wertvollen Inhalt.';
 
 $_lang['versionx.home'] = 'VersionX';
-$_lang['versionx.home.text'] = 'VersionX ist ein nützliches Werkzeug für MODX Revolution, das Ihnen hilft den Überblick über Ihre Inhalte in Ressourcen, Templates, Chunks, Snippets und Plugins zu behalten. Jeder Speichervorgang wird aufgezeichnet und kann leicht verglichen und wiederhergestellt bzw. rückgängig gemacht werden. Bitte beachten Sie, dass die Schnittstelle für Chunks, Snippets und Plugins noch nicht enthalten sind, die Daten werden in der Datenbank gespeichert und stehen zur Verfügung, sobald die Funktionen implementiert sind. <br /> <br />
+$_lang['versionx.home.text'] = 'VersionX ist ein nützliches Werkzeug für MODX Revolution, das Ihnen hilft den Überblick über Ihre Inhalte in Ressourcen, Templates, Chunks, Snippets und Plugins zu behalten. Jeder Speichervorgang wird aufgezeichnet und kann leicht verglichen und wiederhergestellt bzw. rückgängig gemacht werden. Bitte beachten Sie, dass die Schnittstelle für Chunks, Snippets und Plugins noch nicht enthalten ist, die Daten werden in der Datenbank gespeichert und stehen zur Verfügung, sobald die Funktionen implementiert sind. <br /> <br />
 	VersionX steht kostenlos (und Open Source) zur Verfügung, jedoch wurde eine Menge Zeit in Entwicklung, Wartung und Support investiert. Bitte <a href="http://www.markhamstra.com/open-source/versionx/">denken Sie über eine Spende nach</a> und unterstütze die zukünftige Weiterentwicklung von VersionX';
 
 $_lang['versionx.common.empty'] = '&lt;leer&gt;';
 $_lang['versionx.common.version-details'] = 'Version Details';
 $_lang['versionx.common.detail.text'] = 'Unten finden Sie die Details für die [[+what]] Version, die Sie ausgewählt haben. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
 $_lang['versionx.common.fields'] = 'Felder';
-$_lang['versionx.common.content'] = 'Content';
+$_lang['versionx.common.content'] = 'Inhalt';
 $_lang['versionx.common.properties'] = 'Eigenschaften';
-$_lang['versionx.common.properties.off'] = 'Sorry, dieses Tab kann noch nicht angezeigt werden.';
+$_lang['versionx.common.properties.off'] = 'Sorry, dieser Tab kann noch nicht angezeigt werden.';
 
 $_lang['versionx.resources.detail'] = 'Ressourcendetails';
 $_lang['versionx.resources.detail.text'] = 'Unten finden Sie Details zur ausgewählten Ressourcenversion. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
 $_lang['versionx.resources.revert'] = 'Zurücksetzen auf Version #[[+id]]';
-$_lang['versionx.resources.revert.options'] = 'Resource zurücksetzen';
+$_lang['versionx.resources.revert.options'] = 'Ressource zurücksetzen';
 $_lang['versionx.resources.revert.confirm'] = 'Sind Sie sicher?';
 $_lang['versionx.resources.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt ALLE Felder und Template Variablen, die momentan für die Ressource festgelegt sind und ersetzt die Werte mit denjenigen in der ausgewählten Ressourcenversion.';
 $_lang['versionx.resources.reverted'] = 'Ressourcenversion erfolgreich wiederhergestellt!';
@@ -114,7 +114,7 @@ $_lang['versionx.content_id'] = '[[+what]] ID';
 $_lang['versionx.content_name'] = '[[+what]] Name';
 $_lang['versionx.mode'] = 'Art';
 $_lang['versionx.mode.new'] = 'Erstellen';
-$_lang['versionx.mode.upd'] = 'Update';
+$_lang['versionx.mode.upd'] = 'Aktualisieren';
 $_lang['versionx.mode.snapshot'] = 'Snapshot';
 $_lang['versionx.mode.revert'] = 'Zurückgesetzt';
 $_lang['versionx.saved'] = 'Gespeichert am';
@@ -126,4 +126,4 @@ $_lang['versionx.tabtip.notyet'] = 'Sorry, leider kann die History für [[+what]
 
 $_lang['versionx.widget.resources'] = 'Kürzliche Resourcenveränderungen';
 $_lang['versionx.widget.resources.desc'] = '(Teil von VersionX) Zeigt eine Tabelle mit den letzten Änderungen aller User.';
-$_lang['versionx.widget.resources.update'] = 'Resource Aktualisieren';
+$_lang['versionx.widget.resources.update'] = 'Ressource aktualisieren';
