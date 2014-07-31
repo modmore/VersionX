@@ -1,4 +1,13 @@
-Ext.onReady(function() {
+<?php
+header("Content-Type: text/javascript");
+require_once dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))).'/config.core.php';
+if (!defined('MODX_CORE_PATH'))  { define('MODX_CORE_PATH', '/core/'); }
+	if (!defined('MODX_CONFIG_KEY')) { define('MODX_CONFIG_KEY', 'config'); }
+	require_once( MODX_CORE_PATH . 'model/modx/modx.class.php');
+	$modx = new modx();
+	$modx->initialize('mgr');
+
+echo "Ext.onReady(function() {
     Ext.QuickTips.init();
     MODx.load({ xtype: 'versionx-page-index'});
 });
@@ -38,7 +47,11 @@ VersionX.page.Index = function(config) {
                             border: false
                         }
                     },
-                    items: [{
+                    items: [
+";
+
+$resources = "
+					{
                         title: _('resources'),
                         items: [{
                             xtype: 'versionx-panel-resources'
@@ -47,7 +60,11 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-resources'
                         }]
-                    },{
+                    },";
+if( $modx->hasPermission('save_document') ) { echo $resources; }
+                        
+$templates = "
+					{
                         title: _('templates'),
                         items: [{
                             xtype: 'versionx-panel-templates'
@@ -56,7 +73,12 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-templates'
                         }]
-                    },{
+                    },";
+if( $modx->haspermission('save_template') ) { echo $templates; }
+
+$tmplvars = "
+                     
+                    {
                         title: _('tmplvars'),
                         items: [{
                             xtype: 'versionx-panel-templatevars'
@@ -65,7 +87,11 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-templatevars'
                         }]
-                    },{
+                    },";
+if( $modx->haspermission('save_tv') ) { echo $tmplvars; }
+
+$chunks = "
+                    {
                         title: _('chunks'),
                         items: [{
                             xtype: 'versionx-panel-chunks'
@@ -74,7 +100,11 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-chunks'
                         }]
-                    },{
+                    },";
+if( $modx->haspermission('save_chunk') ) { echo $chunks; }
+
+$snippets = "
+                    {
                         title: _('snippets'),
                         items: [{
                             xtype: 'versionx-panel-snippets'
@@ -83,7 +113,11 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-snippets'
                         }]
-                    },{
+                    },";
+if( $modx->haspermission('save_snippet') ) { echo $snippet; }
+
+$plugins = "
+                    {
                         title: _('plugins'),
                         items: [{
                             xtype: 'versionx-panel-plugins'
@@ -92,7 +126,10 @@ VersionX.page.Index = function(config) {
                         },{
                             xtype: 'versionx-grid-plugins'
                         }]
-                    }],
+                    }";
+                    
+echo "
+                    ],
                     stateful: true,
                     stateId: config.id,
                     stateEvents: ['tabchange'],
@@ -106,4 +143,5 @@ VersionX.page.Index = function(config) {
     VersionX.page.Index.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX.page.Index,MODx.Component);
-Ext.reg('versionx-page-index',VersionX.page.Index);
+Ext.reg('versionx-page-index',VersionX.page.Index);";
+?>
