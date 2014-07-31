@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    MODx.on("ready",function() {
+    Ext.onReady(function() {
         MODx.addTab("modx-snippet-tabs",{
             title: _('versionx.tabheader'),
             id: 'versionx-snippets-tab',
