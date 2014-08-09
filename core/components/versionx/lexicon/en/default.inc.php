@@ -44,6 +44,12 @@ $_lang['versionx.resources.revert.confirm'] = 'Are you sure?';
 $_lang['versionx.resources.revert.confirm.text'] = 'Are you sure you want to revert to Version #[[+id]]? This will overwrite ALL fields and Template Variables currently set for the resource and replace them with the ones in the version you selected.';
 $_lang['versionx.resources.reverted'] = 'Resource has been successfully reverted!';
 
+$_lang['versionx.resources.remove'] = 'Remove Version #[[+id]]';
+$_lang['versionx.resources.remove.options'] = 'Remove Resource';
+$_lang['versionx.resources.remove.confirm'] = 'Are you sure?';
+$_lang['versionx.resources.remove.confirm.text'] = 'Are you sure you want to remove Version #[[+id]]? This action is irreversible.';
+$_lang['versionx.resources.removed'] = 'Resource has been successfully removed!';
+
 $_lang['versionx.resources.detail.tabs.resource-content.columnheader'] = 'Content for Version #[[+id]]';
 $_lang['versionx.resources.detail.tabs.template-variables'] = 'Template Variables';
 $_lang['versionx.resources.detail.tabs.page-settings'] = 'Page Settings';

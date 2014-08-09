@@ -187,7 +187,7 @@ switch ($_REQUEST['action']) {
         $scripts[] = $versionx->config['js_url'].'mgr/snippets/grid.snippets.js';
         $scripts[] = $versionx->config['js_url'].'mgr/plugins/panel.plugins.js';
         $scripts[] = $versionx->config['js_url'].'mgr/plugins/grid.plugins.js';
-        $scripts[] = $versionx->config['js_url'].'mgr/action.index.js';
+        $scripts[] = $versionx->config['js_url'].'mgr/action.index.js.php';
         break;
 }
 
