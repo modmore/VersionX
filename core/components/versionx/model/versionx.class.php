@@ -159,7 +159,7 @@ class VersionX {
      *
      */
     public function newResourceVersion($resource, $mode = 'upd') {
-
+		$this->modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
         $class_key = 'modResource';
 
         if ($resource instanceof modResource) {
@@ -181,7 +181,7 @@ class VersionX {
 		$ext_fields = array();
 		$xpdo_map = $resource->xpdo->map;
 		$parent_composites = is_array($xpdo_map[$class_key]['composites']) ? array_keys($xpdo_map[$class_key]['composites']) : array();
-		
+
 		foreach($parent_composites as $pc) {
 			
 			$rArray['ext']['composites'][$pc] = array(
@@ -196,30 +196,30 @@ class VersionX {
 			
 			$relates_class_composites = array();
 			foreach ($relates_class_composite_keys as $key) {
-
+				
+				
+				$composite_fields = $xpdo_map[$parent_composite->_composites[$key]['class']]['fields'];
 				$rArray['ext']['composites'][$key] = array(
 					'cardinality' => $parent_composite->_composites[$key]['cardinality'],
 					'class' => $parent_composite->_composites[$key]['class'],
-					'fields' => array_keys($xpdo_map[$parent_composite->_composites[$key]['class']]['fields'])
+					'fields' => is_array($composite_fields) ? array_keys($composite_fields) : array()
 				);
 				$relates_class_composites[] = $parent_composite->_composites[$key]['class'];
 			}
 		
 			$relates_class_composite_fields = array();
 			foreach ($relates_class_composites as $composite) {
-
-				$relates_class_composite_fields = array_merge($relates_class_composite_fields, array_keys($xpdo_map[$composite]['fields']));
+				
+				$composite_fields = is_array($xpdo_map[$composite]['fields']) ? array_keys($xpdo_map[$composite]['fields']) : array();
+				$relates_class_composite_fields = array_merge($relates_class_composite_fields, $composite_fields);
 			}
 			
 			$ext_fields = array_merge($ext_fields, array_merge($ef, $relates_class_composite_fields));
-			
+
 		}
 
-		
-
-		
 		$rArray_all = $resource->xpdo->event->params['resource']->_fields;
-        
+
         if (is_array($rArray_all)) {
         
 			foreach($rArray_all as $key => $val) {
@@ -234,7 +234,7 @@ class VersionX {
 				
 			}
 		}
-        
+
         /* @var vxResource $version */
         $version = $this->modx->newObject('vxResource');
 
