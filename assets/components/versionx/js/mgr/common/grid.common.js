@@ -38,13 +38,13 @@ VersionX.grid.Common.DetailGrid = function(config) {
         for ( var i = 0; i < length; i++ ) {
             if (config.vxFieldMap[i].enumerate) {
                 config.data.push([
-                    _(config.vxFieldMap[i].lexicon),
+                    (config.vxFieldMap[i].hasOwnProperty('lexicon') ? _(config.vxFieldMap[i].lexicon) : config.vxFieldMap[i].label),
                     '<pre>'+JSON.stringify(config.vxRecord[config.vxFieldMap[i].key], null, 2) + '</pre>',
                     config.vxRecordCmp ? '<pre>'+JSON.stringify(config.vxRecordCmp[config.vxFieldMap[i].key], null, 2) + '</pre>' : ''
                 ]);
             } else {
                 config.data.push([
-                    _(config.vxFieldMap[i].lexicon),
+                    (config.vxFieldMap[i].hasOwnProperty('lexicon') ? _(config.vxFieldMap[i].lexicon) : config.vxFieldMap[i].label),
                     config.vxRecord[config.vxFieldMap[i].key],
                     config.vxRecordCmp ? config.vxRecordCmp[config.vxFieldMap[i].key] : ''
                 ]);
