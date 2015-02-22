@@ -34,8 +34,18 @@ $eventName = $modx->event->name;
 
 switch($eventName) {
     case 'OnDocFormSave':
-        if ($modx->getOption('versionx.enable.resources',null,true))
-            $result = $modx->versionx->newResourceVersion($resource, $mode);
+        if ($modx->getOption('versionx.enable.resources',null,true)){
+            $result = null;
+            foreach($scriptProperties as & $resource){
+                if(
+                    is_object($resource) 
+                    AND $resource instanceof modResource
+                ){
+                    $result = $modx->versionx->newResourceVersion($resource, $mode); 
+                    break;
+                }
+            }
+        }
         break;
     case 'OnTempFormSave':
         if ($modx->getOption('versionx.enable.templates',null,true))
