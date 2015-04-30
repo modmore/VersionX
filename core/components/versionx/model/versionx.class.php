@@ -159,15 +159,84 @@ class VersionX {
      *
      */
     public function newResourceVersion($resource, $mode = 'upd') {
+
+        $class_key = 'modResource';
+
         if ($resource instanceof modResource) {
             // We're retrieving the resource again to clean up raw post data we don't want.
-            $resource = $this->modx->getObject('modResource',$resource->get('id'));
+            $resource = $this->modx->getObject($class_key,$resource->get('id'));
         } else {
-            $resource = $this->modx->getObject('modResource',(int)$resource);
+            $resource = $this->modx->getObject($class_key,(int)$resource);
         }
+        $class_key = $resource->get('class_key');
 
-        $rArray = $resource->toArray();
+		//$rArray = $resource->toArray();
+		$rArray = array(
+			'ext' => array(
+				'fields' => array(),
+				'composites' => array()
+			)
+		);
+		
+		$ext_fields = array();
+		$xpdo_map = $resource->xpdo->map;
+		$parent_composites = is_array($xpdo_map[$class_key]['composites']) ? array_keys($xpdo_map[$class_key]['composites']) : array();
+		
+		foreach($parent_composites as $pc) {
+			
+			$rArray['ext']['composites'][$pc] = array(
+				'cardinality' => $xpdo_map[$class_key]['composites'][$pc]['cardinality'],
+				'class' => $xpdo_map[$class_key]['composites'][$pc]['class']
+			);
+		
+			$parent_composite = $resource->xpdo->event->params['resource']->_relatedObjects[$pc];
+			$parent_composite_class = $parent_composite->_class;
+			$ef = is_array($xpdo_map[$parent_composite_class]['fields']) ? array_keys($xpdo_map[$parent_composite_class]['fields']) : array();
+			$relates_class_composite_keys = is_array($parent_composite->_composites) ? array_keys($parent_composite->_composites) : array();
+			
+			$relates_class_composites = array();
+			foreach ($relates_class_composite_keys as $key) {
 
+				$composite_fields = $xpdo_map[$parent_composite->_composites[$key]['class']]['fields'];
+				$rArray['ext']['composites'][$key] = array(
+					'cardinality' => $parent_composite->_composites[$key]['cardinality'],
+					'class' => $parent_composite->_composites[$key]['class'],
+					'fields' => is_array($composite_fields) ? array_keys($composite_fields) : array()
+				);
+				$composite_fields = is_array($xpdo_map[$composite]['fields']) ? array_keys($xpdo_map[$composite]['fields']) : array();
+				$relates_class_composite_fields = array_merge($relates_class_composite_fields, $composite_fields);
+			}
+		
+			$relates_class_composite_fields = array();
+			foreach ($relates_class_composites as $composite) {
+
+				$relates_class_composite_fields = array_merge($relates_class_composite_fields, array_keys($xpdo_map[$composite]['fields']));
+			}
+			
+			$ext_fields = array_merge($ext_fields, array_merge($ef, $relates_class_composite_fields));
+			
+		}
+
+		
+
+		
+		$rArray_all = $resource->xpdo->event->params['resource']->_fields;
+        
+        if (is_array($rArray_all)) {
+        
+			foreach($rArray_all as $key => $val) {
+				
+				if (is_array($ext_fields) && in_array($key, $ext_fields)) {
+					
+					$rArray['ext']['fields'][] = $key;
+					
+				}
+				
+				$rArray[$key] =  $val;
+				
+			}
+		}
+        
         /* @var vxResource $version */
         $version = $this->modx->newObject('vxResource');
 
@@ -287,11 +356,6 @@ class VersionX {
             $chunk = $this->modx->getObject('modChunk', $chunk->get('id'));
         } else {
             $chunk = $this->modx->getObject('modChunk', (int)$chunk);
-        }
-
-        // prevents resource groups from failing in MODX versions prior to 2.2.14 (see github #8992 + fix)
-        if (!($chunk instanceof modChunk)) {
-            return false;
         }
 
         $cArray = $chunk->toArray();
