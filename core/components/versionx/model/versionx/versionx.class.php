@@ -4,8 +4,7 @@
  *
  * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
  *
- * This file is part of VersionX, a real estate property listings component
- * for MODX Revolution.
+ * This file is part of VersionX.
  *
  * VersionX is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software

@@ -54,4 +54,44 @@ abstract class vxBaseObject extends xPDOObject {
     public static function getTabTpl() {
         return '';
     }
+
+    /**
+     * @param array $fields
+     *
+     * @return mixed
+     */
+    public function cleanupProperties(array $fields = array()) {
+        $this->_unset($fields, 'HTTP_MODAUTH');
+        $this->_unset($fields, 'vx_type');
+        return $fields;
+    }
+
+    public function setBaseFields () {
+        $this->fromArray(array(
+            'saved' => time(),
+            'user' => ($this->xpdo->user && $this->xpdo->user->get('id')) ? $this->xpdo->user->get('id') : 0,
+            'marked' => false,
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param bool|int|null $cacheFlag
+     * @return bool
+     */
+    public function save($cacheFlag = null) {
+        if ($this->isNew()) {
+            $this->setBaseFields();
+        }
+        return parent::save($cacheFlag);
+    }
+
+    /**
+     * @param array $fields
+     * @param string $key
+     */
+    private function _unset(array &$fields = array(), $key = '') {
+        if (isset($fields[$key])) unset ($fields[$key]);
+    }
 }

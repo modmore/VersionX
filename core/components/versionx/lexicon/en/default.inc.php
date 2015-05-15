@@ -127,10 +127,10 @@ $_lang['versionx.widget.resources'] = 'Recent Resource Changes';
 $_lang['versionx.widget.resources.desc'] = '(Part of VersionX) Shows a grid with the most recent resource changes for all users.';
 $_lang['versionx.widget.resources.update'] = 'Update Resource';
 
-$_lang['versionx.auto_save'] = 'Auto Draft Saving';
-$_lang['versionx.auto_saved'] = 'Draft stored at [[+when]]';
-$_lang['versionx.auto_saved.success'] = 'A draft of your edits has been saved. In the event where you need to access the draft, please see the Versions tab.';
-$_lang['versionx.auto_save.error'] = 'Uh oh.. something went wrong in an attempt to auto save your edits.';
+// Auto-save related strings. Added after 2012-02-23.
+$_lang['versionx.draft_secured'] = 'Draft saved at [[+when]]';
+$_lang['versionx.draft_secured.message'] = 'A draft of your edits has been saved. In the event where you need to access the draft, please see the Versions tab.';
+$_lang['versionx.draft_secured.error'] = 'Uh oh.. something went wrong in an attempt to auto save your edits.';
 
 // System Settings Added by Josh Gulledge 7-25-12, merged 2013-02-16
 $_lang['setting_versionx.debug'] = 'Debug';

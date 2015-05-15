@@ -44,10 +44,9 @@
                 values = form.getValues();
 
                 /**
-                 * We send the data to VersionX through Ajax.
+                 * We send the data to VersionX through Ajax. We'll need to add the action and vx_type.
                  */
-
-                values.action = 'mgr/autosave';
+                values.action = 'mgr/savedraft';
                 values.vx_type = 'vxResource';
 
                 MODx.Ajax.request({
@@ -75,14 +74,14 @@
                                     seconds = (secs < 10) ? '0' + secs : secs,
                                     displayTime = hours + ':' + minutes + ':' + seconds;
 
-                                saveBtn.setText( _('save') + ' (' + _('versionx.auto_saved', {when: displayTime}) + ')');
+                                saveBtn.setText( _('save') + ' (' + _('versionx.draft_secured', {when: displayTime}) + ')');
 
                                 MODx.msg.status({
-                                    title: _('versionx.auto_saved', {when: displayTime}),
-                                    message: _('versionx.auto_saved.success'),
-                                    delay: 10
+                                    title: _('versionx.draft_secured', {when: displayTime}),
+                                    message: _('versionx.draft_secured.message'),
+                                    delay: 15
                                 });
-                                MODx.msg.alert(_('error'), _('versionx.auto_save.error') + '<br /><br />' + r.message);
+                                MODx.msg.alert(_('error'), _('versionx.draft_secured.error') + '<br /><br />' + r.message);
                                 return false;
                             }
                         }
