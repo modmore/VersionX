@@ -9,6 +9,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - #73 Fix resource type combo, prevent annoying "unknown column 'name' in 'order clause'" error.
 - Improve loading of VersionX service in plugin
 - Add Danish translation (thanks Jacob & Dennis at Better Collective!)
+- #59 Fix E_NOTICE issue in PHP < 5.4
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.1.0-pl        ++
