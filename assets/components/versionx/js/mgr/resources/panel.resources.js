@@ -45,8 +45,8 @@ VersionX.panel.Resources = function(config) {
                     anchor: '1',
                     id: 'res-f-context'
                 },{
-                    xtype: 'modx-combo-class-map',
-                    fieldLabel: _('class_key'),
+                    xtype: 'modx-combo-class-derivatives',
+                    fieldLabel: _('resource_type'),
                     name: 'fltr_class',
                     anchor: '1',
                     id: 'res-f-class'
