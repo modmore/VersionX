@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.1.1-pl        ++
+++   Released on 2015-05-15   ++
+++++++++++++++++++++++++++++++++
 - #65 Make sure Versions tab shows up on snippets
 - #67 Some slight improvements to the UI in 2.3
 - #73 Fix resource type combo, prevent annoying "unknown column 'name' in 'order clause'" error.
