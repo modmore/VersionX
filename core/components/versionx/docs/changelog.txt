@@ -1,6 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+- #65 Make sure Versions tab shows up on snippets
+- #67 Some slight improvements to the UI in 2.3
 - #73 Fix resource type combo, prevent annoying "unknown column 'name' in 'order clause'" error.
+- Improve loading of VersionX service in plugin
 - Add Danish translation (thanks Jacob & Dennis at Better Collective!)
 
 ++++++++++++++++++++++++++++++++

@@ -20,6 +20,7 @@
  * @package versionx
  *
  * @var modX $modx
+ * @var VersionX $versionx
  * @var int $id
  * @var string $mode
  * @var modResource $resource
@@ -32,32 +33,39 @@
 
 $eventName = $modx->event->name;
 
+$path = $modx->getOption('versionx.core_path', nul, MODX_CORE_PATH . 'components/versionx/');
+$versionx = $modx->getService('versionx', 'VersionX', $path . 'model/');
+if (!$versionx) {
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not load VersionX from ' . $path);
+    return;
+}
+
 switch($eventName) {
     case 'OnDocFormSave':
         if ($modx->getOption('versionx.enable.resources',null,true))
-            $result = $modx->versionx->newResourceVersion($resource, $mode);
+            $result = $versionx->newResourceVersion($resource, $mode);
         break;
     case 'OnTempFormSave':
         if ($modx->getOption('versionx.enable.templates',null,true))
-            $result = $modx->versionx->newTemplateVersion($template, $mode);
+            $result = $versionx->newTemplateVersion($template, $mode);
         break;
     case 'OnTVFormSave':
         if ($modx->getOption('versionx.enable.templatevariables',null,true))
-            $result = $modx->versionx->newTemplateVarVersion($tv, $mode);
+            $result = $versionx->newTemplateVarVersion($tv, $mode);
         break;
     case 'OnChunkFormSave':
         if ($modx->getOption('versionx.enable.chunks',null,true))
-            $result = $modx->versionx->newChunkVersion($chunk, $mode);
+            $result = $versionx->newChunkVersion($chunk, $mode);
         break;
     case 'OnSnipFormSave':
         if ($modx->getOption('versionx.enable.snippets',null,true))
-            $result = $modx->versionx->newSnippetVersion($snippet, $mode);
+            $result = $versionx->newSnippetVersion($snippet, $mode);
         break;
     case 'OnPluginFormSave':
         if ($modx->getOption('versionx.enable.plugins',null,true))
-            $result = $modx->versionx->newPluginVersion($plugin, $mode);
+            $result = $versionx->newPluginVersion($plugin, $mode);
         break;
-    
+
     case 'OnBeforeManagerPageInit':
     case 'OnManagerPageInit':
     case 'OnHandleRequest':
@@ -67,38 +75,38 @@ switch($eventName) {
     /* Add tabs */
     case 'OnDocFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxResource'); 
+            $result = $versionx->outputVersionsTab('vxResource');
         }
         break;
-    
+
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxTemplate'); 
+            $result = $versionx->outputVersionsTab('vxTemplate');
         }
         break;
 
     case 'OnTVFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxTemplateVar');
+            $result = $versionx->outputVersionsTab('vxTemplateVar');
         }
         break;
 
 
     case 'OnChunkFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxChunk');
+            $result = $versionx->outputVersionsTab('vxChunk');
         }
         break;
 
     case 'OnSnipFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxSnippet');
+            $result = $versionx->outputVersionsTab('vxSnippet');
         }
         break;
 
     case 'OnPluginFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
-            $result = $modx->versionx->outputVersionsTab('vxPlugin');
+            $result = $versionx->outputVersionsTab('vxPlugin');
         }
         break;
 
