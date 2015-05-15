@@ -17,6 +17,8 @@ VersionX.panel.Resources = function(config) {
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-resources',
                     fieldLabel: _('resource'),
                     name: 'fltr_resource',
+                    hiddenName: 'fltr_resource',
+                    allowBlank: true,
                     width: '95%',
                     id: 'res-f-resource',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
@@ -25,6 +27,7 @@ VersionX.panel.Resources = function(config) {
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
+                    allowBlank: true,
                     anchor: '1',
                     id: 'res-f-user'
                 },{
@@ -42,18 +45,24 @@ VersionX.panel.Resources = function(config) {
                     xtype: (VersionX.inVersion) ? 'hidden' : 'modx-combo-context',
                     fieldLabel: _('context'),
                     name: 'fltr_context_key',
+                    hiddenName: 'fltr_context_key',
                     anchor: '1',
                     id: 'res-f-context'
                 },{
                     xtype: 'modx-combo-class-derivatives',
                     fieldLabel: _('resource_type'),
                     name: 'fltr_class',
+                    hiddenName: 'fltr_class',
+                    allowBlank: true,
+                    forceSelection: false,
                     anchor: '1',
                     id: 'res-f-class'
                 },{
                     xtype: 'datefield',
                     fieldLabel: _('versionx.filter.dateuntil'),
                     name: 'fltr_until',
+                    hiddenName: 'fltr_until',
+                    allowBlank: true,
                     anchor: '1',
                     id: 'res-f-until'
                 }]
