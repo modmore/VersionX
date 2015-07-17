@@ -33,7 +33,7 @@
 
 $eventName = $modx->event->name;
 
-$path = $modx->getOption('versionx.core_path', nul, MODX_CORE_PATH . 'components/versionx/');
+$path = $modx->getOption('versionx.core_path', null, MODX_CORE_PATH . 'components/versionx/');
 $versionx = $modx->getService('versionx', 'VersionX', $path . 'model/');
 if (!$versionx) {
     $modx->log(modX::LOG_LEVEL_ERROR, 'Could not load VersionX from ' . $path);
