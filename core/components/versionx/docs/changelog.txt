@@ -1,6 +1,12 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
 ++++++++++++++++++++++++++++++++
+++   VersionX 2.1.3-pl        ++
+++   Released on 2015-10-25   ++
+++++++++++++++++++++++++++++++++
+- #79/82 Fix undefined constant error
+
+++++++++++++++++++++++++++++++++
 ++   VersionX 2.1.2-pl        ++
 ++   Released on 2015-05-16   ++
 ++++++++++++++++++++++++++++++++
