@@ -98,7 +98,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                             { key: 'menuindex', lexicon:'resource_menuindex' },
                             { key: 'published', lexicon:'resource_published' },
                             { key: 'hidemenu', lexicon:'resource_hide_from_menus' }
-                        ]
+                        ].concat(config.vxRecord ? config.vxRecord.ext.fields.map(function(x) { return {key: x, label: x}; }) : [])
                     }]
                 },{
                     title: _('versionx.common.content'),
