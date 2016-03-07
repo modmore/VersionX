@@ -201,7 +201,7 @@ class VersionX {
         if($this->checkLastVersion('vxResource', $version, $this->debug)) {
             return $version->save();
         }
-        return true;
+        return FALSE;
     }
 
 
