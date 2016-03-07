@@ -28,7 +28,7 @@ $_lang['versionx.menu_desc'] = 'Sichert Ihren wertvollen Inhalt.';
 
 $_lang['versionx.home'] = 'VersionX';
 $_lang['versionx.home.text'] = 'VersionX ist ein nützliches Werkzeug für MODX Revolution, das Ihnen hilft den Überblick über Ihre Inhalte in Ressourcen, Templates, Chunks, Snippets und Plugins zu behalten. Jeder Speichervorgang wird aufgezeichnet und kann leicht verglichen und wiederhergestellt bzw. rückgängig gemacht werden. Bitte beachten Sie, dass die Schnittstelle für Chunks, Snippets und Plugins noch nicht enthalten ist, die Daten werden in der Datenbank gespeichert und stehen zur Verfügung, sobald die Funktionen implementiert sind. <br /> <br />
-	VersionX steht kostenlos (und Open Source) zur Verfügung, jedoch wurde eine Menge Zeit in Entwicklung, Wartung und Support investiert. Bitte <a href="http://www.markhamstra.com/open-source/versionx/">denken Sie über eine Spende nach</a> und unterstütze die zukünftige Weiterentwicklung von VersionX';
+	VersionX steht kostenlos (und Open Source) zur Verfügung, jedoch wurde eine Menge Zeit in Entwicklung, Wartung und Support investiert. Bitte <a href="http://www.markhamstra.com/open-source/versionx/">denken Sie über eine Spende nach</a> und unterstützen Sie die zukünftige Weiterentwicklung von VersionX';
 
 $_lang['versionx.common.empty'] = '&lt;leer&gt;';
 $_lang['versionx.common.version-details'] = 'Version Details';
@@ -36,7 +36,7 @@ $_lang['versionx.common.detail.text'] = 'Unten finden Sie die Details für die [
 $_lang['versionx.common.fields'] = 'Felder';
 $_lang['versionx.common.content'] = 'Inhalt';
 $_lang['versionx.common.properties'] = 'Eigenschaften';
-$_lang['versionx.common.properties.off'] = 'Sorry, dieser Tab kann noch nicht angezeigt werden.';
+$_lang['versionx.common.properties.off'] = 'Entschuldigung, dieser Tab kann noch nicht angezeigt werden.';
 
 $_lang['versionx.resources.detail'] = 'Ressourcendetails';
 $_lang['versionx.resources.detail.text'] = 'Unten finden Sie Details zur ausgewählten Ressourcenversion. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
@@ -122,8 +122,8 @@ $_lang['versionx.title'] = 'Titel';
 $_lang['versionx.marked'] = 'Markiert';
 
 $_lang['versionx.error.noresults'] = 'Für Ihre Anfrage konnten keine Resultate gefunden werden.';
-$_lang['versionx.tabtip.notyet'] = 'Sorry, leider kann die History für [[+what]] noch nicht angezeigt werden. Veränderungen werden jedoch bereits jetzt in die Datenbank geschrieben, sobald diese Funktionen implementiert sind, werden sie hier angezeigt!';
+$_lang['versionx.tabtip.notyet'] = 'Entschuldigung, leider kann die Historie für [[+what]] noch nicht angezeigt werden. Veränderungen werden jedoch bereits jetzt in die Datenbank geschrieben – sobald diese Funktionen implementiert sind, werden sie hier angezeigt!';
 
-$_lang['versionx.widget.resources'] = 'Kürzliche Resourcenveränderungen';
+$_lang['versionx.widget.resources'] = 'Kürzliche Ressourcenveränderungen';
 $_lang['versionx.widget.resources.desc'] = '(Teil von VersionX) Zeigt eine Tabelle mit den letzten Änderungen aller User.';
 $_lang['versionx.widget.resources.update'] = 'Ressource aktualisieren';
