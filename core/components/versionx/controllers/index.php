@@ -37,12 +37,16 @@ switch ($_REQUEST['action']) {
             $v = $versionx->getVersionDetails('vxResource',$versionid,true);
             if ($v !== false)
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.record = '.$v.'; </script>');
+            else
+                return $modx->error->failure($modx->lexicon('versionx.error.noresults'));
         }
         /* If an ID to compare to was passed, fetch that aswell. */
         if ($compareid > 0) {
             $v = $versionx->getVersionDetails('vxResource',$compareid,true);
             if ($v !== false)
                 $modx->regClientStartupHTMLBlock('<script type="text/javascript">VersionX.cmrecord = '.$v.'; </script>');
+            else
+                return $modx->error->failure($modx->lexicon('versionx.error.noresults'));
         }
 
         $scripts[] = $versionx->config['js_url'].'mgr/action.resource.js';

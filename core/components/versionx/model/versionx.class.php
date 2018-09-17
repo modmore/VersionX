@@ -399,6 +399,10 @@ class VersionX {
             /* Class specific processing */
             switch ($class) {
                 case 'vxResource':
+                    $resource = $this->modx->getObject('modResource',$v->get('content_id'));
+                    if(!$resource) {
+                        return false;
+                    }
                     $vArray = array_merge($vArray,$vArray['fields']);
 
                     if ($vArray['parent'] != 0) {

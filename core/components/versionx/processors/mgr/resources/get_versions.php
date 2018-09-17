@@ -12,6 +12,8 @@ $resource = intval($modx->getOption('resource',$scriptProperties,0));
 $current = intval($modx->getOption('current',$scriptProperties,0));
 
 $c = $modx->newQuery('vxResource');
+$c->leftJoin('modContextSetting','ContextSetting','ContextSetting.context_key = vxResource.context_key');
+$c->leftJoin('modResourceGroupResource','ResourceGroup','ResourceGroup.document = vxResource.content_id');
 $c->select(array('version_id','saved','mode'));
 
 if (strlen($search) > 1) {
@@ -22,6 +24,33 @@ if ($resource > 0)
 if ($current > 0)
     $c->where(array('version_id:!=' => $current));
 
+/* 1. The connected context has is ignoring access through resource groups */
+$where = [
+    [
+        [
+            'ContextSetting.key' => 'access_resource_group_enabled',
+            'ContextSetting.value' => 0
+        ]
+    ]
+];
+
+/* 2. The default context is ignoring access through resource groups disabled */
+if(!$modx->getOption('access_resource_group_enabled', null, true)) {
+    array_push($where, [
+        'OR:vxResource.context_key:=' => $modx->getOption('default_context')
+    ]);
+    array_push($where[0], [
+        'OR:ContextSetting.key' => 'access_resource_group_enabled',
+        'ContextSetting.value:IS' => null,
+    ]);
+}
+
+/* 3. The resource is not restricted or the user has access to the resourcegroup */
+array_push($where, [
+    'OR:ResourceGroup.id:IS' => null,
+    'OR:ResourceGroup.document_group:IN' => $modx->user->getResourceGroups(),
+]);
+$c->where($where);
 $total = $modx->getCount('vxResource',$c);
 
 $c->sortby($sort,$dir);
