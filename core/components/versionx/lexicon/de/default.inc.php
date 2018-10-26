@@ -101,7 +101,7 @@ $_lang['versionx.plugins.reverted'] = 'Plugin erfolgreich auf Version #[[+id]] z
 
 $_lang['versionx.menu.viewdetails'] = 'Version Details ansehen';
 $_lang['versionx.back'] = 'Zurück zur Übersicht';
-$_lang['versionx.backtoresource'] = 'Zurück zur Ressource';
+$_lang['versionx.backto'] = 'Zurück zu [[+what]]';
 $_lang['versionx.compare_to'] = 'Vergleichen mit';
 $_lang['versionx.compare_this_version_to'] = 'Diese Version vergleichen mit';
 $_lang['versionx.filter'] = '[[+what]] filtern';
