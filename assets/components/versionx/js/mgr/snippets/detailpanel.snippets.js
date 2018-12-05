@@ -29,6 +29,7 @@ VersionX.panel.SnippetsDetail = function(config) {
                     }
                 },{html: '&nbsp;', border: false, bodyStyle: 'margin-left: 10px;'},{
                     xtype: 'button',
+                    cls: 'primary-button',
                     text: _('versionx.snippets.revert.options'),
                     handler: (VersionX.record && VersionX.cmrecord) ? Ext.emptyFn : function() {
                         this.revertVersion((VersionX.record) ? VersionX.record['version_id'] : 0);
