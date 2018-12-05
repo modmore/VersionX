@@ -11,7 +11,7 @@ VersionX.page.Template = function(config) {
     buttons.push({
         text: _('versionx.back'),
         handler: function () {
-            window.location.href = '?a='+MODx.request['a'];
+            MODx.loadPage('?namespace=versionx&a=index');
         }
     });
     if (MODx.request.backTo) {
@@ -19,7 +19,7 @@ VersionX.page.Template = function(config) {
         buttons.push('-',{
             text: _('versionx.backto', {what: _('tv')}),
             handler: function() {
-                window.location.href = '?a='+back[0]+'&id='+back[1];
+                MODx.loadPage('?a='+back[0]+'&id='+back[1]);
             }
         });
     }

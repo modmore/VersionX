@@ -3,7 +3,7 @@ var VersionX = function(config) {
     VersionX.superclass.constructor.call(this,config);
 };
 Ext.extend(VersionX,Ext.Component,{
-    page:{},window:{},grid:{},tree:{},panel:{},tabs:{},combo:{},
+    page:{},window:{},grid:{ResourcesDetail:{}},tree:{},panel:{ResourcesDetail:{}},tabs:{},combo:{},
     config: {
         connector_url: ''
     },

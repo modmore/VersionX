@@ -10,7 +10,7 @@ VersionX.page.Snippet = function(config) {
     buttons.push({
         text: _('versionx.back'),
         handler: function () {
-            window.location.href = '?a='+MODx.request['a'];
+            MODx.loadPage('?namespace=versionx&a=index');
         }
     });
     if (MODx.request.backTo) {
@@ -18,7 +18,7 @@ VersionX.page.Snippet = function(config) {
         buttons.push('-',{
             text: _('versionx.backto',{what: _('snippet')}),
             handler: function() {
-                window.location.href = '?a='+back[0]+'&id='+back[1];
+                MODx.loadPage('?a='+back[0]+'&id='+back[1]);
             }
         });
     }
