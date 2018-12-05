@@ -74,29 +74,9 @@ class VersionX {
     /**
      * @param string $ctx Context name
      * @return bool
+     * @deprecated No longer used for initialising assets.
      */
     public function initialize($ctx = 'web') {
-        switch ($ctx) {
-            case 'mgr':
-                $this->modx->regClientStartupHTMLBlock('
-                <script type="text/javascript">
-                    Ext.onReady(function() {
-                        VersionX.config = '.$this->modx->toJSON($this->config).';
-                        VersionX.action = '.$this->action.';
-                    });
-                </script>
-
-                <style type="text/css">
-                    .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-                    .vx-added .x-form-item-label { color: green; }
-                    .vx-changed .x-form-item-label { color: #dd6600; }
-                    .vx-removed .x-form-item-label { color: #ff0000; }
-                </style>');
-
-                $this->modx->regClientStartupScript($this->config['js_url'].'mgr/versionx.class.js');
-                $this->modx->regClientStartupScript($this->config['js_url'].'mgr/common/json2.js');
-            break;
-        }
         return true;
     }
 
@@ -726,6 +706,7 @@ class VersionX {
      * Gets the action ID for the VersionX controller.
      * 
      * @return int
+     * @deprecated No longer using modAction
      */
     public function getAction() {
         if (!$this->action) {
