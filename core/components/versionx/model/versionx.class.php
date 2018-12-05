@@ -370,7 +370,7 @@ class VersionX {
      * @return bool|array
      */
     public function getVersionDetails($class = 'vxResource',$id = 0, $json = false, $prefix = '') {
-        $v = $this->modx->getObject($class,$id);
+        $v = $this->modx->getObject($class, ['version_id' => $id]);
         /* @var xPDOObject $v */
         if ($v instanceof $class) {
             $vArray = $v->toArray();
