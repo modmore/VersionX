@@ -23,7 +23,7 @@ require_once __DIR__ . '/base.class.php';
 
 class VersionXIndexManagerController extends VersionXBaseManagerController {
 
-    public function process(array $scriptProperties = array())
+    public function loadCustomCssJs()
     {
         $cachebust = '?vxv=' . urlencode($this->versionx->config['version']);
         $scripts = array();
@@ -200,7 +200,5 @@ class VersionXIndexManagerController extends VersionXBaseManagerController {
         foreach ($scripts as $url) {
             $this->addJavascript($url . $cachebust);
         }
-
-        return '<div id="versionx"></div>';
     }
 }

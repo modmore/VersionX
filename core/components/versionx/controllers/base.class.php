@@ -24,6 +24,7 @@ require_once dirname(__DIR__).'/model/versionx.class.php';
 abstract class VersionXBaseManagerController extends modExtraManagerController {
     /** @var VersionX */
     protected $versionx;
+    public $targetClass = null;
 
     public function initialize()
     {
@@ -46,6 +47,25 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
 
         $this->addJavascript($this->versionx->config['js_url'].'mgr/versionx.class.js');
         $this->addJavascript($this->versionx->config['js_url'].'mgr/common/json2.js');
+
+
+        $versionid = isset($_REQUEST['vid']) ? (int)$_REQUEST['vid'] : false;
+        $compareid = isset($_REQUEST['cmid']) ? (int)$_REQUEST['cmid'] : false;
+
+        /* If an ID was passed, fetch that version into a record array. */
+        if ($versionid > 0) {
+            $v = $this->versionx->getVersionDetails($this->targetClass, $versionid, true);
+            if ($v !== false) {
+                $this->addHtml('<script type="text/javascript">VersionX.record = ' . $v . '; </script>');
+            }
+        }
+        /* If an ID to compare to was passed, fetch that aswell. */
+        if ($compareid > 0) {
+            $v = $this->versionx->getVersionDetails($this->targetClass, $compareid, true);
+            if ($v !== false) {
+                $this->addHtml('<script type="text/javascript">VersionX.cmrecord = ' . $v . '; </script>');
+            }
+        }
     }
 
     public function getLanguageTopics()
@@ -58,6 +78,11 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
     public function getPageTitle()
     {
         return $this->modx->lexicon('versionx');
+    }
+
+    public function getTemplateFile()
+    {
+        return $this->versionx->config['core_path'] . 'templates/mgr/versionx.tpl';
     }
 
 }
