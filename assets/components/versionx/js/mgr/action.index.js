@@ -1,7 +1,8 @@
 Ext.onReady(function() {
     Ext.QuickTips.init();
     MODx.load({
-        xtype: 'versionx-page-index', renderTo: 'versionx'
+        xtype: 'versionx-page-index',
+        renderTo: 'versionx'
     });
 });
 

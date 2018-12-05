@@ -1,11 +1,11 @@
-
-Ext.applyIf(VersionX.panel, {ResourcesDetail:{}});
-Ext.applyIf(VersionX.grid, {ResourcesDetail:{}});
-
 Ext.onReady(function() {
     Ext.QuickTips.init();
-    page = MODx.load({ xtype: 'versionx-page-resource'});
-    page.show();
+    MODx.load({
+        xtype: 'versionx-page-resource',
+        renderTo: 'versionx'
+    });
+    // page = MODx.load({ xtype: 'versionx-page-resource'});
+    // page.show();
 });
 
 VersionX.page.Resource = function(config) {
@@ -14,7 +14,7 @@ VersionX.page.Resource = function(config) {
     buttons.push({
         text: _('versionx.back'),
         handler: function () {
-            window.location.href = '?a='+MODx.request['a'];
+            MODx.loadPage('?namespace=versionx&a=index');
         }
     });
     if (MODx.request.backTo) {
@@ -22,7 +22,7 @@ VersionX.page.Resource = function(config) {
         buttons.push('-',{
             text: _('versionx.backto',{what: _('resource')}),
             handler: function() {
-                window.location.href = '?a='+back[0]+'&id='+back[1];
+                MODx.loadPage('?a='+back[0]+'&id='+back[1]);
             }
         });
     }
@@ -33,6 +33,7 @@ VersionX.page.Resource = function(config) {
             xtype: 'panel',
             html: '<h2>'+_('versionx')+' '+_('versionx.resources.detail')+'</h2>',
             cls: 'modx-page-header',
+            bodyStyle: 'margin: 20px 0 0 0;',
             border: false
         },{
             xtype: 'versionx-panel-resourcesdetail',
