@@ -4,12 +4,21 @@ if (isset($object) && isset($object->xpdo)) {
     $modx = $object->xpdo;
 }
 if (!isset($modx)) {
-    require_once dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/revolution/config.core.php';
+    require_once dirname(dirname(dirname(__DIR__))) . '/config.core.php';
     require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
     $modx= new modX();
     $modx->initialize('web');
     $modx->setLogLevel(modX::LOG_LEVEL_INFO);
     $modx->setLogTarget('ECHO');
+    $modx->loadClass('transport.xPDOTransport', '', true, true);
+    $options = [
+        'vx_snapshot_resources' => true,
+        'vx_snapshot_templates' => true,
+        'vx_snapshot_chunks' => true,
+        'vx_snapshot_snippets' => true,
+        'vx_snapshot_plugins' => true,
+        'vx_snapshot_tmplvars' => true,
+    ];
 }
 
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
