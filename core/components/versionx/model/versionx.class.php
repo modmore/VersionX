@@ -166,11 +166,7 @@ class VersionX {
         unset ($rArray['id'],$rArray['content']);
         $version->set('fields',$rArray);
 
-        if (method_exists($resource,'getTemplateVars'))
-            $tvs = $resource->getTemplateVars();
-        else
-            $tvs = call_user_func(array($this,'getTemplateVars'),$resource);
-
+        $tvs = $resource->getTemplateVars();
         $tvArray = array();
         /* @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
@@ -178,7 +174,7 @@ class VersionX {
         }
         $version->set('tvs',$tvArray);
 
-        if($this->checkLastVersion('vxResource', $version, $this->debug)) {
+        if($this->checkLastVersion('vxResource', $version)) {
             return $version->save();
         }
         return true;
@@ -505,45 +501,6 @@ class VersionX {
 
         $lines = implode('<br />', $lines);
         return $lines;
-    }
-
-    /**
-     * Provides backwards compatibility for MODX 2.0.8 (min. supported version)
-     * Only use if modResource::getTemplateVars is not available. 
-     * This function is identical to modResource::getTemplateVars in the MODX model. 
-     * 
-     * @static
-     * @param modResource $resource
-     * @return array|null
-     */
-    private static function getTemplateVars(modResource &$resource) {
-        /* @var xPDOQuery $c */
-        $c = $resource->xpdo->newQuery('modTemplateVar');
-        $c->query['distinct'] = 'DISTINCT';
-        $c->select($resource->xpdo->getSelectColumns('modTemplateVar', 'modTemplateVar'));
-        if ($resource->isNew()) {
-            $c->select(array(
-                'modTemplateVar.default_text AS value',
-                '0 AS resourceId'
-            ));
-        } else {
-            $c->select(array(
-                'IF(ISNULL(tvc.value),modTemplateVar.default_text,tvc.value) AS value',
-                $resource->get('id').' AS resourceId'
-            ));
-        }
-        $c->innerJoin('modTemplateVarTemplate','tvtpl',array(
-            'tvtpl.tmplvarid = modTemplateVar.id',
-            'tvtpl.templateid' => $resource->get('template'),
-        ));
-        if (!$resource->isNew()) {
-            $c->leftJoin('modTemplateVarResource','tvc',array(
-                'tvc.tmplvarid = modTemplateVar.id',
-                'tvc.contentid' => $resource->get('id'),
-            ));
-        }
-        $c->sortby('tvtpl.rank,modTemplateVar.rank');
-        return $resource->xpdo->getCollection('modTemplateVar', $c);
     }
 
     /**
