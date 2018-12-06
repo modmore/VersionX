@@ -104,12 +104,12 @@ VersionX.panel.ChunksDetail = function(config) {
                         vxRecordCmp: config.vxRecordCmp ? config.vxRecordCmp : undefined,
                         vxContentField: 'snippet'
                     }]
-                },{
+                }/*,{
                     title: _('versionx.common.properties'),
                     tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
-                }],
+                }*/],
                 stateful: true,
                 stateId: config.id,
                 stateEvents: ['tabchange'],

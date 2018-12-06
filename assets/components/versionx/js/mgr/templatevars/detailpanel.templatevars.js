@@ -99,12 +99,12 @@ VersionX.panel.TemplateVariablesDetail.Main = function(config) {
                             { key: 'locked', lexicon:'locked' }
                         ]
                     }]
-                },{
+                }/*,{
                     title: _('versionx.common.properties'),
                     tabTip: _('versionx.common.properties.off'),
                     items: [],
                     disabled: true
-                },{
+                }*/,{
                     title: _('versionx.templatevars.detail.tabs.input-options'),
                     items: [{
                         id: 'versionx-panel-templatevarsdetail-inputoptions',
