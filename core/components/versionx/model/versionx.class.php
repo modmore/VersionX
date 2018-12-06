@@ -133,10 +133,10 @@ class VersionX {
                 return $this->newChunkVersion($contentId, $mode);
 
             case 'vxSnippet':
-                return $this->newResourceVersion($contentId, $mode);
+                return $this->newSnippetVersion($contentId, $mode);
 
             case 'vxPlugin':
-                return $this->newResourceVersion($contentId, $mode);
+                return $this->newPluginVersion($contentId, $mode);
 
             case 'vxTemplateVar':
                 return $this->newTemplateVarVersion($contentId, $mode);
