@@ -18,6 +18,7 @@ VersionX.panel.PluginsDetail = function(config) {
                     xtype: 'versionx-combo-pluginversions',
                     emptyText: _('versionx.compare_to'),
                     labelStyle: 'padding: 7px 0 0 5px;',
+                    width: 300,
                     name: 'compare_to',
                     baseParams: {
                         plugin: (VersionX.record) ? VersionX.record['content_id'] : 0,

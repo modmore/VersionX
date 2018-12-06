@@ -5,6 +5,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - Use MODx.loadPage instead of window.location for opening links to allow middle click in 2.7
 - Cleanup of various legacy (VersionX.action, $versionx->getAction)
 - Highlight values that have changed in bold green
+- Make the "Compare to" dropdown bigger so you can see the full date/time
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.1.3-pl        ++

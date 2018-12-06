@@ -18,6 +18,7 @@ VersionX.panel.SnippetsDetail = function(config) {
                     xtype: 'versionx-combo-snippetversions',
                     emptyText: _('versionx.compare_to'),
                     labelStyle: 'padding: 7px 0 0 5px;',
+                    width: 300,
                     name: 'compare_to',
                     baseParams: {
                         snippet: (VersionX.record) ? VersionX.record['content_id'] : 0,
