@@ -84,7 +84,7 @@ Ext.extend(VersionX.grid.Snippets,MODx.grid.Grid,{
             handler: function() {
                 var eid = d.version_id;
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
-                window.location.href = '?a='+VersionX.action+'&action=snippet&vid='+eid+backTo;
+                MODx.loadPage('?namespace=versionx&a=snippet&vid='+eid+backTo)
             }
         },'-',{
             text: _('versionx.snippets.revert', {id: d.version_id}),
@@ -93,9 +93,7 @@ Ext.extend(VersionX.grid.Snippets,MODx.grid.Grid,{
             },
             scope: this
         });
-        if (m.length > 0) {
-            this.addContextMenuItem(m);
-        }
+        return m;
     },
 
     revertVersion: function(version, content) {

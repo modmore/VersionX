@@ -126,7 +126,7 @@ Ext.extend(VersionX.panel.ChunksDetail,MODx.FormPanel,{
     compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
-        window.location.href = '?a='+VersionX.action+'&action=chunk&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+        MODx.loadPage('?namespace=versionx&a=chunk&vid='+MODx.request['vid']+'&cmid='+cmid+backTo)
     },
 
     revertVersion: function(version) {

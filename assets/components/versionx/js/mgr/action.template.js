@@ -1,11 +1,9 @@
-
-Ext.applyIf(VersionX.panel, {TemplatesDetail:{}});
-Ext.applyIf(VersionX.grid, {TemplatesDetail:{}});
-
 Ext.onReady(function() {
     Ext.QuickTips.init();
-    page = MODx.load({ xtype: 'versionx-page-template'});
-    page.show();
+    MODx.load({
+        xtype: 'versionx-page-template',
+        renderTo: 'versionx'
+    });
 });
 
 VersionX.page.Template = function(config) {

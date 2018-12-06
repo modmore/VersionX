@@ -126,7 +126,7 @@ Ext.extend(VersionX.panel.TemplatesDetail.Main,MODx.FormPanel,{
     compareVersion: function (tf) {
         var cmid = tf.getValue();
         var backTo = (MODx.request.backTo) ? '&backTo='+MODx.request.backTo : '';
-        window.location.href = '?a='+VersionX.action+'&action=template&vid='+MODx.request['vid']+'&cmid='+cmid+backTo;
+        MODx.loadPage('?namespace=versionx&a=template&vid='+MODx.request['vid']+'&cmid='+cmid+backTo)
     },
 
     revertVersion: function(version) {

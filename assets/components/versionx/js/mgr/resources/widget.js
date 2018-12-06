@@ -89,7 +89,7 @@ Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
             handler: function() {
                 var eid = d.version_id;
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
-                window.location.href = '?a='+VersionX.action+'&action=resource&vid='+eid+backTo;
+                MODx.loadPage('?namespace=versionx&a=resource&vid='+MODx.request['vid']+'&cmid='+cmid+backTo)
             }
         },{
             text: _('versionx.widget.resources.update'),
@@ -97,7 +97,7 @@ Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
                 var eid = d.content_id;
                 /* Be sure to be compatible for MODX 2.3 */
                 var action = (MODx.action && MODx.action['resource/update']) ? MODx.action['resource/update'] : 'resource/update';
-                window.location.href = '?a=' + action + '&id=' + eid;
+                MODx.loadPage('?a=' + action + '&id=' + eid);
             }
         });
         if (m.length > 0) {

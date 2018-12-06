@@ -99,9 +99,7 @@ Ext.extend(VersionX.grid.Resources,MODx.grid.Grid,{
             },
             scope: this
         });
-        if (m.length > 0) {
-            this.addContextMenuItem(m);
-        }
+        return m;
     },
 
     revertVersion: function(version, content) {

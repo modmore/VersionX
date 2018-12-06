@@ -4,8 +4,6 @@ Ext.onReady(function() {
         xtype: 'versionx-page-resource',
         renderTo: 'versionx'
     });
-    // page = MODx.load({ xtype: 'versionx-page-resource'});
-    // page.show();
 });
 
 VersionX.page.Resource = function(config) {
