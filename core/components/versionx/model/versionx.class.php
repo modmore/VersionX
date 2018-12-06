@@ -68,16 +68,6 @@ class VersionX {
         $this->modx->lexicon->load('versionx:default');
         
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
-        $this->getAction();
-    }
-
-    /**
-     * @param string $ctx Context name
-     * @return bool
-     * @deprecated No longer used for initialising assets.
-     */
-    public function initialize($ctx = 'web') {
-        return true;
     }
 
     /**
@@ -614,7 +604,6 @@ class VersionX {
             }
         }
         $langs = $this->_getLangs();
-        $action = $this->getAction();
         $jsurl = $this->config['js_url'].'mgr/';
         
         /* Load class & set inVersion to true, indicating we're not looking at the VersionX controller. */
@@ -688,6 +677,5 @@ class VersionX {
         }
         return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
-
 }
 
