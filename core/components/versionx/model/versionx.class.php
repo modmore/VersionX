@@ -120,6 +120,31 @@ class VersionX {
         return $chunk;
     }
 
+    public function newVersionFor($class, $contentId, $mode)
+    {
+        switch ($class) {
+            case 'vxResource':
+                return $this->newResourceVersion($contentId, $mode);
+
+            case 'vxTemplate':
+                return $this->newTemplateVersion($contentId, $mode);
+
+            case 'vxChunk':
+                return $this->newChunkVersion($contentId, $mode);
+
+            case 'vxSnippet':
+                return $this->newResourceVersion($contentId, $mode);
+
+            case 'vxPlugin':
+                return $this->newResourceVersion($contentId, $mode);
+
+            case 'vxTemplateVar':
+                return $this->newTemplateVarVersion($contentId, $mode);
+        }
+        $this->modx->log(modX::LOG_LEVEL_ERROR, 'Call to ' . __METHOD__ . ' with unrecognised class ' . $class);
+        return false;
+    }
+
     /**
      * Creates a new version of a Resource.
      *
