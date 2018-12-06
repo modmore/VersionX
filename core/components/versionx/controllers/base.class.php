@@ -31,18 +31,18 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
         $this->versionx = new VersionX($this->modx);
 
         $this->addHtml('
-                <script type="text/javascript">
-                    Ext.onReady(function() {
-                        VersionX.config = '.$this->modx->toJSON($this->versionx->config).';
-                    });
-                </script>
+            <script type="text/javascript">
+                Ext.onReady(function() {
+                    VersionX.config = '.$this->modx->toJSON($this->versionx->config).';
+                });
+            </script>
 
-                <style type="text/css">
-                    .ext-gecko .x-form-text, .ext-ie8 .x-form-text {padding-top: 0;}
-                    .vx-added .x-form-item-label { color: green; }
-                    .vx-changed .x-form-item-label { color: #dd6600; }
-                    .vx-removed .x-form-item-label { color: #ff0000; }
-                </style>');
+            <style type="text/css">
+                .vx-added { 
+                    color: #007500;
+                    font-weight: bold !important;
+                }
+            </style>');
 
         $this->addJavascript($this->versionx->config['js_url'].'mgr/versionx.class.js');
         $this->addJavascript($this->versionx->config['js_url'].'mgr/common/json2.js');
