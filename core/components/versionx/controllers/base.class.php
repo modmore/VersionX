@@ -34,7 +34,6 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
                 <script type="text/javascript">
                     Ext.onReady(function() {
                         VersionX.config = '.$this->modx->toJSON($this->versionx->config).';
-                        VersionX.action = '. 1 .';
                     });
                 </script>
 

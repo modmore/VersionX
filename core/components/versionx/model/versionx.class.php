@@ -623,7 +623,6 @@ class VersionX {
             <script type="text/javascript">
                 VersionX.config = '.$this->modx->toJSON($this->config).';
                 VersionX.inVersion = true;
-                VersionX.action = '.$action.';
                 '.$langs.'
             </script>
         ');
@@ -657,28 +656,6 @@ class VersionX {
         $entries = $this->modx->lexicon->loadCache('versionx');
 		$langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
         return $langs;
-    }
-
-    /**
-     * Gets the action ID for the VersionX controller.
-     * 
-     * @return int
-     * @deprecated No longer using modAction
-     */
-    public function getAction() {
-        if (!$this->action) {
-            /* @var modAction $action */
-            $action = $this->modx->getObject('modAction',array(
-                'namespace' => 'versionx',
-                'controller' => 'controllers/index',
-            ));
-            if ($action) {
-                $this->action = $action->get('id');
-            } else {
-                $this->action = "0";
-            }
-        }
-        return $this->action;
     }
 
     /**

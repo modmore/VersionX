@@ -28,8 +28,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
         /* @var VersionX $versionx */
         $corePath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/');
-        $versionx = $modx->getService('versionx','VersionX',$corePath.'/model/');
-        $versionx->initialize('mgr');
+        $versionx =& $modx->getService('versionx','VersionX',$corePath.'/model/');
 
         $modx->log(modX::LOG_LEVEL_INFO,'Starting snapshot process for selected objects...');
         /* If we wanted resources snapshot, make that */
