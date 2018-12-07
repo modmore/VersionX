@@ -29,17 +29,14 @@ class VersionX {
     private $tvs = array();
     public $config = array();
     public $categoryCache = array();
-
     public $debug = false;
-    public $action = null;
-    public $charset = null;
-
+    public $charset;
 
     /**
      * @param \modX $modx
      * @param array $config
      */
-    function __construct(modX &$modx,array $config = array()) {
+    function __construct(modX $modx,array $config = array()) {
         $this->modx =& $modx;
 
         $basePath = $this->modx->getOption('versionx.core_path',$config,$this->modx->getOption('core_path').'components/versionx/');
@@ -59,12 +56,12 @@ class VersionX {
             'connector_url' => $assetsUrl.'connector.php',
         ),$config);
 
-        require_once dirname(dirname(__FILE__)) . '/docs/version.inc.php';
+        require_once dirname(__DIR__) . '/docs/version.inc.php';
         if (defined('VERSIONX_FULLVERSION')) {
             $this->config['version'] = VERSIONX_FULLVERSION;
         }
-        $modelpath = $this->config['model_path'];
-        $this->modx->addPackage('versionx',$modelpath);
+        $modelPath = $this->config['model_path'];
+        $this->modx->addPackage('versionx', $modelPath);
         $this->modx->lexicon->load('versionx:default');
         
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
