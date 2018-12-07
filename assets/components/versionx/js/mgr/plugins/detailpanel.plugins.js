@@ -21,7 +21,7 @@ VersionX.panel.PluginsDetail = function(config) {
                     width: 300,
                     name: 'compare_to',
                     baseParams: {
-                        plugin: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        content_id: (VersionX.record) ? VersionX.record['content_id'] : 0,
                         current: (VersionX.record) ? VersionX.record['version_id'] : 0,
                         action: 'mgr/plugins/get_versions'
                     },

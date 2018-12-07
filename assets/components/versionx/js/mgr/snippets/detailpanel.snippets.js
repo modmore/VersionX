@@ -21,7 +21,7 @@ VersionX.panel.SnippetsDetail = function(config) {
                     width: 300,
                     name: 'compare_to',
                     baseParams: {
-                        snippet: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        content_id: (VersionX.record) ? VersionX.record['content_id'] : 0,
                         current: (VersionX.record) ? VersionX.record['version_id'] : 0,
                         action: 'mgr/snippets/get_versions'
                     },

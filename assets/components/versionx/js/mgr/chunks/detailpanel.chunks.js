@@ -21,7 +21,7 @@ VersionX.panel.ChunksDetail = function(config) {
                     width: 300,
                     name: 'compare_to',
                     baseParams: {
-                        chunk: (VersionX.record) ? VersionX.record['content_id'] : 0,
+                        content_id: (VersionX.record) ? VersionX.record['content_id'] : 0,
                         current: (VersionX.record) ? VersionX.record['version_id'] : 0,
                         action: 'mgr/chunks/get_versions'
                     },
