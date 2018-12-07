@@ -2,6 +2,8 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 
 - #105 Update component to make use of namespace-based routing instead of modAction
 - Refactor single index controller into separate controllers for each view
+- Refactor flat file processors to class based processors
+- Cleanup old processor files during installation
 - Use MODx.loadPage instead of window.location for opening links to allow middle click in 2.7
 - Cleanup of various legacy (VersionX.action, $versionx->getAction)
 - Highlight values that have changed in bold green
