@@ -31,6 +31,7 @@ $sources= array (
     'root' => $root,
     'build' => $root .'_build/',
     'events' => $root . '_build/events/',
+    'validators' => $root . '_build/validators/',
     'resolvers' => $root . '_build/resolvers/',
     'data' => $root . '_build/data/',
     'source_core' => $root.'core/components/'.PKG_NAME_LOWER,
@@ -57,6 +58,34 @@ $builder->directory = dirname(dirname(__FILE__)).'/_packages/';
 $builder->createPackage(PKG_NAME_LOWER,PKG_VERSION,PKG_RELEASE);
 $builder->registerNamespace(PKG_NAME_LOWER,false,true,'{core_path}components/'.PKG_NAME_LOWER.'/');
 $modx->getService('lexicon','modLexicon');
+
+
+$builder->package->put(
+    array(
+        'source' => $sources['source_core'],
+        'target' => "return MODX_CORE_PATH . 'components/';",
+    ),
+    array(
+        'vehicle_class' => 'xPDOFileVehicle',
+        'validate' => array(
+            array(
+                'type' => 'php',
+                'source' => $sources['validators'] . 'requirements.script.php'
+            )
+        )
+    )
+);
+$builder->package->put(
+    array(
+        'source' => $sources['source_assets'],
+        'target' => "return MODX_ASSETS_PATH . 'components/';",
+    ),
+    array(
+        'vehicle_class' => 'xPDOFileVehicle',
+    )
+);
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in files.'); flush();
+
 
 /* create category */
 $category= $modx->newObject('modCategory');
@@ -129,15 +158,6 @@ $attr = array(
     ),*/
 );
 $vehicle = $builder->createVehicle($category,$attr);
-$vehicle->resolve('file',array(
-    'source' => $sources['source_core'],
-    'target' => "return MODX_CORE_PATH . 'components/';",
-));
-$vehicle->resolve('file',array(
-    'source' => $sources['source_assets'],
-    'target' => "return MODX_ASSETS_PATH . 'components/';",
-));
-
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'tables.resolver.php',
 ));
