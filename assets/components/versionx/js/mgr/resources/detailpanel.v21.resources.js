@@ -91,6 +91,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                         vxFieldMap: [
                             { key: 'pagetitle', lexicon:'resource_pagetitle' },
                             { key: 'longtitle', lexicon:'resource_longtitle' },
+                            { key: 'template', lexicon:'template' },
                             { key: 'description', lexicon:'resource_description' },
                             { key: 'alias', lexicon:'resource_alias' },
                             { key: 'link_attributes', lexicon:'resource_link_attributes' },

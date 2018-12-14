@@ -9,6 +9,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - Highlight values that have changed in bold green
 - Make the "Compare to" dropdown bigger so you can see the full date/time
 - Properties tabs that are not implemented have been removed instead of shown as disabled tab
+- #86 Fix template not shown on resource fields
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.1.3-pl        ++
