@@ -42,10 +42,15 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
                     color: #007500;
                     font-weight: bold !important;
                 }
+                .vx-removed { 
+                    color: #750300;
+                    font-weight: bold !important;
+                }
             </style>');
 
         $this->addJavascript($this->versionx->config['js_url'].'mgr/versionx.class.js');
         $this->addJavascript($this->versionx->config['js_url'].'mgr/common/json2.js');
+        $this->addJavascript($this->versionx->config['assets_url'].'node_modules/diff/dist/diff.js');
 
 
         $versionid = isset($_REQUEST['vid']) ? (int)$_REQUEST['vid'] : false;

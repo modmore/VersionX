@@ -511,7 +511,7 @@ class VersionX {
             $lines[$idx] = str_repeat('&nbsp;', $pos) . $this->htmlent(substr($line, $pos));
         }
 
-        $lines = implode('<br />', $lines);
+        $lines = implode("<br />\n", $lines);
         return $lines;
     }
 
