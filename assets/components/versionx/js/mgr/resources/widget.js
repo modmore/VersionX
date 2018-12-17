@@ -88,8 +88,7 @@ Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
             text: _('versionx.menu.viewdetails'),
             handler: function() {
                 var eid = d.version_id;
-                var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
-                MODx.loadPage('?namespace=versionx&a=resource&vid='+MODx.request['vid']+'&cmid='+cmid+backTo)
+                MODx.loadPage('?namespace=versionx&a=resource&vid='+eid)
             }
         },{
             text: _('versionx.widget.resources.update'),
@@ -100,9 +99,7 @@ Ext.extend(VersionX.grid.ResourcesWidget,MODx.grid.Grid,{
                 MODx.loadPage('?a=' + action + '&id=' + eid);
             }
         });
-        if (m.length > 0) {
-            this.addContextMenuItem(m);
-        }
+        return m;
     }
 });
 Ext.reg('versionx-grid-resources-widget',VersionX.grid.ResourcesWidget);
