@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.2.1-pl        ++
+++   Released on 2018-12-17   ++
+++++++++++++++++++++++++++++++++
 - Fix the dashboard widget causing an E_FATAL and not using the right links
 
 ++++++++++++++++++++++++++++++++
