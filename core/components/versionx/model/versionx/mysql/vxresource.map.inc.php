@@ -26,8 +26,8 @@ $xpdo_meta_map['vxResource']= array (
   'table' => 'versionx_resource',
   'fields' => 
   array (
-    'version_id' => NULL,
-    'content_id' => NULL,
+    'version_id' => null,
+    'content_id' => null,
     'saved' => 'CURRENT_TIMESTAMP',
     'user' => 0,
     'mode' => 'update',
@@ -35,9 +35,9 @@ $xpdo_meta_map['vxResource']= array (
     'title' => 'Unnamed',
     'context_key' => 'web',
     'class' => 'modDocument',
-    'content' => NULL,
-    'fields' => NULL,
-    'tvs' => NULL,
+    'content' => null,
+    'fields' => null,
+    'tvs' => null,
   ),
   'fieldMeta' => 
   array (

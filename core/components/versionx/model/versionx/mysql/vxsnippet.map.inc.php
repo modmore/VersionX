@@ -26,8 +26,8 @@ $xpdo_meta_map['vxSnippet']= array (
   'table' => 'versionx_snippet',
   'fields' => 
   array (
-    'version_id' => NULL,
-    'content_id' => NULL,
+    'version_id' => null,
+    'content_id' => null,
     'saved' => 'CURRENT_TIMESTAMP',
     'user' => 0,
     'mode' => 'update',
@@ -35,9 +35,9 @@ $xpdo_meta_map['vxSnippet']= array (
     'name' => '',
     'description' => 'Chunk',
     'category' => 0,
-    'snippet' => NULL,
+    'snippet' => null,
     'locked' => 0,
-    'properties' => NULL,
+    'properties' => null,
   ),
   'fieldMeta' => 
   array (

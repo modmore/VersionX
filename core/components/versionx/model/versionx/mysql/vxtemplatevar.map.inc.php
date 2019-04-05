@@ -26,8 +26,8 @@ $xpdo_meta_map['vxTemplateVar']= array (
   'table' => 'versionx_templatevar',
   'fields' => 
   array (
-    'version_id' => NULL,
-    'content_id' => NULL,
+    'version_id' => null,
+    'content_id' => null,
     'saved' => 'CURRENT_TIMESTAMP',
     'user' => 0,
     'mode' => 'update',
@@ -40,10 +40,10 @@ $xpdo_meta_map['vxTemplateVar']= array (
     'locked' => 0,
     'rank' => 0,
     'display' => '',
-    'default_text' => NULL,
-    'properties' => NULL,
-    'input_properties' => NULL,
-    'output_properties' => NULL,
+    'default_text' => null,
+    'properties' => null,
+    'input_properties' => null,
+    'output_properties' => null,
   ),
   'fieldMeta' => 
   array (

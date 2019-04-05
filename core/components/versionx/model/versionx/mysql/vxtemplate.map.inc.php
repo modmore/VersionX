@@ -26,18 +26,18 @@ $xpdo_meta_map['vxTemplate']= array (
   'table' => 'versionx_template',
   'fields' => 
   array (
-    'version_id' => NULL,
-    'content_id' => NULL,
+    'version_id' => null,
+    'content_id' => null,
     'saved' => 'CURRENT_TIMESTAMP',
     'user' => 0,
     'mode' => 'update',
     'marked' => 0,
-    'templatename' => NULL,
+    'templatename' => null,
     'description' => 'Template',
     'category' => 0,
     'content' => '',
     'locked' => 0,
-    'properties' => NULL,
+    'properties' => null,
   ),
   'fieldMeta' => 
   array (

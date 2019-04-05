@@ -26,8 +26,8 @@ $xpdo_meta_map['vxPlugin']= array (
   'table' => 'versionx_plugin',
   'fields' => 
   array (
-    'version_id' => NULL,
-    'content_id' => NULL,
+    'version_id' => null,
+    'content_id' => null,
     'saved' => 'CURRENT_TIMESTAMP',
     'user' => 0,
     'mode' => 'update',
@@ -37,7 +37,7 @@ $xpdo_meta_map['vxPlugin']= array (
     'category' => 0,
     'plugincode' => '',
     'locked' => 0,
-    'properties' => NULL,
+    'properties' => null,
     'disabled' => 0,
   ),
   'fieldMeta' => 
