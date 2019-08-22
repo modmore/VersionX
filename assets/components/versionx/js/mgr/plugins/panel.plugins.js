@@ -71,12 +71,13 @@ VersionX.panel.Plugins = function(config) {
             },{
                 items: [{
                     xtype: 'button',
+                    cls: 'primary-button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('plugins')})
                 }]
             },{
                 items: [{
-                     xtype: 'button',
+                    xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
                 }]

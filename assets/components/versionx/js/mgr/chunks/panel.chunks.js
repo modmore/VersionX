@@ -73,12 +73,13 @@ VersionX.panel.Chunks = function(config) {
             },{
                 items: [{
                     xtype: 'button',
+                    cls: 'primary-button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('chunks')})
                 }]
             },{
                 items: [{
-                     xtype: 'button',
+                    xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
                 }]
