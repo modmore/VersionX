@@ -5,6 +5,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 ++   Released on 2019-08-22   ++
 ++++++++++++++++++++++++++++++++
 - Hide users dropdown if user lacks view_user permission [#96]
+- Fix forms returning to the first tab when VersionX is active [#74]
 - Show proper error message when trying to view a non-existent version [#106]
 - Fix filtering on the element/resource view [#94]
 - Mark the Filter buttons as primary to make them stand out more
