@@ -32,7 +32,7 @@ VersionX.page.Template = function(config) {
             cls: 'modx-page-header',
             border: false
         },{
-            xtype: 'versionx-panel-templatevarsdetail',
+            xtype: !VersionX.record ? 'versionx-panel-notfound' : 'versionx-panel-templatevarsdetail',
             cls: 'x-panel-body',
             vxRecord: VersionX.record,
             vxRecordCmp: VersionX.cmrecord,

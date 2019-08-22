@@ -31,7 +31,7 @@ VersionX.page.Plugin = function(config) {
             cls: 'modx-page-header',
             border: false
         },{
-            xtype: 'versionx-panel-pluginsdetail',
+            xtype: !VersionX.record ? 'versionx-panel-notfound' : 'versionx-panel-pluginsdetail',
             cls: 'x-panel-body',
             vxRecord: VersionX.record,
             vxRecordCmp: VersionX.cmrecord,

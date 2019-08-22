@@ -5,6 +5,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 ++   Released on 2019-08-22   ++
 ++++++++++++++++++++++++++++++++
 - Hide users dropdown if user lacks view_user permission [#96]
+- Show proper error message when trying to view a non-existent version [#106]
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.2.1-pl        ++

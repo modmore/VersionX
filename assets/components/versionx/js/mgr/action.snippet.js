@@ -31,7 +31,7 @@ VersionX.page.Snippet = function(config) {
             cls: 'modx-page-header',
             border: false
         },{
-            xtype: 'versionx-panel-snippetsdetail',
+            xtype: !VersionX.record ? 'versionx-panel-notfound' : 'versionx-panel-snippetsdetail',
             cls: 'x-panel-body',
             vxRecord: VersionX.record,
             vxRecordCmp: VersionX.cmrecord,

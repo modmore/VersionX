@@ -35,7 +35,7 @@ VersionX.page.Chunk = function(config) {
             cls: 'modx-page-header',
             border: false
         },{
-            xtype: 'versionx-panel-chunksdetail',
+            xtype: !VersionX.record ? 'versionx-panel-notfound' : 'versionx-panel-chunksdetail',
             cls: 'x-panel-body',
             vxRecord: VersionX.record,
             vxRecordCmp: VersionX.cmrecord,
