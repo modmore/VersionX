@@ -6,6 +6,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 ++++++++++++++++++++++++++++++++
 - Hide users dropdown if user lacks view_user permission [#96]
 - Show proper error message when trying to view a non-existent version [#106]
+- Fix filtering on the element/resource view [#94]
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.2.1-pl        ++

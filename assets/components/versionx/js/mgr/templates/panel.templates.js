@@ -96,7 +96,7 @@ Ext.extend(VersionX.panel.Templates,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-templates');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('tpl-f-template').getValue();
+            g.baseParams['template'] = Ext.getCmp('tpl-f-template').getValue();
             g.baseParams['category'] = Ext.getCmp('tpl-f-category').getValue();
             g.baseParams['user'] = Ext.getCmp('tpl-f-user').getValue();
             g.baseParams['from'] = Ext.getCmp('tpl-f-from').getValue();

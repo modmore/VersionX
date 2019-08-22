@@ -98,7 +98,7 @@ Ext.extend(VersionX.panel.Plugins,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-plugins');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('plugin-f-plugin').getValue();
+            g.baseParams['plugin'] = Ext.getCmp('plugin-f-plugin').getValue();
             g.baseParams['category'] = Ext.getCmp('plugin-f-category').getValue();
             g.baseParams['user'] = Ext.getCmp('plugin-f-user').getValue();
             g.baseParams['from'] = Ext.getCmp('plugin-f-from').getValue();

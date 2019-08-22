@@ -100,7 +100,7 @@ Ext.extend(VersionX.panel.Snippets,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-snippets');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('snippet-f-snippet').getValue();
+            g.baseParams['snippet'] = Ext.getCmp('snippet-f-snippet').getValue();
             g.baseParams['category'] = Ext.getCmp('snippet-f-category').getValue();
             g.baseParams['user'] = Ext.getCmp('snippet-f-user').getValue();
             g.baseParams['from'] = Ext.getCmp('snippet-f-from').getValue();

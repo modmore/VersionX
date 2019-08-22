@@ -110,7 +110,7 @@ Ext.extend(VersionX.panel.Resources,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-resources');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('res-f-resource').getValue();
+            g.baseParams['resource'] = Ext.getCmp('res-f-resource').getValue();
             g.baseParams['context'] = Ext.getCmp('res-f-context').getValue();
             g.baseParams['class'] = Ext.getCmp('res-f-class').getValue();
             g.baseParams['user'] = Ext.getCmp('res-f-user').getValue();

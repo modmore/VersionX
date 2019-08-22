@@ -100,7 +100,7 @@ Ext.extend(VersionX.panel.Chunks,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-chunks');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('chk-f-chunk').getValue();
+            g.baseParams['chunk'] = Ext.getCmp('chk-f-chunk').getValue();
             g.baseParams['category'] = Ext.getCmp('chk-f-category').getValue();
             g.baseParams['user'] = Ext.getCmp('chk-f-user').getValue();
             g.baseParams['from'] = Ext.getCmp('chk-f-from').getValue();
