@@ -23,7 +23,7 @@ VersionX.panel.Resources = function(config) {
                     id: 'res-f-resource',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                 },{
-                    xtype: 'modx-combo-user',
+                    xtype: VersionX.config.has_users_permission ? 'modx-combo-user' : 'hidden',
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',

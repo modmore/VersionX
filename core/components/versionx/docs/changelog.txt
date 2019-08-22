@@ -1,6 +1,12 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
 ++++++++++++++++++++++++++++++++
+++   VersionX 2.2.2-pl        ++
+++   Released on 2019-08-22   ++
+++++++++++++++++++++++++++++++++
+- Hide users dropdown if user lacks view_user permission [#96]
+
+++++++++++++++++++++++++++++++++
 ++   VersionX 2.2.1-pl        ++
 ++   Released on 2018-12-17   ++
 ++++++++++++++++++++++++++++++++
