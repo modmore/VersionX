@@ -8,7 +8,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - Show proper error message when trying to view a non-existent version [#106]
 - Fix filtering on the element/resource view [#94]
 - Mark the Filter buttons as primary to make them stand out more
-- Fix published on date not showing on the resource detail view
+- Fix published on date and introtext not showing on the resource detail view [#100]
 
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.2.1-pl        ++

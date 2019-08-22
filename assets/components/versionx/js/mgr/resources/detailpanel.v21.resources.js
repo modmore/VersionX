@@ -95,7 +95,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                             { key: 'description', lexicon:'resource_description' },
                             { key: 'alias', lexicon:'resource_alias' },
                             { key: 'link_attributes', lexicon:'resource_link_attributes' },
-                            { key: 'summary', lexicon:'resource_summary' },
+                            { key: 'introtext', lexicon:'resource_summary' },
                             { key: 'parent', lexicon:'resource_parent' },
                             { key: 'menutitle', lexicon:'resource_menutitle' },
                             { key: 'menuindex', lexicon:'resource_menuindex' },
