@@ -4,8 +4,9 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 ++   VersionX 2.2.2-pl        ++
 ++   Released on 2019-08-22   ++
 ++++++++++++++++++++++++++++++++
+- VersionX now requires PHP 7.1+ and MODX 2.6+
 - Hide users dropdown if user lacks view_user permission [#96]
-- Fix forms returning to the first tab when VersionX is active [#74]
+- Fix forms returning to the first tab on save when the VersionX tab is added [#74]
 - Show proper error message when trying to view a non-existent version [#106]
 - Fix filtering on the element/resource view [#94]
 - Mark the Filter buttons as primary to make them stand out more
