@@ -5,7 +5,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_UPGRADE:
 
 $output = <<<HTML
-<p>If you already have resources and elements in place, you can let the setup process create a snapshot of them to the VersionX database, providing you with a baseline to start comparing from. The system will check for existing versions and only create a snapshot when needed.</p>
+<p>If you already have resources and elements in place, you can let the setup process create a snapshot of them to the VersionX tables, providing you with a baseline to start comparing from. The system will check for existing versions and only create a snapshot when needed.</p>
 <br />
 <p style="font-size: 90%; font-style: italic;">Note: depending on the amount of resources and elements you currently have in place as well as your server's configuration, this process can take quite some time.</p>
 <br />
