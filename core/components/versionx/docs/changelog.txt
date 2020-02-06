@@ -1,5 +1,10 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+++++++++++++++++++++++++++++++++
+++   VersionX 2.3.0-pl        ++
+++   Released on 2020-02-06   ++
+++++++++++++++++++++++++++++++++
+- Compatible with MODX 3 (alpha2+) - will likely receive another upgrade in the future improving styling to match 3.x.
 - Prevent installation when server requirements are not met
 - Fix detail grids showing narrow columns in MODX 3
 
