@@ -16,7 +16,7 @@ $modx->getService('error','error.modError', '', '');
 
 $componentPath = dirname(__DIR__);
 
-$versionx = $modx->getService('versionx','VersionX', $componentPath.'/core/components/versionx/model/versionx/', array(
+$versionx = $modx->getService('versionx','VersionX', $componentPath.'/core/components/versionx/model/', array(
     'versionx.core_path' => $componentPath.'/core/components/versionx/',
 ));
 
@@ -135,6 +135,7 @@ foreach ($settings as $key => $opts) {
     }
 }
 
+$modx->setLogLevel(2);
 
 /* Create the tables */
 $objectContainers = [
