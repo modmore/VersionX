@@ -5,6 +5,7 @@ VersionX.grid.Common.DetailGrid = function(config) {
     Ext.apply(config,{
         autoHeight: true,
         width: '98%',
+        showActionsColumn: false,
         viewConfig: {
             forceFit: true,
             enableRowBody: true
