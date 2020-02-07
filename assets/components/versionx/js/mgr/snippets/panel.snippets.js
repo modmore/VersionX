@@ -73,12 +73,13 @@ VersionX.panel.Snippets = function(config) {
             },{
                 items: [{
                     xtype: 'button',
+                    cls: 'primary-button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('snippets')})
                 }]
             },{
                 items: [{
-                     xtype: 'button',
+                    xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
                 }]
@@ -100,7 +101,7 @@ Ext.extend(VersionX.panel.Snippets,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-snippets');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('snippet-f-snippet').getValue();
+            g.baseParams['snippet'] = Ext.getCmp('snippet-f-snippet').getValue();
             g.baseParams['category'] = Ext.getCmp('snippet-f-category').getValue();
             g.baseParams['user'] = Ext.getCmp('snippet-f-user').getValue();
             g.baseParams['from'] = Ext.getCmp('snippet-f-from').getValue();

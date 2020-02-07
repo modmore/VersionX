@@ -34,7 +34,7 @@ VersionX.page.Resource = function(config) {
             bodyStyle: 'margin: 20px 0 0 0;',
             border: false
         },{
-            xtype: 'versionx-panel-resourcesdetail',
+            xtype: !VersionX.record ? 'versionx-panel-notfound' : 'versionx-panel-resourcesdetail',
             cls: 'x-panel-body',
             vxRecord: VersionX.record,
             vxRecordCmp: VersionX.cmrecord,

@@ -95,7 +95,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                             { key: 'description', lexicon:'resource_description' },
                             { key: 'alias', lexicon:'resource_alias' },
                             { key: 'link_attributes', lexicon:'resource_link_attributes' },
-                            { key: 'summary', lexicon:'resource_summary' },
+                            { key: 'introtext', lexicon:'resource_summary' },
                             { key: 'parent', lexicon:'resource_parent' },
                             { key: 'menutitle', lexicon:'resource_menutitle' },
                             { key: 'menuindex', lexicon:'resource_menuindex' },
@@ -133,7 +133,7 @@ VersionX.panel.ResourcesDetail.Main = function(config) {
                         vxFieldMap: [
                             { key: 'isfolder', lexicon:'resource_folder' },
                             { key: 'richtext', lexicon:'resource_richtext' },
-                            { key: 'publsihedon', lexicon:'resource_publishedon' },
+                            { key: 'publishedon', lexicon:'resource_publishedon' },
                             { key: 'pub_date', lexicon:'resource_publishdate' },
                             { key: 'unpub_date', lexicon:'resource_unpublishdate' },
                             { key: 'searchable', lexicon:'resource_searchable' },

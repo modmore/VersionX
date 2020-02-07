@@ -46,6 +46,13 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
                     color: #750300;
                     font-weight: bold !important;
                 }
+                .vx-error-panel {
+                    background: #ffdbdb;
+                    padding: 1em;
+                    border: 1px solid #830000;
+                    border-radius: 3px;
+                    color: #5a2a2a;
+                }
             </style>');
 
         $this->addJavascript($this->versionx->config['js_url'].'mgr/versionx.class.js');

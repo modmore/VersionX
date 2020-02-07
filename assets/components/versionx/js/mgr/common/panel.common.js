@@ -19,3 +19,16 @@ VersionX.panel.Common.DetailPanel = function(config) {
 };
 Ext.extend(VersionX.panel.Common.DetailPanel,MODx.Panel,{});
 Ext.reg('versionx-panel-common-detailpanel',VersionX.panel.Common.DetailPanel);
+
+VersionX.panel.Common.NotFound = function(config) {
+    config = config || {};
+    Ext.apply(config,{
+        items: [{
+            xtype: 'panel',
+            html: '<div class="vx-error-panel"><p>The requested version does not exist.</p></div>'
+        }]
+    });
+    VersionX.panel.Common.NotFound.superclass.constructor.call(this,config);
+};
+Ext.extend(VersionX.panel.Common.NotFound,MODx.Panel,{});
+Ext.reg('versionx-panel-notfound',VersionX.panel.Common.NotFound);

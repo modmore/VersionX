@@ -23,7 +23,7 @@ VersionX.panel.Resources = function(config) {
                     id: 'res-f-resource',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                 },{
-                    xtype: 'modx-combo-user',
+                    xtype: VersionX.config.has_users_permission ? 'modx-combo-user' : 'hidden',
                     fieldLabel: _('user'),
                     name: 'fltr_user',
                     hiddenName: 'fltr_user',
@@ -83,6 +83,7 @@ VersionX.panel.Resources = function(config) {
             },{
                 items: [{
                     xtype: 'button',
+                    cls: 'primary-button',
                     handler: this.doFilter,
                     text: _('versionx.filter',{what: _('resources')})
                 }]
@@ -110,7 +111,7 @@ Ext.extend(VersionX.panel.Resources,MODx.Panel,{
     doFilter: function() {
         var g = Ext.getCmp('versionx-grid-resources');
         if (g) {
-            g.baseParams['search'] = Ext.getCmp('res-f-resource').getValue();
+            g.baseParams['resource'] = Ext.getCmp('res-f-resource').getValue();
             g.baseParams['context'] = Ext.getCmp('res-f-context').getValue();
             g.baseParams['class'] = Ext.getCmp('res-f-class').getValue();
             g.baseParams['user'] = Ext.getCmp('res-f-user').getValue();

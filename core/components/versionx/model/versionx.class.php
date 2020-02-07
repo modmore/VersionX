@@ -54,6 +54,8 @@ class VersionX {
             'css_url' => $assetsUrl.'css/',
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
+
+            'has_users_permission' => $this->modx->hasPermission('view_user'),
         ),$config);
 
         require_once dirname(__DIR__) . '/docs/version.inc.php';
