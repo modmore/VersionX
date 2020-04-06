@@ -1,6 +1,12 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
 ++++++++++++++++++++++++++++++++
+++   VersionX 2.3.1-pl        ++
+++   Released on 2020-04-06   ++
+++++++++++++++++++++++++++++++++
+- Lower minimum required PHP version to 7.1
+
+++++++++++++++++++++++++++++++++
 ++   VersionX 2.3.0-pl        ++
 ++   Released on 2020-02-07   ++
 ++++++++++++++++++++++++++++++++

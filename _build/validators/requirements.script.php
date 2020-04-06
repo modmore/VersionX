@@ -47,7 +47,7 @@ if (!function_exists('checkVersion')) {
             }
             $modx->log($level, "- {$description} {$realMinimum}+ (minimum): {$glyph} {$current}");
         }
-        if ($pass && $recommended) {
+        if ($pass && $recommended && $recommended !== $realMinimum) {
             $level = xPDO::LOG_LEVEL_INFO;
             $glyph = $passGlyph;
             $checkRecommendedVersion = $recommended;
@@ -74,7 +74,6 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
 
         $modxVersion = $modx->getVersionData();
         if (!checkVersion('MODX', $modxVersion['full_version'], [
-            '2019-03-12 12:00:00' => '2.6',
             '2019-11-27 12:00:00' => '2.7',
         ], $modx)) {
             $success = false;
@@ -82,17 +81,23 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
 
         if (!checkVersion('PHP', PHP_VERSION, [
             '2019-07-01 12:00:00' => '7.1',
-            '2020-03-01 12:00:00' => '7.2',
-            '2020-11-30 12:00:00' => '7.3',
         ], $modx)) {
             $success = false;
         }
 
         if ($success) {
-            $modx->log(xPDO::LOG_LEVEL_INFO, 'Requirements look good!');
+            $modx->log(xPDO::LOG_LEVEL_INFO, 'Minimum requirements look good!');
+
+            // Check for EOL PHP versions
+            $modx->log(xPDO::LOG_LEVEL_INFO, 'Checking (optional) recommended versions...');
+            checkVersion('PHP', PHP_VERSION, [
+                '2019-12-01 12:00:00' => '7.2',
+                '2020-11-30 12:00:00' => '7.3',
+                '2021-12-06 12:00:00' => '7.4',
+            ], $modx);
         }
         else {
-            $modx->log(xPDO::LOG_LEVEL_ERROR, 'Unfortunately, the minimum requirements aren\'t met. Installation cannot continue.');
+            $modx->log(xPDO::LOG_LEVEL_ERROR, 'Your server or MODX installation does not meet the minimum requirements for this extra. Installation cannot continue.');
         }
 
         break;
