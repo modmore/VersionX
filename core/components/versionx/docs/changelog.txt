@@ -1,26 +1,30 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+VersionX 2.3.2-pl
+-----------------
+Released on 2020-06-25
+
 - Fix several XSS vulnerabilities in the VersionX tabs (resources and templates, where the attack is in the rendered name) and the compare versions view in any non-content field.
 - Fix incorrect assets path on the namespace [#116]
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.3.1-pl        ++
-++   Released on 2020-04-06   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.3.1-pl
+-----------------
+Released on 2020-04-06
+
 - Lower minimum required PHP version to 7.1
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.3.0-pl        ++
-++   Released on 2020-02-07   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.3.0-pl
+-----------------
+Released on 2020-02-07
+
 - Compatible with MODX 3 (alpha2+) - will likely receive another upgrade in the future improving styling to match 3.x.
 - Prevent installation when server requirements are not met
 - Fix detail grids showing narrow columns in MODX 3
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.2.2-pl        ++
-++   Released on 2019-08-22   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.2.2-pl
+-----------------
+Released on 2019-08-22
+
 - VersionX now requires PHP 7.1+ and MODX 2.6+
 - Hide users dropdown if user lacks view_user permission [#96]
 - Fix forms returning to the first tab on save when the VersionX tab is added [#74]
@@ -29,16 +33,16 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - Mark the Filter buttons as primary to make them stand out more
 - Fix published on date and introtext not showing on the resource detail view [#100]
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.2.1-pl        ++
-++   Released on 2018-12-17   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.2.1-pl
+-----------------
+Released on 2018-12-17
+
 - Fix the dashboard widget causing an E_FATAL and not using the right links
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.2.0-pl        ++
-++   Released on 2018-12-14   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.2.0-pl
+-----------------
+Released on 2018-12-14
+
 - #105 Update component to make use of namespace-based routing instead of modAction
 - Refactor single index controller into separate controllers for each view
 - Refactor flat file processors to class based processors
@@ -51,22 +55,22 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - #86 Fix template not shown on resource fields
 - Show a more visual diff (red/green) of content changes
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.1.3-pl        ++
-++   Released on 2015-10-25   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.1.3-pl
+-----------------
+Released on 2015-10-25
+
 - #79/82 Fix undefined constant error
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.1.2-pl        ++
-++   Released on 2015-05-16   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.1.2-pl
+-----------------
+Released on 2015-05-16
+
 - #78 Fix critical issue where you could not save a resource properly
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.1.1-pl        ++
-++   Released on 2015-05-15   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.1.1-pl
+-----------------
+Released on 2015-05-15
+
 - #65 Make sure Versions tab shows up on snippets
 - #67 Some slight improvements to the UI in 2.3
 - #73 Fix resource type combo, prevent annoying "unknown column 'name' in 'order clause'" error.
@@ -74,10 +78,10 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 - Add Danish translation (thanks Jacob & Dennis at Better Collective!)
 - #59 Fix E_NOTICE issue in PHP < 5.4
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.1.0-pl        ++
-++   Released on 2013-01-14   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.1.0-pl
+-----------------
+Released on 2013-01-14
+
 #52 Prevent cutting off content because of non-breaking spaces.
 #42 Revert objects from the grid (both tabs and component)
 Add ability to revert Template Variables.
@@ -89,24 +93,24 @@ Add ability to revert Chunks.
 #43 Improve setup process performance by using getIterator instead of getCollection.
 #44 Fix htmlentities() charset error.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-pl        ++
-++   Released on 2012-10-29   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-pl
+-----------------
+Released on 2012-10-29
+
 #39 Add Swedish translation (thanks fractalwolfe!)
 #33, #34 Fix issue with multi byte (UTF-8) sequences returning empty content.
 #36 Fix ID clashes in component.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-rc4       ++
-++   Released on 2012-07-19   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-rc4
+------------------
+Released on 2012-07-19
+
 Fix critical issue on Firefox (possibly others too) affecting TVs.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-rc3       ++
-++   Released on 2012-07-08   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-rc3
+------------------
+Released on 2012-07-08
+
 Add Plugins UI to the component and as tab on the plugin update panel.
 Add Snippets UI to the component and as tab on the snippets update panel.
 #16 Add a cachebust to javascripts based on version number to eliminate browser cache issues.
@@ -117,10 +121,10 @@ Re-align form buttons and tiny bit of UI cleanup.
 #31 Fix action bar and VersionX component in IE
 #29 Fix issue with empty grids until applying a filter in 2.2.4.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-rc2       ++
-++   Released on 2012-05-28   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-rc2
+------------------
+Released on 2012-05-28
+
 Add Recent Resource Changes dashboard widget for 2.2+.
 Add Chunks UI to the component, and tabs to the update panel.
 Change TV grid to follow same column order as others
@@ -132,102 +136,104 @@ Add versions tab to template variable update screens.
 Fix "upd" message being logged to the error log.
 Added Russian translation (Thanks Ivan Klimchuk!)
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-rc1       ++
-++   Released on 2012-05-03   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-rc1
+------------------
+Released on 2012-05-03
+
 If TVs don't have a caption, make sure to fall back to its name.
 Add status message on reverting a Resource.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev13     ++
-++   Released on 2012-04-09   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev13
+--------------------
+Released on 2012-04-09
+
 Add ability to toggle versioning of Resources or element types through system settings.
 Add ability to revert Resources.
 Add Dutch translation (Thanks @Engelbert!)
 Add new "Template Variables" tab to component. (Thanks Adam!)
 Prevent E_NOTICE errors on main controller.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev12     ++
-++   Released on 2012-04-03   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev12
+--------------------
+Released on 2012-04-03
+
 Add new "Versions" tab to Templates panel.
 Normalize/refactor process of adding tabs to non-component panels through the plugin.
 Add Templates tab to VersionX component. (Thanks Adam!)
 Fix filtering on Resource panel. (Thanks Adam!)
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev11     ++
-++   Released on 2012-01-22   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev11
+--------------------
+Released on 2012-01-22
+
 Fix/re-introduce support for PHP 5.2
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev10     ++
-++   Released on 2012-01-21   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev10
+--------------------
+Released on 2012-01-21
+
 Fix linking from/to components, including when comparing.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev9      ++
-++   Released on 2012-01-21   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev9
+-------------------
+Released on 2012-01-21
+
 Add settings to setup for debug and showing/hiding the resource versions tab.
 Add tab on resource panel for versions.
 #5 Make sure changes were made before creating a new version, normalized and now also for all element types.
 #1 Add ability to create a snapshot of all resources and elements during install.
 #2 Added TV compatibility for 2.0.8.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev8      ++
-++   Released on 2012-01-20   ++
-++   Contributors:            ++
-++   - Adam Lundrigan         ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev8
+-------------------
+Released on 2012-01-20
+Contributors:
+-------------
+- Adam Lundrigan
+----------------
+
 Make pretty for MODX 2.2 (yes, that means it's yucky-ish in 2.1, but it's super in 2.2!)
 #10 Fix bug in Google Chrome (Thanks Adam!)
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev7      ++
-++   Released on 2011-11-25   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev7
+-------------------
+Released on 2011-11-25
+
 Fix bug where it wouldn't create a version when no earlier versions existed.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev6      ++
-++   Released on 2011-10-14   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev6
+-------------------
+Released on 2011-10-14
+
 #5 Add check for Resource versions to make sure there are changes.
 Use colors in the detail/compare resource display to see changes/additions/removals.
 Respect manager_date_format and manager_time_format settings in drop down.
 Add the mode to dropdown display of versions to compare to, and prevent error notices.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev5      ++
-++   Released on 2011-10-14   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev5
+-------------------
+Released on 2011-10-14
+
 Fix content_disposition display on version details panel.
 Increase width of statictextfield
 Prevent silly error messages when loading resource version lists.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev4      ++
-++   Released on 2011-10-14   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev4
+-------------------
+Released on 2011-10-14
+
 Add compare functionality for resource versions.
 Add resource version details panel.
 Reorder of Resource filter options for easier duplication at a later stage.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev3      ++
-++   Released on 2011-08-27   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev3
+-------------------
+Released on 2011-08-27
+
 Fix endless save loop in MODX versions earlier than 2.1 due to lack of support for TVs.
 
-++++++++++++++++++++++++++++++++
-++   VersionX 2.0.0-dev2      ++
-++   Released on 2011-08-27   ++
-++++++++++++++++++++++++++++++++
+VersionX 2.0.0-dev2
+-------------------
+Released on 2011-08-27
+
 First proper build.
