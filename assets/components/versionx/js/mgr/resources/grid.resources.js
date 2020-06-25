@@ -46,12 +46,14 @@ VersionX.grid.Resources = function(config) {
 			header: _('versionx.title'),
 			dataIndex: 'title',
 		    sortable: true,
-			width: .4
+			width: .4,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('user'),
 			dataIndex: 'username',
 		    sortable: true,
-			width: .2
+			width: .2,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('versionx.mode'),
 			dataIndex: 'mode',
@@ -68,7 +70,8 @@ VersionX.grid.Resources = function(config) {
 			header: _('context'),
 			dataIndex: 'context_key',
 		    sortable: true,
-			width: .1
+			width: .1,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('class_key'),
 			dataIndex: 'class',

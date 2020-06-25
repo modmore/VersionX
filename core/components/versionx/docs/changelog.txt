@@ -1,5 +1,7 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+- Fix several XSS vulnerabilities in the VersionX tabs (resources and templates, where the attack is in the rendered name) and the compare versions view in any non-content field.
+
 ++++++++++++++++++++++++++++++++
 ++   VersionX 2.3.1-pl        ++
 ++   Released on 2020-04-06   ++

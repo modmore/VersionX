@@ -45,17 +45,20 @@ VersionX.grid.Snippets = function(config) {
 			header: _('versionx.content_name', {what: _('snippet')}),
 			dataIndex: 'name',
 		    sortable: true,
-			width: .4
+			width: .4,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('category'),
 			dataIndex: 'categoryname',
 		    sortable: true,
-			width: .2
+			width: .2,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('user'),
 			dataIndex: 'username',
 		    sortable: true,
-			width: .2
+			width: .2,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('versionx.mode'),
 			dataIndex: 'mode',

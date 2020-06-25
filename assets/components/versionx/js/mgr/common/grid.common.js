@@ -32,7 +32,8 @@ VersionX.grid.Common.DetailGrid = function(config) {
                     if (record.data.different) {
                         meta.css += ' vx-added';
                     }
-                    return value;
+
+                    return Ext.util.Format.htmlEncode(value);
                 }
             }
         ]
@@ -70,7 +71,8 @@ VersionX.grid.Common.DetailGrid = function(config) {
             header: _('versionx.resources.detail.grid.columns.field-value', {id:config.vxRecordCmp.version_id}),
             dataIndex: 'fieldValueCmp',
             sortable: true,
-            width: .375
+            width: .375,
+            renderer: Ext.util.Format.htmlEncode
         });
     }
 

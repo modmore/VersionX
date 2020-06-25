@@ -45,17 +45,20 @@ VersionX.grid.TemplateVariables = function(config) {
 			header: _('name'),
 			dataIndex: 'name',
 		    sortable: true,
-			width: .3
+			width: .3,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('category'),
 			dataIndex: 'categoryname',
 		    sortable: true,
-			width: .15
+			width: .15,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('user'),
 			dataIndex: 'username',
 		    sortable: true,
-			width: .1
+			width: .1,
+            renderer: Ext.util.Format.htmlEncode
 		},{
 			header: _('versionx.mode'),
 			dataIndex: 'mode',
