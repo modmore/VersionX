@@ -33,10 +33,10 @@ class VersionX {
     public $charset;
 
     /**
-     * @param \modX $modx
+     * @param \modX|\MODX\Revolution\modX $modx
      * @param array $config
      */
-    public function __construct(modX $modx,array $config = array()) {
+    public function __construct($modx,array $config = array()) {
         $this->modx =& $modx;
 
         $basePath = $this->modx->getOption('versionx.core_path',$config,$this->modx->getOption('core_path').'components/versionx/');
@@ -67,56 +67,6 @@ class VersionX {
         $this->modx->lexicon->load('versionx:default');
         
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
-    }
-
-    /**
-    * Gets a Chunk and caches it; also falls back to file-based templates
-    * for easier debugging.
-    *
-    * @access public
-    * @param string $name The name of the Chunk
-    * @param array $properties The properties for the Chunk
-    * @return string The processed content of the Chunk
-    * @author Shaun "splittingred" McCormick
-    */
-    public function getChunk($name,$properties = array()) {
-        $chunk = null;
-        if (!isset($this->chunks[$name])) {
-            $chunk = $this->_getTplChunk($name);
-            if (empty($chunk)) {
-                $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);
-                if ($chunk == false) return false;
-            }
-            $this->chunks[$name] = $chunk->getContent();
-        } else {
-            $o = $this->chunks[$name];
-            $chunk = $this->modx->newObject('modChunk');
-            $chunk->setContent($o);
-        }
-        $chunk->setCacheable(false);
-        return $chunk->process($properties);
-    }
-
-    /**
-    * Returns a modChunk object from a template file.
-    *
-    * @access private
-    * @param string $name The name of the Chunk. Will parse to name.chunk.tpl
-    * @param string $postFix The postfix to append to the name
-    * @return modChunk/boolean Returns the modChunk object if found, otherwise false.
-    * @author Shaun "splittingred" McCormick
-    */
-    private function _getTplChunk($name,$postFix = '.tpl') {
-        $chunk = false;
-        $f = $this->config['elements_path'].'chunks/'.strtolower($name).$postFix;
-        if (file_exists($f)) {
-            $o = file_get_contents($f);
-            /* @var modChunk $chunk */
-            $chunk = $this->modx->newObject('modChunk');
-            $chunk->set('name',$name);
-            $chunk->setContent($o);
-        }
-        return $chunk;
     }
 
     public function newVersionFor($class, $contentId, $mode)

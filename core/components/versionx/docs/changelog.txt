@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+- Remove unused VersionX::getChunk()
+
+
+
 VersionX 2.3.2-pl
 -----------------
 Released on 2020-06-25

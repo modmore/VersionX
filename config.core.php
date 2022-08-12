@@ -1,3 +1,3 @@
 <?php
 
-include dirname(__DIR__) . '/config.core.php';
+include dirname(__DIR__) . '/3.x/config.core.php';
