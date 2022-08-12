@@ -97,13 +97,13 @@ class VersionX {
     /**
      * Creates a new version of a Resource.
      *
-     * @param int|modResource|modStaticResource $resource
+     * @param int|modResource|\MODX\Revolution\modResource $resource
      * @param string $mode
      * @return bool
      *
      */
     public function newResourceVersion($resource, $mode = 'upd') {
-        if ($resource instanceof modResource) {
+        if ($resource instanceof \MODX\Revolution\modResource || $resource instanceof modResource) {
             // We're retrieving the resource again to clean up raw post data we don't want.
             $resource = $this->modx->getObject('modResource',$resource->get('id'));
         } else {
@@ -132,7 +132,7 @@ class VersionX {
 
         $tvs = $resource->getTemplateVars();
         $tvArray = array();
-        /* @var modTemplateVar $tv */
+        /* @var \MODX\Revolution\modTemplateVar|modTemplateVar $tv */
         foreach ($tvs as $tv) {
             $tvArray[] = $tv->get(array('id','value'));
         }
@@ -148,13 +148,13 @@ class VersionX {
     /**
      * Creates a new version of a Template.
      *
-     * @param int|\modTemplate $template
+     * @param int|\MODX\Revolution\modTemplate|\modTemplate $template
      * @param string $mode
      * @return bool
      *
      */
     public function newTemplateVersion($template, $mode = 'upd') {
-        if ($template instanceof modTemplate) {
+        if ($template instanceof \MODX\Revolution\modTemplate || $template instanceof modTemplate) {
             /* Fetch it again to prevent getting stuck with raw post data */
             $template = $this->modx->getObject('modTemplate', $template->get('id'));
         } else {
@@ -183,13 +183,13 @@ class VersionX {
     /**
      * Creates a new version of a Template Variable.
      *
-     * @param int|\modTemplateVar $tv
+     * @param int|\MODX\Revolution\modTemplateVar|\modTemplateVar $tv
      * @param string $mode
      * @return bool
      *
      */
     public function newTemplateVarVersion($tv, $mode = 'upd') {
-        if ($tv instanceof modTemplateVar) {
+        if ($tv instanceof \MODX\Revolution\modTemplateVar || $tv instanceof modTemplateVar) {
             /* Fetch it again to prevent getting stuck with raw post data */
             $tv = $this->modx->getObject('modTemplateVar', $tv->get('id'));
         } else {
@@ -198,7 +198,7 @@ class VersionX {
 
         $tArray = $tv->toArray();
 
-        /* @var modTemplateVar $version */
+        /* @var vxTemplateVar $version */
         $version = $this->modx->newObject('vxTemplateVar');
 
         $v = array(
@@ -217,12 +217,12 @@ class VersionX {
     /**
      * Create a new version of a Chunk.
      *
-     * @param int|\modChunk $chunk
+     * @param int|\MODX\Revolution\modChunk|\modChunk $chunk
      * @param string $mode
      * @return bool
      */
     public function newChunkVersion($chunk, $mode = 'upd') {
-        if ($chunk instanceof modChunk) {
+        if ($chunk instanceof \MODX\Revolution\modChunk || $chunk instanceof modChunk) {
             /* Fetch it again to prevent getting stuck with raw post data */
             $chunk = $this->modx->getObject('modChunk', $chunk->get('id'));
         } else {
@@ -230,7 +230,7 @@ class VersionX {
         }
 
         // prevents resource groups from failing in MODX versions prior to 2.2.14 (see github #8992 + fix)
-        if (!($chunk instanceof modChunk)) {
+        if (!($chunk instanceof modChunk) && !($chunk instanceof \MODX\Revolution\modChunk)) {
             return false;
         }
 
@@ -256,12 +256,12 @@ class VersionX {
     /**
      * Creates a new version of a Snippet.
      *
-     * @param int|\modSnippet $snippet
+     * @param int|\MODX\Revolution\modSnippet|\modSnippet $snippet
      * @param string $mode
      * @return bool
      */
     public function newSnippetVersion($snippet, $mode = 'upd') {
-        if ($snippet instanceof modSnippet) {
+        if ($snippet instanceof \MODX\Revolution\modSnippet || $snippet instanceof modSnippet) {
             /* Fetch it again to prevent getting stuck with raw post data */
             $snippet = $this->modx->getObject('modSnippet', $snippet->get('id'));
         } else {
@@ -290,12 +290,12 @@ class VersionX {
     /**
      * Creates a new version of a Plugin.
      *
-     * @param int|\modPlugin $plugin
+     * @param int|\MODX\Revolution\modPlugin|\modPlugin $plugin
      * @param string $mode
      * @return bool
      */
     public function newPluginVersion($plugin, $mode = 'upd') {
-        if ($plugin instanceof modPlugin) {
+        if ($plugin instanceof \MODX\Revolution\modPlugin || $plugin instanceof modPlugin) {
             /* Fetch it again to prevent getting stuck with raw post data */
             $plugin = $this->modx->getObject('modPlugin', $plugin->get('id'));
         } else {
@@ -348,15 +348,20 @@ class VersionX {
                     }
 
                     /* Process content type */
-                    /* @var modContentType $ct */
+                    /* @var \MODX\Revolution\modContentType|modContentType $ct */
                     $ct = $this->modx->getObject('modContentType',$vArray['content_type']);
-                    if ($ct instanceof modContentType)
+                    if ($ct instanceof \MODX\Revolution\modContentType || $ct instanceof modContentType) {
                         $vArray['content_type'] = $ct->get('name');
+                    }
 
                     $vArray['content'] = $this->_prepareCodeView($vArray['content']);
 
-                    if ($vArray['content_dispo'] == 1) $vArray['content_dispo'] = $this->modx->lexicon('attachment');
-                    else $vArray['content_dispo'] = $this->modx->lexicon('inline');
+                    if ($vArray['content_dispo'] == 1) {
+                        $vArray['content_dispo'] = $this->modx->lexicon('attachment');
+                    }
+                    else {
+                        $vArray['content_dispo'] = $this->modx->lexicon('inline');
+                    }
 
                     /* Process boolean values */
                     $vArray['published'] = (intval($vArray['published'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
@@ -378,11 +383,13 @@ class VersionX {
                     $tvArray = array();
                     foreach ($vArray['tvs'] as $tv) {
                         if (!isset($this->tvs[$tv['id']]) || empty($this->tvs[$tv['id']])) {
-                            /* @var modTemplateVar $tvObj */
+                            /* @var \MODX\Revolution\modTemplateVar|modTemplateVar $tvObj */
                             $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
-                            if ($tvObj instanceof modTemplateVar) {
+                            if ($tvObj instanceof \MODX\Revolution\modTemplateVar || $tvObj instanceof modTemplateVar) {
                                 $caption = $tvObj->get('caption');
-                                if (empty($caption)) $caption = $tvObj->get('name');
+                                if (empty($caption)) {
+                                    $caption = $tvObj->get('name');
+                                }
                                 $this->tvs[$tv['id']] = $caption;
                             } else {
                                 $this->tvs[$tv['id']] = 'tv'.$tv['id'];
@@ -416,10 +423,6 @@ class VersionX {
                     break;
 
                 case 'vxChunk':
-                    $vArray['snippet'] =  $this->_prepareCodeView($vArray['snippet']);
-                    $vArray['category'] = $this->getCategory($vArray['category']);
-                    break;
-
                 case 'vxSnippet':
                     $vArray['snippet'] =  $this->_prepareCodeView($vArray['snippet']);
                     $vArray['category'] = $this->getCategory($vArray['category']);
@@ -431,9 +434,11 @@ class VersionX {
                     break;
             }
 
-            /* @var modUserProfile $up */
+            /* @var \MODX\Revolution\modUserProfile|modUserProfile $up */
             $up = $this->modx->getObject('modUserProfile',array('internalKey' => $vArray['user']));
-            if ($up instanceof modUserProfile) $vArray['user'] = $up->get('fullname');
+            if ($up instanceof \MODX\Revolution\modUserProfile || $up instanceof modUserProfile) {
+                $vArray['user'] = $up->get('fullname');
+            }
 
             if (!empty($prefix)) {
                 $ta = array();
@@ -442,7 +447,9 @@ class VersionX {
                 }
                 $vArray = $ta;
             }
-            if ($json) return $this->modx->toJSON($vArray);
+            if ($json) {
+                return $this->modx->toJSON($vArray);
+            }
             return $vArray;
         }
         return false;
@@ -453,7 +460,8 @@ class VersionX {
      *
      * @return string
      */
-    private function _prepareCodeView($string) {
+    private function _prepareCodeView($string): string
+    {
         $lines = explode("\n",$string);
         foreach ($lines as $idx => $line) {
             $pos = 0;
@@ -478,7 +486,8 @@ class VersionX {
      *
      * @return bool
      */
-    protected function checkLastVersion($class = 'vxResource', xPDOObject $version) {
+    protected function checkLastVersion($class = 'vxResource', xPDOObject $version): bool
+    {
         /* Get last version to make sure we've got some changes to save */
         $c = $this->modx->newQuery($class);
         $c->where(array('content_id' => $version->get('content_id')));
@@ -543,9 +552,10 @@ class VersionX {
      * Flattens an array recursively.
      * @param array $array
      *
-     * @return array|string
+     * @return string
      */
-    public function flattenArray(array $array = array()) {
+    public function flattenArray(array $array = array()): string
+    {
         if (!is_array($array)) return (string)$array;
 
         $string = array();
@@ -566,7 +576,8 @@ class VersionX {
      *
      * @param string $class
      */
-    public function outputVersionsTab ($class = 'vxResource') {
+    public function outputVersionsTab ($class = 'vxResource'): void
+    {
         if (!class_exists($class)) {
             $path = $this->config['model_path'].'versionx/'.strtolower($class).'.class.php';
             if (file_exists($path)) {
@@ -615,10 +626,10 @@ class VersionX {
      * Gets language strings for use on non-VersionX controllers.
      * @return string
      */
-    public function _getLangs() {
+    public function _getLangs(): string
+    {
         $entries = $this->modx->lexicon->loadCache('versionx');
-		$langs = 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
-        return $langs;
+        return 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
     }
 
     /**
@@ -626,12 +637,13 @@ class VersionX {
      *
      * @return string
      */
-    public function getCategory($id) {
+    public function getCategory($id): string
+    {
         if (!$id || $id == 0) return '';
         if (isset($this->categoryCache[$id])) {
             return $this->categoryCache[$id];
         }
-        /* @var modCategory $category */
+        /* @var \MODX\Revolution\modCategory|modCategory $category */
         $category = $this->modx->getObject('modCategory',(int)$id);
         if ($category) {
             return $this->categoryCache[$id] = $category->get('category') . " ($id)";
@@ -645,7 +657,8 @@ class VersionX {
      * @param string $string
      * @return string
      */
-    public function htmlent($string = '') {
+    public function htmlent($string = ''): string
+    {
         if ($this->charset === null) {
             $this->charset = $this->modx->getOption('modx_charset', null, 'UTF-8');
         }
