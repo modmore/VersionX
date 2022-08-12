@@ -16,6 +16,8 @@ $e = array(
     'OnChunkFormPrerender',
     'OnSnipFormPrerender',
     'OnPluginFormPrerender',
+
+    'FredOnFredResourceSave',
 );
 
 foreach ($e as $ev) {

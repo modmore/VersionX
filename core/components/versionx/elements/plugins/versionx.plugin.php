@@ -42,6 +42,7 @@ if (!$versionx) {
 
 switch($eventName) {
     case 'OnDocFormSave':
+    case 'FredOnFredResourceSave':
         if ($modx->getOption('versionx.enable.resources',null,true))
             $result = $versionx->newResourceVersion($resource, $mode);
         break;

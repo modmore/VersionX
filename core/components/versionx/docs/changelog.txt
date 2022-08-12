@@ -2,7 +2,7 @@ This changelog shows an overview of what changed throughout VersionX releases, w
 
 - Remove unused VersionX::getChunk()
 - Fix creating snippet and chunk versions on MODX 3 [#121]
-
+- Also trigger on Fred resource saves [#112]
 
 
 VersionX 2.3.2-pl
