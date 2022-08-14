@@ -1,5 +1,9 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+VersionX 2.4.0-pl
+-----------------
+Released on 2022-08-14
+
 - Remove unused VersionX::getChunk()
 - Fix creating snippet and chunk versions on MODX 3 [#121]
 - Also trigger on Fred resource saves [#112]
