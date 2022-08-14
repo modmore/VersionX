@@ -26,7 +26,7 @@ $_lang['versionx.menu_desc'] = 'Keeps track of your valuable content.';
 
 $_lang['versionx.home'] = 'VersionX';
 $_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution that will help you keep track of your content in Resources, Templates, Chunks, Snippets and Plugins. Every save is recorded and can easily be looked back and compared through this component. <br /><br />
-VersionX is free software, however your help is needed to keep the development going. If VersionX has proven helpful, please <a href="http://www.markhamstra.com/open-source/versionx/">consider making a donation</a> to support VersionX. Thank you.';
+VersionX is free software, however your help is needed to keep the development going. If VersionX has proven helpful, please <a href="https://modmore.com/extras/versionx/donate/">consider making a donation</a> to support VersionX. Thank you.';
 
 $_lang['versionx.common.empty'] = '&lt;empty&gt;';
 $_lang['versionx.common.version-details'] = 'Version Details';

@@ -24,6 +24,8 @@ $output = <<<HTML
     <input type="checkbox" name="vx_snapshot_tmplvars" id="vx_snapshot_tmplvars" />
         <label for="vx_snapshot_tmplvars" style="display: inline;">Template Variables</label>
 </div>
+
+<p>If you found VersionX useful, please consider <a href="https://modmore.com/extras/versionx/donate/">making a donation to support its development</a>. Thank you!</p>
 HTML;
     break;
     default:
