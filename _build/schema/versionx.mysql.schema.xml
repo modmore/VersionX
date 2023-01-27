@@ -19,7 +19,86 @@
  * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
 -->
-<model package="versionx" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
+<model package="versionx" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" version="1.1">
+
+    <object class="vxDelta" table="versionx_delta" extends="xPDOSimpleObject">
+        <!--
+            The principal is the object that was changed.
+            -->
+        <field key="principal_package" dbtype="varchar" precision="128" phptype="string" null="false" default="core" />
+        <field key="principal_class" dbtype="varchar" precision="128" phptype="string" null="false" />
+        <field key="principal" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+
+        <!--
+            Deltas have a start and end time, because a delta may be the result of different
+            deltas that were merged.
+            -->
+        <field key="time_start" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+        <field key="time_end" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+
+        <index alias="principal_class" name="principal_class" primary="false" unique="false" type="BTREE">
+            <column key="principal_class" length="" collation="A" null="false" />
+        </index>
+        <index alias="principal" name="principal" primary="false" unique="false" type="BTREE">
+            <column key="principal" length="" collation="A" null="false" />
+        </index>
+        <index alias="time_start" name="time_start" primary="false" unique="false" type="BTREE">
+            <column key="time_start" length="" collation="A" null="false" />
+        </index>
+        <index alias="time_end" name="time_end" primary="false" unique="false" type="BTREE">
+            <column key="time_end" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <!--
+        The editor (person that edited the object) is stored in a separate table, because
+        one delta may be the combination of multiple merged deltas created by different people
+        -->
+    <object class="vxDeltaEditor" table="versionx_delta_editor" extends="xPDOSimpleObject">
+        <field key="delta" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+
+        <!-- Store a copy of the username and fullname, in case that changes or user is deleted?
+            <field key="username" dbtype="varchar" precision="128" phptype="string" null="false" default="" />
+            <field key="fullname" dbtype="varchar" precision="128" phptype="string" null="false" default="" />
+        -->
+
+        <index alias="delta" name="delta" primary="false" unique="false" type="BTREE">
+            <column key="delta" length="" collation="A" null="false" />
+        </index>
+        <index alias="user" name="user" primary="false" unique="false" type="BTREE">
+            <column key="user" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <!--
+        Rather than store each changed field as some serialized format on the vxDelta itself,
+        we abstract it into standalone objects indexed by delta and field with a before and after.
+        While this may cause a lot of small fields, it does allow us to in the future show all
+        changes made to a specific field.
+
+        When deltas are merged, the vxDeltaFields are also merged, leaving exactly one vxDeltaField
+        per field name per delta.
+        -->
+    <object class="vxDeltaField" table="versionx_delta_field" extends="xPDOSimpleObject">
+        <field key="delta" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="field" dbtype="varchar" precision="128" phptype="string" null="false" />
+        <!-- Support different field types that may render differently, e.g. image, binary, commerce_product.. -->
+        <field key="field_type" dbtype="varchar" precision="128" phptype="string" null="false" default="text" />
+
+        <field key="before" dbtype="mediumtext" phptype="string" null="false" default="" />
+        <field key="after" dbtype="mediumtext" phptype="string" null="false" default="" />
+
+        <!-- Pre-render (or just cache) rendered diffs when creating the delta -->
+        <field key="rendered_diff" dbtype="mediumtext" phptype="string" null="false" default="" />
+
+        <index alias="delta" name="delta" primary="false" unique="false" type="BTREE">
+            <column key="delta" length="" collation="A" null="false" />
+        </index>
+        <index alias="field" name="field" primary="false" unique="false" type="BTREE">
+            <column key="field" length="" collation="A" null="false" />
+        </index>
+    </object>
 
     <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxResource" table="versionx_resource" extends="xPDOObject">

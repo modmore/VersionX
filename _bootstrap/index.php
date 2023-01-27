@@ -139,6 +139,11 @@ $modx->setLogLevel(2);
 
 /* Create the tables */
 $objectContainers = [
+    vxDelta::class,
+    vxDeltaEditor::class,
+    vxDeltaField::class,
+
+    // The rest are deprecated but kept for now to allow migrations
     'vxResource',
     'vxTemplate',
     'vxSnippet',

@@ -20,6 +20,5 @@
  * Suite 330, Boston, MA 02111-1307 USA
  *
 */
-require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/vxresource.class.php');
-class vxResource_mysql extends vxResource {}
+class vxDeltaEditor extends xPDOSimpleObject {}
 ?>

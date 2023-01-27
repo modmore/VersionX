@@ -4,8 +4,7 @@
  *
  * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
  *
- * This file is part of VersionX, a real estate property listings component
- * for MODX Revolution.
+ * This file is part of VersionX, a versioning solution for MODX Revolution
  *
  * VersionX is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -23,7 +22,13 @@
 */
 $xpdo_meta_map['vxPlugin']= array (
   'package' => 'versionx',
+  'version' => '1.1',
   'table' => 'versionx_plugin',
+  'extends' => 'xPDOObject',
+  'tableMeta' => 
+  array (
+    'engine' => 'InnoDB',
+  ),
   'fields' => 
   array (
     'version_id' => NULL,
