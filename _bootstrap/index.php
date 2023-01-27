@@ -80,7 +80,7 @@ if (!createObject('modSystemSetting', array(
 if (!createObject('modPlugin', array(
     'name' => 'VersionX',
     'static' => true,
-    'static_file' => $componentPath.'/core/components/versionx/elements/plugins/included.versionx.plugin.php',
+    'static_file' => $componentPath.'/core/components/versionx/elements/plugins/versionx.plugin.php',
 ), 'name', true)) {
     echo "Error creating VersionX Plugin.\n";
 }
