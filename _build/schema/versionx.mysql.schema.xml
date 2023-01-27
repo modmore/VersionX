@@ -21,6 +21,7 @@
 -->
 <model package="versionx" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
 
+    <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxResource" table="versionx_resource" extends="xPDOObject">
         <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
@@ -49,6 +50,7 @@
     </object>
 
 
+    <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxTemplate" table="versionx_template" extends="xPDOObject">
         <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
@@ -77,6 +79,7 @@
     </object>
 
 
+    <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxChunk" table="versionx_chunk" extends="xPDOObject">
         <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
@@ -104,7 +107,8 @@
         <aggregate alias="Chunk" class="modChunk" local="content_id" foreign="id" owner="foreign" cardinality="one" />
     </object>
 
-    
+
+    <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxSnippet" table="versionx_snippet" extends="xPDOObject">
         <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
@@ -133,6 +137,7 @@
     </object>
 
 
+    <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxPlugin" table="versionx_plugin" extends="xPDOObject">
         <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
@@ -162,6 +167,7 @@
     </object>
 
 
+    <!-- Deprecated, but left in-place to allow migrations -->
     <object class="vxTemplateVar" table="versionx_templatevar" extends="xPDOObject">
         <field key="version_id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native" attributes="unsigned" />
         <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">

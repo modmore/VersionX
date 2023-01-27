@@ -69,6 +69,13 @@ class VersionX {
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
     }
 
+    /**
+     * @param $class
+     * @param $contentId
+     * @param $mode
+     * @return bool
+     * @deprecated
+     */
     public function newVersionFor($class, $contentId, $mode)
     {
         switch ($class) {
@@ -101,6 +108,7 @@ class VersionX {
      * @param string $mode
      * @return bool
      *
+     * @deprecated
      */
     public function newResourceVersion($resource, $mode = 'upd') {
         if ($resource instanceof \MODX\Revolution\modResource || $resource instanceof modResource) {
@@ -152,6 +160,7 @@ class VersionX {
      * @param string $mode
      * @return bool
      *
+     * @deprecated
      */
     public function newTemplateVersion($template, $mode = 'upd') {
         if ($template instanceof \MODX\Revolution\modTemplate || $template instanceof modTemplate) {
@@ -187,6 +196,7 @@ class VersionX {
      * @param string $mode
      * @return bool
      *
+     * @deprecated
      */
     public function newTemplateVarVersion($tv, $mode = 'upd') {
         if ($tv instanceof \MODX\Revolution\modTemplateVar || $tv instanceof modTemplateVar) {
@@ -214,12 +224,14 @@ class VersionX {
         }
         return true;
     }
+
     /**
      * Create a new version of a Chunk.
      *
      * @param int|\MODX\Revolution\modChunk|\modChunk $chunk
      * @param string $mode
      * @return bool
+     * @deprecated
      */
     public function newChunkVersion($chunk, $mode = 'upd') {
         if ($chunk instanceof \MODX\Revolution\modChunk || $chunk instanceof modChunk) {
@@ -259,6 +271,7 @@ class VersionX {
      * @param int|\MODX\Revolution\modSnippet|\modSnippet $snippet
      * @param string $mode
      * @return bool
+     * @deprecated
      */
     public function newSnippetVersion($snippet, $mode = 'upd') {
         if ($snippet instanceof \MODX\Revolution\modSnippet || $snippet instanceof modSnippet) {
@@ -293,6 +306,7 @@ class VersionX {
      * @param int|\MODX\Revolution\modPlugin|\modPlugin $plugin
      * @param string $mode
      * @return bool
+     * @deprecated
      */
     public function newPluginVersion($plugin, $mode = 'upd') {
         if ($plugin instanceof \MODX\Revolution\modPlugin || $plugin instanceof modPlugin) {
@@ -328,6 +342,7 @@ class VersionX {
      * @param bool $json
      * @param string $prefix
      * @return bool|array
+     * @deprecated
      */
     public function getVersionDetails($class = 'vxResource',$id = 0, $json = false, $prefix = '') {
         $v = $this->modx->getObject($class, ['version_id' => $id]);
@@ -485,6 +500,7 @@ class VersionX {
      * @param \xPDOObject $version
      *
      * @return bool
+     * @deprecated
      */
     protected function checkLastVersion($class = 'vxResource', xPDOObject $version): bool
     {
