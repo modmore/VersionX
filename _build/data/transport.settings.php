@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var modX $modx
+ */
 $s = include __DIR__ . '/settings.php';
 
 $settings = array();
@@ -9,18 +11,16 @@ foreach ($s as $key => $value) {
     elseif (is_bool($value)) { $type = 'combo-boolean'; }
     else { $type = 'textfield'; }
 
-    $parts = explode('.',$key);
-    if (count($parts) == 1) { $area = 'Default'; }
-    else { $area = $parts[0]; }
-    
+    $area = $value['area'];
+
     $settings['versionx.'.$key] = $modx->newObject('modSystemSetting');
-    $settings['versionx.'.$key]->set('key', 'versionx.'.$key);
-    $settings['versionx.'.$key]->fromArray(array(
+    $settings['versionx.'.$key]->set('key', 'versionx.' . $key);
+    $settings['versionx.'.$key]->fromArray([
         'value' => $value,
         'xtype' => $type,
         'namespace' => 'versionx',
         'area' => $area
-    ));
+    ]);
 }
 
 return $settings;

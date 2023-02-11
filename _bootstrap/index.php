@@ -124,10 +124,17 @@ if (!createObject('modMenu', array(
 
 $settings = include dirname(__DIR__).'/_build/data/settings.php';
 foreach ($settings as $key => $opts) {
+    $val = $opts['value'];
+
+    if (isset($opts['xtype'])) $xtype = $opts['xtype'];
+    elseif (is_int($val)) $xtype = 'numberfield';
+    elseif (is_bool($val)) $xtype = 'modx-combo-boolean';
+    else $xtype = 'textfield';
+
     if (!createObject('modSystemSetting', [
         'key' => 'versionx.' . $key,
         'value' => $opts['value'],
-        'xtype' => (isset($opts['xtype'])) ? $opts['xtype'] : 'textfield',
+        'xtype' => $xtype,
         'namespace' => 'versionx',
         'area' => $opts['area'],
     ], 'key', false)) {
