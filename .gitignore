@@ -1,3 +1,4 @@
 .idea
 config.core.php
 _packages/*/
+core/components/versionx/vendor

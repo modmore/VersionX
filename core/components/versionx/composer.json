@@ -1,0 +1,25 @@
+{
+    "name": "modmore/versionx",
+    "description": "",
+    "license": "mit",
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/digitalpenguin/php-finediff.git"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || 8.*",
+        "digitalpenguin/finediff": "^1.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "modmore\\VersionX\\" : "src/"
+        }
+    }
+}
