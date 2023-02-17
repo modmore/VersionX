@@ -1,46 +1,44 @@
 Ext.onReady(function() {
-    Ext.QuickTips.init();
     MODx.load({
-        xtype: 'versionx-page-index',
+        xtype: 'versionx-page-home',
         renderTo: 'versionx'
     });
 });
 
-VersionX.page.Index = function(config) {
+VersionX.panel.Home = function(config) {
     config = config || {};
-    config.id = config.id || 'versionx-panel-index';
     Ext.applyIf(config, {
-        cls: 'container form-with-labels',
-        components: [{
-            xtype: 'panel',
-            html: '<h2>'+_('versionx')+'</h2>',
-            border: false,
+        id: 'versionx-panel-home',
+        border: false,
+        baseCls: 'modx-formpanel',
+        cls: 'container',
+        layout: 'anchor',
+        items: [{
+            html: `
+                <div class="versionx-header">
+                    <h2>${_('versionx')}</h2>
+                    <div class="version">3</div>
+                </div>
+                <p class="versionx-description">${_('versionx.description')}</p>
+            `,
             cls: 'modx-page-header',
-            bodyStyle: 'margin: 20px 0 0 0;'
         },{
             xtype: 'modx-tabs',
-            width: '98%',
-            border: true,
+            deferredRender: false,
+            forceLayout: true,
             defaults: {
-                border: false,
+                layout: 'form',
                 autoHeight: true,
-                cls: 'main-wrapper',
-                defaults: {
-                    border: false
-                }
+                hideMode: 'offsets',
+                padding: 15,
             },
             items: [{
-                title: _('versionx'),
-                items: [{
-                    html: '<p>'+_('versionx.home.text')+'</p>',
-                    border: false
-                }]
-            },{
+                xtype: 'modx-panel',
                 title: _('resources'),
                 items: [{
                     xtype: 'versionx-panel-resources'
                 },{
-                    html: '<hr />'
+                    html: '<div class="versionx-divider"></div>'
                 },{
                     xtype: 'versionx-grid-resources'
                 }]
@@ -49,7 +47,7 @@ VersionX.page.Index = function(config) {
                 items: [{
                     xtype: 'versionx-panel-templates'
                 },{
-                    html: '<hr />'
+                    html: '<div class="versionx-divider"></div>'
                 },{
                     xtype: 'versionx-grid-templates'
                 }]
@@ -58,7 +56,7 @@ VersionX.page.Index = function(config) {
                 items: [{
                     xtype: 'versionx-panel-templatevars'
                 },{
-                    html: '<hr />'
+                    html: '<div class="versionx-divider"></div>'
                 },{
                     xtype: 'versionx-grid-templatevars'
                 }]
@@ -67,7 +65,7 @@ VersionX.page.Index = function(config) {
                 items: [{
                     xtype: 'versionx-panel-chunks'
                 },{
-                    html: '<hr />'
+                    html: '<div class="versionx-divider"></div>'
                 },{
                     xtype: 'versionx-grid-chunks'
                 }]
@@ -76,7 +74,7 @@ VersionX.page.Index = function(config) {
                 items: [{
                     xtype: 'versionx-panel-snippets'
                 },{
-                    html: '<hr />'
+                    html: '<div class="versionx-divider"></div>'
                 },{
                     xtype: 'versionx-grid-snippets'
                 }]
@@ -85,7 +83,7 @@ VersionX.page.Index = function(config) {
                 items: [{
                     xtype: 'versionx-panel-plugins'
                 },{
-                    html: '<hr />'
+                    html: '<div class="versionx-divider"></div>'
                 },{
                     xtype: 'versionx-grid-plugins'
                 }]
@@ -98,7 +96,51 @@ VersionX.page.Index = function(config) {
             }
         }]
     });
-    VersionX.page.Index.superclass.constructor.call(this,config);
+    VersionX.panel.Home.superclass.constructor.call(this, config);
 };
-Ext.extend(VersionX.page.Index,MODx.Component);
-Ext.reg('versionx-page-index',VersionX.page.Index);
+Ext.extend(VersionX.panel.Home, MODx.Panel);
+Ext.reg('versionx-panel-home', VersionX.panel.Home);
+
+VersionX.page.Home = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        border: false,
+        id : 'versionx-page-wrapper',
+        components: [{
+            cls: 'container',
+            xtype: 'versionx-panel-home'
+        }],
+        buttons: this.getButtons(config)
+    });
+    VersionX.page.Home.superclass.constructor.call(this,config);
+};
+Ext.extend(VersionX.page.Home, MODx.Component,{
+    getButtons: function() {
+        var buttons = [{
+            text: _('help_ex'),
+            handler: this.loadHelpPane,
+            scope: this,
+            id: 'modx-abtn-help'
+        }];
+
+        if (!VersionX.config.has_donated) {
+            buttons.push([{
+                text: _('versionx.donate'),
+                handler: this.donate,
+                scope: this
+            }]);
+        }
+
+        return buttons;
+    },
+
+    loadHelpPane: function() {
+        MODx.config.help_url = 'https://docs.modx.com/3.x/en/extras/versionx/index#usage-features?embed=1';
+        MODx.loadHelpPane();
+    },
+
+    donate: function() {
+        window.open('https://modmore.com/extras/versionx/donate/');
+    }
+});
+Ext.reg('versionx-page-home',VersionX.page.Home);

@@ -1,39 +1,23 @@
 <?php
-/**
- * VersionX
- *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
- *
- * VersionX is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * VersionX is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA 02111-1307 USA
- *
- */
 
-require_once dirname(__DIR__).'/model/versionx.class.php';
+use modmore\VersionX\VersionX;
 
 abstract class VersionXBaseManagerController extends modExtraManagerController {
     /** @var VersionX */
-    protected $versionx;
+    protected VersionX $versionx;
+    protected string $cacheBust;
     public $targetClass = null;
 
     public function initialize()
     {
         $this->versionx = new VersionX($this->modx);
 
+        $this->cacheBust = '?vxv=' . urlencode($this->versionx->config['version']);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/versionx.class.js' . $this->cacheBust);
         $this->addHtml('
             <script type="text/javascript">
                 Ext.onReady(function() {
-                    VersionX.config = '.$this->modx->toJSON($this->versionx->config).';
+                    VersionX.config = ' . json_encode($this->versionx->config) . ';
                 });
             </script>
 
@@ -59,7 +43,6 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
         $this->addJavascript($this->versionx->config['js_url'].'mgr/common/json2.js');
         $this->addJavascript($this->versionx->config['assets_url'].'node_modules/diff/dist/diff.js');
 
-
         $versionid = isset($_REQUEST['vid']) ? (int)$_REQUEST['vid'] : false;
         $compareid = isset($_REQUEST['cmid']) ? (int)$_REQUEST['cmid'] : false;
 
@@ -79,19 +62,19 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
         }
     }
 
-    public function getLanguageTopics()
+    public function getLanguageTopics(): array
     {
         return [
             'versionx:default'
         ];
     }
 
-    public function getPageTitle()
+    public function getPageTitle(): ?string
     {
         return $this->modx->lexicon('versionx');
     }
 
-    public function getTemplateFile()
+    public function getTemplateFile(): string
     {
         return $this->versionx->config['core_path'] . 'templates/mgr/versionx.tpl';
     }

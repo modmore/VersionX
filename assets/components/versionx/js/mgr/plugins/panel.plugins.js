@@ -16,7 +16,7 @@ VersionX.panel.Plugins = function(config) {
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-plugins',
                     fieldLabel: _('plugin'),
                     name: 'fltr_plugin',
-                    width: '95%',
+                    anchor: '1',
                     id: 'plugin-f-plugin',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                 },{
@@ -57,7 +57,7 @@ VersionX.panel.Plugins = function(config) {
             }]
         },{
             layout: 'column',
-            padding: '10px 0 0 0',
+            padding: '15px 0 0 0',
             border: false,
             defaults: {
                 border: false

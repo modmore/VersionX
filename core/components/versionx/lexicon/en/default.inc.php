@@ -21,6 +21,9 @@
  */
 
 $_lang['versionx'] = 'VersionX';
+$_lang['versionx.description'] = 'Resource & element versioning for MODX.';
+$_lang['versionx.donate'] = 'Donate';
+
 $_lang['versionx.tabheader'] = 'Versions';
 $_lang['versionx.menu_desc'] = 'Keeps track of your valuable content.';
 

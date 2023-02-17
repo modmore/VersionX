@@ -1,4 +1,3 @@
-
 VersionX.panel.Chunks = function(config) {
     config = config || {};
     Ext.apply(config,{
@@ -17,7 +16,7 @@ VersionX.panel.Chunks = function(config) {
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-chunks',
                     fieldLabel: _('chunk'),
                     name: 'fltr_chunk',
-                    width: '95%',
+                    anchor: '1',
                     id: 'chk-f-chunk',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                     
@@ -59,7 +58,7 @@ VersionX.panel.Chunks = function(config) {
             }]
         },{
             layout: 'column',
-            padding: '10px 0 0 0',
+            padding: '15px 0 0 0',
             border: false,
             defaults: {
                 border: false
@@ -82,12 +81,6 @@ VersionX.panel.Chunks = function(config) {
                     xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
-                }]
-            },{
-                columnWidth: 1,
-                items: [{
-                    html: '&nbsp;',
-                    border: false
                 }]
             }]
         }],

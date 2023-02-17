@@ -4,12 +4,12 @@ namespace modmore\VersionX;
 
 class VersionX {
     public $modx;
-    private $chunks;
-    private $tvs = [];
-    public $config = [];
-    public $categoryCache = [];
-    public $debug = false;
-    public $charset;
+    private array $chunks = [];
+    private array $tvs = [];
+    public array $config = [];
+    public array $categoryCache = [];
+    public bool $debug = false;
+    public string $charset;
 
     /**
      * @param \modX|\MODX\Revolution\modX $modx
@@ -24,6 +24,7 @@ class VersionX {
             $this->modx->getOption('assets_url') . 'components/versionx/');
         $assetsPath = $this->modx->getOption('versionx.assets_path', $config,
             $this->modx->getOption('assets_path') . 'components/versionx/');
+
         $this->config = array_merge([
             'base_bath' => $basePath,
             'core_path' => $basePath,
@@ -32,25 +33,28 @@ class VersionX {
             'elements_path' => $basePath.'elements/',
             'templates_path' => $basePath.'templates/',
             'assets_path' => $assetsPath,
-            'js_url' => $assetsUrl.'js/',
-            'css_url' => $assetsUrl.'css/',
+            'js_url' => $assetsUrl . 'js/',
+            'css_url' => $assetsUrl . 'css/',
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
-
             'has_users_permission' => $this->modx->hasPermission('view_user'),
         ],$config);
 
+        // Set version
         require_once dirname(__DIR__) . '/docs/version.inc.php';
         if (defined('VERSIONX_FULLVERSION')) {
             $this->config['version'] = VERSIONX_FULLVERSION;
         }
+
+        // Load model
         $modelPath = $this->config['model_path'];
         $this->modx->addPackage('versionx', $modelPath);
+
+        // Load lexicons
         $this->modx->lexicon->load('versionx:default');
 
+        // Set debug mode
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
-
-        require_once dirname(__DIR__) . '/vendor/autoload.php';
     }
 
     /**
@@ -659,7 +663,7 @@ class VersionX {
      */
     public function htmlent($string = ''): string
     {
-        if ($this->charset === null) {
+        if (!isset($this->charset)) {
             $this->charset = $this->modx->getOption('modx_charset', null, 'UTF-8');
         }
         return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);

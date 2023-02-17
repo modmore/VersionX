@@ -1,11 +1,9 @@
-
 VersionX.panel.Resources = function(config) {
     config = config || {};
     Ext.apply(config,{
         id: 'versionx-panel-resources',
         border: false,
         forceLayout: true,
-        width: '98%',
         items: [{
             layout: 'column',
             border: false,
@@ -19,7 +17,7 @@ VersionX.panel.Resources = function(config) {
                     name: 'fltr_resource',
                     hiddenName: 'fltr_resource',
                     allowBlank: true,
-                    width: '95%',
+                    anchor: '1',
                     id: 'res-f-resource',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                 },{
@@ -69,7 +67,7 @@ VersionX.panel.Resources = function(config) {
             }]
         },{
             layout: 'column',
-            padding: '10px 0 0 0',
+            padding: '15px 0 0 0',
             border: false,
             defaults: {
                 border: false

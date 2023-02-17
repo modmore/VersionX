@@ -84,9 +84,10 @@ if (!createObject('modPlugin', array(
 ), 'name', true)) {
     echo "Error creating VersionX Plugin.\n";
 }
-$vcPlugin = $modx->getObject('modPlugin', array('name' => 'VersionX'));
+$vcPlugin = $modx->getObject('modPlugin', ['name' => 'VersionX']);
 if ($vcPlugin) {
     $events = [
+        'OnMODXInit',
         'OnDocFormSave',
         'OnTempFormSave',
         'OnTVFormSave',

@@ -1,4 +1,3 @@
-
 VersionX.panel.Templates = function(config) {
     config = config || {};
     Ext.apply(config,{
@@ -17,7 +16,7 @@ VersionX.panel.Templates = function(config) {
                     xtype: (VersionX.inVersion) ? 'hidden' : 'textfield', //'versionx-combo-templates',
                     fieldLabel: _('template'),
                     name: 'fltr_template',
-                    width: '95%',
+                    anchor: '1',
                     id: 'tpl-f-template',
                     value: (VersionX.inVersion) ? MODx.request.id : ''
                     
@@ -55,7 +54,7 @@ VersionX.panel.Templates = function(config) {
             }]
         },{
             layout: 'column',
-            padding: '10px 0 0 0',
+            padding: '15px 0 0 0',
             border: false,
             defaults: {
                 border: false
@@ -78,12 +77,6 @@ VersionX.panel.Templates = function(config) {
                     xtype: 'button',
                     handler: this.resetFilter,
                     text: _('versionx.filter.reset')
-                }]
-            },{
-                columnWidth: 1,
-                items: [{
-                    html: '&nbsp;',
-                    border: false
                 }]
             }]
         }],

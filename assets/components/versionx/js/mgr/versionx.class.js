@@ -3,11 +3,16 @@ var VersionX = function (config) {
     VersionX.superclass.constructor.call(this, config);
 };
 Ext.extend(VersionX, Ext.Component, {
-    page: {}, window: {}, grid: {ResourcesDetail: {},TemplatesDetail:{}}, tree: {}, panel: {ResourcesDetail: {},TemplatesDetail:{}}, tabs: {}, combo: {},
-    config: {
-        connector_url: ''
-    },
-    inVersion: false
+    page: {},
+    window: {},
+    grid: {ResourcesDetail: {},TemplatesDetail:{}},
+    tree: {},
+    panel: {ResourcesDetail: {},TemplatesDetail:{}},
+    combo: {},
+    field: {},
+    config: {},
+    stats: {},
+    inVersion: false,
 });
 Ext.reg('versionx', VersionX);
 VersionX = new VersionX();
@@ -18,7 +23,6 @@ VersionX.panel.VersionHeader = function (config) {
     Ext.apply(config, {
         border: false,
         forceLayout: true,
-        width: '98%',
         items: [{
             html: '<h3 style="border-bottom: 1px solid; padding-top: 1em;">' + config.title + '</h3>'
         }]

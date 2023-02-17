@@ -1,8 +1,9 @@
 <?php
 
-$events = array();
+$events = [];
 
-$e = array(
+$e = [
+    'OnMODXInit',
     'OnDocFormSave',
     'OnTempFormSave',
     'OnTVFormSave',
@@ -18,7 +19,7 @@ $e = array(
     'OnPluginFormPrerender',
 
     'FredOnFredResourceSave',
-);
+];
 
 foreach ($e as $ev) {
     $events[$ev] = $modx->newObject('modPluginEvent');

@@ -24,18 +24,19 @@
  * @var int $id
  * @var string $mode
  * @var modResource $resource
- * @var modTemplate $template
+ * @var modTemplate|\MODX\Revolution\modTemplate $template
  * @var modTemplateVar $tv
- * @var modChunk $chunk
- * @var modSnippet $snippet
- * @var modPlugin $plugin
+ * @var modChunk|\MODX\Revolution\modChunk $chunk
+ * @var modSnippet|\MODX\Revolution\modSnippet $snippet
+ * @var modPlugin|\MODX\Revolution\modPluginEvent $plugin
 */
 
 $eventName = $modx->event->name;
 
 $path = $modx->getOption('versionx.core_path', null, MODX_CORE_PATH . 'components/versionx/');
-$versionx = $modx->getService('versionx', 'VersionX', $path . 'model/');
-if (!$versionx) {
+require $path . 'vendor/autoload.php';
+
+if (!$versionx = new \modmore\VersionX\VersionX($modx)) {
     $modx->log(modX::LOG_LEVEL_ERROR, 'Could not load VersionX from ' . $path);
     return;
 }
@@ -67,7 +68,7 @@ switch($eventName) {
             $result = $versionx->newPluginVersion($plugin, $mode);
         break;
 
-    case 'OnBeforeManagerPageInit':
+    case 'OnBeforeManagerPageInit': // Required for autoloading
     case 'OnManagerPageInit':
     case 'OnHandleRequest':
 
