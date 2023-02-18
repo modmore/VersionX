@@ -39,8 +39,15 @@ abstract class VersionXBaseManagerController extends modExtraManagerController {
                 }
             </style>');
 
-        $this->addJavascript($this->versionx->config['js_url'].'mgr/versionx.class.js');
-        $this->addJavascript($this->versionx->config['js_url'].'mgr/common/json2.js');
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/versionx.class.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/common/json2.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/common/window.common.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/common/panel.common.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/common/grid.common.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/common/panel.content.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/resources/detailpanel/panel.tvs.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/resources/detailpanel.v21.resources.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/resources/combo.versions.resources.js' . $this->cacheBust);
         $this->addJavascript($this->versionx->config['assets_url'].'node_modules/diff/dist/diff.js');
 
         $versionid = isset($_REQUEST['vid']) ? (int)$_REQUEST['vid'] : false;

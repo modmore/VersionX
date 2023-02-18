@@ -89,13 +89,16 @@ Ext.extend(VersionX.grid.Resources,MODx.grid.Grid,{
 
         var m = [];
         m.push({
+            text: 'Test window',
+            handler: this.viewDetails
+        },{
             text: _('versionx.menu.viewdetails'),
             handler: function() {
                 var eid = d.version_id;
                 var backTo = (VersionX.inVersion) ? '&backTo='+MODx.request['a']+'-'+MODx.request['id'] : '';
                 MODx.loadPage('?namespace=versionx&a=resource&vid='+eid+backTo)
             }
-        },'-',{
+        },{
             text: _('versionx.resources.revert', {id: d.version_id}),
             handler: function() {
                 this.revertVersion(d.version_id, d.content_id)
@@ -103,6 +106,22 @@ Ext.extend(VersionX.grid.Resources,MODx.grid.Grid,{
             scope: this
         });
         return m;
+    },
+
+    viewDetails: function(v, e) {
+        if (this.viewDetailsWindow) {
+            this.viewDetailsWindow.destroy();
+        }
+
+        this.viewDetailsWindow = MODx.load({
+            xtype: 'versionx-window-base',
+            vxRecord: this.menu.record,
+            mode: 'update',
+            listeners: {
+                'success': {fn: this.refresh, scope: this}
+            }
+        });
+        this.viewDetailsWindow.show(e.target);
     },
 
     revertVersion: function(version, content) {
@@ -127,4 +146,4 @@ Ext.extend(VersionX.grid.Resources,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('versionx-grid-resources',VersionX.grid.Resources);
+Ext.reg('versionx-grid-resources', VersionX.grid.Resources);
