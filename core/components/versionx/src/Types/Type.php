@@ -113,4 +113,48 @@ abstract class Type
     {
         return $this->nameField;
     }
+
+    /**
+     * Runs before a delta is created
+     * @param string $time - Delta create time
+     * @param \xPDOObject $object - The object to be versioned
+     * @return bool
+     */
+    public function beforeDeltaCreate(string $time, \xPDOObject $object): bool
+    {
+        return true;
+    }
+
+    /**
+     * Add additional \vxDeltaField objects to the array
+     * @param \vxDeltaField[] $fields
+     * @param \xPDOObject $object
+     * @return \vxDeltaField[]
+     */
+    public function includePrevFieldsOnCreate(array $fields, \xPDOObject $object): array
+    {
+        return $fields;
+    }
+
+    /**
+     * Add additional \vxDeltaField objects to the array
+     * @param \vxDeltaField[] $fields
+     * @param \xPDOObject $object
+     * @return \vxDeltaField[]
+     */
+    public function includeNewFieldsOnCreate(array $fields, \xPDOObject $object): array
+    {
+        return $fields;
+    }
+
+    /**
+     * Runs after a delta has been created for an object
+     * @param \vxDelta $delta - The newly created delta
+     * @param \xPDOObject $object - The versioned object
+     * @return \vxDelta|null
+     */
+    public function afterDeltaCreate(\vxDelta $delta, \xPDOObject $object): ?\vxDelta
+    {
+        return $delta;
+    }
 }

@@ -31,14 +31,14 @@ if (!$versionX = new VersionX($modx)) {
 switch($eventName) {
     case 'OnDocFormSave':
     case 'FredOnFredResourceSave':
-        if ($modx->getOption('versionx.enable.resources',null,true)) {
+        if ($modx->getOption('versionx.enable.resources',null,true) && $id) {
             $type = new modmore\VersionX\Types\Resource($modx, $versionX);
             $result = $versionX->deltas()->createDelta($id, $type, $mode);
         }
         break;
 
     case 'OnTempFormSave':
-        if ($modx->getOption('versionx.enable.templates',null,true)) {
+        if ($modx->getOption('versionx.enable.templates',null,true) && $id) {
             $type = new modmore\VersionX\Types\Template($modx, $versionX);
             $result = $versionX->deltas()->createDelta($id, $type, $mode);
         }

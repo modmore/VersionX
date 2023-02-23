@@ -9,6 +9,23 @@ use MODX\Revolution\modX;
 class DeltaManager {
     /** @var \modX|modX */
     public $modx;
+    protected array $diffOptions = [
+        // show how many neighbor lines
+        // Differ::CONTEXT_ALL can be used to show the whole file
+        'context' => 3,
+        // ignore case difference
+        'ignoreCase' => false,
+        // ignore whitespace difference
+        'ignoreWhitespace' => false,
+    ];
+    protected array $rendererOptions = [
+        // how detailed the rendered HTML in-line diff is? (none, line, word, char)
+    'detailLevel' => 'char',
+        // show a separator between different diff hunks in HTML renderers
+    'separateBlock' => true,
+        // show the (table) header
+    'showHeader' => false,
+    ];
 
     function __construct($modx)
     {
@@ -16,29 +33,60 @@ class DeltaManager {
     }
 
     /**
-     * @param int $id
+     * @param int $objectId
      * @param Type $type
-     * @param string $mode
-     * @return string|null
+     * @return \vxDelta
      */
-    public function createDelta(int $id, Type $type, string $mode = 'update'): ?string
+    public function getPreviousDelta(int $objectId, Type $type): \vxDelta
     {
-        $now = time();
-        // Get current principal object
-        $object = $this->modx->getObject($type->getClass(), ['id' => $id]);
-        $data = $object->toArray();
-
-        // Get latest delta for this object
         $c = $this->modx->newQuery(\vxDelta::class);
         $c->setClassAlias('Delta');
         $c->where([
             'Delta.principal_package' => $type->getPackage(),
             'Delta.principal_class' => $type->getClass(),
-            'Delta.principal' => $id,
+            'Delta.principal' => $objectId,
         ]);
         $c->sortby('Delta.time_end', 'desc');
-        $prevDelta = $this->modx->getObject(\vxDelta::class, $c);
+        return $this->modx->getObject(\vxDelta::class, $c);
+    }
 
+    /**
+     * @param string $prevValue
+     * @param string $value
+     * @return string
+     */
+    public function calculateDiff(string $prevValue, string $value): string
+    {
+        return DiffHelper::calculate(
+            $prevValue,
+            $value,
+            'Inline',
+            $this->diffOptions,
+            $this->rendererOptions,
+        );
+    }
+
+    /**
+     * @param int $id
+     * @param Type $type
+     * @param string $mode
+     * @return \vxDelta|null
+     */
+    public function createDelta(int $id, Type $type, string $mode = 'update'): ?\vxDelta
+    {
+        $now = time();
+
+        // Get current principal object
+        $object = $this->modx->getObject($type->getClass(), ['id' => $id]);
+
+        if (!$type->beforeDeltaCreate($now, $object)) {
+            return null;
+        }
+
+        $data = $object->toArray();
+
+        // Get latest delta for this object
+        $prevDelta = $this->getPreviousDelta($id, $type);
 
         // Grab all the fields for the latest delta
         $prevFields = [];
@@ -49,13 +97,15 @@ class DeltaManager {
             }
         }
 
+        $prevFields = $type->includePrevFieldsOnCreate($prevFields, $object);
+
         $fieldsToSave = [];
         foreach ($data as $field => $value) {
             if (in_array($field, $type->getExcludedFields())) {
                 continue;
             }
 
-            $value = Utils::flattenArray($value);
+            $value = Utils::toString($value);
 
             // If a previous delta exists, get the "after" value. Otherwise, use a blank string.
             $prevValue = '';
@@ -63,53 +113,22 @@ class DeltaManager {
                 $prevValue = $prevFields[$field]->get('after');
             }
 
-            $diffOptions = [
-                // show how many neighbor lines
-                // Differ::CONTEXT_ALL can be used to show the whole file
-                'context' => 3,
-                // ignore case difference
-                'ignoreCase' => false,
-                // ignore whitespace difference
-                'ignoreWhitespace' => false,
-            ];
-            $rendererOptions = [
-                // how detailed the rendered HTML in-line diff is? (none, line, word, char)
-                'detailLevel' => 'char',
-                // show a separator between different diff hunks in HTML renderers
-                'separateBlock' => true,
-                // show the (table) header
-                'showHeader' => false,
-            ];
-
-            // Do Diff
-            $renderedDiff = DiffHelper::calculate(
-                $prevValue,
-                $value,
-                'Inline',
-                $diffOptions,
-                $rendererOptions,
-            );
-
             $deltaField = $this->modx->newObject('vxDeltaField', [
                 'field' => $field,
                 'field_type' => 'text',
                 'before' => $prevValue,
                 'after' => $value,
-                'rendered_diff' => $renderedDiff,
+                'rendered_diff' => $this->calculateDiff($prevValue, $value),
             ]);
 
             $fieldsToSave[] = $deltaField;
         }
 
-        // Check there's at least one field that was changed, otherwise there's no point saving them.
-        $shouldSave = false;
-        foreach ($fieldsToSave as $field) {
-            if (!empty($field->get('rendered_diff'))) {
-                $shouldSave = true;
-            }
-        }
+        // Give object types a way of adding additional fields to the delta
+        $fieldsToSave = $type->includeNewFieldsOnCreate($fieldsToSave, $object);
 
-        if (!$shouldSave) {
+        // Check there's at least one field that was changed, otherwise there's no point saving them.
+        if (!$this->processFields($fieldsToSave)) {
             return null;
         }
 
@@ -118,7 +137,7 @@ class DeltaManager {
             'principal_package' => $type->getPackage(),
             'principal_class' => $type->getClass(),
             'principal' => $id,
-            'time_start' => $now, // TODO: determine start and end time depending on the mode
+            'time_start' => $now,
             'time_end' => $now,
         ]);
         if (!$delta->save()) {
@@ -139,33 +158,26 @@ class DeltaManager {
             $field->save();
         }
 
-//        $v = [
-//            'content_id' => $data['id'],
-//            'user' => $this->modx->user->get('id'),
-//            'mode' => $mode,
-//            'title' => $name,
-//            'class' => $data['class_key'],
-//            'content' => $object->get('content'),
-//        ];
-//
-//        $version->fromArray($v);
-//
-//        unset ($data['id'],$data['content']);
-//        $version->set('fields',$data);
-//
-//        $tvs = $object->getTemplateVars();
-//        $tvArray = [];
-//        /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */
-//        foreach ($tvs as $tv) {
-//            $tvArray[] = $tv->get(['id', 'value']);
-//        }
-//        $version->set('tvs',$tvArray);
-//
-//        if($this->checkLastVersion('vxResource', $version)) {
-//            return $version->save();
-//        }
-//        return true;
+        return $type->afterDeltaCreate($delta, $object);
+    }
 
-        return null;
+    /**
+     * @param array $fieldsToSave
+     * @return bool
+     */
+    protected function processFields(array $fieldsToSave): bool
+    {
+        $shouldSave = false;
+        foreach ($fieldsToSave as $field) {
+            if (!empty($field->get('rendered_diff'))) {
+                $shouldSave = true;
+            }
+        }
+
+        if (!$shouldSave) {
+            return false;
+        }
+
+        return true;
     }
 }
