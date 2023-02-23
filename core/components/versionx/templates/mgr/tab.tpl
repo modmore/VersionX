@@ -6,7 +6,7 @@
                 return;
             }
             added = true;
-            MODx.addTab("modx-resource-tabs", {
+            MODx.addTab("{$tabs_component_id}", {
                 title: _('versionx.tabheader'),
                 id: 'versionx-resource-tab',
                 layout: 'anchor',
@@ -14,14 +14,12 @@
                     anchor: '1',
                 },
                 items: [{
-                    xtype: 'versionx-panel-resources',
-                    width: 500
-                },{
-                    html: '<hr />',
-                },{
                     layout: 'anchor',
                     items: [{
-                        xtype: 'versionx-grid-resources'
+                        xtype: 'versionx-grid-versions',
+                        principal_package: '{$principal_package}',
+                        principal_class: '{$principal_class}',
+                        principal: '{$principal}',
                     }]
                 }]
             });

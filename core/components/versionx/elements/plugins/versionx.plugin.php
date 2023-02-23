@@ -2,25 +2,10 @@
 /**
  * VersionX
  *
- * Copyright 2011 by Mark Hamstra <hello@markhamstra.com>
- *
- * VersionX is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * VersionX is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * VersionX; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA 02111-1307 USA
- *
  * @package versionx
  *
  * @var modX $modx
- * @var VersionX $versionx
+ * @var VersionX $versionX
  * @var int $id
  * @var string $mode
  * @var modResource $resource
@@ -31,41 +16,52 @@
  * @var modPlugin|\MODX\Revolution\modPluginEvent $plugin
 */
 
+use modmore\VersionX\VersionX;
+
 $eventName = $modx->event->name;
 
 $path = $modx->getOption('versionx.core_path', null, MODX_CORE_PATH . 'components/versionx/');
 require $path . 'vendor/autoload.php';
 
-if (!$versionx = new \modmore\VersionX\VersionX($modx)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not load VersionX from ' . $path);
+if (!$versionX = new VersionX($modx)) {
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Could not load VersionX');
     return;
 }
 
 switch($eventName) {
     case 'OnDocFormSave':
     case 'FredOnFredResourceSave':
-        if ($modx->getOption('versionx.enable.resources',null,true))
-            $result = $versionx->newResourceVersion($resource, $mode);
+        if ($modx->getOption('versionx.enable.resources',null,true)) {
+            $type = new modmore\VersionX\Types\Resource($modx, $versionX);
+            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+        }
         break;
+
     case 'OnTempFormSave':
-        if ($modx->getOption('versionx.enable.templates',null,true))
-            $result = $versionx->newTemplateVersion($template, $mode);
+        if ($modx->getOption('versionx.enable.templates',null,true)) {
+            $type = new modmore\VersionX\Types\Template($modx, $versionX);
+            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+        }
         break;
+
     case 'OnTVFormSave':
         if ($modx->getOption('versionx.enable.templatevariables',null,true))
-            $result = $versionx->newTemplateVarVersion($tv, $mode);
+            $result = $versionX->newTemplateVarVersion($tv, $mode);
         break;
+
     case 'OnChunkFormSave':
         if ($modx->getOption('versionx.enable.chunks',null,true))
-            $result = $versionx->newChunkVersion($chunk, $mode);
+            $result = $versionX->newChunkVersion($chunk, $mode);
         break;
+
     case 'OnSnipFormSave':
         if ($modx->getOption('versionx.enable.snippets',null,true))
-            $result = $versionx->newSnippetVersion($snippet, $mode);
+            $result = $versionX->newSnippetVersion($snippet, $mode);
         break;
+
     case 'OnPluginFormSave':
         if ($modx->getOption('versionx.enable.plugins',null,true))
-            $result = $versionx->newPluginVersion($plugin, $mode);
+            $result = $versionX->newPluginVersion($plugin, $mode);
         break;
 
     case 'OnBeforeManagerPageInit': // Required for autoloading
@@ -77,40 +73,40 @@ switch($eventName) {
     /* Add tabs */
     case 'OnDocFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $result = $versionx->outputVersionsTab('vxResource');
+            $versionX->outputVersionsTab($id, new modmore\VersionX\Types\Resource($modx, $versionX));
         }
         break;
 
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
-            $result = $versionx->outputVersionsTab('vxTemplate');
+            $versionX->outputVersionsTab($id, new modmore\VersionX\Types\Template($modx, $versionX));
         }
         break;
 
-    case 'OnTVFormPrerender':
-        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
-            $result = $versionx->outputVersionsTab('vxTemplateVar');
-        }
-        break;
-
-
-    case 'OnChunkFormPrerender':
-        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
-            $result = $versionx->outputVersionsTab('vxChunk');
-        }
-        break;
-
-    case 'OnSnipFormPrerender':
-        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
-            $result = $versionx->outputVersionsTab('vxSnippet');
-        }
-        break;
-
-    case 'OnPluginFormPrerender':
-        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
-            $result = $versionx->outputVersionsTab('vxPlugin');
-        }
-        break;
+//    case 'OnTVFormPrerender':
+//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
+//            $result = $versionX->outputVersionsTab('vxTemplateVar');
+//        }
+//        break;
+//
+//
+//    case 'OnChunkFormPrerender':
+//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
+//            $result = $versionX->outputVersionsTab('vxChunk');
+//        }
+//        break;
+//
+//    case 'OnSnipFormPrerender':
+//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
+//            $result = $versionX->outputVersionsTab('vxSnippet');
+//        }
+//        break;
+//
+//    case 'OnPluginFormPrerender':
+//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
+//            $result = $versionX->outputVersionsTab('vxPlugin');
+//        }
+//        break;
 
 }
 if (isset($result) && $result === true)

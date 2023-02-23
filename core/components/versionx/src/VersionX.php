@@ -2,8 +2,12 @@
 
 namespace modmore\VersionX;
 
+use modmore\VersionX\Types\Type;
+use xPDO\xPDOException;
+
 class VersionX {
     public $modx;
+    protected ?DeltaManager $deltaManager = null;
     private array $chunks = [];
     private array $tvs = [];
     public array $config = [];
@@ -38,7 +42,7 @@ class VersionX {
             'assets_url' => $assetsUrl,
             'connector_url' => $assetsUrl.'connector.php',
             'has_users_permission' => $this->modx->hasPermission('view_user'),
-        ],$config);
+        ], $config);
 
         // Set version
         require_once dirname(__DIR__) . '/docs/version.inc.php';
@@ -57,270 +61,278 @@ class VersionX {
         $this->debug = $this->modx->getOption('versionx.debug',null,false);
     }
 
-    /**
-     * @param $class
-     * @param $contentId
-     * @param $mode
-     * @return bool
-     * @deprecated
-     */
-    public function newVersionFor($class, $contentId, $mode)
+    public function deltas(): DeltaManager
     {
-        switch ($class) {
-            case 'vxResource':
-                return $this->newResourceVersion($contentId, $mode);
-
-            case 'vxTemplate':
-                return $this->newTemplateVersion($contentId, $mode);
-
-            case 'vxChunk':
-                return $this->newChunkVersion($contentId, $mode);
-
-            case 'vxSnippet':
-                return $this->newSnippetVersion($contentId, $mode);
-
-            case 'vxPlugin':
-                return $this->newPluginVersion($contentId, $mode);
-
-            case 'vxTemplateVar':
-                return $this->newTemplateVarVersion($contentId, $mode);
+        if (!$this->deltaManager) {
+            $this->deltaManager = new DeltaManager($this->modx);
         }
-        $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Call to ' . __METHOD__ . ' with unrecognised class ' . $class);
-        return false;
+        return $this->deltaManager;
     }
 
-    /**
-     * Creates a new version of a Resource.
-     *
-     * @param int|\modResource|\MODX\Revolution\modResource $resource
-     * @param string $mode
-     * @return bool
-     *
-     * @deprecated
-     */
-    public function newResourceVersion($resource, $mode = 'upd') {
-        if ($resource instanceof \MODX\Revolution\modResource || $resource instanceof \modResource) {
-            // We're retrieving the resource again to clean up raw post data we don't want.
-            $resource = $this->modx->getObject('modResource',$resource->get('id'));
-        } else {
-            $resource = $this->modx->getObject('modResource',(int)$resource);
-        }
+//    /**
+//     * @param $class
+//     * @param $contentId
+//     * @param $mode
+//     * @return bool
+//     * @deprecated
+//     */
+//    public function newVersionFor($class, $contentId, $mode)
+//    {
+//        switch ($class) {
+//            case 'vxResource':
+//                return $this->newResourceVersion($contentId, $mode);
+//
+//            case 'vxTemplate':
+//                return $this->newTemplateVersion($contentId, $mode);
+//
+//            case 'vxChunk':
+//                return $this->newChunkVersion($contentId, $mode);
+//
+//            case 'vxSnippet':
+//                return $this->newSnippetVersion($contentId, $mode);
+//
+//            case 'vxPlugin':
+//                return $this->newPluginVersion($contentId, $mode);
+//
+//            case 'vxTemplateVar':
+//                return $this->newTemplateVarVersion($contentId, $mode);
+//        }
+//        $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Call to ' . __METHOD__ . ' with unrecognised class ' . $class);
+//        return false;
+//    }
 
-        $rArray = $resource->toArray();
-
-        /* @var \vxResource $version */
-        $version = $this->modx->newObject('vxResource');
-
-        $v = array(
-            'content_id' => $rArray['id'],
-            'user' => $this->modx->user->get('id'),
-            'mode' => $mode,
-            'title' => (empty($rArray[$this->modx->getOption('resource_tree_node_name')]) ? $rArray['pagetitle'] : $rArray[$this->modx->getOption('resource_tree_node_name')]),
-            'context_key' => $rArray['context_key'],
-            'class' => $rArray['class_key'],
-            'content' => $resource->get('content'),
-        );
-
-        $version->fromArray($v);
-
-        unset ($rArray['id'],$rArray['content']);
-        $version->set('fields',$rArray);
-
-        $tvs = $resource->getTemplateVars();
-        $tvArray = array();
-        /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */
-        foreach ($tvs as $tv) {
-            $tvArray[] = $tv->get(array('id','value'));
-        }
-        $version->set('tvs',$tvArray);
-
-        if($this->checkLastVersion('vxResource', $version)) {
-            return $version->save();
-        }
-        return true;
-    }
-
-
-    /**
-     * Creates a new version of a Template.
-     *
-     * @param int|\MODX\Revolution\modTemplate|\modTemplate $template
-     * @param string $mode
-     * @return bool
-     *
-     * @deprecated
-     */
-    public function newTemplateVersion($template, $mode = 'upd') {
-        if ($template instanceof \MODX\Revolution\modTemplate || $template instanceof \modTemplate) {
-            /* Fetch it again to prevent getting stuck with raw post data */
-            $template = $this->modx->getObject('modTemplate', $template->get('id'));
-        } else {
-            $template = $this->modx->getObject('modTemplate', (int)$template);
-        }
-        $tArray = $template->toArray();
-
-        /* @var \vxTemplate $version */
-        $version = $this->modx->newObject('vxTemplate');
-
-        $v = array(
-            'content_id' => $tArray['id'],
-            'user' => $this->modx->user->get('id'),
-            'mode' => $mode,
-        );
-
-        $version->fromArray(array_merge($v,$tArray));
-
-        if($this->checkLastVersion('vxTemplate', $version)) {
-            return $version->save();
-        }
-        return true;
-    }
+//    /**
+//     * Creates a new version of a Resource.
+//     *
+//     * @param int|\modResource|\MODX\Revolution\modResource $resource
+//     * @param string $mode
+//     * @return bool
+//     *
+//     * @deprecated
+//     */
+//    public function newResourceVersion($resource, $mode = 'upd') {
+//        if ($resource instanceof \MODX\Revolution\modResource || $resource instanceof \modResource) {
+//            // We're retrieving the resource again to clean up raw post data we don't want.
+//            $resource = $this->modx->getObject('modResource',$resource->get('id'));
+//        } else {
+//            $resource = $this->modx->getObject('modResource',(int)$resource);
+//        }
+//
+//        $rArray = $resource->toArray();
+//
+//        /* @var \vxResource $version */
+//        $version = $this->modx->newObject('vxResource');
+//
+//        $v = array(
+//            'content_id' => $rArray['id'],
+//            'user' => $this->modx->user->get('id'),
+//            'mode' => $mode,
+//            'title' => (empty($rArray[$this->modx->getOption('resource_tree_node_name')]) ? $rArray['pagetitle'] : $rArray[$this->modx->getOption('resource_tree_node_name')]),
+//            'context_key' => $rArray['context_key'],
+//            'class' => $rArray['class_key'],
+//            'content' => $resource->get('content'),
+//        );
+//
+//        $version->fromArray($v);
+//
+//        unset ($rArray['id'],$rArray['content']);
+//        $version->set('fields',$rArray);
+//
+//        $tvs = $resource->getTemplateVars();
+//        $tvArray = array();
+//        /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */
+//        foreach ($tvs as $tv) {
+//            $tvArray[] = $tv->get(array('id','value'));
+//        }
+//        $version->set('tvs',$tvArray);
+//
+//        if($this->checkLastVersion('vxResource', $version)) {
+//            return $version->save();
+//        }
+//        return true;
+//    }
 
 
-    /**
-     * Creates a new version of a Template Variable.
-     *
-     * @param int|\MODX\Revolution\modTemplateVar|\modTemplateVar $tv
-     * @param string $mode
-     * @return bool
-     *
-     * @deprecated
-     */
-    public function newTemplateVarVersion($tv, $mode = 'upd') {
-        if ($tv instanceof \MODX\Revolution\modTemplateVar || $tv instanceof \modTemplateVar) {
-            /* Fetch it again to prevent getting stuck with raw post data */
-            $tv = $this->modx->getObject('modTemplateVar', $tv->get('id'));
-        } else {
-            $tv = $this->modx->getObject('modTemplateVar', (int)$tv);
-        }
+//    /**
+//     * Creates a new version of a Template.
+//     *
+//     * @param int|\MODX\Revolution\modTemplate|\modTemplate $template
+//     * @param string $mode
+//     * @return bool
+//     *
+//     * @deprecated
+//     */
+//    public function newTemplateVersion($template, $mode = 'upd') {
+//        if ($template instanceof \MODX\Revolution\modTemplate || $template instanceof \modTemplate) {
+//            /* Fetch it again to prevent getting stuck with raw post data */
+//            $template = $this->modx->getObject('modTemplate', $template->get('id'));
+//        } else {
+//            $template = $this->modx->getObject('modTemplate', (int)$template);
+//        }
+//        $tArray = $template->toArray();
+//
+//        /* @var \vxTemplate $version */
+//        $version = $this->modx->newObject('vxTemplate');
+//
+//        $v = array(
+//            'content_id' => $tArray['id'],
+//            'user' => $this->modx->user->get('id'),
+//            'mode' => $mode,
+//        );
+//
+//        $version->fromArray(array_merge($v,$tArray));
+//
+//        if($this->checkLastVersion('vxTemplate', $version)) {
+//            return $version->save();
+//        }
+//        return true;
+//    }
 
-        $tArray = $tv->toArray();
-
-        /* @var \vxTemplateVar $version */
-        $version = $this->modx->newObject('vxTemplateVar');
-
-        $v = array(
-            'content_id' => $tArray['id'],
-            'user' => $this->modx->user->get('id'),
-            'mode' => $mode,
-        );
-
-        $version->fromArray(array_merge($v,$tArray));
-
-        if($this->checkLastVersion('vxTemplateVar', $version)) {
-            return $version->save();
-        }
-        return true;
-    }
-
-    /**
-     * Create a new version of a Chunk.
-     *
-     * @param int|\MODX\Revolution\modChunk|\modChunk $chunk
-     * @param string $mode
-     * @return bool
-     * @deprecated
-     */
-    public function newChunkVersion($chunk, $mode = 'upd') {
-        if ($chunk instanceof \MODX\Revolution\modChunk || $chunk instanceof \modChunk) {
-            /* Fetch it again to prevent getting stuck with raw post data */
-            $chunk = $this->modx->getObject('modChunk', $chunk->get('id'));
-        } else {
-            $chunk = $this->modx->getObject('modChunk', (int)$chunk);
-        }
-
-        // prevents resource groups from failing in MODX versions prior to 2.2.14 (see github #8992 + fix)
-        if (!($chunk instanceof \modChunk) && !($chunk instanceof \MODX\Revolution\modChunk)) {
-            return false;
-        }
-
-        $cArray = $chunk->toArray();
-
-        /* @var \vxChunk $version */
-        $version = $this->modx->newObject('vxChunk');
-
-        $v = array(
-            'content_id' => $cArray['id'],
-            'user' => $this->modx->user->get('id'),
-            'mode' => $mode,
-        );
-
-        $version->fromArray(array_merge($v,$cArray));
-
-        if($this->checkLastVersion('vxChunk', $version)) {
-            return $version->save();
-        }
-        return true;
-    }
-
-    /**
-     * Creates a new version of a Snippet.
-     *
-     * @param int|\MODX\Revolution\modSnippet|\modSnippet $snippet
-     * @param string $mode
-     * @return bool
-     * @deprecated
-     */
-    public function newSnippetVersion($snippet, $mode = 'upd') {
-        if ($snippet instanceof \MODX\Revolution\modSnippet || $snippet instanceof \modSnippet) {
-            /* Fetch it again to prevent getting stuck with raw post data */
-            $snippet = $this->modx->getObject('modSnippet', $snippet->get('id'));
-        } else {
-            $snippet = $this->modx->getObject('modSnippet', (int)$snippet);
-        }
-
-        $sArray = $snippet->toArray();
-
-        /* @var \vxSnippet $version */
-        $version = $this->modx->newObject('vxSnippet');
-
-        $v = array(
-            'content_id' => $sArray['id'],
-            'user' => $this->modx->user->get('id'),
-            'mode' => $mode,
-        );
-
-        $version->fromArray(array_merge($v,$sArray));
-
-        if($this->checkLastVersion('vxSnippet', $version)) {
-            return $version->save();
-        }
-        return true;
-    }
-
-    /**
-     * Creates a new version of a Plugin.
-     *
-     * @param int|\MODX\Revolution\modPlugin|\modPlugin $plugin
-     * @param string $mode
-     * @return bool
-     * @deprecated
-     */
-    public function newPluginVersion($plugin, $mode = 'upd') {
-        if ($plugin instanceof \MODX\Revolution\modPlugin || $plugin instanceof \modPlugin) {
-            /* Fetch it again to prevent getting stuck with raw post data */
-            $plugin = $this->modx->getObject('modPlugin', $plugin->get('id'));
-        } else {
-            $plugin = $this->modx->getObject('modPlugin', (int)$plugin);
-        }
-        $pArray = $plugin->toArray();
-
-        /* @var \vxPlugin $version */
-        $version = $this->modx->newObject('vxPlugin');
-
-        $v = array(
-            'content_id' => $pArray['id'],
-            'user' => $this->modx->user->get('id'),
-            'mode' => $mode,
-        );
-
-        $version->fromArray(array_merge($v,$pArray));
-
-        if($this->checkLastVersion('vxPlugin', $version)) {
-            return $version->save();
-        }
-        return true;
-    }
+//
+//    /**
+//     * Creates a new version of a Template Variable.
+//     *
+//     * @param int|\MODX\Revolution\modTemplateVar|\modTemplateVar $tv
+//     * @param string $mode
+//     * @return bool
+//     *
+//     * @deprecated
+//     */
+//    public function newTemplateVarVersion($tv, $mode = 'upd') {
+//        if ($tv instanceof \MODX\Revolution\modTemplateVar || $tv instanceof \modTemplateVar) {
+//            /* Fetch it again to prevent getting stuck with raw post data */
+//            $tv = $this->modx->getObject('modTemplateVar', $tv->get('id'));
+//        } else {
+//            $tv = $this->modx->getObject('modTemplateVar', (int)$tv);
+//        }
+//
+//        $tArray = $tv->toArray();
+//
+//        /* @var \vxTemplateVar $version */
+//        $version = $this->modx->newObject('vxTemplateVar');
+//
+//        $v = array(
+//            'content_id' => $tArray['id'],
+//            'user' => $this->modx->user->get('id'),
+//            'mode' => $mode,
+//        );
+//
+//        $version->fromArray(array_merge($v,$tArray));
+//
+//        if($this->checkLastVersion('vxTemplateVar', $version)) {
+//            return $version->save();
+//        }
+//        return true;
+//    }
+//
+//    /**
+//     * Create a new version of a Chunk.
+//     *
+//     * @param int|\MODX\Revolution\modChunk|\modChunk $chunk
+//     * @param string $mode
+//     * @return bool
+//     * @deprecated
+//     */
+//    public function newChunkVersion($chunk, $mode = 'upd') {
+//        if ($chunk instanceof \MODX\Revolution\modChunk || $chunk instanceof \modChunk) {
+//            /* Fetch it again to prevent getting stuck with raw post data */
+//            $chunk = $this->modx->getObject('modChunk', $chunk->get('id'));
+//        } else {
+//            $chunk = $this->modx->getObject('modChunk', (int)$chunk);
+//        }
+//
+//        // prevents resource groups from failing in MODX versions prior to 2.2.14 (see github #8992 + fix)
+//        if (!($chunk instanceof \modChunk) && !($chunk instanceof \MODX\Revolution\modChunk)) {
+//            return false;
+//        }
+//
+//        $cArray = $chunk->toArray();
+//
+//        /* @var \vxChunk $version */
+//        $version = $this->modx->newObject('vxChunk');
+//
+//        $v = array(
+//            'content_id' => $cArray['id'],
+//            'user' => $this->modx->user->get('id'),
+//            'mode' => $mode,
+//        );
+//
+//        $version->fromArray(array_merge($v,$cArray));
+//
+//        if($this->checkLastVersion('vxChunk', $version)) {
+//            return $version->save();
+//        }
+//        return true;
+//    }
+//
+//    /**
+//     * Creates a new version of a Snippet.
+//     *
+//     * @param int|\MODX\Revolution\modSnippet|\modSnippet $snippet
+//     * @param string $mode
+//     * @return bool
+//     * @deprecated
+//     */
+//    public function newSnippetVersion($snippet, $mode = 'upd') {
+//        if ($snippet instanceof \MODX\Revolution\modSnippet || $snippet instanceof \modSnippet) {
+//            /* Fetch it again to prevent getting stuck with raw post data */
+//            $snippet = $this->modx->getObject('modSnippet', $snippet->get('id'));
+//        } else {
+//            $snippet = $this->modx->getObject('modSnippet', (int)$snippet);
+//        }
+//
+//        $sArray = $snippet->toArray();
+//
+//        /* @var \vxSnippet $version */
+//        $version = $this->modx->newObject('vxSnippet');
+//
+//        $v = array(
+//            'content_id' => $sArray['id'],
+//            'user' => $this->modx->user->get('id'),
+//            'mode' => $mode,
+//        );
+//
+//        $version->fromArray(array_merge($v,$sArray));
+//
+//        if($this->checkLastVersion('vxSnippet', $version)) {
+//            return $version->save();
+//        }
+//        return true;
+//    }
+//
+//    /**
+//     * Creates a new version of a Plugin.
+//     *
+//     * @param int|\MODX\Revolution\modPlugin|\modPlugin $plugin
+//     * @param string $mode
+//     * @return bool
+//     * @deprecated
+//     */
+//    public function newPluginVersion($plugin, $mode = 'upd') {
+//        if ($plugin instanceof \MODX\Revolution\modPlugin || $plugin instanceof \modPlugin) {
+//            /* Fetch it again to prevent getting stuck with raw post data */
+//            $plugin = $this->modx->getObject('modPlugin', $plugin->get('id'));
+//        } else {
+//            $plugin = $this->modx->getObject('modPlugin', (int)$plugin);
+//        }
+//        $pArray = $plugin->toArray();
+//
+//        /* @var \vxPlugin $version */
+//        $version = $this->modx->newObject('vxPlugin');
+//
+//        $v = array(
+//            'content_id' => $pArray['id'],
+//            'user' => $this->modx->user->get('id'),
+//            'mode' => $mode,
+//        );
+//
+//        $version->fromArray(array_merge($v,$pArray));
+//
+//        if($this->checkLastVersion('vxPlugin', $version)) {
+//            return $version->save();
+//        }
+//        return true;
+//    }
 
     /**
      * Gets & prepares version details for output.
@@ -451,7 +463,7 @@ class VersionX {
                 $vArray = $ta;
             }
             if ($json) {
-                return $this->modx->toJSON($vArray);
+                return json_encode($vArray);
             }
             return $vArray;
         }
@@ -490,7 +502,7 @@ class VersionX {
      * @return bool
      * @deprecated
      */
-    protected function checkLastVersion($class = 'vxResource', \xPDOObject $version): bool
+    protected function checkLastVersion(string $class, \xPDOObject $version): bool
     {
         /* Get last version to make sure we've got some changes to save */
         $c = $this->modx->newQuery($class);
@@ -531,8 +543,8 @@ class VersionX {
             }
         }
 
-        $newVersionFlat = $this->flattenArray($newVersionArray);
-        $lastVersionFlat = $this->flattenArray($lastVersionArray);
+        $newVersionFlat = Utils::flattenArray($newVersionArray);
+        $lastVersionFlat = Utils::flattenArray($lastVersionArray);
 
         if ($this->debug) {
             $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New: ' . print_r($newVersionArray, true));
@@ -553,77 +565,57 @@ class VersionX {
     }
 
     /**
-     * Flattens an array recursively.
-     * @param array $array
-     *
-     * @return string
-     */
-    public function flattenArray(array $array = array()): string
-    {
-        if (!is_array($array)) return (string)$array;
-
-        $string = array();
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $value = '{' . $this->flattenArray($value) .'}';
-            }
-            if (!empty($value)) {
-                $string[] = $key . ':' . $value;
-            }
-        }
-        $string = implode(',',$string);
-        return $string;
-    }
-
-    /**
      * Outputs the JavaScript needed to add a tab to the panels.
      *
-     * @param string $class
+     * @param int $id
+     * @param Type $type
+     * @param string $package
+     * @throws \Exception
      */
-    public function outputVersionsTab ($class = 'vxResource'): void
+    public function outputVersionsTab (int $id, Type $type, string $package = 'modx'): void
     {
-        if (!class_exists($class)) {
-            $path = $this->config['model_path'].'versionx/'.strtolower($class).'.class.php';
-            if (file_exists($path)) {
-                require_once ($path);
-            }
-            if (!class_exists($class)) {
-                $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX::outputVersionsTab] Error loading class '.$class);
-                return;
-            }
+        $path = $this->config['model_path'] . 'versionx/vxdelta.class.php';
+        if (file_exists($path)) {
+            require_once ($path);
         }
-        $langs = $this->_getLangs();
-        $jsurl = $this->config['js_url'].'mgr/';
 
-        /* Load class & set inVersion to true, indicating we're not looking at the VersionX controller. */
-        $this->modx->regClientStartupScript($jsurl.'versionx.class.js');
+        $langs = $this->_getLangs();
+        $jsUrl = $this->config['js_url'] . 'mgr/';
+        $cssUrl = $this->config['css_url'] . 'mgr/mgr.css';
+
+
+        // Load class & set inVersion to true, indicating we're not looking at the VersionX controller.
+        $this->modx->regClientStartupScript($jsUrl . 'versionx.class.js');
         $this->modx->regClientStartupHTMLBlock('
+            <link href="'. $cssUrl .'" rel="stylesheet">
             <script type="text/javascript">
-                VersionX.config = '.$this->modx->toJSON($this->config).';
+                VersionX.config = ' . json_encode($this->config) . ';
                 VersionX.inVersion = true;
-                '.$langs.'
+                ' . $langs . '
             </script>
         ');
 
-        /* Get the different individual JS to add to the page */
-        $tabjs = call_user_func(array($class,'getTabJavascript'));
-        if (is_array($tabjs)) {
-            foreach ($tabjs as $js) {
-                $this->modx->regClientStartupScript($jsurl.$js);
-            }
+        // Get the different individual JS files to add to the page
+        $tabJs = $type->getTabJavascript();
+        foreach ($tabJs as $js) {
+            $this->modx->regClientStartupScript($jsUrl . $js);
         }
 
-        /* Get the template and register it */
-        $tplName = call_user_func(array($class,'getTabTpl'));
+        // Get the template and register it
+        $tplName = $type->getTabTpl();
         $tplFile = $this->config['templates_path'] . $tplName . '.tpl';
         if (file_exists($tplFile)) {
-            $tpl = file_get_contents($tplFile);
+            $this->modx->smarty->assign([
+                'tabs_component_id' => $type->getTabId(),
+                'principal_package' => $type->getPackage(),
+                'principal_class' => $type->getClass(),
+                'principal' => $id,
+            ]);
+            $tpl = $this->modx->smarty->fetch($tplFile);
             if (!empty($tpl)) {
                 $this->modx->regClientStartupHTMLBlock($tpl);
             }
         }
-
-
     }
 
     /**
@@ -633,7 +625,7 @@ class VersionX {
     public function _getLangs(): string
     {
         $entries = $this->modx->lexicon->loadCache('versionx');
-        return 'Ext.applyIf(MODx.lang,' . $this->modx->toJSON($entries) . ');';
+        return 'Ext.applyIf(MODx.lang,' . json_encode($entries) . ');';
     }
 
     /**

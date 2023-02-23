@@ -1,21 +1,15 @@
 {
     "name": "modmore/versionx",
-    "description": "",
+    "description": "Resource and element versioning for MODX",
     "license": "mit",
     "config": {
         "platform": {
             "php": "7.4.0"
         }
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/digitalpenguin/php-finediff.git"
-        }
-    ],
     "require": {
         "php": "^7.4 || 8.*",
-        "digitalpenguin/finediff": "^1.x-dev"
+        "jfcherng/php-diff": "^6.13"
     },
     "autoload": {
         "psr-4": {
