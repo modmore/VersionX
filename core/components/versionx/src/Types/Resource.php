@@ -31,6 +31,13 @@ class Resource extends Type
         // Determine what TV values currently exist for this resource.
         /** @var \modResource $object */
         $tvs = $object->getTemplateVars();
+        $tvNames = [];
+        foreach ($tvs as $tv) {
+            $tvNames[] = $tv->get('name');
+        }
+
+        // Grab the most recent TV value fields
+        $prevFields = $this->versionX->deltas()->getLatestFieldVersions($this, $object, $tvNames);
 
         // Loop through TVs matching previous delta fields by TV name
         /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */

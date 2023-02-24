@@ -91,7 +91,7 @@ class DeltaManager {
         // Grab all the fields for the latest delta
         $prevFields = [];
         if ($prevDelta) {
-            foreach ($this->modx->getCollection(\vxDeltaField::class, ['delta' => $prevDelta->get('id')]) as $item) {
+            foreach ($this->getLatestFieldVersions($type, $object) as $item) {
                 // Index array by field names
                 $prevFields[$item->get('field')] = $item;
             }
@@ -125,8 +125,9 @@ class DeltaManager {
         // Give object types a way of adding additional fields to the delta
         $fieldsToSave = $type->includeFieldsOnCreate($fieldsToSave, $prevFields, $object);
 
-        // Check there's at least one field that was changed, otherwise there's no point saving anything.
-        if (!$this->processFields($fieldsToSave)) {
+        // Remove fields that haven't been changed
+        $fieldsToSave = $this->processFields($fieldsToSave);
+        if (empty($fieldsToSave)) {
             return null;
         }
 
@@ -161,21 +162,72 @@ class DeltaManager {
 
     /**
      * @param array $fieldsToSave
-     * @return bool
+     * @return array
      */
-    protected function processFields(array $fieldsToSave): bool
+    protected function processFields(array $fieldsToSave): array
     {
         $shouldSave = false;
-        foreach ($fieldsToSave as $field) {
+        foreach ($fieldsToSave as $k => $field) {
+            // If there's at least one field that's changed then vxDelta should be persisted.
             if (!empty($field->get('rendered_diff'))) {
                 $shouldSave = true;
+            }
+            // Remove any field that hasn't been changed.
+            else {
+                unset($fieldsToSave[$k]);
             }
         }
 
         if (!$shouldSave) {
-            return false;
+            return [];
         }
 
-        return true;
+        return $fieldsToSave;
+    }
+
+    /**
+     * @param Type $type
+     * @param \xPDOObject $object
+     * @param array $fieldNames
+     * @return array
+     */
+    public function getLatestFieldVersions(Type $type, \xPDOObject $object, array $fieldNames = []): array
+    {
+        $c = $this->modx->newQuery(\vxDeltaField::class);
+        $c->innerJoin(\vxDelta::class, 'Delta', [
+            'Delta.id = vxDeltaField.delta',
+        ]);
+
+        $data = $object->toArray();
+
+        $objectFields = [];
+        foreach ($data as $field => $value) {
+            $objectFields[] = $field;
+        }
+        $where = [
+            'Delta.principal_class' => $type->getClass(),
+            'Delta.principal_package' => $type->getPackage(),
+            'vxDeltaField.field:NOT IN' => $type->getExcludedFields(),
+        ];
+        if (!empty($fieldNames)) {
+            $where['vxDeltaField.field:IN'] = $fieldNames;
+        }
+        else {
+            $where['vxDeltaField.field:IN'] = $objectFields;
+        }
+        $c->where($where);
+
+        $c->select([
+            'field' => 'DISTINCT(vxDeltaField.field)',
+            'id' => 'MAX(vxDeltaField.id)',
+            'time_end' => 'MAX(Delta.time_end)'
+        ]);
+
+        $c->groupby('vxDeltaField.field');
+
+        $c->prepare();
+        $this->modx->log(1, $c->toSQL());
+
+        return $this->modx->getCollection(\vxDeltaField::class, $c);
     }
 }

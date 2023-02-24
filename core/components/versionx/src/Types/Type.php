@@ -115,6 +115,14 @@ abstract class Type
     }
 
     /**
+     * @return array
+     */
+    public function getFieldOrder(): array
+    {
+        return $this->fieldOrder;
+    }
+
+    /**
      * Runs before a delta is created
      * @param string $time - Delta create time
      * @param \xPDOObject $object - The object to be versioned
