@@ -1,17 +1,30 @@
 <?php
 
+use MODX\Revolution\Smarty\modSmarty;
+
 class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
     public $classKey = 'vxDelta';
     public $primaryKeyField = 'vxDelta.version_id';
     public $defaultSortField = 'vxDelta.time_end';
     public $defaultSortDirection = 'DESC';
+    public \modmore\VersionX\VersionX $versionX;
+    public \modmore\VersionX\Types\Type $type;
 
-//    public function initialize(): bool
-//    {
-//        $init = parent::initialize();
-//
-//        return $init;
-//    }
+    public function initialize(): bool
+    {
+        $init = parent::initialize();
+
+        $this->versionX = new VersionX($this->modx);
+
+        $typeClass = '\\' . $this->getProperty('type');
+        $this->type = new $typeClass($this->modx, $this->versionX);
+
+        $this->modx->getService('smarty', modSmarty::class, '', [
+            'template_dir' => $this->versionX->config['templates_path'],
+        ]);
+
+        return $init;
+    }
 
     public function prepareQueryBeforeCount(xPDOQuery $c): xPDOQuery
     {
@@ -48,14 +61,34 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
             'delta' => $object->get('id'),
         ]);
 
+        // Sort fields as per the Type::getFieldOrder();
+        $order = $this->type->getFieldOrder();
+        $sorted = [];
+        foreach ($order as $position) {
+            foreach ($fields as $field) {
+                if ($field->get('field') === $position) {
+                    $sorted[] = $field;
+                }
+            }
+        }
+        // Merge removing duplicates
+        $fields = array_unique(array_merge($sorted, $fields), SORT_REGULAR);
+
         $row = $object->toArray();
 
-        foreach($fields as $field) {
-            $row[$field->get('field') . '_diff'] = $field->get('rendered_diff');
+        $diffFile = $this->versionX->config['templates_path'] . 'mgr/diff.tpl';
+        if (!file_exists($diffFile)) {
+            return [];
         }
 
+        foreach($fields as $field) {
+            $this->modx->smarty->assign([
+                'name' => $field->get('field'),
+                'diff' => $field->get('rendered_diff'),
+            ]);
+            $row['diffs'] .= $this->modx->smarty->fetch($diffFile);
+        }
 
-        //$this->modx->log(1, print_r($row, true));
         return $row;
     }
 }

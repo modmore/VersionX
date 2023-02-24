@@ -608,8 +608,9 @@ class VersionX {
             $this->modx->smarty->assign([
                 'tabs_component_id' => $type->getTabId(),
                 'principal_package' => $type->getPackage(),
-                'principal_class' => $type->getClass(),
+                'principal_class' => str_replace('\\','\\\\', $type->getClass()),
                 'principal' => $id,
+                'type' => str_replace('\\','\\\\', get_class($type)),
             ]);
             $tpl = $this->modx->smarty->fetch($tplFile);
             if (!empty($tpl)) {
