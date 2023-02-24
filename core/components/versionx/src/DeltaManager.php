@@ -35,9 +35,9 @@ class DeltaManager {
     /**
      * @param int $objectId
      * @param Type $type
-     * @return \vxDelta
+     * @return \vxDelta|null
      */
-    public function getPreviousDelta(int $objectId, Type $type): \vxDelta
+    public function getPreviousDelta(int $objectId, Type $type): ?\vxDelta
     {
         $c = $this->modx->newQuery(\vxDelta::class);
         $c->setClassAlias('Delta');
@@ -123,7 +123,7 @@ class DeltaManager {
         }
 
         // Give object types a way of adding additional fields to the delta
-        $fieldsToSave = $type->includeFieldsOnCreate($fieldsToSave, $prevFields, $prevDelta, $object);
+        $fieldsToSave = $type->includeFieldsOnCreate($fieldsToSave, $prevFields, $object);
 
         // Check there's at least one field that was changed, otherwise there's no point saving anything.
         if (!$this->processFields($fieldsToSave)) {

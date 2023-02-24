@@ -29,7 +29,6 @@ class Resource extends Type
     public function includeFieldsOnCreate(
         array $fields,
         array $prevFields,
-        \vxDelta $prevDelta,
         \xPDOObject $object
     ): array
     {

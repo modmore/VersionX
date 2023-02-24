@@ -129,14 +129,12 @@ abstract class Type
      * Add additional \vxDeltaField objects to the array
      * @param \vxDeltaField[] $fields
      * @param array $prevFields
-     * @param \vxDelta $prevDelta
      * @param \xPDOObject $object
      * @return \vxDeltaField[]
      */
     public function includeFieldsOnCreate(
         array $fields,
         array $prevFields,
-        \vxDelta $prevDelta,
         \xPDOObject $object
     ): array
     {
