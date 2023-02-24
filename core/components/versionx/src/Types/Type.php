@@ -128,21 +128,17 @@ abstract class Type
     /**
      * Add additional \vxDeltaField objects to the array
      * @param \vxDeltaField[] $fields
+     * @param array $prevFields
+     * @param \vxDelta $prevDelta
      * @param \xPDOObject $object
      * @return \vxDeltaField[]
      */
-    public function includePrevFieldsOnCreate(array $fields, \xPDOObject $object): array
-    {
-        return $fields;
-    }
-
-    /**
-     * Add additional \vxDeltaField objects to the array
-     * @param \vxDeltaField[] $fields
-     * @param \xPDOObject $object
-     * @return \vxDeltaField[]
-     */
-    public function includeNewFieldsOnCreate(array $fields, \xPDOObject $object): array
+    public function includeFieldsOnCreate(
+        array $fields,
+        array $prevFields,
+        \vxDelta $prevDelta,
+        \xPDOObject $object
+    ): array
     {
         return $fields;
     }

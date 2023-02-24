@@ -97,8 +97,6 @@ class DeltaManager {
             }
         }
 
-        $prevFields = $type->includePrevFieldsOnCreate($prevFields, $object);
-
         $fieldsToSave = [];
         foreach ($data as $field => $value) {
             if (in_array($field, $type->getExcludedFields())) {
@@ -109,7 +107,7 @@ class DeltaManager {
 
             // If a previous delta exists, get the "after" value. Otherwise, use a blank string.
             $prevValue = '';
-            if ($prevDelta instanceof \vxDelta && isset($prevFields[$field])) {
+            if ($prevDelta && isset($prevFields[$field])) {
                 $prevValue = $prevFields[$field]->get('after');
             }
 
@@ -125,9 +123,9 @@ class DeltaManager {
         }
 
         // Give object types a way of adding additional fields to the delta
-        $fieldsToSave = $type->includeNewFieldsOnCreate($fieldsToSave, $object);
+        $fieldsToSave = $type->includeFieldsOnCreate($fieldsToSave, $prevFields, $prevDelta, $object);
 
-        // Check there's at least one field that was changed, otherwise there's no point saving them.
+        // Check there's at least one field that was changed, otherwise there's no point saving anything.
         if (!$this->processFields($fieldsToSave)) {
             return null;
         }
