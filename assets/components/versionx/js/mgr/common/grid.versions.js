@@ -24,6 +24,7 @@ VersionX.grid.Versions = function(config) {
         remoteSort: true,
         stripeRows: false,
         showActionsColumn: false,
+        hideHeaders: true,
         autoExpandColumn: 'time_end',
         columns: [{
             header: 'Versions',//_('versionx.content_id',{what: _('resource')}),

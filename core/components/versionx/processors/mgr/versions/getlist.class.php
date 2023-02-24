@@ -81,6 +81,7 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
             return [];
         }
 
+        $row['diffs'] = '';
         foreach($fields as $field) {
             $this->modx->smarty->assign([
                 'name' => $field->get('field'),
