@@ -20,11 +20,11 @@ class DeltaManager {
     ];
     protected array $rendererOptions = [
         // how detailed the rendered HTML in-line diff is? (none, line, word, char)
-    'detailLevel' => 'char',
+        'detailLevel' => 'char',
         // show a separator between different diff hunks in HTML renderers
-    'separateBlock' => true,
+        'separateBlock' => true,
         // show the (table) header
-    'showHeader' => false,
+        'showHeader' => false,
     ];
 
     function __construct($modx)
@@ -207,14 +207,20 @@ class DeltaManager {
         $where = [
             'Delta.principal_class' => $type->getClass(),
             'Delta.principal_package' => $type->getPackage(),
-            'vxDeltaField.field:NOT IN' => $type->getExcludedFields(),
         ];
+
+        $excludedFields = $type->getExcludedFields();
+        if (!empty($excludedFields)) {
+            $where['vxDeltaField.field:NOT IN'] = $excludedFields;
+        }
+
         if (!empty($fieldNames)) {
             $where['vxDeltaField.field:IN'] = $fieldNames;
         }
         else {
             $where['vxDeltaField.field:IN'] = $objectFields;
         }
+
         $c->where($where);
 
         $c->select([
@@ -225,8 +231,8 @@ class DeltaManager {
 
         $c->groupby('vxDeltaField.field');
 
-        $c->prepare();
-        $this->modx->log(1, $c->toSQL());
+//        $c->prepare();
+//        $this->modx->log(1, $c->toSQL());
 
         return $this->modx->getCollection(\vxDeltaField::class, $c);
     }
