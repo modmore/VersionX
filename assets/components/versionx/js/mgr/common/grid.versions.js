@@ -14,6 +14,7 @@ VersionX.grid.Versions = function(config) {
         params: [],
         fields: [
             {name: 'version_id', type: 'int'},
+            {name: 'username', type: 'string'},
             {name: 'time_start', type: 'string'},
             {name: 'time_end', type: 'string'},
             // {name: 'before', type: 'string'},
@@ -43,8 +44,18 @@ VersionX.grid.Versions = function(config) {
 };
 Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
     diffColumnRenderer: function(v, p, rec) {
-        let diffs = rec.get('diffs');
-        return `<div class="versionx-grid-column-diff">${diffs}</div>`;
+        let diffs = rec.get('diffs'),
+            name = rec.get('username');
+        return `<div class="versionx-grid-column-diff">
+                    <div class="versionx-diff-top-row">
+                        <div>${name}</div>
+                        <div class="right">
+                            <button class="versionx-diff-revert-btn" type="button">Revert</button>
+                            <div class="versionx-diff-menu"></div>
+                        </div>
+                    </div>
+                    ${diffs}
+                </div>`;
     },
     detailColumnRenderer: function(v, p, rec) {
 
