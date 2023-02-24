@@ -26,11 +26,7 @@ class Resource extends Type
         'alias',
     ];
 
-    public function includeFieldsOnCreate(
-        array $fields,
-        array $prevFields,
-        \xPDOObject $object
-    ): array
+    public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
     {
         // Determine what TV values currently exist for this resource.
         /** @var \modResource $object */

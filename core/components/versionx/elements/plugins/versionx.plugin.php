@@ -16,6 +16,8 @@
  * @var modPlugin|\MODX\Revolution\modPluginEvent $plugin
 */
 
+use modmore\VersionX\Types\Resource;
+use modmore\VersionX\Types\Template;
 use modmore\VersionX\VersionX;
 
 $eventName = $modx->event->name;
@@ -32,14 +34,14 @@ switch($eventName) {
     case 'OnDocFormSave':
     case 'FredOnFredResourceSave':
         if ($modx->getOption('versionx.enable.resources',null,true) && $id) {
-            $type = new modmore\VersionX\Types\Resource($modx, $versionX);
+            $type = new Resource($modx, $versionX);
             $result = $versionX->deltas()->createDelta($id, $type, $mode);
         }
         break;
 
     case 'OnTempFormSave':
         if ($modx->getOption('versionx.enable.templates',null,true) && $id) {
-            $type = new modmore\VersionX\Types\Template($modx, $versionX);
+            $type = new Template($modx, $versionX);
             $result = $versionX->deltas()->createDelta($id, $type, $mode);
         }
         break;

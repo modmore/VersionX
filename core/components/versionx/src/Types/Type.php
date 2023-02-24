@@ -132,11 +132,7 @@ abstract class Type
      * @param \xPDOObject $object
      * @return \vxDeltaField[]
      */
-    public function includeFieldsOnCreate(
-        array $fields,
-        array $prevFields,
-        \xPDOObject $object
-    ): array
+    public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
     {
         return $fields;
     }

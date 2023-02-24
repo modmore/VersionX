@@ -334,235 +334,235 @@ class VersionX {
 //        return true;
 //    }
 
-    /**
-     * Gets & prepares version details for output.
-     *
-     * @param string $class
-     * @param int $id
-     * @param bool $json
-     * @param string $prefix
-     * @return bool|array
-     * @deprecated
-     */
-    public function getVersionDetails($class = 'vxResource',$id = 0, $json = false, $prefix = '') {
-        $v = $this->modx->getObject($class, ['version_id' => $id]);
-        /* @var \xPDOObject $v */
-        if ($v instanceof $class) {
-            $vArray = $v->toArray();
-            $vArray['mode'] = $this->modx->lexicon('versionx.mode.'.$vArray['mode']);
-
-            /* Class specific processing */
-            switch ($class) {
-                case 'vxResource':
-                    $vArray = array_merge($vArray,$vArray['fields']);
-
-                    if ($vArray['parent'] != 0) {
-                        /* @var \modResource $parent */
-                        $parent = $this->modx->getObject('modResource',$vArray['parent']);
-                        if ($parent instanceof \modResource) $vArray['parent'] = $parent->get('pagetitle') .' ('.$vArray['parent'].')';
-                    }
-
-                    /* Process content type */
-                    /* @var \MODX\Revolution\modContentType|\modContentType $ct */
-                    $ct = $this->modx->getObject('modContentType',$vArray['content_type']);
-                    if ($ct instanceof \MODX\Revolution\modContentType || $ct instanceof \modContentType) {
-                        $vArray['content_type'] = $ct->get('name');
-                    }
-
-                    $vArray['content'] = $this->_prepareCodeView($vArray['content']);
-
-                    if ($vArray['content_dispo'] == 1) {
-                        $vArray['content_dispo'] = $this->modx->lexicon('attachment');
-                    }
-                    else {
-                        $vArray['content_dispo'] = $this->modx->lexicon('inline');
-                    }
-
-                    /* Process boolean values */
-                    $vArray['published'] = (intval($vArray['published'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                    $vArray['hidemenu'] = (intval($vArray['hidemenu'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                    $vArray['isfolder'] = (intval($vArray['isfolder'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                    $vArray['richtext'] = (intval($vArray['richtext'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                    $vArray['searchable'] = (intval($vArray['searchable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                    $vArray['cacheable'] = (intval($vArray['cacheable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-                    $vArray['deleted'] = (intval($vArray['deleted'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
-
-                    /* Process time stamps */
-                    $df = $this->modx->config['manager_date_format'].' '.$this->modx->config['manager_time_format'];
-                    $vArray['saved'] = ($vArray['saved'] != 0) ? date($df,strtotime($vArray['saved'])) : '';
-                    $vArray['publishedon'] = ($vArray['publishedon'] != 0) ? date($df,strtotime($vArray['publishedon'])) : '';
-                    $vArray['pub_date'] = ($vArray['pub_date'] != 0) ? date($df,strtotime($vArray['pub_date'])) : '';
-                    $vArray['unpub_date'] = ($vArray['unpub_date'] != 0) ? date($df,strtotime($vArray['unpub_date'])) : '';
-
-                    /* Get TV captions */
-                    $tvArray = array();
-                    foreach ($vArray['tvs'] as $tv) {
-                        if (!isset($this->tvs[$tv['id']]) || empty($this->tvs[$tv['id']])) {
-                            /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tvObj */
-                            $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
-                            if ($tvObj instanceof \MODX\Revolution\modTemplateVar || $tvObj instanceof \modTemplateVar) {
-                                $caption = $tvObj->get('caption');
-                                if (empty($caption)) {
-                                    $caption = $tvObj->get('name');
-                                }
-                                $this->tvs[$tv['id']] = $caption;
-                            } else {
-                                $this->tvs[$tv['id']] = 'tv'.$tv['id'];
-                            }
-                        }
-                        $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
-                    }
-                    $vArray['tvs'] = $tvArray;
-                    break;
-                case 'vxTemplateVar':
-                    $vArray['category'] = $this->getCategory($vArray['category']);
-                    if (is_array($vArray['input_properties'])) {
-                        foreach ($vArray['input_properties'] as $key => $value) {
-                            if ($decoded = $this->modx->fromJSON($value)) {
-                                $vArray['input_properties'][$key] = $decoded;
-                            }
-                        }
-                    }
-                    if (is_array($vArray['output_properties'])) {
-                        foreach ($vArray['output_properties'] as $key => $value) {
-                            if ($decoded = $this->modx->fromJSON($value)) {
-                                $vArray['output_properties'][$key] = $decoded;
-                            }
-                        }
-                    }
-                    break;
-
-                case 'vxTemplate':
-                    $vArray['content'] =  $this->_prepareCodeView($vArray['content']);
-                    $vArray['category'] = $this->getCategory($vArray['category']);
-                    break;
-
-                case 'vxChunk':
-                case 'vxSnippet':
-                    $vArray['snippet'] =  $this->_prepareCodeView($vArray['snippet']);
-                    $vArray['category'] = $this->getCategory($vArray['category']);
-                    break;
-
-                case 'vxPlugin':
-                    $vArray['plugincode'] =  $this->_prepareCodeView($vArray['plugincode']);
-                    $vArray['category'] = $this->getCategory($vArray['category']);
-                    break;
-            }
-
-            /* @var \MODX\Revolution\modUserProfile|\modUserProfile $up */
-            $up = $this->modx->getObject('modUserProfile',array('internalKey' => $vArray['user']));
-            if ($up instanceof \MODX\Revolution\modUserProfile || $up instanceof \modUserProfile) {
-                $vArray['user'] = $up->get('fullname');
-            }
-
-            if (!empty($prefix)) {
-                $ta = array();
-                foreach ($vArray as $tk => $tv) {
-                    $ta[$prefix.$tk] = $tv;
-                }
-                $vArray = $ta;
-            }
-            if ($json) {
-                return json_encode($vArray);
-            }
-            return $vArray;
-        }
-        return false;
-    }
-
-    /**
-     * @param $string
-     *
-     * @return string
-     */
-    private function _prepareCodeView($string): string
-    {
-        $lines = explode("\n",$string);
-        foreach ($lines as $idx => $line) {
-            $pos = 0;
-            while( substr($line, $pos, 1) == ' ') {
-                $pos++;
-            }
-            $lines[$idx] = str_repeat('&nbsp;', $pos) . $this->htmlent(substr($line, $pos));
-        }
-
-        $lines = implode("<br />\n", $lines);
-        return $lines;
-    }
-
-    /**
-     * Checks the last saved version (if any).
-     * Returns true if there is no earlier version, or something is different.
-     * So if this returns true: go ahead and save the version.
-     * If this returns false: nothing changed, don't bother.
-     *
-     * @param string $class
-     * @param \xPDOObject $version
-     *
-     * @return bool
-     * @deprecated
-     */
-    protected function checkLastVersion(string $class, \xPDOObject $version): bool
-    {
-        /* Get last version to make sure we've got some changes to save */
-        $c = $this->modx->newQuery($class);
-        $c->where(array('content_id' => $version->get('content_id')));
-        $c->sortby('version_id','DESC');
-        $c->limit(1);
-
-        $lastVersion = $this->modx->getCollection($class,$c);
-        $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
-        /* @var \vxResource $lastVersion */
-
-        /* If there's no earlier version, we can go ahead and
-         return true to indicate we need to save the version */
-        if (!($lastVersion instanceof $class)) {
-            if ($this->debug) $this->modx->log(\xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: No earlier version found.");
-            return true;
-        }
-
-        $newVersionArray = $version->toArray();
-        $lastVersionArray = $lastVersion->toArray();
-
-        /* Get rid of excluded vars for the specific object. */
-        $exclude = call_user_func(array($class,'getExcludeFields'));
-        if ($this->debug) $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Exclude fields: ' . print_r($exclude, true));
-        foreach ($exclude as $key => $value) {
-            if (is_array($value)) {
-                foreach ($value as $subfield) {
-                    if (isset($newVersionArray[$key]) && isset($newVersionArray[$key][$subfield])) {
-                        unset ($newVersionArray[$key][$subfield]);
-                    }
-                    if (isset($lastVersionArray[$key]) && isset($lastVersionArray[$key][$subfield])) {
-                        unset ($lastVersionArray[$key][$subfield]);
-                    }
-                }
-            } else {
-                if (isset($lastVersionArray[$value])) { unset($lastVersionArray[$value]); }
-                if (isset($newVersionArray[$value])) { unset($newVersionArray[$value]); }
-            }
-        }
-
-        $newVersionFlat = Utils::flattenArray($newVersionArray);
-        $lastVersionFlat = Utils::flattenArray($lastVersionArray);
-
-        if ($this->debug) {
-            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New: ' . print_r($newVersionArray, true));
-            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New Flattened: ' . $newVersionFlat);
-            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last: ' . print_r($lastVersionArray, true));
-            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last Flattened: ' . $newVersionFlat);
-        }
-
-        /* If the flattened arrays don't match there's a difference and we return true to indicate we need to save. */
-        if ($newVersionFlat != $lastVersionFlat) {
-            return true;
-        }
-
-        if ($this->debug) $this->modx->log(\xPDO::LOG_LEVEL_ERROR,"[VersionX] Not saving a {$class} for ID {$version->get('content_id')}: No changes found.");
-        /* If we got here, there was a last version but it seemed nothing changes.
-        Return false to indicate to NOT save a new version. */
-        return false;
-    }
+//    /**
+//     * Gets & prepares version details for output.
+//     *
+//     * @param string $class
+//     * @param int $id
+//     * @param bool $json
+//     * @param string $prefix
+//     * @return bool|array
+//     * @deprecated
+//     */
+//    public function getVersionDetails($class = 'vxResource',$id = 0, $json = false, $prefix = '') {
+//        $v = $this->modx->getObject($class, ['version_id' => $id]);
+//        /* @var \xPDOObject $v */
+//        if ($v instanceof $class) {
+//            $vArray = $v->toArray();
+//            $vArray['mode'] = $this->modx->lexicon('versionx.mode.'.$vArray['mode']);
+//
+//            /* Class specific processing */
+//            switch ($class) {
+//                case 'vxResource':
+//                    $vArray = array_merge($vArray,$vArray['fields']);
+//
+//                    if ($vArray['parent'] != 0) {
+//                        /* @var \modResource $parent */
+//                        $parent = $this->modx->getObject('modResource',$vArray['parent']);
+//                        if ($parent instanceof \modResource) $vArray['parent'] = $parent->get('pagetitle') .' ('.$vArray['parent'].')';
+//                    }
+//
+//                    /* Process content type */
+//                    /* @var \MODX\Revolution\modContentType|\modContentType $ct */
+//                    $ct = $this->modx->getObject('modContentType',$vArray['content_type']);
+//                    if ($ct instanceof \MODX\Revolution\modContentType || $ct instanceof \modContentType) {
+//                        $vArray['content_type'] = $ct->get('name');
+//                    }
+//
+//                    $vArray['content'] = $this->_prepareCodeView($vArray['content']);
+//
+//                    if ($vArray['content_dispo'] == 1) {
+//                        $vArray['content_dispo'] = $this->modx->lexicon('attachment');
+//                    }
+//                    else {
+//                        $vArray['content_dispo'] = $this->modx->lexicon('inline');
+//                    }
+//
+//                    /* Process boolean values */
+//                    $vArray['published'] = (intval($vArray['published'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//                    $vArray['hidemenu'] = (intval($vArray['hidemenu'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//                    $vArray['isfolder'] = (intval($vArray['isfolder'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//                    $vArray['richtext'] = (intval($vArray['richtext'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//                    $vArray['searchable'] = (intval($vArray['searchable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//                    $vArray['cacheable'] = (intval($vArray['cacheable'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//                    $vArray['deleted'] = (intval($vArray['deleted'])) ? $this->modx->lexicon('yes') : $this->modx->lexicon('no');
+//
+//                    /* Process time stamps */
+//                    $df = $this->modx->config['manager_date_format'].' '.$this->modx->config['manager_time_format'];
+//                    $vArray['saved'] = ($vArray['saved'] != 0) ? date($df,strtotime($vArray['saved'])) : '';
+//                    $vArray['publishedon'] = ($vArray['publishedon'] != 0) ? date($df,strtotime($vArray['publishedon'])) : '';
+//                    $vArray['pub_date'] = ($vArray['pub_date'] != 0) ? date($df,strtotime($vArray['pub_date'])) : '';
+//                    $vArray['unpub_date'] = ($vArray['unpub_date'] != 0) ? date($df,strtotime($vArray['unpub_date'])) : '';
+//
+//                    /* Get TV captions */
+//                    $tvArray = array();
+//                    foreach ($vArray['tvs'] as $tv) {
+//                        if (!isset($this->tvs[$tv['id']]) || empty($this->tvs[$tv['id']])) {
+//                            /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tvObj */
+//                            $tvObj = $this->modx->getObject('modTemplateVar',$tv['id']);
+//                            if ($tvObj instanceof \MODX\Revolution\modTemplateVar || $tvObj instanceof \modTemplateVar) {
+//                                $caption = $tvObj->get('caption');
+//                                if (empty($caption)) {
+//                                    $caption = $tvObj->get('name');
+//                                }
+//                                $this->tvs[$tv['id']] = $caption;
+//                            } else {
+//                                $this->tvs[$tv['id']] = 'tv'.$tv['id'];
+//                            }
+//                        }
+//                        $tvArray[] = array_merge($tv,array('caption' => $this->tvs[$tv['id']]));
+//                    }
+//                    $vArray['tvs'] = $tvArray;
+//                    break;
+//                case 'vxTemplateVar':
+//                    $vArray['category'] = $this->getCategory($vArray['category']);
+//                    if (is_array($vArray['input_properties'])) {
+//                        foreach ($vArray['input_properties'] as $key => $value) {
+//                            if ($decoded = $this->modx->fromJSON($value)) {
+//                                $vArray['input_properties'][$key] = $decoded;
+//                            }
+//                        }
+//                    }
+//                    if (is_array($vArray['output_properties'])) {
+//                        foreach ($vArray['output_properties'] as $key => $value) {
+//                            if ($decoded = $this->modx->fromJSON($value)) {
+//                                $vArray['output_properties'][$key] = $decoded;
+//                            }
+//                        }
+//                    }
+//                    break;
+//
+//                case 'vxTemplate':
+//                    $vArray['content'] =  $this->_prepareCodeView($vArray['content']);
+//                    $vArray['category'] = $this->getCategory($vArray['category']);
+//                    break;
+//
+//                case 'vxChunk':
+//                case 'vxSnippet':
+//                    $vArray['snippet'] =  $this->_prepareCodeView($vArray['snippet']);
+//                    $vArray['category'] = $this->getCategory($vArray['category']);
+//                    break;
+//
+//                case 'vxPlugin':
+//                    $vArray['plugincode'] =  $this->_prepareCodeView($vArray['plugincode']);
+//                    $vArray['category'] = $this->getCategory($vArray['category']);
+//                    break;
+//            }
+//
+//            /* @var \MODX\Revolution\modUserProfile|\modUserProfile $up */
+//            $up = $this->modx->getObject('modUserProfile',array('internalKey' => $vArray['user']));
+//            if ($up instanceof \MODX\Revolution\modUserProfile || $up instanceof \modUserProfile) {
+//                $vArray['user'] = $up->get('fullname');
+//            }
+//
+//            if (!empty($prefix)) {
+//                $ta = array();
+//                foreach ($vArray as $tk => $tv) {
+//                    $ta[$prefix.$tk] = $tv;
+//                }
+//                $vArray = $ta;
+//            }
+//            if ($json) {
+//                return json_encode($vArray);
+//            }
+//            return $vArray;
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * @param $string
+//     *
+//     * @return string
+//     */
+//    private function _prepareCodeView($string): string
+//    {
+//        $lines = explode("\n",$string);
+//        foreach ($lines as $idx => $line) {
+//            $pos = 0;
+//            while( substr($line, $pos, 1) == ' ') {
+//                $pos++;
+//            }
+//            $lines[$idx] = str_repeat('&nbsp;', $pos) . $this->htmlent(substr($line, $pos));
+//        }
+//
+//        $lines = implode("<br />\n", $lines);
+//        return $lines;
+//    }
+//
+//    /**
+//     * Checks the last saved version (if any).
+//     * Returns true if there is no earlier version, or something is different.
+//     * So if this returns true: go ahead and save the version.
+//     * If this returns false: nothing changed, don't bother.
+//     *
+//     * @param string $class
+//     * @param \xPDOObject $version
+//     *
+//     * @return bool
+//     * @deprecated
+//     */
+//    protected function checkLastVersion(string $class, \xPDOObject $version): bool
+//    {
+//        /* Get last version to make sure we've got some changes to save */
+//        $c = $this->modx->newQuery($class);
+//        $c->where(array('content_id' => $version->get('content_id')));
+//        $c->sortby('version_id','DESC');
+//        $c->limit(1);
+//
+//        $lastVersion = $this->modx->getCollection($class,$c);
+//        $lastVersion = !empty($lastVersion) ? array_shift($lastVersion) : array();
+//        /* @var \vxResource $lastVersion */
+//
+//        /* If there's no earlier version, we can go ahead and
+//         return true to indicate we need to save the version */
+//        if (!($lastVersion instanceof $class)) {
+//            if ($this->debug) $this->modx->log(\xPDO::LOG_LEVEL_ERROR,"[VersionX] Saving a {$class} for ID {$version->get('content_id')}: No earlier version found.");
+//            return true;
+//        }
+//
+//        $newVersionArray = $version->toArray();
+//        $lastVersionArray = $lastVersion->toArray();
+//
+//        /* Get rid of excluded vars for the specific object. */
+//        $exclude = call_user_func(array($class,'getExcludeFields'));
+//        if ($this->debug) $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Exclude fields: ' . print_r($exclude, true));
+//        foreach ($exclude as $key => $value) {
+//            if (is_array($value)) {
+//                foreach ($value as $subfield) {
+//                    if (isset($newVersionArray[$key]) && isset($newVersionArray[$key][$subfield])) {
+//                        unset ($newVersionArray[$key][$subfield]);
+//                    }
+//                    if (isset($lastVersionArray[$key]) && isset($lastVersionArray[$key][$subfield])) {
+//                        unset ($lastVersionArray[$key][$subfield]);
+//                    }
+//                }
+//            } else {
+//                if (isset($lastVersionArray[$value])) { unset($lastVersionArray[$value]); }
+//                if (isset($newVersionArray[$value])) { unset($newVersionArray[$value]); }
+//            }
+//        }
+//
+//        $newVersionFlat = Utils::flattenArray($newVersionArray);
+//        $lastVersionFlat = Utils::flattenArray($lastVersionArray);
+//
+//        if ($this->debug) {
+//            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New: ' . print_r($newVersionArray, true));
+//            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] New Flattened: ' . $newVersionFlat);
+//            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last: ' . print_r($lastVersionArray, true));
+//            $this->modx->log(\modX::LOG_LEVEL_ERROR,'[VersionX checkLastVersion] Last Flattened: ' . $newVersionFlat);
+//        }
+//
+//        /* If the flattened arrays don't match there's a difference and we return true to indicate we need to save. */
+//        if ($newVersionFlat != $lastVersionFlat) {
+//            return true;
+//        }
+//
+//        if ($this->debug) $this->modx->log(\xPDO::LOG_LEVEL_ERROR,"[VersionX] Not saving a {$class} for ID {$version->get('content_id')}: No changes found.");
+//        /* If we got here, there was a last version but it seemed nothing changes.
+//        Return false to indicate to NOT save a new version. */
+//        return false;
+//    }
 
     /**
      * Outputs the JavaScript needed to add a tab to the panels.
