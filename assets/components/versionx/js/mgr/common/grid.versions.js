@@ -14,12 +14,10 @@ VersionX.grid.Versions = function(config) {
         },
         params: [],
         fields: [
-            {name: 'version_id', type: 'int'},
+            {name: 'id', type: 'int'},
             {name: 'username', type: 'string'},
             {name: 'time_start', type: 'string'},
             {name: 'time_end', type: 'string'},
-            // {name: 'before', type: 'string'},
-            // {name: 'after', type: 'string'},
             {name: 'diffs', type: 'string'},
         ],
         paging: true,
@@ -34,7 +32,7 @@ VersionX.grid.Versions = function(config) {
             renderer: this.diffColumnRenderer
         },{
             header: 'Details',
-            dataIndex: 'version_id',
+            dataIndex: 'id',
             fixed: true,
             width: 150,
             renderer: this.detailColumnRenderer,
@@ -57,18 +55,47 @@ VersionX.grid.Versions = function(config) {
         }]
     });
     VersionX.grid.Versions.superclass.constructor.call(this,config);
+    this.config = config;
+    this.on('click', this.handleClick, this);
 };
 Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
     search: function (tf, nv, ov) {
-        var s = this.getStore();
+        let s = this.getStore();
         s.baseParams.query = tf.getValue();
         this.getBottomToolbar().changePage(1);
         this.refresh();
     },
+    handleClick: function(e) {
+        var t = e.getTarget(),
+            className = t.className.split(' ')[0],
+            that = this;
+
+        switch (className) {
+            case 'versionx-diff-revert-btn':
+                // Confirm revert with user, and send request
+                MODx.msg.confirm({
+                    title: 'Confirm Revert',
+                    text: 'Are you sure you want to revert to the before state of this change?',
+                    url: VersionX.config.connector_url,
+                    params: {
+                        action: 'mgr/versions/revert',
+                        id: t.dataset.id,
+                        principal: that.config['principal'],
+                        type: that.config['type'],
+                    },
+                    listeners: {
+                        'success': {fn: this.refresh, scope:this}
+                    },
+                });
+            break;
+        }
+    },
     diffColumnRenderer: function(v, p, rec) {
         let diffs = rec.get('diffs'),
+            version_id = rec.get('id'),
             name = rec.get('username'),
             time_end = rec.get('time_end');
+
         return `<div class="versionx-grid-diff-container">
                     <div class="versionx-grid-timeline">
                         <div class="versionx-grid-timeline-line"></div>
@@ -81,11 +108,15 @@ Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
                                 <div class="versionx-diff-usernames">${name}</div>
                             </div>
                             <div class="versionx-diff-top-row-right">
-                                <button class="versionx-diff-revert-btn" type="button">Revert</button>
+                                <button class="versionx-diff-revert-btn x-button x-button-small primary-button" type="button" data-id="${version_id}">
+                                    Revert
+                                </button>
                                 <div class="versionx-diff-menu"></div>
                             </div>
                         </div>
-                        ${diffs}
+                        <div class="versionx-diff-list">
+                            ${diffs}
+                        </div>
                     </div>
                 </div>`;
     },

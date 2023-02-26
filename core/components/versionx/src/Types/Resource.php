@@ -2,12 +2,17 @@
 
 namespace modmore\VersionX\Types;
 
+if (!class_exists(\modTemplateVarResource::class)) {
+    class_alias('\MODX\Revolution\modTemplateVarResource', '\modTemplateVarResource');
+}
+
 class Resource extends Type
 {
     protected string $class = 'modResource';
     protected string $tabId = 'modx-resource-tabs';
     protected string $package = 'core';
     protected string $nameField = 'pagetitle';
+    protected string $mgrAction = 'resource/update';
     protected array $tabJavaScript = [
         'common/grid.versions.js',
     ];
@@ -41,7 +46,7 @@ class Resource extends Type
 
         // Loop through TVs matching previous delta fields by TV name
         /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */
-        foreach ($tvs as $k => $tv) {
+        foreach ($tvs as $tv) {
             $prevValue = '';
             foreach ($prevFields as $prevField) {
                 if ($prevField->get('field') === $tv->get('name')) {
@@ -64,4 +69,30 @@ class Resource extends Type
         return $fields;
     }
 
+    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp): \xPDOObject
+    {
+        $object->set('editedby', $this->modx->user->get('id'));
+        $object->set('editedon', $timestamp);
+
+        // Get any TVs attached to this resource
+        $tvs = $object->getMany('TemplateVars');
+
+        // Match field and TV names, updating TVs with delta field values.
+        foreach ($fields as $field) {
+            foreach ($tvs as $tv) {
+                if ($tv->get('name') === $field->get('field')) {
+                    // Get actual TV object to save, now that we have the id.
+                    $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
+                        'tmplvarid' => $tv->get('id'),
+                    ]);
+                    $tvObj->set('value', $field->get('before'));
+                    $tvObj->save();
+                }
+            }
+        }
+
+        // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
+
+        return $object;
+    }
 }

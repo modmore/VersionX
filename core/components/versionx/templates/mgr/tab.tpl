@@ -20,7 +20,7 @@
                         principal_package: '{$principal_package}',
                         principal_class: '{$principal_class}',
                         principal: '{$principal}',
-                        type: '{$type}'
+                        type: '{$type}',
                     }]
                 }]
             });

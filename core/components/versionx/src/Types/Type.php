@@ -3,6 +3,7 @@
 namespace modmore\VersionX\Types;
 
 use modmore\VersionX\VersionX;
+use xPDO\Om\xPDOObject;
 
 abstract class Type
 {
@@ -26,6 +27,11 @@ abstract class Type
      * The path to the template file used when loading a tab on an object
      */
     protected string $tabTpl = 'mgr/tab';
+
+    /**
+     * @var string $mgrAction
+     */
+    protected string $mgrAction = '';
 
     /**
      * @var string $nameField
@@ -115,6 +121,14 @@ abstract class Type
     }
 
     /**
+     * @return string
+     */
+    public function getMgrAction(): string
+    {
+        return $this->mgrAction;
+    }
+
+    /**
      * @return array
      */
     public function getFieldOrder(): array
@@ -123,7 +137,7 @@ abstract class Type
     }
 
     /**
-     * Runs before a delta is created
+     * Runs before a delta is created. Return false to prevent creation.
      * @param string $time - Delta create time
      * @param \xPDOObject $object - The object to be versioned
      * @return bool
@@ -134,7 +148,8 @@ abstract class Type
     }
 
     /**
-     * Add additional \vxDeltaField objects to the array
+     * Opportunity to ass additional \vxDeltaField objects to the array. For example, adding TV values when saving
+     * a resource.
      * @param \vxDeltaField[] $fields
      * @param array $prevFields
      * @param \xPDOObject $object
@@ -154,5 +169,17 @@ abstract class Type
     public function afterDeltaCreate(\vxDelta $delta, \xPDOObject $object): ?\vxDelta
     {
         return $delta;
+    }
+
+    /**
+     * Runs before object being reverted is saved.
+     * @param array $fields - the delta fields that are being saved to the object
+     * @param \xPDOObject $object - the object being reverted
+     * @param int $timestamp
+     * @return \xPDOObject
+     */
+    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp): \xPDOObject
+    {
+        return $object;
     }
 }

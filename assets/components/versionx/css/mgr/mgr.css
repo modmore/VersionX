@@ -93,10 +93,8 @@
     box-sizing: border-box;
     width: calc(100% - 2px) !important;
     white-space:normal;
-    max-height: 300px;
-    overflow-y: auto;
     display: flex;
-    padding: 0 0 15px;
+    padding: 0;
     flex-direction: column;
     background: #fff;
     border-radius: 3px;
@@ -126,9 +124,7 @@
 .versionx-grid-versions .x-panel-tbar,
 .versionx-grid-versions .x-panel-bbar {
     box-sizing: border-box;
-    position: relative;
-    z-index: 2;
-    background: #f6f8fa;
+    /*background: #f6f8fa;*/
 }
 .versionx-grid-versions .x-panel-tbar {
     border-bottom: 1px solid #d0d7de;
@@ -148,16 +144,20 @@
     padding: 5px 15px 15px 46px;
 }
 
+.versionx-diff-list {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 .versionx-field-diff-container {
     background: #fff;
 }
-.versionx-field-diff-top-row {
-    display: flex;
-    align-items: center;
-}
 .versionx-field-diff-name {
-    font-size: 16px;
-    padding: 15px ;
+    /*background: #ddf4ff;*/
+    font-weight: 500;
+    padding: 5px 15px ;
 }
 
 /*.versionx-window .x-window-body,*/

@@ -111,7 +111,7 @@ class DeltaManager {
                 $prevValue = $prevFields[$field]->get('after');
             }
 
-            $deltaField = $this->modx->newObject('vxDeltaField', [
+            $deltaField = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $field,
                 'field_type' => 'text',
                 'before' => $prevValue,
@@ -158,6 +158,45 @@ class DeltaManager {
         }
 
         return $type->afterDeltaCreate($delta, $object);
+    }
+
+    /**
+     * Reverts object to a delta state. After reverting, a new delta is created to represent the change.
+     * @param int $deltaId
+     * @param int $objectId
+     * @param Type $type
+     * @return void
+     */
+    public function revertObject(int $deltaId, int $objectId, Type $type): void
+    {
+        $now = time();
+
+        // Grab the object to revert
+        $object = $this->modx->getObject($type->getClass(), [
+            'id' => $objectId,
+        ]);
+
+        // Get all fields for this delta
+        $fields = $this->modx->getCollection(\vxDeltaField::class, [
+            'delta' => $deltaId,
+        ]);
+        foreach ($fields as $field) {
+            $object->set($field->get('field'), $field->get('before'));
+        }
+
+        // Now save the object
+        if (!$object->save(true)) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,
+                '[VersionX] Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
+            return;
+        }
+
+        $object = $type->afterRevert($fields, $object, $now);
+
+        // Create new delta showing the reverted changes
+        $delta = $this->createDelta($objectId, $type);
+
+        // TODO: reload page
     }
 
     /**
