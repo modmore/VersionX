@@ -1,8 +1,7 @@
 <?php
 
-class VersionXObjectRevertProcessor extends modObjectUpdateProcessor
+class VersionXObjectRevertProcessor extends modProcessor
 {
-    public $classKey = vxDelta::class;
     public \modmore\VersionX\VersionX $versionX;
     public \modmore\VersionX\Types\Type $type;
     protected int $objectId;
@@ -23,11 +22,11 @@ class VersionXObjectRevertProcessor extends modObjectUpdateProcessor
         return $init;
     }
 
-    public function beforeSave(): bool
+    public function process()
     {
         $this->versionX->deltas()->revertObject($this->deltaId, $this->objectId, $this->type);
 
-        return parent::beforeSave();
+        return $this->success();
     }
 }
 return 'VersionXObjectRevertProcessor';
