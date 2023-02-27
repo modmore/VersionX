@@ -242,6 +242,7 @@ class DeltaManager {
             $objectFields[] = $field;
         }
         $where = [
+            'Delta.principal' => $object->get('id'),
             'Delta.principal_class' => $type->getClass(),
             'Delta.principal_package' => $type->getPackage(),
         ];
