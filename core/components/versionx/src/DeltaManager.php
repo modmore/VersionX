@@ -195,8 +195,6 @@ class DeltaManager {
 
         // Create new delta showing the reverted changes
         $delta = $this->createDelta($objectId, $type);
-
-        // TODO: reload page
     }
 
     /**

@@ -84,7 +84,9 @@ Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
                         type: that.config['type'],
                     },
                     listeners: {
-                        'success': {fn: this.refresh, scope:this}
+                        'success': {fn: function() {
+                                location.reload();
+                            }, scope:this}
                     },
                 });
             break;
