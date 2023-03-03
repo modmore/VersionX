@@ -42,6 +42,17 @@
 .versionx-window .versionx-grid-deltas .x-grid3-scroller {
     overflow-y: auto !important;
 }
+.versionx-grid-deltas .x-grid3-scroller::after {
+    content: '';
+    width: 4px;
+    height: 100%;
+    background: #f1f1f1;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 22px;
+}
 
 /* Deltas grid (very customised) */
 .versionx-search .x-form-trigger::before {
@@ -69,17 +80,6 @@
     margin: 0;
     text-align: center;
     position: relative;
-}
-.versionx-grid-timeline .versionx-grid-timeline-line {
-    width: 4px;
-    height: 150%;
-    background: #f1f1f1;
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin: -30px 0 -1px -2px;
 }
 .versionx-grid-timeline-point {
     margin-top: 25px;

@@ -102,7 +102,6 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
 
         return `<div class="versionx-grid-diff-container">
                     <div class="versionx-grid-timeline">
-                        <div class="versionx-grid-timeline-line"></div>
                         <div class="versionx-grid-timeline-point"></div>
                     </div>
                     <div class="versionx-grid-column-diff">
