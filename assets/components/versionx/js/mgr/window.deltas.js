@@ -31,7 +31,13 @@ VersionX.window.Deltas = function(config) {
     VersionX.window.Deltas.superclass.constructor.call(this, config);
     // Set a large size that's still smaller than the viewport.
     this.on('afterrender', function(win) {
-        var width = Ext.getBody().getViewSize().width - 200;
+        var maxWidth = Ext.getBody().getViewSize().width - 200,
+            width = 1200;
+
+        if (width > maxWidth) {
+            width = maxWidth;
+        }
+
         var height = Ext.getBody().getViewSize().height - 30;
         win.setSize(width, height);
         win.center();

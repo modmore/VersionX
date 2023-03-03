@@ -5,7 +5,6 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
     public $defaultSortField = 'MAX(vxDelta.time_end)';
     public $defaultSortDirection = 'DESC';
     public \modmore\VersionX\VersionX $versionX;
-    public \modmore\VersionX\Types\Type $type;
 
     public function initialize(): bool
     {
