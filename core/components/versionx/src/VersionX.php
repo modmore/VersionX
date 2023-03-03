@@ -78,14 +78,11 @@ class VersionX {
         $jsUrl = $this->config['js_url'] . 'mgr/';
         $cssUrl = $this->config['css_url'] . 'mgr/mgr.css';
 
-
-        // Load class & set inVersion to true, indicating we're not looking at the VersionX controller.
         $this->modx->regClientStartupScript($jsUrl . 'versionx.class.js');
         $this->modx->regClientStartupHTMLBlock('
             <link href="'. $cssUrl .'" rel="stylesheet">
             <script type="text/javascript">
                 VersionX.config = ' . json_encode($this->config) . ';
-                VersionX.inVersion = true;
                 ' . $langs . '
             </script>
         ');

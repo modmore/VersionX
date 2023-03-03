@@ -14,6 +14,9 @@ class Snippet extends Type
     protected array $fieldOrder = [
         'name',
         'description',
-        'snippet',
+        'content',
+    ];
+    protected array $excludedFields = [
+        'snippet'
     ];
 }

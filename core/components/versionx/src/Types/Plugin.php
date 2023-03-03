@@ -14,6 +14,9 @@ class Plugin extends Type
     protected array $fieldOrder = [
         'name',
         'description',
-        'plugincode',
+        'content',
+    ];
+    protected array $excludedFields = [
+        'plugincode'
     ];
 }
