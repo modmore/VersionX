@@ -6,7 +6,6 @@ VersionX.grid.Deltas = function(config) {
         itemId: 'versionx-grid-deltas',
         cls: 'versionx-grid-deltas',
         bodyCssClass: 'versionx-grid-deltas-body',
-        anchor: '100% -100',
         baseParams: {
             action: 'mgr/deltas/getlist',
             principal_package: config.principal_package,
