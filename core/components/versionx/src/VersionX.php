@@ -70,16 +70,10 @@ class VersionX {
      *
      * @param int $id
      * @param Type $type
-     * @param string $package
      * @throws \Exception
      */
-    public function outputVersionsTab (int $id, Type $type, string $package = 'modx'): void
+    public function outputVersionsTab (int $id, Type $type): void
     {
-        $path = $this->config['model_path'] . 'versionx/vxdelta.class.php';
-        if (file_exists($path)) {
-            require_once ($path);
-        }
-
         $langs = $this->_getLangs();
         $jsUrl = $this->config['js_url'] . 'mgr/';
         $cssUrl = $this->config['css_url'] . 'mgr/mgr.css';

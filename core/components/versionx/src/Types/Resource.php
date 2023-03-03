@@ -2,8 +2,8 @@
 
 namespace modmore\VersionX\Types;
 
-if (!class_exists(\modTemplateVarResource::class)) {
-    class_alias('\MODX\Revolution\modTemplateVarResource', '\modTemplateVarResource');
+if (class_exists(\MODX\Revolution\modTemplateVarResource::class)) {
+    class_alias(\MODX\Revolution\modTemplateVarResource::class, \modTemplateVarResource::class);
 }
 
 class Resource extends Type
