@@ -114,7 +114,6 @@ class VersionX {
                 'type' => str_replace('\\','\\\\', get_class($type)),
             ]);
             $tpl = $this->modx->smarty->fetch($tplFile);
-            $this->modx->log(1, $tpl);
             if (!empty($tpl)) {
                 $this->modx->regClientStartupHTMLBlock($tpl);
             }
