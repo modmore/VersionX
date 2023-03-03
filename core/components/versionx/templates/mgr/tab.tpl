@@ -1,7 +1,7 @@
 <script type="text/javascript">
     (function() {
         var added = false;
-        MODx.on("ready", function() {
+        Ext.onReady(function() {
             if (added) {
                 return;
             }
