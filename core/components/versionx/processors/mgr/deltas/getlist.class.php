@@ -1,7 +1,5 @@
 <?php
 
-use MODX\Revolution\Smarty\modSmarty;
-
 class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
     public $classKey = 'vxDelta';
     public $primaryKeyField = 'vxDelta.version_id';
@@ -19,7 +17,7 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
         $typeClass = '\\' . $this->getProperty('type');
         $this->type = new $typeClass($this->modx, $this->versionX);
 
-        $this->modx->getService('smarty', modSmarty::class, '', [
+        $this->modx->getService('smarty', 'smarty.modSmarty', '', [
             'template_dir' => $this->versionX->config['templates_path'],
         ]);
 
