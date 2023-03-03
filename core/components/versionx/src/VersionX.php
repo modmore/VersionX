@@ -99,6 +99,7 @@ class VersionX {
         if (file_exists($tplFile)) {
             $this->modx->smarty->assign([
                 'tabs_component_id' => $type->getTabId(),
+                'panel_id' => $type->getPanelId(),
                 'principal_package' => $type->getPackage(),
                 'principal_class' => str_replace('\\','\\\\', $type->getClass()),
                 'principal' => $id,

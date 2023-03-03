@@ -28,6 +28,11 @@ abstract class Type
     protected string $tabTpl = 'mgr/tab';
 
     /**
+     * @var string
+     */
+    protected string $panelId = 'modx-resource-panel';
+
+    /**
      * @var string $nameField
      * The "human-readable" field used to identify the object.
      */
@@ -88,6 +93,14 @@ abstract class Type
     public function getTabId(): string
     {
         return $this->tabId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPanelId(): string
+    {
+        return $this->panelId;
     }
 
     /**

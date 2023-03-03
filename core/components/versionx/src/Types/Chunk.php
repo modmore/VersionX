@@ -6,6 +6,7 @@ class Chunk extends Type
 {
     protected string $class = 'modChunk';
     protected string $tabId = 'modx-chunk-tabs';
+    protected string $panelId = 'modx-panel-chunk';
     protected string $package = 'core';
     protected string $nameField = 'name';
     protected array $tabJavaScript = [

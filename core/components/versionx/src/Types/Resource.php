@@ -10,6 +10,7 @@ class Resource extends Type
 {
     protected string $class = 'modResource';
     protected string $tabId = 'modx-resource-tabs';
+    protected string $panelId = 'modx-panel-resource';
     protected string $package = 'core';
     protected string $nameField = 'pagetitle';
     protected array $tabJavaScript = [
