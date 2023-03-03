@@ -8,7 +8,7 @@
             added = true;
             MODx.addTab("{$tabs_component_id}", {
                 title: _('versionx.tabheader'),
-                id: 'versionx-resource-tab',
+                id: 'versionx-tab',
                 layout: 'anchor',
                 defaults: {
                     anchor: '1',

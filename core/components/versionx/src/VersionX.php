@@ -3,15 +3,11 @@
 namespace modmore\VersionX;
 
 use modmore\VersionX\Types\Type;
-use xPDO\xPDOException;
 
 class VersionX {
     public $modx;
     protected ?DeltaManager $deltaManager = null;
-    private array $chunks = [];
-    private array $tvs = [];
     public array $config = [];
-    public array $categoryCache = [];
     public bool $debug = false;
     public string $charset;
 
@@ -118,6 +114,7 @@ class VersionX {
                 'type' => str_replace('\\','\\\\', get_class($type)),
             ]);
             $tpl = $this->modx->smarty->fetch($tplFile);
+            $this->modx->log(1, $tpl);
             if (!empty($tpl)) {
                 $this->modx->regClientStartupHTMLBlock($tpl);
             }

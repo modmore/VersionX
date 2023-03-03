@@ -3,8 +3,10 @@ VersionX.grid.Deltas = function(config) {
     Ext.applyIf(config,{
         url: VersionX.config.connector_url,
         id: 'versionx-grid-deltas',
+        itemId: 'versionx-grid-deltas',
         cls: 'versionx-grid-deltas',
         bodyCssClass: 'versionx-grid-deltas-body',
+        anchor: '100% -100',
         baseParams: {
             action: 'mgr/deltas/getlist',
             principal_package: config.principal_package,
@@ -26,6 +28,7 @@ VersionX.grid.Deltas = function(config) {
         showActionsColumn: false,
         hideHeaders: true,
         autoExpandColumn: 'time_end',
+        autoHeight: true,
         columns: [{
             header: 'Versions',//_('versionx.content_id',{what: _('resource')}),
             dataIndex: 'time_end',

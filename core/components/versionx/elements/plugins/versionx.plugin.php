@@ -16,6 +16,10 @@
  * @var modPlugin|\MODX\Revolution\modPluginEvent $plugin
 */
 
+use modmore\VersionX\Types\Chunk;
+use modmore\VersionX\Types\Plugin;
+use modmore\VersionX\Types\Snippet;
+use modmore\VersionX\Types\TV;
 use modmore\VersionX\Types\Resource;
 use modmore\VersionX\Types\Template;
 use modmore\VersionX\VersionX;
@@ -47,23 +51,31 @@ switch($eventName) {
         break;
 
     case 'OnTVFormSave':
-        if ($modx->getOption('versionx.enable.templatevariables',null,true))
-            $result = $versionX->newTemplateVarVersion($tv, $mode);
+        if ($modx->getOption('versionx.enable.templatevariables',null,true) && $id) {
+            $type = new TV($modx, $versionX);
+            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+        }
         break;
 
     case 'OnChunkFormSave':
-        if ($modx->getOption('versionx.enable.chunks',null,true))
-            $result = $versionX->newChunkVersion($chunk, $mode);
+        if ($modx->getOption('versionx.enable.chunks',null,true) && $id) {
+            $type = new Chunk($modx, $versionX);
+            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+        }
         break;
 
     case 'OnSnipFormSave':
-        if ($modx->getOption('versionx.enable.snippets',null,true))
-            $result = $versionX->newSnippetVersion($snippet, $mode);
+        if ($modx->getOption('versionx.enable.snippets',null,true) && $id) {
+            $type = new Snippet($modx, $versionX);
+            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+        }
         break;
 
     case 'OnPluginFormSave':
-        if ($modx->getOption('versionx.enable.plugins',null,true))
-            $result = $versionX->newPluginVersion($plugin, $mode);
+        if ($modx->getOption('versionx.enable.plugins',null,true) && $id) {
+            $type = new Plugin($modx, $versionX);
+            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+        }
         break;
 
     case 'OnBeforeManagerPageInit': // Required for autoloading
@@ -75,47 +87,40 @@ switch($eventName) {
     /* Add tabs */
     case 'OnDocFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $versionX->outputVersionsTab($id, new modmore\VersionX\Types\Resource($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Resource($modx, $versionX));
         }
         break;
 
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
-            $versionX->outputVersionsTab($id, new modmore\VersionX\Types\Template($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Template($modx, $versionX));
         }
         break;
 
-//    case 'OnTVFormPrerender':
-//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
-//            $result = $versionX->outputVersionsTab('vxTemplateVar');
-//        }
-//        break;
-//
-//
-//    case 'OnChunkFormPrerender':
-//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
-//            $result = $versionX->outputVersionsTab('vxChunk');
-//        }
-//        break;
-//
-//    case 'OnSnipFormPrerender':
-//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
-//            $result = $versionX->outputVersionsTab('vxSnippet');
-//        }
-//        break;
-//
-//    case 'OnPluginFormPrerender':
-//        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
-//            $result = $versionX->outputVersionsTab('vxPlugin');
-//        }
-//        break;
+    case 'OnTVFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
+            $versionX->outputVersionsTab($id, new TV($modx, $versionX));
+        }
+        break;
+
+    case 'OnChunkFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
+            $versionX->outputVersionsTab($id, new Chunk($modx, $versionX));
+        }
+        break;
+
+    case 'OnSnipFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
+            $versionX->outputVersionsTab($id, new Snippet($modx, $versionX));
+        }
+        break;
+
+    case 'OnPluginFormPrerender':
+        if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
+            $versionX->outputVersionsTab($id, new Plugin($modx, $versionX));
+        }
+        break;
 
 }
-//if (isset($result) && $result === true)
-//    return;
-//elseif (isset($result)) {
-//    $modx->log(modX::LOG_LEVEL_ERROR,'[VersionX2] An error occured. Event: '.$eventName.' - Error: '.($result === false) ? 'undefined error' : $result);
-//    return;
-//}
 
 return true;

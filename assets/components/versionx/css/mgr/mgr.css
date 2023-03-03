@@ -27,28 +27,36 @@
 }
 
 /* Tab specific */
-#versionx-resource-tab > div > .x-panel-body {
+#versionx-tab > div > .x-panel-body {
     padding: 0 !important;
 }
-#versionx-resource-tab > div > .x-panel-body > .x-panel,
-#versionx-resource-tab > div > .x-panel-body > .x-panel > .x-panel-bwrap > .x-panel-body {
+#versionx-tab > div > .x-panel-body > .x-panel,
+#versionx-tab > div > .x-panel-body > .x-panel > .x-panel-bwrap > .x-panel-body {
     width: 100% !important;
+}
+
+/* Window specific */
+.versionx-window .x-window-body {
+    padding:0;
+}
+.versionx-window .versionx-grid-deltas .x-grid3-scroller {
+    overflow-y: auto !important;
 }
 
 /* Deltas grid (very customised) */
 .versionx-search .x-form-trigger::before {
     content: '\f00d';
 }
-.versionx-grid-versions .x-grid3-cell-inner {
+.versionx-grid-deltas .x-grid3-cell-inner {
     padding: 10px 15px 10px 0 ;
 }
-.versionx-grid-versions .x-panel-body > div {
+.versionx-grid-deltas .x-panel-body > div {
     border: 0 !important;
 }
 .x-grid3-row {
     border: 0 !important;
 }
-.versionx-grid-versions .x-grid3-row-selected {
+.versionx-grid-deltas .x-grid3-row-selected {
     background: white !important;
 }
 
@@ -120,26 +128,26 @@
     display: flex;
     justify-content: end;
 }
-.versionx-grid-versions .x-panel-tbar,
-.versionx-grid-versions .x-panel-bbar {
+.versionx-grid-deltas .x-panel-tbar,
+.versionx-grid-deltas .x-panel-bbar {
     box-sizing: border-box;
     /*background: #f6f8fa;*/
 }
-.versionx-grid-versions .x-panel-tbar {
+.versionx-grid-deltas .x-panel-tbar {
     border-bottom: 1px solid #d0d7de;
 }
-.versionx-grid-versions .x-panel-bbar {
+.versionx-grid-deltas .x-panel-bbar {
     border-top: 1px solid #d0d7de;
 }
-.versionx-grid-versions .x-panel-tbar .x-toolbar,
-.versionx-grid-versions .x-panel-bbar .x-toolbar {
+.versionx-grid-deltas .x-panel-tbar .x-toolbar,
+.versionx-grid-deltas .x-panel-bbar .x-toolbar {
     box-sizing: border-box;
     width: 100% !important;
 }
-.versionx-grid-versions .x-panel-tbar .x-toolbar {
+.versionx-grid-deltas .x-panel-tbar .x-toolbar {
     padding: 15px 15px 10px 46px;
 }
-.versionx-grid-versions .x-panel-bbar .x-toolbar {
+.versionx-grid-deltas .x-panel-bbar .x-toolbar {
     padding: 5px 15px 15px 46px;
 }
 

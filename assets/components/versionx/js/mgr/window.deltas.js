@@ -10,22 +10,17 @@ VersionX.window.Deltas = function(config) {
         cls: 'versionx-window',
         autoHeight: false,
         constrain: true,
-        layout: 'form',
         buttons: [{
             text: config.cancelBtnText || _('cancel')
             ,scope: this
             ,handler: function() { config.closeAction !== 'close' ? this.hide() : this.close(); }
         }],
         fields: [{
-            xtype: 'modx-panel',
-            layout: 'anchor',
-            items: [{
-                xtype: 'versionx-grid-deltas',
-                principal_package: config.record.principal_package,
-                principal_class: config.record.principal_class,
-                principal: config.record.principal,
-                type: config.record.type,
-            }]
+            xtype: 'versionx-grid-deltas',
+            principal_package: config.record.principal_package,
+            principal_class: config.record.principal_class,
+            principal: config.record.principal,
+            type: config.record.type,
         }],
     });
     VersionX.window.Deltas.superclass.constructor.call(this, config);
@@ -41,10 +36,18 @@ VersionX.window.Deltas = function(config) {
         var height = Ext.getBody().getViewSize().height - 30;
         win.setSize(width, height);
         win.center();
+
+    });
+
+    // Force grid to fit window height
+    this.on('afterlayout', function(win) {
+        var grid = win.fp.find('itemId', 'versionx-grid-deltas')[0],
+            el = grid.getView().scroller.dom;
+         el.style.height = (win.getInnerHeight() - 130) + 'px';
     });
 
     // Make sure when resizing the browser window, the Ext window stays in bounds
-    Ext.EventManager.onWindowResize( function() {
+    Ext.EventManager.onWindowResize(function() {
         var height = Ext.getBody().getViewSize().height - 30;
         if (win.getHeight() > height) {
             win.setHeight(height);
@@ -55,7 +58,9 @@ VersionX.window.Deltas = function(config) {
             win.setWidth(width);
             win.center();
         }
-
+        var grid = win.fp.find('itemId', 'versionx-grid-deltas')[0],
+            el = grid.getView().scroller.dom;
+        el.style.height = (height - 225) + 'px';
     });
 }
 Ext.extend(VersionX.window.Deltas, MODx.Window);
