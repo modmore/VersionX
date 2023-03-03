@@ -63,6 +63,13 @@ $xpdo_meta_map['vxDelta']= array (
       'null' => false,
       'default' => 0,
     ),
+    'type_class' =>
+    array (
+       'dbtype' => 'varchar',
+       'precision' => '128',
+       'phptype' => 'string',
+       'null' => false,
+    ),
     'time_start' => 
     array (
       'dbtype' => 'timestamp',

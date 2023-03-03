@@ -1,12 +1,12 @@
-VersionX.grid.Versions = function(config) {
+VersionX.grid.Deltas = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: VersionX.config.connector_url,
-        id: 'versionx-grid-versions',
-        cls: 'versionx-grid-versions',
-        bodyCssClass: 'versionx-grid-versions-body',
+        id: 'versionx-grid-deltas',
+        cls: 'versionx-grid-deltas',
+        bodyCssClass: 'versionx-grid-deltas-body',
         baseParams: {
-            action: 'mgr/versions/getlist',
+            action: 'mgr/deltas/getlist',
             principal_package: config.principal_package,
             principal_class: config.principal_class,
             principal: config.principal,
@@ -54,11 +54,11 @@ VersionX.grid.Versions = function(config) {
             format: 'Y-m-d',
         }]
     });
-    VersionX.grid.Versions.superclass.constructor.call(this,config);
+    VersionX.grid.Deltas.superclass.constructor.call(this,config);
     this.config = config;
     this.on('click', this.handleClick, this);
 };
-Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
+Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
     search: function (tf, nv, ov) {
         let s = this.getStore();
         s.baseParams.query = tf.getValue();
@@ -78,7 +78,7 @@ Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
                     text: 'Are you sure you want to revert to the before state of this change?',
                     url: VersionX.config.connector_url,
                     params: {
-                        action: 'mgr/versions/revert',
+                        action: 'mgr/deltas/revert',
                         id: t.dataset.id,
                         principal: that.config['principal'],
                         type: that.config['type'],
@@ -126,7 +126,7 @@ Ext.extend(VersionX.grid.Versions, MODx.grid.Grid, {
 
     },
 });
-Ext.reg('versionx-grid-versions', VersionX.grid.Versions);
+Ext.reg('versionx-grid-deltas', VersionX.grid.Deltas);
 
 
 /**

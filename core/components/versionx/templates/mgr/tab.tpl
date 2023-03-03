@@ -16,7 +16,7 @@
                 items: [{
                     layout: 'anchor',
                     items: [{
-                        xtype: 'versionx-grid-versions',
+                        xtype: 'versionx-grid-deltas',
                         principal_package: '{$principal_package}',
                         principal_class: '{$principal_class}',
                         principal: '{$principal}',

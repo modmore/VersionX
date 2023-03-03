@@ -12,9 +12,8 @@ class Resource extends Type
     protected string $tabId = 'modx-resource-tabs';
     protected string $package = 'core';
     protected string $nameField = 'pagetitle';
-    protected string $mgrAction = 'resource/update';
     protected array $tabJavaScript = [
-        'common/grid.versions.js',
+        'grid.deltas.js',
     ];
     protected array $excludedFields = [
         'createdon',

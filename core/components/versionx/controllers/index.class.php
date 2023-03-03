@@ -1,24 +1,51 @@
 <?php
 
-require_once __DIR__ . '/base.class.php';
+use modmore\VersionX\VersionX;
 
-class VersionXIndexManagerController extends VersionXBaseManagerController
+class VersionXIndexManagerController extends modExtraManagerController
 {
+    /** @var VersionX */
+    protected VersionX $versionx;
+    protected string $cacheBust;
+
+    public function initialize()
+    {
+        $this->versionx = new VersionX($this->modx);
+
+        $this->cacheBust = '?vxv=' . urlencode($this->versionx->config['version']);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/versionx.class.js' . $this->cacheBust);
+        $this->addHtml('
+            <script type="text/javascript">
+                Ext.onReady(function() {
+                    VersionX.config = ' . json_encode($this->versionx->config) . ';
+                });
+            </script>
+        ');
+    }
+
     public function loadCustomCssJs()
     {
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/resources/panel.resources.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/resources/grid.resources.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/templates/panel.templates.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/templates/grid.templates.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/templatevars/panel.templatevars.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/templatevars/grid.templatevars.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/chunks/panel.chunks.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/chunks/grid.chunks.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/snippets/panel.snippets.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/snippets/grid.snippets.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/plugins/panel.plugins.js' . $this->cacheBust);
-        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/plugins/grid.plugins.js' . $this->cacheBust);
-        $this->addLastJavascript($this->versionx->config['js_url'] . 'mgr/action.index.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/grid.deltas.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/window.deltas.js' . $this->cacheBust);
+        $this->addJavascript($this->versionx->config['js_url'] . 'mgr/grid.objects.js' . $this->cacheBust);
+        $this->addLastJavascript($this->versionx->config['js_url'] . 'mgr/index.js' . $this->cacheBust);
         $this->addCss($this->versionx->config['css_url'] . 'mgr/mgr.css');
+
+
+    }
+
+    public function getLanguageTopics(): array
+    {
+        return ['versionx:default'];
+    }
+
+    public function getPageTitle(): ?string
+    {
+        return $this->modx->lexicon('versionx');
+    }
+
+    public function getTemplateFile(): string
+    {
+        return $this->versionx->config['core_path'] . 'templates/mgr/versionx.tpl';
     }
 }

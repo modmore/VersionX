@@ -136,6 +136,7 @@ class DeltaManager {
             'principal_package' => $type->getPackage(),
             'principal_class' => $type->getClass(),
             'principal' => $id,
+            'type_class' => get_class($type),
             'time_start' => $now,
             'time_end' => $now,
         ]);

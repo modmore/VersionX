@@ -1,4 +1,4 @@
-VersionX.window.Base = function(config) {
+VersionX.window.Deltas = function(config) {
     config = config || {};
     var win = this;
     Ext.applyIf(config, {
@@ -17,10 +17,18 @@ VersionX.window.Base = function(config) {
             ,handler: function() { config.closeAction !== 'close' ? this.hide() : this.close(); }
         }],
         fields: [{
-            html: '<h2>TESTING</h2>'
+            xtype: 'modx-panel',
+            layout: 'anchor',
+            items: [{
+                xtype: 'versionx-grid-deltas',
+                principal_package: config.record.principal_package,
+                principal_class: config.record.principal_class,
+                principal: config.record.principal,
+                type: config.record.type,
+            }]
         }],
     });
-    VersionX.window.Base.superclass.constructor.call(this, config);
+    VersionX.window.Deltas.superclass.constructor.call(this, config);
     // Set a large size that's still smaller than the viewport.
     this.on('afterrender', function(win) {
         var width = Ext.getBody().getViewSize().width - 200;
@@ -44,9 +52,5 @@ VersionX.window.Base = function(config) {
 
     });
 }
-Ext.extend(VersionX.window.Base, MODx.Window, {
-    getDeltas: function() {
-
-    },
-});
-Ext.reg('versionx-window-base', VersionX.window.Base);
+Ext.extend(VersionX.window.Deltas, MODx.Window);
+Ext.reg('versionx-window-deltas', VersionX.window.Deltas);

@@ -3,7 +3,6 @@
 namespace modmore\VersionX\Types;
 
 use modmore\VersionX\VersionX;
-use xPDO\Om\xPDOObject;
 
 abstract class Type
 {
@@ -27,11 +26,6 @@ abstract class Type
      * The path to the template file used when loading a tab on an object
      */
     protected string $tabTpl = 'mgr/tab';
-
-    /**
-     * @var string $mgrAction
-     */
-    protected string $mgrAction = '';
 
     /**
      * @var string $nameField
@@ -121,14 +115,6 @@ abstract class Type
     }
 
     /**
-     * @return string
-     */
-    public function getMgrAction(): string
-    {
-        return $this->mgrAction;
-    }
-
-    /**
      * @return array
      */
     public function getFieldOrder(): array
@@ -148,7 +134,7 @@ abstract class Type
     }
 
     /**
-     * Opportunity to ass additional \vxDeltaField objects to the array. For example, adding TV values when saving
+     * Opportunity to add additional \vxDeltaField objects to the array. For example, adding TV values when saving
      * a resource.
      * @param \vxDeltaField[] $fields
      * @param array $prevFields

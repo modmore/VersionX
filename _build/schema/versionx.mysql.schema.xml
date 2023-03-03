@@ -28,6 +28,7 @@
         <field key="principal_package" dbtype="varchar" precision="128" phptype="string" null="false" default="core" />
         <field key="principal_class" dbtype="varchar" precision="128" phptype="string" null="false" />
         <field key="principal" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="type_class" dbtype="varchar" precision="128" phptype="string" null="false" />
 
         <!--
             Deltas have a start and end time, because a delta may be the result of different
