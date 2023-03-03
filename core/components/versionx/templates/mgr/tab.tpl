@@ -34,8 +34,9 @@
                 }]
             });
             // Refresh versions grid after save
-            Ext.getCmp('{$panel_id}').on('success', function(o) {
-                Ext.getCmp('versionx-grid-deltas').refresh();
+            var panel = Ext.getCmp('{$panel_id}');
+            panel.on('success', function(o) {
+                panel.find('itemId', 'versionx-grid-deltas')[0].refresh();
             });
         }
     })();
