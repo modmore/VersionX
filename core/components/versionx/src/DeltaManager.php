@@ -112,7 +112,7 @@ class DeltaManager {
 
             $deltaField = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $field,
-                'field_type' => 'text',
+                'field_type' => $type->getFieldClass($field),
                 'before' => $prevValue,
                 'after' => $value,
                 'rendered_diff' => $this->calculateDiff($prevValue, $value),

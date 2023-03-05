@@ -202,6 +202,19 @@ abstract class Type
         $this->fieldClassMap[$name] = $fieldClass;
     }
 
+    public function getFieldClass(string $field)
+    {
+        if (strpos($field, '.') !== false) {
+            $field = explode('.', $field)[0];
+        }
+
+        if (array_key_exists($field, $this->fieldClassMap)) {
+            return $this->fieldClassMap[$field];
+        }
+
+        return \modmore\VersionX\Fields\Text::class;
+    }
+
     /**
      * @param \xPDOObject $object
      * @return array
