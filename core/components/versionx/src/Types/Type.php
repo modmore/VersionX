@@ -2,6 +2,7 @@
 
 namespace modmore\VersionX\Types;
 
+use modmore\VersionX\Fields\Field;
 use modmore\VersionX\VersionX;
 
 abstract class Type
@@ -136,6 +137,12 @@ abstract class Type
     }
 
     /**
+     * Any field not specified as a special class is treated as default text
+     * @var array
+     */
+    protected array $fieldClassMap = [];
+
+    /**
      * Runs before a delta is created. Return false to prevent creation.
      * @param string $time - Delta create time
      * @param \xPDOObject $object - The object to be versioned
@@ -180,5 +187,50 @@ abstract class Type
     public function afterRevert(array $fields, \xPDOObject $object, int $timestamp): \xPDOObject
     {
         return $object;
+    }
+
+    /**
+     * Sets a field name to a specialised field class to handle different format or rendering
+     * @param string $name
+     * @param Field $fieldClass
+     * @return void
+     */
+    public function registerFieldClass(string $name, Field $fieldClass)
+    {
+        $this->fieldClassMap[$name] = $fieldClass;
+    }
+
+    /**
+     * @param \xPDOObject $object
+     * @return array
+     */
+    public function getValues(\xPDOObject $object): array
+    {
+        $array = $object->toArray();
+
+        $values = [];
+        foreach ($array as $field => $value) {
+            $values[$field] = $value;
+
+            // Check if this field should be parsed by a dedicated field type
+            if (array_key_exists($field, $this->fieldClassMap)) {
+                $fieldObj = new $this->fieldClassMap[$field]($value, $field);
+                $values[$field] = $fieldObj->getValue();
+
+                // Some field types may output multiple values (such as the Properties field type)
+                // In this case merge the new values and unset the original
+                if (is_array($values[$field])) {
+                    $values = array_merge($values, $values[$field]);
+                    unset($values[$field]);
+                }
+            }
+            else {
+                // Set default field class as Text
+                $fieldObj = new \modmore\VersionX\Fields\Text($value, $field);
+                $values[$field] = $fieldObj->getValue();
+            }
+        }
+
+        return $values;
     }
 }

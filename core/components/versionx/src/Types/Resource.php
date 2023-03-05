@@ -30,6 +30,9 @@ class Resource extends Type
         'content',
         'alias',
     ];
+    protected array $fieldClassMap = [
+        'properties' => \modmore\VersionX\Fields\Properties::class,
+    ];
 
     public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
     {

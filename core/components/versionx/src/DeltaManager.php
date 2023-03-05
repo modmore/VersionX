@@ -69,10 +69,9 @@ class DeltaManager {
     /**
      * @param int $id
      * @param Type $type
-     * @param string $mode
      * @return \vxDelta|null
      */
-    public function createDelta(int $id, Type $type, string $mode = 'update'): ?\vxDelta
+    public function createDelta(int $id, Type $type): ?\vxDelta
     {
         $now = time();
 
@@ -83,7 +82,7 @@ class DeltaManager {
             return null;
         }
 
-        $data = $object->toArray();
+        $data = $type->getValues($object);
 
         // Get latest delta for this object
         $prevDelta = $this->getPreviousDelta($id, $type);
@@ -236,7 +235,7 @@ class DeltaManager {
             'Delta.id = vxDeltaField.delta',
         ]);
 
-        $data = $object->toArray();
+        $data = $type->getValues($object);
 
         $objectFields = [];
         foreach ($data as $field => $value) {
@@ -269,9 +268,6 @@ class DeltaManager {
         ]);
 
         $c->groupby('vxDeltaField.field');
-
-//        $c->prepare();
-//        $this->modx->log(1, $c->toSQL());
 
         return $this->modx->getCollection(\vxDeltaField::class, $c);
     }

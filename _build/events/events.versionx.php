@@ -22,12 +22,14 @@ $e = [
 ];
 
 foreach ($e as $ev) {
+    /** @var \modX|\MODX\Revolution\modX $modx */
     $events[$ev] = $modx->newObject('modPluginEvent');
-    $events[$ev]->fromArray(array(
+    $events[$ev]->fromArray([
         'event' => $ev,
-        'priority' => 0,
+        // Lower priority to make sure other plugins do their processing first.
+        'priority' => 10,
         'propertyset' => 0
-    ),'',true,true);
+    ],'',true,true);
 }
 
 return $events;

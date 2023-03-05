@@ -34,6 +34,7 @@ $xpdo_meta_map['vxDelta']= array (
     'principal_package' => 'core',
     'principal_class' => NULL,
     'principal' => 0,
+    'type_class' => NULL,
     'time_start' => 'CURRENT_TIMESTAMP',
     'time_end' => 'CURRENT_TIMESTAMP',
   ),
