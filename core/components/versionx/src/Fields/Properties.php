@@ -6,7 +6,7 @@ class Properties extends Field
 {
     public function parse()
     {
-        $this->value = $this->splitPropertyValues($this->value, $this->fieldName);
+        $this->value = self::splitPropertyValues($this->value, $this->fieldName);
     }
 
     /**
@@ -15,7 +15,7 @@ class Properties extends Field
      * @param array $fields
      * @return array
      */
-    public function splitPropertyValues(array $arrayField, string $name = '', array &$fields = []): array
+    public static function splitPropertyValues(array $arrayField, string $name = '', array &$fields = []): array
     {
         $arrays = [];
         foreach ($arrayField as $field => $value) {
@@ -32,9 +32,35 @@ class Properties extends Field
         }
 
         foreach ($arrays as $field => $value) {
-            $this->splitPropertyValues($value, "{$name}.{$field}", $fields);
+            self::splitPropertyValues($value, "{$name}.{$field}", $fields);
         }
 
         return $fields;
     }
+
+    /**
+     * @param \vxDeltaField $field
+     * @param mixed $data
+     * @return mixed
+     */
+    public static function revertPropertyValue(\vxDeltaField $field, &$data)
+    {
+        $pieces = explode('.', $field->get('field'));
+        $last = end($pieces);
+        foreach ($pieces as $piece) {
+            if (!is_array($data) || !array_key_exists($piece, $data)) {
+                continue;
+            }
+
+            if ($piece === $last) {
+                $data[$piece] = $field->get('before');
+            }
+            else {
+                $data = &$data[$piece];
+            }
+        }
+
+        return $data;
+    }
+
 }

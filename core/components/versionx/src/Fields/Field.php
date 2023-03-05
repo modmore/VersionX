@@ -11,7 +11,10 @@ abstract class Field
 
     function __construct($value, $name = '', $options = [])
     {
-        $this->value = $value;
+        if (!$this->value) {
+            $this->value = $value;
+        }
+
         $this->fieldName = $name;
         $this->parse();
     }

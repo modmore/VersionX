@@ -2,6 +2,8 @@
 
 namespace modmore\VersionX\Types;
 
+use modmore\VersionX\Fields\Properties;
+
 if (class_exists(\MODX\Revolution\modTemplateVarResource::class)) {
     class_alias(\MODX\Revolution\modTemplateVarResource::class, \modTemplateVarResource::class);
 }
@@ -13,9 +15,6 @@ class Resource extends Type
     protected string $panelId = 'modx-panel-resource';
     protected string $package = 'core';
     protected string $nameField = 'pagetitle';
-    protected array $tabJavaScript = [
-        'grid.deltas.js',
-    ];
     protected array $excludedFields = [
         'createdon',
         'createdby',
@@ -31,7 +30,7 @@ class Resource extends Type
         'alias',
     ];
     protected array $fieldClassMap = [
-        'properties' => \modmore\VersionX\Fields\Properties::class,
+        'properties' => Properties::class,
     ];
 
     public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
@@ -80,16 +79,34 @@ class Resource extends Type
         // Get any TVs attached to this resource
         $tvs = $object->getMany('TemplateVars');
 
-        // Match field and TV names, updating TVs with delta field values.
+        $propFields = [];
         foreach ($fields as $field) {
+            $name = $field->get('field');
+
+            // Match field and TV names, updating TVs with delta field values.
             foreach ($tvs as $tv) {
-                if ($tv->get('name') === $field->get('field')) {
+                if ($tv->get('name') === $name) {
                     // Get actual TV object to save, now that we have the id.
                     $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
                         'tmplvarid' => $tv->get('id'),
                     ]);
                     $tvObj->set('value', $field->get('before'));
                     $tvObj->save();
+                }
+            }
+
+            // Collate Properties fields
+            if (strpos($name, '.') !== false) {
+                $propField = explode('.', $name)[0];
+                if (
+                    array_key_exists($propField, $this->fieldClassMap)
+                    && $this->fieldClassMap[$propField] === Properties::class
+                ) {
+                    // Take current properties field value and insert the "before" version at matching array keys.
+                    $data = $object->get($propField);
+                    Properties::revertPropertyValue($field, $data);
+                    $object->set($propField, $data);
+                    $object->save();
                 }
             }
         }

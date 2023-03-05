@@ -9,9 +9,6 @@ class Template extends Type
     protected string $panelId = 'modx-panel-template';
     protected string $package = 'core';
     protected string $nameField = 'templatename';
-    protected array $tabJavaScript = [
-        'grid.deltas.js',
-    ];
     protected array $fieldOrder = [
         'templatename',
         'description',

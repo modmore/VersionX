@@ -102,7 +102,7 @@ class DeltaManager {
                 continue;
             }
 
-            $value = Utils::toString($value);
+            $value = Utils::flattenArray($value);
 
             // If a previous delta exists, get the "after" value. Otherwise, use a blank string.
             $prevValue = '';

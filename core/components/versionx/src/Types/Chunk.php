@@ -9,9 +9,6 @@ class Chunk extends Type
     protected string $panelId = 'modx-panel-chunk';
     protected string $package = 'core';
     protected string $nameField = 'name';
-    protected array $tabJavaScript = [
-        'grid.deltas.js',
-    ];
     protected array $fieldOrder = [
         'name',
         'description',

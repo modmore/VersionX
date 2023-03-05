@@ -43,7 +43,9 @@ abstract class Type
      * @var array $tabJavaScript
      * An array of file names that should be included when loading a VersionX tab on an object
      */
-    protected array $tabJavaScript = [];
+    protected array $tabJavaScript = [
+        'grid.deltas.js',
+    ];
 
     /**
      * @var array $excludedFields

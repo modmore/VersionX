@@ -10,14 +10,14 @@ class Utils {
      *
      * @return string
      */
-    public static function toString($array = []): string
+    public static function flattenArray($array = []): string
     {
         if (!is_array($array)) return (string)$array;
 
         $string = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $value = '{' . self::toString($value) .'}';
+                $value = '{' . self::flattenArray($value) .'}';
             }
             if (!empty($value)) {
                 $string[] = $key . ':' . $value;
