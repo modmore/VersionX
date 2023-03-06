@@ -6,7 +6,9 @@ class Properties extends Field
 {
     public function parse()
     {
-        $this->value = self::splitPropertyValues($this->value, $this->fieldName);
+        if (is_array($this->value)) {
+            $this->value = self::splitPropertyValues($this->value, $this->fieldName);
+        }
     }
 
     /**

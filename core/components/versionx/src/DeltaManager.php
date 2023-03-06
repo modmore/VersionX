@@ -9,7 +9,7 @@ use MODX\Revolution\modX;
 class DeltaManager {
     /** @var \modX|modX */
     public $modx;
-    protected array $diffOptions = [
+    protected static array $diffOptions = [
         // show how many neighbor lines
         // Differ::CONTEXT_ALL can be used to show the whole file
         'context' => 3,
@@ -18,7 +18,7 @@ class DeltaManager {
         // ignore whitespace difference
         'ignoreWhitespace' => false,
     ];
-    protected array $rendererOptions = [
+    protected static array $rendererOptions = [
         // how detailed the rendered HTML in-line diff is? (none, line, word, char)
         'detailLevel' => 'char',
         // show a separator between different diff hunks in HTML renderers
@@ -27,9 +27,26 @@ class DeltaManager {
         'showHeader' => false,
     ];
 
+
     function __construct($modx)
     {
         $this->modx = $modx;
+    }
+
+    /**
+     * @param string $prevValue
+     * @param string $value
+     * @return string
+     */
+    public static function calculateDiff(string $prevValue, string $value): string
+    {
+        return DiffHelper::calculate(
+            $prevValue,
+            $value,
+            'Inline',
+            self::$diffOptions,
+            self::$rendererOptions,
+        );
     }
 
     /**
@@ -48,22 +65,6 @@ class DeltaManager {
         ]);
         $c->sortby('Delta.time_end', 'desc');
         return $this->modx->getObject(\vxDelta::class, $c);
-    }
-
-    /**
-     * @param string $prevValue
-     * @param string $value
-     * @return string
-     */
-    public function calculateDiff(string $prevValue, string $value): string
-    {
-        return DiffHelper::calculate(
-            $prevValue,
-            $value,
-            'Inline',
-            $this->diffOptions,
-            $this->rendererOptions,
-        );
     }
 
     /**
@@ -102,7 +103,12 @@ class DeltaManager {
                 continue;
             }
 
-            $value = Utils::flattenArray($value);
+            // Load the field type to access any extra rendering options
+            $fieldType = $type->getFieldClass($field);
+            $fieldTypeObj = new $fieldType($value);
+
+            //
+            $value = Utils::flattenArray($fieldTypeObj->getValue());
 
             // If a previous delta exists, get the "after" value. Otherwise, use a blank string.
             $prevValue = '';
@@ -112,10 +118,10 @@ class DeltaManager {
 
             $deltaField = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $field,
-                'field_type' => $type->getFieldClass($field),
+                'field_type' => $fieldType,
                 'before' => $prevValue,
                 'after' => $value,
-                'rendered_diff' => $this->calculateDiff($prevValue, $value),
+                'rendered_diff' => $fieldTypeObj->render($prevValue, $value),
             ]);
 
             $fieldsToSave[] = $deltaField;

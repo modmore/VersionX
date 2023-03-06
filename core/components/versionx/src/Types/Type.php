@@ -202,6 +202,11 @@ abstract class Type
         $this->fieldClassMap[$name] = $fieldClass;
     }
 
+    /**
+     * Looks up a matching field type class by column name
+     * @param string $field
+     * @return mixed|string
+     */
     public function getFieldClass(string $field)
     {
         if (strpos($field, '.') !== false) {
@@ -216,6 +221,7 @@ abstract class Type
     }
 
     /**
+     *
      * @param \xPDOObject $object
      * @return array
      */

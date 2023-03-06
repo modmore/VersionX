@@ -2,11 +2,14 @@
 
 namespace modmore\VersionX\Fields;
 
+use modmore\VersionX\DeltaManager;
+
 abstract class Field
 {
     /** @var mixed $value */
     protected $value;
     protected string $fieldName = '';
+    protected array $options = [];
     protected string $tpl = '';
 
     function __construct($value, $name = '', $options = [])
@@ -16,6 +19,7 @@ abstract class Field
         }
 
         $this->fieldName = $name;
+        $this->options = $options;
         $this->parse();
     }
 
@@ -43,8 +47,13 @@ abstract class Field
     /**
      * @return string
      */
-    protected function getTpl(): string
+    public function getTpl(): string
     {
         return $this->tpl;
+    }
+
+    public function render($prevValue, $newValue, $options = []): string
+    {
+        return DeltaManager::calculateDiff($prevValue, $newValue);
     }
 }

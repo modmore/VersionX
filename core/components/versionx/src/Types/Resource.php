@@ -2,7 +2,9 @@
 
 namespace modmore\VersionX\Types;
 
+use modmore\VersionX\Fields\Image;
 use modmore\VersionX\Fields\Properties;
+use modmore\VersionX\Fields\Text;
 
 if (class_exists(\MODX\Revolution\modTemplateVarResource::class)) {
     class_alias(\MODX\Revolution\modTemplateVarResource::class, \modTemplateVarResource::class);
@@ -32,6 +34,11 @@ class Resource extends Type
     protected array $fieldClassMap = [
         'properties' => Properties::class,
     ];
+    protected array $tvTypes = [
+        Image::class => [
+            'image',
+        ],
+    ];
 
     public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
     {
@@ -57,12 +64,26 @@ class Resource extends Type
                 }
             }
 
+            // Check if TV type is assigned to a VersionX field type
+            $fieldObj = null;
+            foreach ($this->tvTypes as $class => $types) {
+                if (in_array($tv->get('type'), $types)) {
+                    // If found, include the TV and resource id as config options to assist with rendering
+                    $fieldObj = new $class($tv->get('value'), $tv->get('name'));
+                }
+            }
+
+            // Default Text if no VersionX field types matched
+            if (!isset($fieldObj)) {
+                $fieldObj = new Text($tv->get('value'));
+            }
+
             $field = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $tv->get('name'),
                 'field_type' => $tv->get('type'),
                 'before' => $prevValue,
                 'after' => $tv->get('value'),
-                'rendered_diff' => $this->versionX->deltas()->calculateDiff($prevValue, $tv->get('value')),
+                'rendered_diff' => $fieldObj->render($prevValue, $fieldObj->getValue()),
             ]);
 
             $fields[] = $field;
@@ -79,11 +100,11 @@ class Resource extends Type
         // Get any TVs attached to this resource
         $tvs = $object->getMany('TemplateVars');
 
-        $propFields = [];
         foreach ($fields as $field) {
             $name = $field->get('field');
 
             // Match field and TV names, updating TVs with delta field values.
+            // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
             foreach ($tvs as $tv) {
                 if ($tv->get('name') === $name) {
                     // Get actual TV object to save, now that we have the id.
@@ -110,8 +131,6 @@ class Resource extends Type
                 }
             }
         }
-
-        // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
 
         return $object;
     }
