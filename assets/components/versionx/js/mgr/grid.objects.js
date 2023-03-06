@@ -18,6 +18,7 @@ VersionX.grid.Objects = function(config) {
             {name: 'time_end', type: 'string'},
             {name: 'user_id', type: 'int'},
             {name: 'username', type: 'string'},
+            {name: 'name', type: 'string'},
         ],
         paging: true,
         remoteSort: true,
@@ -28,6 +29,11 @@ VersionX.grid.Objects = function(config) {
         },{
             header: 'When',
             dataIndex: 'time_end',
+            width: 20,
+            sortable: true,
+        },{
+            header: 'Name',
+            dataIndex: 'name',
             width: 20,
             sortable: true,
         },{
