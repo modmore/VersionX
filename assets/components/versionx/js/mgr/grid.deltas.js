@@ -29,7 +29,7 @@ VersionX.grid.Deltas = function(config) {
         autoExpandColumn: 'time_end',
         autoHeight: true,
         columns: [{
-            header: 'Versions',//_('versionx.content_id',{what: _('resource')}),
+            header: 'Versions',
             dataIndex: 'time_end',
             renderer: this.diffColumnRenderer
         },{
@@ -92,12 +92,37 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     },
                 });
             break;
+
+            case 'versionx-diff-revert-all-btn':
+                let time = Ext.util.Format.date(t.dataset.time_start,
+                    `${MODx.config.manager_date_format} H:i:s`)
+                MODx.msg.confirm({
+                    title: 'Time Travel: Revert All Fields to ' + time,
+                    text: `<p>Are you sure you want to revert all fields to this point in time?
+                               <strong>${time}</strong>
+                           </p>`,
+                    url: VersionX.config.connector_url,
+                    params: {
+                        action: 'mgr/deltas/revert',
+                        id: t.dataset.id,
+                        time_travel: true,
+                        principal: that.config['principal'],
+                        type: that.config['type'],
+                    },
+                    listeners: {
+                        'success': {fn: function() {
+                                location.reload();
+                            }, scope:this}
+                    },
+                });
+                break;
         }
     },
     diffColumnRenderer: function(v, p, rec) {
         let diffs = rec.get('diffs'),
             version_id = rec.get('id'),
             name = rec.get('username'),
+            time_start = rec.get('time_start'),
             time_end = rec.get('time_end');
 
         return `<div class="versionx-grid-diff-container">
@@ -114,6 +139,9 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                 <button class="versionx-diff-revert-btn x-button x-button-small primary-button" type="button" data-id="${version_id}">
                                     Revert
                                 </button>
+                                <button class="versionx-diff-revert-all-btn x-button x-button-small primary-button" type="button" data-time_start="${time_start}" data-id="${version_id}">
+                                    Revert
+                                </button>
                                 <div class="versionx-diff-menu"></div>
                             </div>
                         </div>
@@ -128,50 +156,3 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
     },
 });
 Ext.reg('versionx-grid-deltas', VersionX.grid.Deltas);
-
-
-/**
- * @param config
- * @constructor
- */
-VersionX.field.Search = function(config) {
-    config = config || {};
-    var grid = config.grid || null
-
-    Ext.applyIf(config, {
-        xtype: 'trigger',
-        name: 'query',
-        emptyText: _('versionx.search'),
-        width: 250,
-        ctCls: 'versionx-search',
-        onTriggerClick: function() {
-            this.reset();
-            this.fireEvent('click');
-        },
-        listeners: {
-            'render': {
-                fn: function(cmp) {
-                    new Ext.KeyMap(cmp.getEl(), {
-                        key: Ext.EventObject.ENTER,
-                        fn: function() {
-                            grid.search(this);
-                            return true;
-                        },
-                        scope: cmp
-                    });
-                },
-                scope:grid,
-            },
-            'click': {
-                fn: function(trigger) {
-                    grid.getStore().setBaseParam('query', '');
-                    grid.getStore().load();
-                },
-                scope: grid
-            }
-        }
-    });
-    VersionX.field.Search.superclass.constructor.call(this,config);
-};
-Ext.extend(VersionX.field.Search, Ext.form.TriggerField);
-Ext.reg('versionx-field-search', VersionX.field.Search);
