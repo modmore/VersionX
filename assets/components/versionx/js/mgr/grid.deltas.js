@@ -151,24 +151,35 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     <div class="versionx-grid-timeline">
                         <div class="versionx-grid-timeline-point"></div>
                     </div>
-                    <div class="versionx-grid-column-diff">
-                        <div class="versionx-diff-top-row">
-                            <div class="versionx-diff-top-row-left">
-                                <div class="versionx-diff-times">${time_end}</div>
-                                <div class="versionx-diff-usernames">${name}</div>
+                    <div class="versionx-grid-main-col">
+                        <button 
+                            class="versionx-diff-revert-all-btn x-button x-button-small primary-button" 
+                            type="button" 
+                            data-time_start="${time_start}" 
+                            data-id="${version_id}"
+                        >
+                            <i class="icon icon-clock-o"></i> &nbsp;&nbsp;Revert to this point in time
+                        </button>
+                        <div class="versionx-grid-column-diff">
+                            <div class="versionx-diff-top-row">
+                                <div class="versionx-diff-top-row-left">
+                                    <div class="versionx-diff-times">${time_end}</div>
+                                    <div class="versionx-diff-usernames">${name}</div>
+                                </div>
+                                <div class="versionx-diff-top-row-right">
+                                    <button 
+                                        class="versionx-diff-revert-btn x-button x-button-small primary-button" 
+                                        type="button" 
+                                        data-id="${version_id}"
+                                    >
+                                        Revert
+                                    </button>
+                                    <div class="versionx-diff-menu"></div>
+                                </div>
                             </div>
-                            <div class="versionx-diff-top-row-right">
-                                <button class="versionx-diff-revert-btn x-button x-button-small primary-button" type="button" data-id="${version_id}">
-                                    Revert
-                                </button>
-                                <button class="versionx-diff-revert-all-btn x-button x-button-small primary-button" type="button" data-time_start="${time_start}" data-id="${version_id}">
-                                    Time Travel
-                                </button>
-                                <div class="versionx-diff-menu"></div>
+                            <div class="versionx-diff-list">
+                                ${diffs}
                             </div>
-                        </div>
-                        <div class="versionx-diff-list">
-                            ${diffs}
                         </div>
                     </div>
                 </div>`;
