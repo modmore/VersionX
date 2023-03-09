@@ -94,6 +94,9 @@ class Resource extends Type
 
     public function afterRevert(array $fields, \xPDOObject $object, string $deltaTimestamp, string $now): \xPDOObject
     {
+        // Be sure to call the parent method, so we get common field processing
+        $object = parent::afterRevert($fields, $object, $deltaTimestamp, $now);
+
         $object->set('editedby', $this->modx->user->get('id'));
         $object->set('editedon', $now);
 
@@ -112,8 +115,7 @@ class Resource extends Type
         );
 
         foreach ($fields as $field) {
-            $this->revertTVValues($field, $tvs);
-            $this->savePropertiesFields($field, $object);
+            $this->revertTVValues($field, $object, $tvs);
         }
 
         $object->save();
@@ -124,10 +126,11 @@ class Resource extends Type
     /**
      * Match field and TV names, updating TVs with delta field values.
      * @param \vxDeltaField $field
+     * @param \xPDOObject $object
      * @param array $tvs
      * @return void
      */
-    protected function revertTVValues(\vxDeltaField $field, array $tvs)
+    protected function revertTVValues(\vxDeltaField $field, \xPDOObject $object, array $tvs)
     {
         // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
         foreach ($tvs as $tv) {
@@ -135,7 +138,9 @@ class Resource extends Type
                 // Get actual TV object to save, now that we have the id.
                 $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
                     'tmplvarid' => $tv->get('id'),
+                    'contentid' => $object->get('id'),
                 ]);
+                $this->modx->log(1, print_r($tvObj->toArray(), true));
                 $tvObj->set('value', $field->get('before'));
                 $tvObj->save();
             }

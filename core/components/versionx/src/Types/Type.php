@@ -190,6 +190,10 @@ abstract class Type
      */
     public function afterRevert(array $fields, \xPDOObject $object, string $deltaTimestamp, string $now): \xPDOObject
     {
+        foreach ($fields as $field) {
+            $this->savePropertiesFields($field, $object);
+        }
+
         return $object;
     }
 
