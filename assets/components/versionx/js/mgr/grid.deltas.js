@@ -73,9 +73,9 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             that = this;
 
         switch (className) {
-            case 'versionx-field-diff-undo-btn':
+            case 'versionx-field-diff-undo-btn-' + t.dataset.field_id:
                 MODx.msg.confirm({
-                    title: 'Undo',
+                    title: 'Confirm Undo',
                     text: 'Are you sure you want to undo this change?',
                     url: VersionX.config.connector_url,
                     params: {
@@ -97,11 +97,11 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             case 'versionx-diff-revert-btn':
                 MODx.msg.confirm({
                     title: 'Confirm Revert',
-                    text: 'Are you sure you want to revert to the before state of this change?',
+                    text: 'Are you sure you want to revert all changes in this delta?',
                     url: VersionX.config.connector_url,
                     params: {
                         action: 'mgr/deltas/revert',
-                        id: t.dataset.id,
+                        delta_id: t.dataset.id,
                         what: 'revert_delta',
                         principal: that.config['principal'],
                         type: that.config['type'],
@@ -125,7 +125,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     url: VersionX.config.connector_url,
                     params: {
                         action: 'mgr/deltas/revert',
-                        id: t.dataset.id,
+                        delta_id: t.dataset.id,
                         what: 'revert_all',
                         principal: that.config['principal'],
                         type: that.config['type'],

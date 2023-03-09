@@ -182,6 +182,7 @@
 }
 .versionx-field-diff-undo-btn span {
     border-bottom: 1px solid #232323;
+    pointer-events: none;
 }
 .versionx-field-diff-undo-btn i {
     margin-right: 10px;
