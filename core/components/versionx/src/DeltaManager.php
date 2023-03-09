@@ -208,7 +208,7 @@ class DeltaManager {
             return;
         }
 
-        $object = $type->afterRevert($fields, $object, $now);
+        $object = $type->afterRevert($fields, $object, $now, null, $fieldId);
 
         // Create new delta showing the reverted changes
         $delta = $this->createDelta($objectId, $type);

@@ -92,10 +92,10 @@ class Resource extends Type
         return $fields;
     }
 
-    public function afterRevert(array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null): \xPDOObject
+    public function afterRevert(array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null, $fieldId = null): \xPDOObject
     {
         // Be sure to call the parent method, so we get common field processing
-        $object = parent::afterRevert($fields, $object, $deltaTimestamp, $now);
+        $object = parent::afterRevert($fields, $object, $now, $deltaTimestamp, $fieldId);
 
         $object->set('editedby', $this->modx->user->get('id'));
         $object->set('editedon', $now);
@@ -103,16 +103,19 @@ class Resource extends Type
         // Get any TVs attached to this resource
         $tvs = $object->getMany('TemplateVars');
 
-        $tvNames = [];
-        foreach ($tvs as $tv) {
-            $tvNames[] = $tv->get('name');
-        }
+        // If a field id wasn't specified, find matching fields to revert
+        if (!$fieldId) {
+            $tvNames = [];
+            foreach ($tvs as $tv) {
+                $tvNames[] = $tv->get('name');
+            }
 
-        // Grab the most recent TV value fields
-        $fields = array_merge(
-            $fields,
-            $this->versionX->deltas()->getClosestDeltaFields($this, $object, $tvNames, $deltaTimestamp)
-        );
+            // Grab the most recent TV value fields
+            $fields = array_merge(
+                $fields,
+                $this->versionX->deltas()->getClosestDeltaFields($this, $object, $tvNames, $deltaTimestamp)
+            );
+        }
 
         foreach ($fields as $field) {
             $this->revertTVValues($field, $object, $tvs);
@@ -140,7 +143,7 @@ class Resource extends Type
                     'tmplvarid' => $tv->get('id'),
                     'contentid' => $object->get('id'),
                 ]);
-                $this->modx->log(1, print_r($tvObj->toArray(), true));
+
                 $tvObj->set('value', $field->get('before'));
                 $tvObj->save();
             }
