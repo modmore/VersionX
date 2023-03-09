@@ -24,9 +24,14 @@ class VersionXObjectRevertProcessor extends modProcessor
 
     public function process()
     {
-        $this->versionX->deltas()->revertObject($this->deltaId, $this->objectId, $this->type);
+        if ($this->getProperty('time_travel')) {
+            $this->versionX->deltas()->timeTravel($this->deltaId, $this->objectId, $this->type);
+        }
+        else {
+            $this->versionX->deltas()->revertObject($this->deltaId, $this->objectId, $this->type);
+        }
 
-        return $this->success();
+        return $this->success('Success');
     }
 }
 return 'VersionXObjectRevertProcessor';

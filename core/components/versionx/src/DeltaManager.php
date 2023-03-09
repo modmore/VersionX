@@ -204,6 +204,69 @@ class DeltaManager {
     }
 
     /**
+     * Reverts all fields back to a point in time
+     * @param int $deltaId
+     * @param int $objectId
+     * @param Type $type
+     * @return void
+     */
+    public function timeTravel(int $deltaId, int $objectId, Type $type)
+    {
+        $now = time();
+
+        // Grab the object to revert
+        $object = $this->modx->getObject($type->getClass(), [
+            'id' => $objectId,
+        ]);
+        if (!$object) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,
+                '[VersionX] Time travel: Error loading ' . $type->getClass() . ' with id: ' . $objectId);
+            return;
+        }
+
+        // Get the selected delta
+        $delta = $this->modx->getObject(\vxDelta::class, [
+            'id' => $deltaId,
+        ]);
+
+        // Get all fields in the selected delta
+        $selectedFields = [];
+        foreach ($this->modx->getCollection(\vxDeltaField::class, ['delta' => $deltaId]) as $item) {
+            $selectedFields[$item->get('field')] = $item;
+        }
+
+        // Get the delta timestamp
+        $timestamp = $delta->get('time_start');
+
+        // Get the latest version of every field prior to the "time_start" on the selected delta
+        $latest = [];
+        foreach ($this->getLatestFieldVersions($type, $object, [], $timestamp) as $item) {
+            $latest[$item->get('field')] = $item;
+        }
+
+        // Overwrite any latest fields that match with the selected variant
+        $fields = array_merge($latest, $selectedFields);
+
+        // Apply the field values to the object
+        // When time travelling we want to revert to all fields to the after value of a specific point in time.
+        foreach ($fields as $field) {
+            $object->set($field->get('field'), $field->get('after'));
+        }
+
+        // Now save the object
+        if (!$object->save(true)) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,
+                '[VersionX] Time travel: Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
+            return;
+        }
+
+        $object = $type->afterRevert($fields, $object, $now, 'after');
+
+        // Create new delta showing the reverted changes
+        $delta = $this->createDelta($objectId, $type);
+    }
+
+    /**
      * @param array $fieldsToSave
      * @return array
      */
@@ -232,9 +295,10 @@ class DeltaManager {
      * @param Type $type
      * @param \xPDOObject $object
      * @param array $fieldNames
+     * @param $timestamp
      * @return array
      */
-    public function getLatestFieldVersions(Type $type, \xPDOObject $object, array $fieldNames = []): array
+    public function getLatestFieldVersions(Type $type, \xPDOObject $object, array $fieldNames = [], $timestamp = null): array
     {
         $c = $this->modx->newQuery(\vxDeltaField::class);
         $c->innerJoin(\vxDelta::class, 'Delta', [
@@ -263,6 +327,11 @@ class DeltaManager {
         }
         else {
             $where['vxDeltaField.field:IN'] = $objectFields;
+        }
+
+        // If a timestamp is passed, get the latest at or before that time
+        if ($timestamp) {
+            $where['Delta.time_end:<='] = $timestamp;
         }
 
         $c->where($where);

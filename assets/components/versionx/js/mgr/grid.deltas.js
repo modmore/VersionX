@@ -140,7 +140,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                     Revert
                                 </button>
                                 <button class="versionx-diff-revert-all-btn x-button x-button-small primary-button" type="button" data-time_start="${time_start}" data-id="${version_id}">
-                                    Revert
+                                    Time Travel
                                 </button>
                                 <div class="versionx-diff-menu"></div>
                             </div>

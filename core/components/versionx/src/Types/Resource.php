@@ -92,46 +92,41 @@ class Resource extends Type
         return $fields;
     }
 
-    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp): \xPDOObject
+    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp, string $when = 'before'): \xPDOObject
     {
         $object->set('editedby', $this->modx->user->get('id'));
         $object->set('editedon', $timestamp);
 
         // Get any TVs attached to this resource
         $tvs = $object->getMany('TemplateVars');
-
         foreach ($fields as $field) {
-            $name = $field->get('field');
-
-            // Match field and TV names, updating TVs with delta field values.
-            // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
-            foreach ($tvs as $tv) {
-                if ($tv->get('name') === $name) {
-                    // Get actual TV object to save, now that we have the id.
-                    $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
-                        'tmplvarid' => $tv->get('id'),
-                    ]);
-                    $tvObj->set('value', $field->get('before'));
-                    $tvObj->save();
-                }
-            }
-
-            // Collate Properties fields
-            if (strpos($name, '.') !== false) {
-                $propField = explode('.', $name)[0];
-                if (
-                    array_key_exists($propField, $this->fieldClassMap)
-                    && $this->fieldClassMap[$propField] === Properties::class
-                ) {
-                    // Take current properties field value and insert the "before" version at matching array keys.
-                    $data = $object->get($propField);
-                    Properties::revertPropertyValue($field, $data);
-                    $object->set($propField, $data);
-                    $object->save();
-                }
-            }
+            $this->saveTVValues($field, $tvs, $timestamp, $when);
+            $this->savePropertiesFields($field, $object, $when);
         }
 
         return $object;
+    }
+
+    /**
+     * Match field and TV names, updating TVs with delta field values.
+     * @param \vxDeltaField $field
+     * @param array $tvs
+     * @param int $timestamp
+     * @param string $when - "before" or "after"
+     * @return void
+     */
+    protected function saveTVValues(\vxDeltaField $field, array $tvs, int $timestamp, string $when = 'before')
+    {
+        // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
+        foreach ($tvs as $tv) {
+            if ($tv->get('name') === $field->get('field')) {
+                // Get actual TV object to save, now that we have the id.
+                $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
+                    'tmplvarid' => $tv->get('id'),
+                ]);
+                $tvObj->set('value', $field->get($when));
+                $tvObj->save();
+            }
+        }
     }
 }

@@ -43,9 +43,10 @@ class Properties extends Field
     /**
      * @param \vxDeltaField $field
      * @param mixed $data
+     * @param string $when - "before" or "after" value to revert to.
      * @return mixed
      */
-    public static function revertPropertyValue(\vxDeltaField $field, &$data)
+    public static function revertPropertyValue(\vxDeltaField $field, &$data, string $when = 'before')
     {
         $pieces = explode('.', $field->get('field'));
         $last = end($pieces);
@@ -55,7 +56,7 @@ class Properties extends Field
             }
 
             if ($piece === $last) {
-                $data[$piece] = $field->get('before');
+                $data[$piece] = $field->get($when);
             }
             else {
                 $data = &$data[$piece];

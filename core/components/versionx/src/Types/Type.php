@@ -3,6 +3,7 @@
 namespace modmore\VersionX\Types;
 
 use modmore\VersionX\Fields\Field;
+use modmore\VersionX\Fields\Properties;
 use modmore\VersionX\VersionX;
 
 abstract class Type
@@ -184,9 +185,10 @@ abstract class Type
      * @param array $fields - the delta fields that are being saved to the object
      * @param \xPDOObject $object - the object being reverted
      * @param int $timestamp
+     * @param string $when - "before" or "after" field value that should be used
      * @return \xPDOObject
      */
-    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp): \xPDOObject
+    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp, string $when = 'before'): \xPDOObject
     {
         return $object;
     }
@@ -254,4 +256,31 @@ abstract class Type
 
         return $values;
     }
+
+    /**
+     * Detect a Field of type Properties and handle saving to the object
+     * @param \vxDeltaField $field
+     * @param \xPDOObject $object
+     * @param string $when - "before" or "after" field value that should be saved to the object
+     * @return void
+     */
+    protected function savePropertiesFields(\vxDeltaField $field, \xPDOObject $object, string $when = 'before')
+    {
+        // Collate Properties fields
+        $name = $field->get('field');
+        if (strpos($name, '.') !== false) {
+            $propField = explode('.', $name)[0];
+            if (
+                array_key_exists($propField, $this->fieldClassMap)
+                && $this->fieldClassMap[$propField] === Properties::class
+            ) {
+                // Take current properties field value and insert the "before" version at matching array keys.
+                $data = $object->get($propField);
+                Properties::revertPropertyValue($field, $data, $when);
+                $object->set($propField, $data);
+                $object->save();
+            }
+        }
+    }
+
 }
