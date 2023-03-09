@@ -73,8 +73,28 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             that = this;
 
         switch (className) {
+            case 'versionx-field-diff-undo-btn':
+                MODx.msg.confirm({
+                    title: 'Undo',
+                    text: 'Are you sure you want to undo this change?',
+                    url: VersionX.config.connector_url,
+                    params: {
+                        action: 'mgr/deltas/revert',
+                        field_id: t.dataset.field_id,
+                        delta_id: t.dataset.delta_id,
+                        what: 'revert_field',
+                        principal: that.config['principal'],
+                        type: that.config['type'],
+                    },
+                    listeners: {
+                        'success': {fn: function() {
+                                location.reload();
+                            }, scope:this}
+                    },
+                });
+                break;
+
             case 'versionx-diff-revert-btn':
-                // Confirm revert with user, and send request
                 MODx.msg.confirm({
                     title: 'Confirm Revert',
                     text: 'Are you sure you want to revert to the before state of this change?',
@@ -82,6 +102,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     params: {
                         action: 'mgr/deltas/revert',
                         id: t.dataset.id,
+                        what: 'revert_delta',
                         principal: that.config['principal'],
                         type: that.config['type'],
                     },
@@ -97,7 +118,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 let time = Ext.util.Format.date(t.dataset.time_start,
                     `${MODx.config.manager_date_format} H:i:s`)
                 MODx.msg.confirm({
-                    title: 'Time Travel: Revert All Fields to ' + time,
+                    title: 'Revert All Fields to ' + time,
                     text: `<p>Are you sure you want to revert all fields to this point in time?
                                <strong>${time}</strong>
                            </p>`,
@@ -105,7 +126,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     params: {
                         action: 'mgr/deltas/revert',
                         id: t.dataset.id,
-                        time_travel: true,
+                        what: 'revert_all',
                         principal: that.config['principal'],
                         type: that.config['type'],
                     },

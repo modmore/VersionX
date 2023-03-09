@@ -167,13 +167,14 @@ class DeltaManager {
     }
 
     /**
-     * Reverts object to a delta state. After reverting, a new delta is created to represent the change.
+     * Reverts object to a delta (or singular field) state. A new delta is then created to represent the change.
      * @param int $deltaId
      * @param int $objectId
      * @param Type $type
+     * @param null $fieldId
      * @return void
      */
-    public function revertObject(int $deltaId, int $objectId, Type $type): void
+    public function revertObject(int $deltaId, int $objectId, Type $type, $fieldId = null): void
     {
         $now = time();
 
@@ -182,10 +183,20 @@ class DeltaManager {
             'id' => $objectId,
         ]);
 
-        // Get all fields for this delta
-        $fields = $this->modx->getCollection(\vxDeltaField::class, [
-            'delta' => $deltaId,
-        ]);
+        $fields = [];
+        // If the $fieldId is set, get the singular field
+        if ($fieldId) {
+            $fields[] = $this->modx->getObject(\vxDeltaField::class, [
+                'id' => $fieldId,
+            ]);
+        }
+        else {
+            // Get all fields for this delta
+            $fields = $this->modx->getCollection(\vxDeltaField::class, [
+                'delta' => $deltaId,
+            ]);
+        }
+
         foreach ($fields as $field) {
             $object->set($field->get('field'), $field->get('before'));
         }

@@ -4,8 +4,9 @@ class VersionXObjectRevertProcessor extends modProcessor
 {
     public \modmore\VersionX\VersionX $versionX;
     public \modmore\VersionX\Types\Type $type;
-    protected int $objectId;
     protected int $deltaId;
+    protected int $objectId;
+    protected int $fieldId;
 
     public function initialize(): bool
     {
@@ -16,19 +17,28 @@ class VersionXObjectRevertProcessor extends modProcessor
         $typeClass = '\\' . $this->getProperty('type');
         $this->type = new $typeClass($this->modx, $this->versionX);
 
-        $this->deltaId = $this->getProperty('id');
         $this->objectId = $this->getProperty('principal');
+        $this->deltaId = $this->getProperty('delta_id');
+        $this->fieldId = $this->getProperty('field_id');
 
         return $init;
     }
 
     public function process()
     {
-        if ($this->getProperty('time_travel')) {
-            $this->versionX->deltas()->timeTravel($this->deltaId, $this->objectId, $this->type);
-        }
-        else {
-            $this->versionX->deltas()->revertObject($this->deltaId, $this->objectId, $this->type);
+        switch ($this->getProperty('what')) {
+            // Reverts a single field change on the object
+            case 'revert_field':
+                $this->versionX->deltas()->revertObject($this->deltaId, $this->objectId, $this->type, $this->fieldId);
+                break;
+            // Reverts all field changes on the object that are related to the delta
+            case 'revert_delta':
+                $this->versionX->deltas()->revertObject($this->deltaId, $this->objectId, $this->type);
+                break;
+            // Reverts all fields on the object to the end_time on the delta
+            case 'revert_all':
+                $this->versionX->deltas()->timeTravel($this->deltaId, $this->objectId, $this->type);
+                break;
         }
 
         return $this->success('Success');

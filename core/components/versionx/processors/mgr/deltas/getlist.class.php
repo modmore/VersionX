@@ -84,6 +84,9 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
             $this->modx->smarty->assign([
                 'name' => $field->get('field'),
                 'diff' => $field->get('rendered_diff'),
+                'field_id' => $field->get('id'),
+                'delta_id' => $field->get('delta'),
+                'undo' => $this->modx->lexicon('versionx.undo'),
             ]);
             $row['diffs'] .= $this->modx->smarty->fetch($diffFile);
         }
