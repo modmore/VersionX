@@ -28,7 +28,7 @@ VersionX.grid.Deltas = function(config) {
         hideHeaders: true,
         autoExpandColumn: 'time_end',
         autoHeight: true,
-        limit: 10,
+        pageSize: 10,
         columns: [{
             header: 'Versions',
             dataIndex: 'time_end',
@@ -158,7 +158,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                             data-time_start="${time_start}" 
                             data-id="${version_id}"
                         >
-                            <i class="icon icon-clock-o"></i> &nbsp;&nbsp;Revert to this point in time
+                            <i class="icon icon-undo"></i> &nbsp;&nbsp;Revert all fields to this point in time
                         </button>
                         <div class="versionx-grid-column-diff">
                             <div class="versionx-diff-top-row">
@@ -172,7 +172,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                         type="button" 
                                         data-id="${version_id}"
                                     >
-                                        Revert
+                                        Revert these changes
                                     </button>
                                     <div class="versionx-diff-menu"></div>
                                 </div>

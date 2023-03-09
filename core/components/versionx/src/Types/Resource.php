@@ -92,7 +92,7 @@ class Resource extends Type
         return $fields;
     }
 
-    public function afterRevert(array $fields, \xPDOObject $object, string $deltaTimestamp, string $now): \xPDOObject
+    public function afterRevert(array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null): \xPDOObject
     {
         // Be sure to call the parent method, so we get common field processing
         $object = parent::afterRevert($fields, $object, $deltaTimestamp, $now);
