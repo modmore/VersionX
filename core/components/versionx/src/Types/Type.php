@@ -184,11 +184,11 @@ abstract class Type
      * Runs before object being reverted is saved.
      * @param array $fields - the delta fields that are being saved to the object
      * @param \xPDOObject $object - the object being reverted
-     * @param int $timestamp
-     * @param string $when - "before" or "after" field value that should be used
+     * @param string $deltaTimestamp
+     * @param string $now
      * @return \xPDOObject
      */
-    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp, string $when = 'before'): \xPDOObject
+    public function afterRevert(array $fields, \xPDOObject $object, string $deltaTimestamp, string $now): \xPDOObject
     {
         return $object;
     }
@@ -223,13 +223,17 @@ abstract class Type
     }
 
     /**
-     *
+     * Gets the values from an object, optionally including extra fields
      * @param \xPDOObject $object
+     * @param array $extraFields
      * @return array
      */
-    public function getValues(\xPDOObject $object): array
+    public function getValues(\xPDOObject $object, array $extraFields = []): array
     {
         $array = $object->toArray();
+
+        // Include any extra fields
+        $array = array_merge($array, $extraFields);
 
         $values = [];
         foreach ($array as $field => $value) {
@@ -261,10 +265,9 @@ abstract class Type
      * Detect a Field of type Properties and handle saving to the object
      * @param \vxDeltaField $field
      * @param \xPDOObject $object
-     * @param string $when - "before" or "after" field value that should be saved to the object
      * @return void
      */
-    protected function savePropertiesFields(\vxDeltaField $field, \xPDOObject $object, string $when = 'before')
+    protected function savePropertiesFields(\vxDeltaField $field, \xPDOObject $object)
     {
         // Collate Properties fields
         $name = $field->get('field');
@@ -276,7 +279,7 @@ abstract class Type
             ) {
                 // Take current properties field value and insert the "before" version at matching array keys.
                 $data = $object->get($propField);
-                Properties::revertPropertyValue($field, $data, $when);
+                Properties::revertPropertyValue($field, $data, 'before');
                 $object->set($propField, $data);
                 $object->save();
             }

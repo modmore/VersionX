@@ -51,7 +51,7 @@ class VersionXObjectRevertProcessor extends modProcessor
 
             case 'revert_all':
                 // Reverts all fields on the object to the end_time on the delta
-                $this->versionX->deltas()->timeTravel($this->deltaId, $this->objectId, $this->type);
+                $this->versionX->deltas()->revertToPointInTime($this->deltaId, $this->objectId, $this->type);
                 break;
         }
 

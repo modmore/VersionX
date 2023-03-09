@@ -51,7 +51,7 @@ class Resource extends Type
         }
 
         // Grab the most recent TV value fields
-        $prevFields = $this->versionX->deltas()->getLatestFieldVersions($this, $object, $tvNames);
+        $prevFields = $this->versionX->deltas()->getClosestDeltaFields($this, $object, $tvNames);
 
         // Loop through TVs matching previous delta fields by TV name
         /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */
@@ -80,7 +80,7 @@ class Resource extends Type
 
             $field = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $tv->get('name'),
-                'field_type' => $tv->get('type'),
+                'field_type' => get_class($fieldObj),
                 'before' => $prevValue,
                 'after' => $tv->get('value'),
                 'rendered_diff' => $fieldObj->render($prevValue, $fieldObj->getValue()),
@@ -92,17 +92,31 @@ class Resource extends Type
         return $fields;
     }
 
-    public function afterRevert(array $fields, \xPDOObject $object, int $timestamp, string $when = 'before'): \xPDOObject
+    public function afterRevert(array $fields, \xPDOObject $object, string $deltaTimestamp, string $now): \xPDOObject
     {
         $object->set('editedby', $this->modx->user->get('id'));
-        $object->set('editedon', $timestamp);
+        $object->set('editedon', $now);
 
         // Get any TVs attached to this resource
         $tvs = $object->getMany('TemplateVars');
-        foreach ($fields as $field) {
-            $this->saveTVValues($field, $tvs, $timestamp, $when);
-            $this->savePropertiesFields($field, $object, $when);
+
+        $tvNames = [];
+        foreach ($tvs as $tv) {
+            $tvNames[] = $tv->get('name');
         }
+
+        // Grab the most recent TV value fields
+        $fields = array_merge(
+            $fields,
+            $this->versionX->deltas()->getClosestDeltaFields($this, $object, $tvNames, $deltaTimestamp)
+        );
+
+        foreach ($fields as $field) {
+            $this->revertTVValues($field, $tvs);
+            $this->savePropertiesFields($field, $object);
+        }
+
+        $object->save();
 
         return $object;
     }
@@ -111,11 +125,9 @@ class Resource extends Type
      * Match field and TV names, updating TVs with delta field values.
      * @param \vxDeltaField $field
      * @param array $tvs
-     * @param int $timestamp
-     * @param string $when - "before" or "after"
      * @return void
      */
-    protected function saveTVValues(\vxDeltaField $field, array $tvs, int $timestamp, string $when = 'before')
+    protected function revertTVValues(\vxDeltaField $field, array $tvs)
     {
         // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
         foreach ($tvs as $tv) {
@@ -124,7 +136,7 @@ class Resource extends Type
                 $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
                     'tmplvarid' => $tv->get('id'),
                 ]);
-                $tvObj->set('value', $field->get($when));
+                $tvObj->set('value', $field->get('before'));
                 $tvObj->save();
             }
         }

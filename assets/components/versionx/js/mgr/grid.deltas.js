@@ -28,6 +28,7 @@ VersionX.grid.Deltas = function(config) {
         hideHeaders: true,
         autoExpandColumn: 'time_end',
         autoHeight: true,
+        limit: 10,
         columns: [{
             header: 'Versions',
             dataIndex: 'time_end',

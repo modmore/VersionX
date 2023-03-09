@@ -74,7 +74,7 @@ class DeltaManager {
      */
     public function createDelta(int $id, Type $type): ?\vxDelta
     {
-        $now = time();
+        $now = date('Y-m-d H:i:s');
 
         // Get current principal object
         $object = $this->modx->getObject($type->getClass(), ['id' => $id]);
@@ -91,7 +91,7 @@ class DeltaManager {
         // Grab all the fields for the latest delta
         $prevFields = [];
         if ($prevDelta) {
-            foreach ($this->getLatestFieldVersions($type, $object) as $item) {
+            foreach ($this->getClosestDeltaFields($type, $object) as $item) {
                 // Index array by field names
                 $prevFields[$item->get('field')] = $item;
             }
@@ -176,7 +176,7 @@ class DeltaManager {
      */
     public function revertObject(int $deltaId, int $objectId, Type $type, $fieldId = null): void
     {
-        $now = time();
+        $now = date('Y-m-d H:i:s');
 
         // Grab the object to revert
         $object = $this->modx->getObject($type->getClass(), [
@@ -221,9 +221,9 @@ class DeltaManager {
      * @param Type $type
      * @return void
      */
-    public function timeTravel(int $deltaId, int $objectId, Type $type)
+    public function revertToPointInTime(int $deltaId, int $objectId, Type $type)
     {
-        $now = time();
+        $now = date('Y-m-d H:i:s');
 
         // Grab the object to revert
         $object = $this->modx->getObject($type->getClass(), [
@@ -240,28 +240,19 @@ class DeltaManager {
             'id' => $deltaId,
         ]);
 
-        // Get all fields in the selected delta
-        $selectedFields = [];
-        foreach ($this->modx->getCollection(\vxDeltaField::class, ['delta' => $deltaId]) as $item) {
-            $selectedFields[$item->get('field')] = $item;
-        }
-
         // Get the delta timestamp
         $timestamp = $delta->get('time_start');
 
-        // Get the latest version of every field prior to the "time_start" on the selected delta
-        $latest = [];
-        foreach ($this->getLatestFieldVersions($type, $object, [], $timestamp) as $item) {
-            $latest[$item->get('field')] = $item;
+        // Get the first version of every field after the "time_end" on the selected delta
+        $fields = [];
+        foreach ($this->getClosestDeltaFields($type, $object, [], $timestamp) as $item) {
+            $fields[$item->get('field')] = $item;
         }
-
-        // Overwrite any latest fields that match with the selected variant
-        $fields = array_merge($latest, $selectedFields);
 
         // Apply the field values to the object
         // When time travelling we want to revert to all fields to the after value of a specific point in time.
         foreach ($fields as $field) {
-            $object->set($field->get('field'), $field->get('after'));
+            $object->set($field->get('field'), $field->get('before'));
         }
 
         // Now save the object
@@ -271,7 +262,7 @@ class DeltaManager {
             return;
         }
 
-        $object = $type->afterRevert($fields, $object, $now, 'after');
+        $object = $type->afterRevert($fields, $object, $timestamp, $now);
 
         // Create new delta showing the reverted changes
         $delta = $this->createDelta($objectId, $type);
@@ -306,10 +297,10 @@ class DeltaManager {
      * @param Type $type
      * @param \xPDOObject $object
      * @param array $fieldNames
-     * @param $timestamp
+     * @param string $timestamp
      * @return array
      */
-    public function getLatestFieldVersions(Type $type, \xPDOObject $object, array $fieldNames = [], $timestamp = null): array
+    public function getClosestDeltaFields(Type $type, \xPDOObject $object, array $fieldNames = [], string $timestamp = null): array
     {
         $c = $this->modx->newQuery(\vxDeltaField::class);
         $c->innerJoin(\vxDelta::class, 'Delta', [
@@ -340,20 +331,28 @@ class DeltaManager {
             $where['vxDeltaField.field:IN'] = $objectFields;
         }
 
-        // If a timestamp is passed, get the latest at or before that time
+        $select = [
+            'field' => 'DISTINCT(vxDeltaField.field)',
+        ];
+
+        // If a timestamp is passed, get the fields directly after if they exist
         if ($timestamp) {
-            $where['Delta.time_end:<='] = $timestamp;
+            $where['Delta.time_start:>'] = $timestamp;
+            $select['time_end'] = 'MIN(Delta.time_end)';
+            $select['id'] = 'MIN(vxDeltaField.id)';
+        }
+        // Without a timestamp, we just get the latest (closest to now)
+        else {
+            $select['time_end'] = 'MAX(Delta.time_end)';
+            $select['id'] = 'MAX(vxDeltaField.id)';
         }
 
         $c->where($where);
-
-        $c->select([
-            'field' => 'DISTINCT(vxDeltaField.field)',
-            'id' => 'MAX(vxDeltaField.id)',
-            'time_end' => 'MAX(Delta.time_end)'
-        ]);
-
+        $c->select($select);
         $c->groupby('vxDeltaField.field');
+
+//        $c->prepare();
+//        $this->modx->log(1, $c->toSQL());
 
         return $this->modx->getCollection(\vxDeltaField::class, $c);
     }
