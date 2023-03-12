@@ -2,6 +2,7 @@
 
 namespace modmore\VersionX\Types;
 
+use modmore\VersionX\Enums\RevertAction;
 use modmore\VersionX\Fields\Image;
 use modmore\VersionX\Fields\Properties;
 use modmore\VersionX\Fields\Text;
@@ -88,10 +89,10 @@ class Resource extends Type
         return $fields;
     }
 
-    public function afterRevert(array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null, $fieldId = null): \xPDOObject
+    public function afterRevert(string $action, array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null): \xPDOObject
     {
         // Be sure to call the parent method, so we get common field processing
-        $object = parent::afterRevert($fields, $object, $now, $deltaTimestamp, $fieldId);
+        $object = parent::afterRevert($action, $fields, $object, $now, $deltaTimestamp);
 
         $object->set('editedby', $this->modx->user->get('id'));
         $object->set('editedon', $now);
@@ -99,8 +100,8 @@ class Resource extends Type
         // Get any TVs attached to this resource
         $tvs = $object->getMany('TemplateVars');
 
-        // If a field id wasn't specified, find matching fields to revert
-        if (!$fieldId) {
+        // Get TVs not included in selected delta if RevertAction::ALL
+        if ($action === RevertAction::ALL) {
             $tvNames = [];
             foreach ($tvs as $tv) {
                 $tvNames[] = $tv->get('name');

@@ -4,6 +4,7 @@ namespace modmore\VersionX;
 
 use Jfcherng\Diff\DiffHelper;
 use modmore\VersionX\Types\Type;
+use modmore\VersionX\Enums\RevertAction;
 use MODX\Revolution\modX;
 
 class DeltaManager {
@@ -189,12 +190,14 @@ class DeltaManager {
             $fields[] = $this->modx->getObject(\vxDeltaField::class, [
                 'id' => $fieldId,
             ]);
+            $action = RevertAction::SINGLE;
         }
         else {
             // Get all fields for this delta
             $fields = $this->modx->getCollection(\vxDeltaField::class, [
                 'delta' => $deltaId,
             ]);
+            $action = RevertAction::DELTA;
         }
 
         foreach ($fields as $field) {
@@ -208,7 +211,7 @@ class DeltaManager {
             return;
         }
 
-        $object = $type->afterRevert($fields, $object, $now, null, $fieldId);
+        $object = $type->afterRevert($action, $fields, $object, $now, null);
 
         // Create new delta showing the reverted changes
         $delta = $this->createDelta($objectId, $type);
@@ -262,7 +265,7 @@ class DeltaManager {
             return;
         }
 
-        $object = $type->afterRevert($fields, $object, $now, $timestamp);
+        $object = $type->afterRevert(RevertAction::ALL, $fields, $object, $now, $timestamp);
 
         // Create new delta showing the reverted changes
         $delta = $this->createDelta($objectId, $type);

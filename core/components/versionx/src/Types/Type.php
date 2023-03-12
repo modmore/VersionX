@@ -182,14 +182,14 @@ abstract class Type
 
     /**
      * Runs before object being reverted is saved.
+     * @param string $action - 'all', 'delta', or 'single'
      * @param array $fields - the delta fields that are being saved to the object
      * @param \xPDOObject $object - the object being reverted
      * @param string $now
      * @param string|null $deltaTimestamp
-     * @param null $fieldId
      * @return \xPDOObject
      */
-    public function afterRevert(array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null, $fieldId = null): \xPDOObject
+    public function afterRevert(string $action, array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null): \xPDOObject
     {
         foreach ($fields as $field) {
             $this->savePropertiesFields($field, $object);
