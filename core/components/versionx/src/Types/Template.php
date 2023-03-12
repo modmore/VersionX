@@ -4,7 +4,7 @@ namespace modmore\VersionX\Types;
 
 class Template extends Type
 {
-    protected string $class = 'modTemplate';
+    protected string $class = \modTemplate::class;
     protected string $tabId = 'modx-template-tabs';
     protected string $panelId = 'modx-panel-template';
     protected string $package = 'core';

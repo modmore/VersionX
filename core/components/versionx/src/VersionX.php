@@ -3,6 +3,30 @@
 namespace modmore\VersionX;
 
 use modmore\VersionX\Types\Type;
+use MODX\Revolution\modCategory;
+use MODX\Revolution\modChunk;
+use MODX\Revolution\modPlugin;
+use MODX\Revolution\modSnippet;
+use MODX\Revolution\modTemplate;
+use MODX\Revolution\modTemplateVarResource;
+use MODX\Revolution\modX;
+
+// Set aliases for MODX 2.x <-> 3.x compatibility
+if (class_exists(modTemplateVarResource::class)) {
+    class_alias(modTemplateVarResource::class, \modTemplateVarResource::class);
+}
+if (class_exists(modTemplate::class)) {
+    class_alias(modTemplate::class, \modTemplate::class);
+}
+if (class_exists(modChunk::class)) {
+    class_alias(modChunk::class, \modChunk::class);
+}
+if (class_exists(modPlugin::class)) {
+    class_alias(modPlugin::class, \modPlugin::class);
+}
+if (class_exists(modSnippet::class)) {
+    class_alias(modSnippet::class, \modSnippet::class);
+}
 
 class VersionX {
     public $modx;
@@ -12,7 +36,7 @@ class VersionX {
     public string $charset;
 
     /**
-     * @param \modX|\MODX\Revolution\modX $modx
+     * @param \modX|modX $modx
      * @param array $config
      */
     public function __construct($modx,array $config = []) {
@@ -133,7 +157,7 @@ class VersionX {
         if (isset($this->categoryCache[$id])) {
             return $this->categoryCache[$id];
         }
-        /* @var \MODX\Revolution\modCategory|\modCategory $category */
+        /* @var modCategory|\modCategory $category */
         $category = $this->modx->getObject('modCategory',(int)$id);
         if ($category) {
             return $this->categoryCache[$id] = $category->get('category') . " ($id)";

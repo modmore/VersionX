@@ -4,7 +4,7 @@ namespace modmore\VersionX\Types;
 
 class TV extends Type
 {
-    protected string $class = 'modTemplateVar';
+    protected string $class = \modTemplateVar::class;
     protected string $tabId = 'modx-tv-tabs';
     protected string $panelId = 'modx-panel-tv';
     protected string $package = 'core';

@@ -6,13 +6,9 @@ use modmore\VersionX\Fields\Image;
 use modmore\VersionX\Fields\Properties;
 use modmore\VersionX\Fields\Text;
 
-if (class_exists(\MODX\Revolution\modTemplateVarResource::class)) {
-    class_alias(\MODX\Revolution\modTemplateVarResource::class, \modTemplateVarResource::class);
-}
-
 class Resource extends Type
 {
-    protected string $class = 'modResource';
+    protected string $class = \modResource::class;
     protected string $tabId = 'modx-resource-tabs';
     protected string $panelId = 'modx-panel-resource';
     protected string $package = 'core';
