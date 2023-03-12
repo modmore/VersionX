@@ -33,6 +33,7 @@ VersionX is free software, however your help is needed to keep the development g
 
 $_lang['versionx.search'] = 'Search...';
 $_lang['versionx.undo'] = 'undo';
+$_lang['versionx.optimize_storage'] = 'Optimize Storage';
 
 $_lang['versionx.common.empty'] = '&lt;empty&gt;';
 $_lang['versionx.common.version-details'] = 'Version Details';

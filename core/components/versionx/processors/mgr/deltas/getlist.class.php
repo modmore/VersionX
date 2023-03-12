@@ -15,7 +15,7 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
         $this->versionX = new VersionX($this->modx);
 
         $typeClass = '\\' . $this->getProperty('type');
-        $this->type = new $typeClass($this->modx, $this->versionX);
+        $this->type = new $typeClass($this->versionX);
 
         $this->modx->getService('smarty', 'smarty.modSmarty', '', [
             'template_dir' => $this->versionX->config['templates_path'],

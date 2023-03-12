@@ -84,7 +84,7 @@ class VersionX {
     public function deltas(): DeltaManager
     {
         if (!$this->deltaManager) {
-            $this->deltaManager = new DeltaManager($this->modx);
+            $this->deltaManager = new DeltaManager($this);
         }
         return $this->deltaManager;
     }

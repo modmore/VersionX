@@ -9,7 +9,8 @@
     },
     "require": {
         "php": "^7.4 || 8.*",
-        "jfcherng/php-diff": "^6.13"
+        "jfcherng/php-diff": "^6.13",
+        "nesbot/carbon": "^2.66"
     },
     "autoload": {
         "psr-4": {

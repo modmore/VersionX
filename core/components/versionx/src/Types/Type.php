@@ -61,9 +61,9 @@ abstract class Type
      */
     protected array $fieldOrder = [];
 
-    function __construct(\modX $modx, VersionX $versionX)
+    function __construct(VersionX $versionX)
     {
-        $this->modx = $modx;
+        $this->modx = $versionX->modx;
         $this->versionX = $versionX;
     }
 

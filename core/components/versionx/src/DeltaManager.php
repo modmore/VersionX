@@ -8,6 +8,7 @@ use modmore\VersionX\Enums\RevertAction;
 use MODX\Revolution\modX;
 
 class DeltaManager {
+    public VersionX $versionX;
     /** @var \modX|modX */
     public $modx;
     protected static array $diffOptions = [
@@ -29,9 +30,10 @@ class DeltaManager {
     ];
 
 
-    function __construct($modx)
+    function __construct(VersionX $versionX)
     {
-        $this->modx = $modx;
+        $this->versionX = $versionX;
+        $this->modx = $versionX->modx;
     }
 
     /**
@@ -300,7 +302,7 @@ class DeltaManager {
      * @param Type $type
      * @param \xPDOObject $object
      * @param array $fieldNames
-     * @param string $timestamp
+     * @param string|null $timestamp
      * @return array
      */
     public function getClosestDeltaFields(Type $type, \xPDOObject $object, array $fieldNames = [], string $timestamp = null): array
@@ -358,5 +360,11 @@ class DeltaManager {
 //        $this->modx->log(1, $c->toSQL());
 
         return $this->modx->getCollection(\vxDeltaField::class, $c);
+    }
+
+    public function optimizeDeltas()
+    {
+        $deltaMerger = new DeltaMerger($this->versionX);
+        $deltaMerger->run();
     }
 }

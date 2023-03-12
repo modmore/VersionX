@@ -15,7 +15,7 @@ class VersionXObjectRevertProcessor extends modProcessor
         $this->versionX = new VersionX($this->modx);
 
         $typeClass = '\\' . $this->getProperty('type');
-        $this->type = new $typeClass($this->modx, $this->versionX);
+        $this->type = new $typeClass($this->versionX);
 
         $objectId = $this->getProperty('principal');
         if (empty($objectId)) {

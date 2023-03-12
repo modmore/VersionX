@@ -38,43 +38,43 @@ switch($eventName) {
     case 'OnDocFormSave':
     case 'FredOnFredResourceSave':
         if ($modx->getOption('versionx.enable.resources',null,true) && $id) {
-            $type = new Resource($modx, $versionX);
-            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+            $type = new Resource($versionX);
+            $result = $versionX->deltas()->createDelta($id, $type);
         }
         break;
 
     case 'OnTempFormSave':
         if ($modx->getOption('versionx.enable.templates',null,true) && $id) {
-            $type = new Template($modx, $versionX);
-            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+            $type = new Template($versionX);
+            $result = $versionX->deltas()->createDelta($id, $type);
         }
         break;
 
     case 'OnTVFormSave':
         if ($modx->getOption('versionx.enable.templatevariables',null,true) && $id) {
-            $type = new TV($modx, $versionX);
-            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+            $type = new TV($versionX);
+            $result = $versionX->deltas()->createDelta($id, $type);
         }
         break;
 
     case 'OnChunkFormSave':
         if ($modx->getOption('versionx.enable.chunks',null,true) && $id) {
-            $type = new Chunk($modx, $versionX);
-            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+            $type = new Chunk($versionX);
+            $result = $versionX->deltas()->createDelta($id, $type);
         }
         break;
 
     case 'OnSnipFormSave':
         if ($modx->getOption('versionx.enable.snippets',null,true) && $id) {
-            $type = new Snippet($modx, $versionX);
-            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+            $type = new Snippet($versionX);
+            $result = $versionX->deltas()->createDelta($id, $type);
         }
         break;
 
     case 'OnPluginFormSave':
         if ($modx->getOption('versionx.enable.plugins',null,true) && $id) {
-            $type = new Plugin($modx, $versionX);
-            $result = $versionX->deltas()->createDelta($id, $type, $mode);
+            $type = new Plugin($versionX);
+            $result = $versionX->deltas()->createDelta($id, $type);
         }
         break;
 
@@ -87,37 +87,37 @@ switch($eventName) {
     /* Add tabs */
     case 'OnDocFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.resource',null,true)) {
-            $versionX->outputVersionsTab($id, new Resource($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Resource($versionX));
         }
         break;
 
     case 'OnTempFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.template',null,true)) {
-            $versionX->outputVersionsTab($id, new Template($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Template($versionX));
         }
         break;
 
     case 'OnTVFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.templatevariable',null,true)) {
-            $versionX->outputVersionsTab($id, new TV($modx, $versionX));
+            $versionX->outputVersionsTab($id, new TV($versionX));
         }
         break;
 
     case 'OnChunkFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.chunk',null,true)) {
-            $versionX->outputVersionsTab($id, new Chunk($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Chunk($versionX));
         }
         break;
 
     case 'OnSnipFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.snippet',null,true)) {
-            $versionX->outputVersionsTab($id, new Snippet($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Snippet($versionX));
         }
         break;
 
     case 'OnPluginFormPrerender':
         if ($mode == modSystemEvent::MODE_UPD && $modx->getOption('versionx.formtabs.plugin',null,true)) {
-            $versionX->outputVersionsTab($id, new Plugin($modx, $versionX));
+            $versionX->outputVersionsTab($id, new Plugin($versionX));
         }
         break;
 
