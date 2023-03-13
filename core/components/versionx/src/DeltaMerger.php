@@ -71,7 +71,7 @@ class DeltaMerger {
             $type = new $class($this->versionX);
 
             foreach ($this->epochs as $epoch) {
-                $this->mergeEpochDeltas($object, $type, $epoch);
+                $this->mergeDeltas($object, $type, $epoch);
             }
         }
 
@@ -118,7 +118,7 @@ class DeltaMerger {
         return $objects;
     }
 
-    protected function mergeEpochDeltas(\xPDOObject $object, Type $type, array $epoch)
+    protected function mergeDeltas(\xPDOObject $object, Type $type, array $epoch)
     {
         // Get all deltas in the epoch sorted by time_end
         $deltas = $this->getEpochDeltas($object, $type, $epoch);
@@ -135,24 +135,8 @@ class DeltaMerger {
         $deltaToKeep->set('time_start', $firstDelta->get('time_start'));
         $deltaToKeep->save();
 
-
-        $deltaToKeepFields = $this->modx->getCollection(\vxDeltaField::class, [
-            'delta' => $id,
-        ]);
-        $firstDeltaFields = $this->modx->getCollection(\vxDeltaField::class, [
-            'delta' => $firstDelta->get('id'),
-        ]);
-
-        foreach ($deltaToKeepFields as $deltaToKeepField) {
-            foreach ($firstDeltaFields as $firstDeltaField) {
-                // If we've got a matching first delta field, get the before value
-                if ($firstDeltaField->get('field') === $deltaToKeepField->get('field')) {
-                    $deltaToKeepField->set('before', $firstDeltaField->get('before'));
-                    $deltaToKeepField->save();
-                }
-            }
-        }
-
+        // Merge delta fields for the epoch, and discard the orphans
+        $fields = $this->mergeFields($deltas, $deltaToKeep);
 
         $deltaToKeepEditors = $this->modx->getCollection(\vxDeltaEditor::class, [
             'delta' => $id,
@@ -192,17 +176,54 @@ class DeltaMerger {
     }
 
     /**
+     * @param array $deltas
+     * @param \vxDelta $deltaToKeep
+     * @return array
+     */
+    protected function mergeFields(array $deltas, \vxDelta $deltaToKeep): array
+    {
+        $mergedFields = [];
+        $keepIds = [];
+        foreach ($deltas as $delta) {
+            $fields = $this->modx->getCollection(\vxDeltaField::class, [
+                'delta' => $delta,
+            ]);
+            foreach ($fields as $field) {
+                $name = $field->get('field');
+                // If the field name has already been set, just update the 'after' value
+                if (isset($mergedFields[$name])) {
+                    $mergedFields[$name]->set('after', $field->get('after'));
+                }
+                // Otherwise set the initial delta field
+                else {
+                    $mergedFields[$name] = $field;
+                }
+
+                // Set the last delta id on the field
+                $mergedFields[$name]->set('delta', $deltaToKeep->get('id'));
+                $mergedFields[$name]->save();
+
+                // Add the field id to the list we need to keep
+                $keepIds[] = $mergedFields[$name]->get('id');
+            }
+
+            // Delete fields we're not keeping after taking their 'after' values
+            $this->modx->removeCollection(\vxDeltaField::class, [
+                'delta:=' => $delta->get('id'),
+                'id:NOT IN' => $keepIds,
+            ]);
+        }
+
+        return $mergedFields;
+    }
+
+    /**
      * @param \vxDelta $delta
      * @return void
      */
     protected function removeDelta(\vxDelta $delta)
     {
         $id = $delta->get('id');
-
-        // Remove fields
-        $this->modx->removeCollection(\vxDeltaField::class, [
-            'delta' => $id,
-        ]);
 
         // Remove editors
         $this->modx->removeCollection(\vxDeltaEditor::class, [
