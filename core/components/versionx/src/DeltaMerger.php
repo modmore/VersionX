@@ -120,7 +120,7 @@ class DeltaMerger {
 
     protected function mergeEpochDeltas(\xPDOObject $object, Type $type, array $epoch)
     {
-        // Get all deltas in the epoch sorted by end_time
+        // Get all deltas in the epoch sorted by time_end
         $deltas = $this->getEpochDeltas($object, $type, $epoch);
         if (empty($deltas)) {
             return;
@@ -131,8 +131,8 @@ class DeltaMerger {
         $deltaToKeep = end($deltas);
         $id = $deltaToKeep->get('id');
 
-        // Add the end_time of the first delta as the start_time of the last delta
-        $deltaToKeep->set('start_time', $firstDelta->get('end_time'));
+        // Add the time_start of the first delta as the time_start of the last delta
+        $deltaToKeep->set('time_start', $firstDelta->get('time_start'));
         $deltaToKeep->save();
 
 
@@ -184,7 +184,7 @@ class DeltaMerger {
                 $deltaEditor->save();
             }
 
-            $this->modx->log(1, print_r($delta->toArray(), true));
+//            $this->modx->log(1, print_r($delta->toArray(), true));
 
             // Remove the now junk delta! (and fields/editors)
             $this->removeDelta($delta);
