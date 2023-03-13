@@ -129,7 +129,6 @@ class DeltaMerger {
         // Grab the first and last deltas (the delta to keep)
         $firstDelta = array_values($deltas)[0];
         $deltaToKeep = end($deltas);
-        $id = $deltaToKeep->get('id');
 
         // Add the time_start of the first delta as the time_start of the last delta
         $deltaToKeep->set('time_start', $firstDelta->get('time_start'));
@@ -138,40 +137,14 @@ class DeltaMerger {
         // Merge delta fields for the epoch, and discard the orphans
         $fields = $this->mergeFields($deltas, $deltaToKeep);
 
-        $deltaToKeepEditors = $this->modx->getCollection(\vxDeltaEditor::class, [
-            'delta' => $id,
-        ]);
-        // Grab list of editor users we already have on the delta to keep.
-        $users = [];
-        foreach ($deltaToKeepEditors as $deltaToKeepEditor) {
-            $users[] = $deltaToKeepEditor->get('user');
-        }
+        // Collate all editors for the epoch and set them to the last delta. Remove the rest.
+        $editors = $this->mergeEditors($deltas, $deltaToKeep);
 
+        // Remove orphaned deltas
         foreach ($deltas as $delta) {
-            // Leave the delta we're keeping alone.
-            if ($delta->get('id') === $id) {
-                continue;
+            if ($delta->get('id') !== $deltaToKeep->get('id')) {
+                $delta->remove();
             }
-
-            // Add any editors we don't already have from other deltas within the time period
-            $deltaEditors = $this->modx->getCollection(\vxDeltaEditor::class, [
-                'delta' => $delta->get('id'),
-            ]);
-            foreach ($deltaEditors as $deltaEditor) {
-                // Ignore users we already have on the delta to keep
-                if (in_array($deltaEditor->get('user'), $users)) {
-                    continue;
-                }
-
-                // Update editors so they relate to the delta to keep
-                $deltaEditor->set('delta', $id);
-                $deltaEditor->save();
-            }
-
-//            $this->modx->log(1, print_r($delta->toArray(), true));
-
-            // Remove the now junk delta! (and fields/editors)
-            $this->removeDelta($delta);
         }
     }
 
@@ -218,20 +191,36 @@ class DeltaMerger {
     }
 
     /**
-     * @param \vxDelta $delta
-     * @return void
+     * @param array $deltas
+     * @param \vxDelta $deltaToKeep
+     * @return array
      */
-    protected function removeDelta(\vxDelta $delta)
+    protected function mergeEditors(array $deltas, \vxDelta $deltaToKeep): array
     {
-        $id = $delta->get('id');
+        $editors = [];
+        $keepIds = [];
+        foreach ($deltas as $delta) {
+            $deltaEditors = $this->modx->getCollection(\vxDeltaEditor::class, [
+                'delta' => $delta->get('id'),
+            ]);
+            foreach ($deltaEditors as $deltaEditor) {
+                if (!isset($editors[$deltaEditor->get('user')])) {
+                    $deltaEditor->set('delta', $deltaToKeep->get('id'));
+                    $deltaEditor->save();
 
-        // Remove editors
-        $this->modx->removeCollection(\vxDeltaEditor::class, [
-            'delta' => $id,
-        ]);
+                    $editors[$deltaEditor->get('user')] = $deltaEditor;
+                    $keepIds[] = $deltaEditor->get('id');
+                }
+            }
 
-        // Finally remove the delta
-        $delta->remove();
+            // Delete fields we're not keeping after taking their 'after' values
+            $this->modx->removeCollection(\vxDeltaEditor::class, [
+                'delta:=' => $delta->get('id'),
+                'id:NOT IN' => $keepIds,
+            ]);
+        }
+
+        return $editors;
     }
 
     /**
