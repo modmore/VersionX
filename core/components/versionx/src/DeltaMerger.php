@@ -159,25 +159,15 @@ class DeltaMerger {
         $keepIds = [];
         foreach ($deltas as $delta) {
             $fields = $this->modx->getCollection(\vxDeltaField::class, [
-                'delta' => $delta,
+                'delta' => $delta->get('id'),
             ]);
             foreach ($fields as $field) {
-                $name = $field->get('field');
-                // If the field name has already been set, just update the 'after' value
-                if (isset($mergedFields[$name])) {
-                    $mergedFields[$name]->set('after', $field->get('after'));
-                }
-                // Otherwise set the initial delta field
-                else {
-                    $mergedFields[$name] = $field;
-                }
-
-                // Set the last delta id on the field
-                $mergedFields[$name]->set('delta', $deltaToKeep->get('id'));
-                $mergedFields[$name]->save();
+                $field->set('delta', $deltaToKeep->get('id'));
+                $field->save();
+                $mergedFields[$field->get('field')] = $field;
 
                 // Add the field id to the list we need to keep
-                $keepIds[] = $mergedFields[$name]->get('id');
+                $keepIds[$field->get('field')] = $field->get('id');
             }
 
             // Delete fields we're not keeping after taking their 'after' values
@@ -209,7 +199,7 @@ class DeltaMerger {
                     $deltaEditor->save();
 
                     $editors[$deltaEditor->get('user')] = $deltaEditor;
-                    $keepIds[] = $deltaEditor->get('id');
+                    $keepIds[$deltaEditor->get('user')] = $deltaEditor->get('id');
                 }
             }
 
