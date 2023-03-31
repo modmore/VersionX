@@ -208,7 +208,7 @@ class DeltaManager {
 
         // Now save the object
         if (!$object->save(true)) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR,
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,
                 '[VersionX] Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
             return;
         }
@@ -235,8 +235,8 @@ class DeltaManager {
             'id' => $objectId,
         ]);
         if (!$object) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR,
-                '[VersionX] Time travel: Error loading ' . $type->getClass() . ' with id: ' . $objectId);
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,
+                '[VersionX] Error loading ' . $type->getClass() . ' with id: ' . $objectId);
             return;
         }
 
@@ -262,8 +262,8 @@ class DeltaManager {
 
         // Now save the object
         if (!$object->save(true)) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR,
-                '[VersionX] Time travel: Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,
+                '[VersionX] Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
             return;
         }
 
