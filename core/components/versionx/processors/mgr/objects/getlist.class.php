@@ -56,7 +56,7 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
 
         $c = $this->modx->newQuery($this->classKey);
         $c = $this->prepareQueryBeforeCount($c);
-        $data['total'] = $this->listTotal ?: $this->modx->getCount($this->classKey, $c);
+        $data['total'] = $this->modx->getCount($this->classKey, $c);
         $c = $this->prepareQueryAfterCount($c);
 
         $sortClassKey = $this->getSortClassKey();
@@ -98,7 +98,14 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
         $this->currentIndex = 0;
         foreach ($data['results'] as $row) {
 
-            $objectArray = $this->prepareArrayRow($row);
+            // If the principal object no longer exists (perhaps a snippet was deleted), don't include its deltas
+            /** @var xPDOObject $object */
+            $object = $this->modx->getObject($row['principal_class'], ['id' => $row['principal']]);
+            if (!$object) {
+                continue;
+            }
+
+            $objectArray = $this->prepareArrayRow($row, $object);
             if (!empty($objectArray)) {
                 $list[] = $objectArray;
                 $this->currentIndex++;
@@ -107,7 +114,12 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
         return $this->afterIteration($list);
     }
 
-    public function prepareArrayRow(array $row): array
+    /**
+     * @param array $row
+     * @param xPDOObject $object
+     * @return array
+     */
+    public function prepareArrayRow(array $row, xPDOObject $object): array
     {
         $type = new $row['type']($this->versionX);
         $nameField = $type->getNameField();
