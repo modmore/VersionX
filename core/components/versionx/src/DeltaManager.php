@@ -2,6 +2,7 @@
 
 namespace modmore\VersionX;
 
+use Carbon\Carbon;
 use Jfcherng\Diff\DiffHelper;
 use modmore\VersionX\Types\Type;
 use modmore\VersionX\Enums\RevertAction;
@@ -77,7 +78,7 @@ class DeltaManager {
      */
     public function createDelta(int $id, Type $type): ?\vxDelta
     {
-        $now = date('Y-m-d H:i:s');
+        $now = Carbon::now()->toDateTimeString();
 
         // Get current principal object
         $object = $this->modx->getObject($type->getClass(), ['id' => $id]);
@@ -179,7 +180,7 @@ class DeltaManager {
      */
     public function revertObject(int $deltaId, int $objectId, Type $type, $fieldId = null): void
     {
-        $now = date('Y-m-d H:i:s');
+        $now = Carbon::now()->toDateTimeString();
 
         // Grab the object to revert
         $object = $this->modx->getObject($type->getClass(), [
@@ -228,7 +229,7 @@ class DeltaManager {
      */
     public function revertToPointInTime(int $deltaId, int $objectId, Type $type)
     {
-        $now = date('Y-m-d H:i:s');
+        $now = Carbon::now()->toDateTimeString();
 
         // Grab the object to revert
         $object = $this->modx->getObject($type->getClass(), [
