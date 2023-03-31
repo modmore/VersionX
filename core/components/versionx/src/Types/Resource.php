@@ -61,25 +61,31 @@ class Resource extends Type
                 }
             }
 
+            // If a TV passes a null value (e.g. an empty Image TV), set it as an empty string so it can be compared
+            $tvValue = $tv->get('value');
+            if ($tvValue === null) {
+                $tvValue = '';
+            }
+
             // Check if TV type is assigned to a VersionX field type
             $fieldObj = null;
             foreach ($this->tvTypes as $class => $types) {
                 if (in_array($tv->get('type'), $types)) {
                     // If found, include the TV and resource id as config options to assist with rendering
-                    $fieldObj = new $class($tv->get('value'), $tv->get('name'));
+                    $fieldObj = new $class($tvValue, $tv->get('name'));
                 }
             }
 
             // Default Text if no VersionX field types matched
             if (!isset($fieldObj)) {
-                $fieldObj = new Text($tv->get('value'));
+                $fieldObj = new Text($tvValue);
             }
 
             $field = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $tv->get('name'),
                 'field_type' => get_class($fieldObj),
                 'before' => $prevValue,
-                'after' => $tv->get('value'),
+                'after' => $tvValue,
                 'rendered_diff' => $fieldObj->render($prevValue, $fieldObj->getValue()),
             ]);
 
