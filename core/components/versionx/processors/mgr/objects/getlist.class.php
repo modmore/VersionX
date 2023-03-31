@@ -123,7 +123,6 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
     {
         $type = new $row['type']($this->versionX);
         $nameField = $type->getNameField();
-        $object = $this->modx->getObject($row['principal_class'], ['id' => $row['principal']]);
         $row['name'] = $object->get($nameField);
 
         return $row;
