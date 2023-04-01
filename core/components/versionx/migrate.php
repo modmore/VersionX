@@ -122,7 +122,7 @@ function createFields($delta, $items, $prevItems)
             'type' => 'modmore\VersionX\Fields\Text',
             'before' => $beforeValue,
             'after' => $afterValue,
-            'rendered_diff' => $versionX->deltas()::calculateDiff($beforeValue, $afterValue),
+            'rendered_diff' => $diff,
         ]);
         $field->save();
     }
