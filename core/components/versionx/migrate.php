@@ -1,6 +1,5 @@
 <?php
 
-use modmore\VersionX\Utils;
 use modmore\VersionX\VersionX;
 use MODX\Revolution\modX;
 
@@ -28,14 +27,12 @@ foreach (CLASSES as $vxClass => $principalClass) {
     foreach ($vxObjects as $vxObject) {
         // Ensure the principal object exists before migrating
         if ($modx->getObject($principalClass, $vxObject->get('content_id'))) {
-            createDelta($vxObject);
+            createDelta($vxObject, $principalClass);
         }
-
     }
-
-    // todo: remove!
-    break;
 }
+
+echo "Migration Complete.\n";
 
 function query(string $class): xPDOIterator
 {
@@ -49,18 +46,27 @@ function query(string $class): xPDOIterator
     return $modx->getIterator($class, $c);
 }
 
-function createDelta($object)
+function createDelta($object, string $principalClass)
 {
     global $modx;
     global $completed;
 
+    /** @var vxDelta $delta */
     $delta = $modx->newObject(vxDelta::class, [
         'principal_package' => 'core',
-        'principal_class' => 'modResource',
+        'principal_class' => $principalClass,
         'principal' => $object->get('content_id'),
         'time_start' => $object->get('saved'),
         'time_end' => $object->get('saved'),
     ]);
+
+    $items = [];
+    $prevItems = [];
+
+    // Check for a previous version for this principal object. If so, use the contents for the "before" fields
+    if (isset($completed[get_class($object) . '_' . $object->get('content_id')])) {
+        $prevVersion = $completed[get_class($object) . '_' . $object->get('content_id')];
+    }
 
     switch (get_class($object)) {
         // Resources
@@ -69,23 +75,67 @@ function createDelta($object)
             $delta->save();
 
             $items = mergeTVs($object);
+            $prevItems = isset($prevVersion) ? mergeTVs($prevVersion) : [];
 
-            $prevItems = [];
-            // Check for a previous version for this principal object. If so, use the contents for the "before" fields
-            if (isset($completed[get_class($object) . '_' . $object->get('content_id')])) {
-                $prevVersion = $completed[get_class($object) . '_' . $object->get('content_id')];
-                $prevItems = mergeTVs($prevVersion);
-            }
-
-            createFields($delta, $items, $prevItems);
             break;
 
         // Templates
         case vxTemplate_mysql::class:
             $delta->set('type_class', 'modmore\VersionX\Types\Template');
             $delta->save();
+
+            $extraKeys = ['content'];
+            $items = getElementFields($object, $extraKeys);
+            $prevItems = isset($prevVersion) ? getElementFields($prevVersion, $extraKeys) : [];
+
+            break;
+
+        // Chunks
+        case vxChunk_mysql::class:
+            $delta->set('type_class', 'modmore\VersionX\Types\Chunk');
+            $delta->save();
+
+            $extraKeys = ['snippet'];
+            $items = getElementFields($object, $extraKeys);
+            $prevItems = isset($prevVersion) ? getElementFields($prevVersion, $extraKeys) : [];
+
+            break;
+
+        // Snippets
+        case vxSnippet_mysql::class:
+            $delta->set('type_class', 'modmore\VersionX\Types\Snippet');
+            $delta->save();
+
+            $extraKeys = ['snippet'];
+            $items = getElementFields($object, $extraKeys);
+            $prevItems = isset($prevVersion) ? getElementFields($prevVersion, $extraKeys) : [];
+
+            break;
+
+        // Plugins
+        case vxPlugin_mysql::class:
+            $delta->set('type_class', 'modmore\VersionX\Types\Plugin');
+            $delta->save();
+
+            $extraKeys = ['plugincode'];
+            $items = getElementFields($object, $extraKeys);
+            $prevItems = isset($prevVersion) ? getElementFields($prevVersion, $extraKeys) : [];
+
+            break;
+
+        // TVs
+        case vxTemplateVar_mysql::class:
+            $delta->set('type_class', 'modmore\VersionX\Types\TV');
+            $delta->save();
+
+            $extraKeys = ['type', 'caption', 'rank', 'display', 'default_text', 'input_properties', 'output_properties'];
+            $items = getElementFields($object, $extraKeys);
+            $prevItems = isset($prevVersion) ? getElementFields($prevVersion, $extraKeys) : [];
+
             break;
     }
+
+    createFields($delta, $items, $prevItems);
 
     $deltaEditor = $modx->newObject(vxDeltaEditor::class, [
         'delta' => $delta->get('id'),
@@ -93,39 +143,55 @@ function createDelta($object)
     ]);
     $deltaEditor->save();
 
+    echo "\033[01;34m*** Delta Editor added => User id {$deltaEditor->get('user')}.\033[0m\n\n";
+
     // Store as completed
     $completed[get_class($object) . '_' . $object->get('content_id')] = $object;
 }
 
 /**
- * @param $delta
- * @param $items
- * @param $prevItems
+ * @param vxDelta $delta
+ * @param array $items
+ * @param array $prevItems
  * @return void
  */
-function createFields($delta, $items, $prevItems)
+function createFields(vxDelta $delta, array $items, array $prevItems)
 {
     global $modx;
     global $versionX;
+
+    echo "\033[01;32m{$delta->get('principal_class')} ({$delta->get('principal')}): New delta created ({$delta->get('id')}) => {$delta->get('type_class')}\033[0m\n";
+    $echoFields = [];
+
     foreach ($items as $key => $item) {
-        $beforeValue = !empty($prevItems) ? Utils::flattenArray($prevItems[$key]) : '';
-        $afterValue = Utils::flattenArray($item);
+        $beforeValue = !empty($prevItems) ? normalizeValue($prevItems[$key]) : '';
+        $afterValue = normalizeValue($item);
+
         $diff = $versionX->deltas()::calculateDiff($beforeValue, $afterValue);
 
         if (!$diff) {
             continue;
         }
 
+        // Determine the field type
+        $typeClass = '\\' . $delta->get('type_class');
+        $typeClass = new $typeClass($versionX);
+
         $field = $modx->newObject(vxDeltaField::class, [
             'delta' => $delta->get('id'),
             'field' => $key,
-            'type' => 'modmore\VersionX\Fields\Text',
+            'field_type' => $typeClass->getFieldClass($key),
             'before' => $beforeValue,
             'after' => $afterValue,
             'rendered_diff' => $diff,
         ]);
         $field->save();
+
+        $echoFields[] = $key;
     }
+
+    $count = count($echoFields);
+    echo "- {$count} field versions migrated: " . implode(',', $echoFields) . "\n";
 }
 
 /**
@@ -147,6 +213,40 @@ function mergeTVs($object): array
         ['content' => $object->get('content')],
         $tvs,
     );
+}
+
+/**
+ * @param $object
+ * @param array $extraKeys
+ * @return array
+ */
+function getElementFields($object, array $extraKeys): array
+{
+    $keys = array_merge(['name', 'description', 'category', 'properties'], $extraKeys);
+
+    $fields = [];
+    foreach ($keys as $key) {
+        $fields[$key] = $object->get($key);
+    }
+
+    return $fields;
+}
+
+/**
+ * @param $value
+ * @return mixed|string
+ */
+function normalizeValue($value)
+{
+    if ($value === null) {
+        return '';
+    }
+
+    if (is_array($value) || is_object($value)) {
+        return serialize($value);
+    }
+
+    return $value;
 }
 
 @session_write_close();
