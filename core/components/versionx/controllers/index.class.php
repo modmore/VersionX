@@ -12,9 +12,22 @@ class VersionXIndexManagerController extends modExtraManagerController
     {
         $this->versionx = new VersionX($this->modx);
 
+        $modxVersion = $this->modx->getVersionData();
+
+        // Set "versionx_mv2" class for CSS if not on MODX 3.x
+        $version = '';
+        if (version_compare($modxVersion['full_version'], '3.0.0', '<')) {
+            $version = <<<HTML
+<script type="text/javascript">
+window.addEventListener("DOMContentLoaded", function () { document.body.className = document.body.className + ' versionx_mv2'; });
+</script>
+HTML;
+        }
+
         $this->cacheBust = '?vxv=' . urlencode($this->versionx->config['version']);
         $this->addJavascript($this->versionx->config['js_url'] . 'mgr/versionx.class.js' . $this->cacheBust);
         $this->addHtml('
+            ' . $version . '
             <script type="text/javascript">
                 Ext.onReady(function() {
                     VersionX.config = ' . json_encode($this->versionx->config) . ';
