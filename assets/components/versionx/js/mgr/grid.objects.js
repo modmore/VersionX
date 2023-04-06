@@ -23,7 +23,7 @@ VersionX.grid.Objects = function(config) {
         paging: true,
         pageSize: 20,
         remoteSort: true,
-        filters: ['query', 'date_from', 'date_to'],
+        filters: ['query', 'date_from', 'date_to', 'object', 'editor', 'package'],
         columns: [{
             header: 'Delta',
             dataIndex: 'id',
@@ -73,6 +73,15 @@ VersionX.grid.Objects = function(config) {
             },
         },{
             xtype: 'versionx-combo-editors',
+            showClearFilter: true,
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
+        },{
+            xtype: 'versionx-combo-packages',
             showClearFilter: true,
             listeners: {
                 select: {

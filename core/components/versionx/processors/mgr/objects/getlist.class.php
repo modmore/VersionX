@@ -107,6 +107,14 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             ]);
         }
 
+        // Package filter
+        $package = $this->getProperty('package');
+        if (!empty($package)) {
+            $c->where([
+                'principal_package' => $package,
+            ]);
+        }
+
         $c->groupby('
             vxDelta.principal,
             vxDelta.principal_package,

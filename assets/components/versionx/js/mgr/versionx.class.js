@@ -151,3 +151,23 @@ VersionX.combo.Editors = function(config) {
 };
 Ext.extend(VersionX.combo.Editors, VersionX.combo.Filter);
 Ext.reg('versionx-combo-editors', VersionX.combo.Editors);
+
+VersionX.combo.Packages = function(config) {
+    config = config || {};
+    Ext.applyIf(config, {
+        name: 'package'
+        ,displayField: 'name'
+        ,valueField: 'id'
+        ,hiddenName: 'package'
+        ,fields: ['id', 'name']
+        ,baseParams: {
+            action: 'mgr/filters/packages'
+            ,combo: true
+            ,limit: '0'
+        }
+        ,emptyText: 'Package...'
+    });
+    VersionX.combo.Packages.superclass.constructor.call(this, config);
+};
+Ext.extend(VersionX.combo.Packages, VersionX.combo.Filter);
+Ext.reg('versionx-combo-packages', VersionX.combo.Packages);
