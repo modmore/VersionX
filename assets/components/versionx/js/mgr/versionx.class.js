@@ -56,7 +56,7 @@ VersionX.field.Search = function(config) {
                     new Ext.KeyMap(cmp.getEl(), {
                         key: Ext.EventObject.ENTER,
                         fn: function() {
-                            grid.search(this);
+                            grid.filter(this);
                             return true;
                         },
                         scope: cmp
@@ -69,7 +69,7 @@ VersionX.field.Search = function(config) {
                     grid.getStore().setBaseParam('query', '');
                     grid.getStore().load();
                 },
-                scope: grid
+                scope: grid,
             }
         }
     });

@@ -6,12 +6,36 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
     public $defaultSortDirection = 'DESC';
     public \modmore\VersionX\VersionX $versionX;
 
+    protected array $nameFieldMap = [];
+
     public function initialize(): bool
     {
         $init = parent::initialize();
         $this->versionX = new VersionX($this->modx);
 
         return $init;
+    }
+
+    public function beforeQuery()
+    {
+        // Get all the types
+        $c = $this->modx->newQuery('vxDelta');
+        $c->groupby('type_class');
+        $c->select(['type_class']);
+
+        $c->prepare();
+        if ($c->stmt && $c->stmt->execute()) {
+            while ($row = $c->stmt->fetch(PDO::FETCH_ASSOC)) {
+                $type = new $row['type_class']($this->versionX);
+                $this->nameFieldMap[$row['type_class']] = [
+                    'name_field' => $type->getNameField(),
+                    'principal_class' => $type->getClass(),
+                    'principal_package' => $type->getPackage(),
+                ];
+            }
+        }
+
+        return true;
     }
 
     public function prepareQueryBeforeCount(xPDOQuery $c): xPDOQuery
@@ -22,6 +46,21 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
         $c->leftJoin('modUser', 'User', [
             'User.id = Editor.user'
         ]);
+
+        $query = $this->getProperty('query', '');
+        if (!empty($query)) {
+            foreach ($this->nameFieldMap as $type => $data) {
+                $c->leftJoin($data['principal_class'], $data['principal_class'], [
+                    $data['principal_class'] . '.id = vxDelta.principal',
+                    'vxDelta.principal_class:=' => $data['principal_class'],
+                    'vxDelta.principal_package:=' => $data['principal_package'],
+                ]);
+                $c->where([
+                    'OR:vxDelta.type_class:=' => $type,
+                    "{$data['principal_class']}.{$data['name_field']}:LIKE" => "%{$query}%",
+                ]);
+            }
+        }
 
         $c->groupby('
             vxDelta.principal,
@@ -56,7 +95,11 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
 
         $c = $this->modx->newQuery($this->classKey);
         $c = $this->prepareQueryBeforeCount($c);
-        $data['total'] = $this->modx->getCount($this->classKey, $c);
+
+        $c->prepare();
+        $c->stmt->execute();
+        $data['total'] = $c->stmt->rowCount();
+
         $c = $this->prepareQueryAfterCount($c);
 
         $sortClassKey = $this->getSortClassKey();
@@ -85,8 +128,8 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             $data['results'] = $c->stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 //
-//        $c->prepare();
-//        $this->modx->log(1, $c->toSQL());
+        $c->prepare();
+        $this->modx->log(1, $c->toSQL());
 
         return $data;
     }

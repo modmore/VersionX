@@ -21,6 +21,7 @@ VersionX.grid.Objects = function(config) {
             {name: 'name', type: 'string'},
         ],
         paging: true,
+        pageSize: 20,
         remoteSort: true,
         columns: [{
             header: 'Delta',
@@ -66,21 +67,31 @@ VersionX.grid.Objects = function(config) {
             name: 'date_from',
             emptyText: 'Date from...',
             format: 'Y-m-d',
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
         },{
             xtype: 'datefield',
             name: 'date_to',
             emptyText: 'Date to...',
             format: 'Y-m-d',
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
         }]
     });
     VersionX.grid.Objects.superclass.constructor.call(this,config);
     this.config = config;
 };
 Ext.extend(VersionX.grid.Objects, MODx.grid.Grid, {
-    search: function (tf, nv, ov) {
-        let s = this.getStore();
-        s.baseParams.query = tf.getValue();
-        this.getBottomToolbar().changePage(1);
+    filter: function (tf, nv, ov) {
+        this.getStore().baseParams[tf.name] = tf.getValue();
         this.refresh();
     },
     getMenu: function() {
