@@ -77,3 +77,57 @@ VersionX.field.Search = function(config) {
 };
 Ext.extend(VersionX.field.Search, Ext.form.TriggerField);
 Ext.reg('versionx-field-search', VersionX.field.Search);
+
+VersionX.combo.Filter = function(config) {
+    Ext.applyIf(config, {
+        url: VersionX.config.connector_url,
+        showClearFilter: config.showClearFilter || 0,
+        paging: false,
+        editable: true,
+        typeAhead: false,
+    });
+    VersionX.combo.Filter.superclass.constructor.call(this, config);
+    var combo = this;
+    this.on('beforeselect', function(combo, rec, index) {
+        if (rec.data.id === 'clr' || rec.data[combo.valueField] === 'clr') {
+            combo.clearValue();
+            rec.data = {};
+        }
+    });
+    this.getStore().on('load', function(store, rec, opts) {
+        if (combo.showClearFilter) {
+            combo.insertRecord(store, 0, '( Clear filter )', 'clr');
+        }
+    });
+};
+Ext.extend(VersionX.combo.Filter, MODx.combo.ComboBox, {
+    insertRecord: function(store, index, label, val) {
+        var data = [],
+            displayField = this.displayField || 'name',
+            record = {id: val};
+        record[displayField] = label;
+        data.push(new Ext.data.Record(record));
+        store.insert(index, data);
+    }
+});
+Ext.reg('versionx-combo-filter', VersionX.combo.Filter);
+
+VersionX.combo.Objects = function(config) {
+    config = config || {};
+    Ext.applyIf(config, {
+        name: 'object'
+        ,displayField: 'name'
+        ,valueField: 'id'
+        ,hiddenName: 'object'
+        ,fields: ['id', 'name']
+        ,baseParams: {
+            action: 'mgr/filters/objects'
+            ,combo: true
+            ,limit: '0'
+        }
+        ,emptyText: 'Object...'
+    });
+    VersionX.combo.Objects.superclass.constructor.call(this, config);
+};
+Ext.extend(VersionX.combo.Objects, VersionX.combo.Filter);
+Ext.reg('versionx-combo-objects', VersionX.combo.Objects);

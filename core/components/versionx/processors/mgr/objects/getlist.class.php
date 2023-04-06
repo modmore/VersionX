@@ -91,6 +91,14 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             ]);
         }
 
+        // Object filter
+        $object = $this->getProperty('object');
+        if (!empty($object)) {
+            $c->where([
+                'principal_class' => $object,
+            ]);
+        }
+
         $c->groupby('
             vxDelta.principal,
             vxDelta.principal_package,
