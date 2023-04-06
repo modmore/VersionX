@@ -99,6 +99,14 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             ]);
         }
 
+        // Editor filter
+        $editor = $this->getProperty('editor');
+        if (!empty($editor)) {
+            $c->where([
+                'User.username' => $editor,
+            ]);
+        }
+
         $c->groupby('
             vxDelta.principal,
             vxDelta.principal_package,

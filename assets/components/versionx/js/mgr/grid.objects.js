@@ -72,6 +72,15 @@ VersionX.grid.Objects = function(config) {
                 },
             },
         },{
+            xtype: 'versionx-combo-editors',
+            showClearFilter: true,
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
+        },{
             xtype: 'datefield',
             name: 'date_from',
             emptyText: 'Date from...',
