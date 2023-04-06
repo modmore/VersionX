@@ -23,6 +23,7 @@ VersionX.grid.Objects = function(config) {
         paging: true,
         pageSize: 20,
         remoteSort: true,
+        filters: ['query', 'date_from', 'date_to'],
         columns: [{
             header: 'Delta',
             dataIndex: 'id',
@@ -61,7 +62,6 @@ VersionX.grid.Objects = function(config) {
         ,tbar: [{
             xtype: 'versionx-field-search',
             grid: this,
-            width: 400,
         },'->',{
             xtype: 'datefield',
             name: 'date_from',
@@ -84,6 +84,9 @@ VersionX.grid.Objects = function(config) {
                     scope: this
                 },
             },
+        },{
+            text: '<i class="icon icon-close"></i>',
+            handler: this.clearFilters,
         }]
     });
     VersionX.grid.Objects.superclass.constructor.call(this,config);
@@ -91,8 +94,21 @@ VersionX.grid.Objects = function(config) {
 };
 Ext.extend(VersionX.grid.Objects, MODx.grid.Grid, {
     filter: function (tf, nv, ov) {
-        this.getStore().baseParams[tf.name] = tf.getValue();
-        this.refresh();
+        var value = tf.getValue();
+        if (tf.xtype === 'datefield' && typeof value === 'object') {
+            value = Ext.util.Format.date(value, 'Y-m-d');
+        }
+        this.getStore().baseParams[tf.name] = value;
+        this.getBottomToolbar().changePage(1);
+    },
+    clearFilters: function() {
+        var grid = this,
+            s = this.getStore();
+        this.config.filters.forEach(function(filter) {
+            grid.getTopToolbar().find('name', filter)[0].reset();
+            s.baseParams[filter] = '';
+        });
+        this.getBottomToolbar().changePage(1);
     },
     getMenu: function() {
         var m = [];

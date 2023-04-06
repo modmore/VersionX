@@ -16,7 +16,10 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
         return $init;
     }
 
-    public function beforeQuery()
+    /**
+     * @return bool
+     */
+    public function beforeQuery(): bool
     {
         // Get all the types
         $c = $this->modx->newQuery('vxDelta');
@@ -38,6 +41,10 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
         return true;
     }
 
+    /**
+     * @param xPDOQuery $c
+     * @return xPDOQuery
+     */
     public function prepareQueryBeforeCount(xPDOQuery $c): xPDOQuery
     {
         $c->leftJoin('vxDeltaEditor', 'Editor', [
@@ -47,6 +54,7 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             'User.id = Editor.user'
         ]);
 
+        // Search filter
         $query = $this->getProperty('query', '');
         if (!empty($query)) {
             foreach ($this->nameFieldMap as $type => $data) {
@@ -60,6 +68,27 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
                     "{$data['principal_class']}.{$data['name_field']}:LIKE" => "%{$query}%",
                 ]);
             }
+            $c->where([
+                'OR:vxDelta.principal:=' => $query,
+            ]);
+        }
+
+        // Date from filter
+        $dateFrom = $this->getProperty('date_from');
+        if (!empty($dateFrom)) {
+            $c->where([
+                'time_start:>=' => $dateFrom,
+                'OR:time_end:>=' => $dateFrom,
+            ]);
+        }
+
+        // Date to filter
+        $dateTo = $this->getProperty('date_to');
+        if (!empty($dateTo)) {
+            $c->where([
+                'time_start:<=' => $dateTo,
+                'OR:time_end:<=' => $dateTo,
+            ]);
         }
 
         $c->groupby('
@@ -128,8 +157,8 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             $data['results'] = $c->stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 //
-        $c->prepare();
-        $this->modx->log(1, $c->toSQL());
+//        $c->prepare();
+//        $this->modx->log(1, $c->toSQL());
 
         return $data;
     }
