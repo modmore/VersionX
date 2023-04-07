@@ -112,25 +112,25 @@ Ext.extend(VersionX.combo.Filter, MODx.combo.ComboBox, {
 });
 Ext.reg('versionx-combo-filter', VersionX.combo.Filter);
 
-VersionX.combo.Objects = function(config) {
+VersionX.combo.Classes = function(config) {
     config = config || {};
     Ext.applyIf(config, {
-        name: 'object'
+        name: 'class'
         ,displayField: 'name'
         ,valueField: 'id'
-        ,hiddenName: 'object'
+        ,hiddenName: 'class'
         ,fields: ['id', 'name']
         ,baseParams: {
-            action: 'mgr/filters/objects'
+            action: 'mgr/filters/classes'
             ,combo: true
             ,limit: '0'
         }
-        ,emptyText: 'Object...'
+        ,emptyText: 'Class...'
     });
-    VersionX.combo.Objects.superclass.constructor.call(this, config);
+    VersionX.combo.Classes.superclass.constructor.call(this, config);
 };
-Ext.extend(VersionX.combo.Objects, VersionX.combo.Filter);
-Ext.reg('versionx-combo-objects', VersionX.combo.Objects);
+Ext.extend(VersionX.combo.Classes, VersionX.combo.Filter);
+Ext.reg('versionx-combo-classes', VersionX.combo.Classes);
 
 VersionX.combo.Editors = function(config) {
     config = config || {};
@@ -145,7 +145,7 @@ VersionX.combo.Editors = function(config) {
             ,combo: true
             ,limit: '0'
         }
-        ,emptyText: 'User...'
+        ,emptyText: 'Editor...'
     });
     VersionX.combo.Editors.superclass.constructor.call(this, config);
 };

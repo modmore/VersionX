@@ -1,6 +1,6 @@
 <?php
 
-class VersionXObjectFilterProcessor extends modObjectGetListProcessor
+class VersionXClassFilterProcessor extends modObjectGetListProcessor
 {
     public $classKey = vxDelta::class;
     public $defaultSortField = 'principal_class';
@@ -19,4 +19,4 @@ class VersionXObjectFilterProcessor extends modObjectGetListProcessor
         ];
     }
 }
-return 'VersionXObjectFilterProcessor';
+return 'VersionXClassFilterProcessor';

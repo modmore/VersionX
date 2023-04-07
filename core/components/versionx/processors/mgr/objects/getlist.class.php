@@ -91,11 +91,11 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
             ]);
         }
 
-        // Object filter
-        $object = $this->getProperty('object');
-        if (!empty($object)) {
+        // Class filter
+        $class = $this->getProperty('class');
+        if (!empty($class)) {
             $c->where([
-                'principal_class' => $object,
+                'principal_class' => $class,
             ]);
         }
 

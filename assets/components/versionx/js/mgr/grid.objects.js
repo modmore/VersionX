@@ -23,7 +23,7 @@ VersionX.grid.Objects = function(config) {
         paging: true,
         pageSize: 20,
         remoteSort: true,
-        filters: ['query', 'date_from', 'date_to', 'object', 'editor', 'package'],
+        filters: ['query', 'date_from', 'date_to', 'class', 'editor', 'package'],
         columns: [{
             header: 'Delta',
             dataIndex: 'id',
@@ -39,7 +39,7 @@ VersionX.grid.Objects = function(config) {
             width: 20,
             sortable: true,
         },{
-            header: 'Object',
+            header: 'Class',
             dataIndex: 'principal_class',
             width: 20,
             sortable: true,
@@ -54,7 +54,7 @@ VersionX.grid.Objects = function(config) {
             width: 10,
             sortable: true,
         },{
-            header: 'User',
+            header: 'Editor',
             dataIndex: 'username',
             width: 20,
             sortable: true,
@@ -63,7 +63,7 @@ VersionX.grid.Objects = function(config) {
             xtype: 'versionx-field-search',
             grid: this,
         },'->',{
-            xtype: 'versionx-combo-objects',
+            xtype: 'versionx-combo-classes',
             showClearFilter: true,
             listeners: {
                 select: {
