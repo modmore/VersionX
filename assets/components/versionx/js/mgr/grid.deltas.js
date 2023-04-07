@@ -14,6 +14,7 @@ VersionX.grid.Deltas = function(config) {
             type: config.type,
         },
         params: [],
+        filters: ['query', 'date_from', 'date_to', 'editor'],
         fields: [
             {name: 'id', type: 'int'},
             {name: 'username', type: 'string'},
@@ -46,15 +47,39 @@ VersionX.grid.Deltas = function(config) {
             grid: this,
             width: 400,
         },'->',{
+            xtype: 'versionx-combo-editors',
+            showClearFilter: true,
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
+        },{
             xtype: 'datefield',
             name: 'date_from',
             emptyText: 'Date from...',
             format: 'Y-m-d',
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
         },{
             xtype: 'datefield',
             name: 'date_to',
             emptyText: 'Date to...',
             format: 'Y-m-d',
+            listeners: {
+                select: {
+                    fn: this.filter,
+                    scope: this
+                },
+            },
+        },{
+            text: '<i class="icon icon-repeat"></i>',
+            handler: this.clearFilters,
         }]
     });
     VersionX.grid.Deltas.superclass.constructor.call(this,config);
@@ -62,11 +87,22 @@ VersionX.grid.Deltas = function(config) {
     this.on('click', this.handleClick, this);
 };
 Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
-    search: function (tf, nv, ov) {
-        let s = this.getStore();
-        s.baseParams.query = tf.getValue();
+    filter: function (tf, nv, ov) {
+        var value = tf.getValue();
+        if (tf.xtype === 'datefield' && typeof value === 'object') {
+            value = Ext.util.Format.date(value, 'Y-m-d');
+        }
+        this.getStore().baseParams[tf.name] = value;
         this.getBottomToolbar().changePage(1);
-        this.refresh();
+    },
+    clearFilters: function() {
+        var grid = this,
+            s = this.getStore();
+        this.config.filters.forEach(function(filter) {
+            grid.getTopToolbar().find('name', filter)[0].reset();
+            s.baseParams[filter] = '';
+        });
+        this.getBottomToolbar().changePage(1);
     },
     handleClick: function(e) {
         var t = e.getTarget(),

@@ -40,6 +40,46 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
             'vxDelta.principal_package' => $this->getProperty('principal_package'),
         ]);
 
+        // Search filter
+        $query = $this->getProperty('query', '');
+        if (!empty($query)) {
+            // Allow searching by field name
+            $c->where([
+                "EXISTS (
+                    SELECT DeltaField.field 
+                    FROM {$this->modx->getTableName(vxDeltaField::class)} DeltaField
+                    WHERE DeltaField.delta = vxDelta.id AND
+                    DeltaField.field LIKE '%{$query}%'
+                )",
+            ]);
+        }
+
+        // Date from filter
+        $dateFrom = $this->getProperty('date_from');
+        if (!empty($dateFrom)) {
+            $c->where([
+                'time_start:>=' => $dateFrom,
+                'OR:time_end:>=' => $dateFrom,
+            ]);
+        }
+
+        // Date to filter
+        $dateTo = $this->getProperty('date_to');
+        if (!empty($dateTo)) {
+            $c->where([
+                'time_start:<=' => $dateTo,
+                'OR:time_end:<=' => $dateTo,
+            ]);
+        }
+
+        // Editor filter
+        $editor = $this->getProperty('editor');
+        if (!empty($editor)) {
+            $c->where([
+                'User.username' => $editor,
+            ]);
+        }
+
         $c->select([
             'vxDelta.*',
             'user_id' => 'User.id',
