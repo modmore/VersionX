@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @var \xPDOTransport|\xPDO\Transport\xPDOTransport $object
+ * @var array $options
+ */
 if ($object->xpdo) {
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_INSTALL:
