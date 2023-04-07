@@ -112,7 +112,7 @@ VersionX.grid.Objects = function(config) {
                 },
             },
         },{
-            text: '<i class="icon icon-repeat"></i>',
+            text: '<i class="icon icon-minus"></i>',
             handler: this.clearFilters,
         }]
     });
