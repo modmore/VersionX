@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * @var \modX|\MODX\Revolution\modX $modx
@@ -20,7 +19,7 @@ if ($object->xpdo) {
 
             $modx->addPackage('versionx', $modelPath);
             $manager = $modx->getManager();
-            $loglevel = $modx->setLogLevel(MODX_LOG_LEVEL_ERROR);
+            $loglevel = $modx->setLogLevel(modx::LOG_LEVEL_ERROR);
 
             $objects = [
                 'vxDelta',
@@ -30,7 +29,9 @@ if ($object->xpdo) {
             foreach ($objects as $obj) {
                 $manager->createObjectContainer($obj);
             }
+
             $modx->setLogLevel($loglevel);
+
         break;
     }
 

@@ -28,8 +28,8 @@ foreach ($e as $ev) {
         'event' => $ev,
         // Lower priority to make sure other plugins do their processing first.
         'priority' => 10,
-        'propertyset' => 0
-    ],'',true,true);
+        'propertyset' => 0,
+    ], '', true, true);
 }
 
 return $events;

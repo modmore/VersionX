@@ -1,26 +1,34 @@
 <?php
 /**
  * @var modX $modx
+ * @var array $options
  */
-$s = include __DIR__ . '/settings.php';
+$settingSource = include __DIR__ . '/settings.php';
 
-$settings = array();
+$settings = [];
 
-foreach ($s as $key => $value) {
-    if (is_string($value) || is_int($value)) { $type = 'textfield'; }
-    elseif (is_bool($value)) { $type = 'combo-boolean'; }
-    else { $type = 'textfield'; }
+foreach ($settingSource as $key => $options) {
+    $val = $options['value'];
 
-    $area = $value['area'];
+    if (isset($options['xtype'])) {
+        $xtype = $options['xtype'];
+    } elseif (is_int($val)) {
+        $xtype = 'numberfield';
+    } elseif (is_bool($val)) {
+        $xtype = 'modx-combo-boolean';
+    } else {
+        $xtype = 'textfield';
+    }
 
-    $settings['versionx.'.$key] = $modx->newObject('modSystemSetting');
-    $settings['versionx.'.$key]->set('key', 'versionx.' . $key);
-    $settings['versionx.'.$key]->fromArray([
-        'value' => $value,
-        'xtype' => $type,
+    $settings[$key] = $modx->newObject('modSystemSetting');
+    $settings[$key]->fromArray([
+        'key' => 'versionx.' . $key,
+        'xtype' => $xtype,
+        'value' => $options['value'],
         'namespace' => 'versionx',
-        'area' => $area
-    ]);
+        'area' => $options['area'],
+        'editedon' => time(),
+    ], '', true, true);
 }
 
 return $settings;
