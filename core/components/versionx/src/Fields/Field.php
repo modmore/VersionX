@@ -52,7 +52,7 @@ abstract class Field
         return $this->tpl;
     }
 
-    public function render($prevValue, $newValue, $options = []): string
+    public function render(string $prevValue, string $newValue, array $options = []): string
     {
         return DeltaManager::calculateDiff($prevValue, $newValue);
     }

@@ -120,12 +120,22 @@ class DeltaManager {
                 $prevValue = $prevFields[$field]->get('after');
             }
 
+            try {
+                $renderedDiff = $fieldTypeObj->render($prevValue, $value);
+            }
+            catch (\Error $e) {
+                $this->modx->log(\modX::LOG_LEVEL_ERROR, '[VersionX] Fatal Error calculating diff: '
+                    . "{$type->getClass()} id: {$id}\nField: {$field}\nField Type: $fieldType"
+                    . $e->getMessage() . ' // ' . $e->getTraceAsString());
+                return null;
+            }
+
             $deltaField = $this->modx->newObject(\vxDeltaField::class, [
                 'field' => $field,
                 'field_type' => $fieldType,
                 'before' => $prevValue,
                 'after' => $value,
-                'rendered_diff' => $fieldTypeObj->render($prevValue, $value),
+                'rendered_diff' => $renderedDiff,
             ]);
 
             $fieldsToSave[] = $deltaField;
