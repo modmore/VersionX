@@ -1,5 +1,7 @@
 <?php
 
+use modmore\VersionX\VersionX;
+
 class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
     public $classKey = 'vxDelta';
     public $primaryKeyField = 'vxDelta.version_id';
@@ -121,9 +123,27 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
 
         $row['diffs'] = '';
         foreach($fields as $field) {
+            // Attempt to get diff from cache
+            $key = "{$object->get('principal_package')}"
+                . "/{$object->get('principal_class')}"
+                . "/{$object->get('principal')}"
+                . "/{$object->get('id')}"
+                . "/{$field->get('id')}";
+
+            // Use cached render if available
+            if (!$renderedDiff = $this->modx->cacheManager->get($key, VersionX::CACHE_OPT)) {
+                // Otherwise calculate diff
+                $fieldType = $this->type->getFieldClass($field->get('field'));
+                $fieldTypeObj = new $fieldType($field->get('after'));
+                $renderedDiff = $fieldTypeObj->render($field->get('before'), $field->get('after'));
+
+                // Save in cache
+                $this->modx->cacheManager->set($key, $renderedDiff, 7200, VersionX::CACHE_OPT);
+            }
+
             $this->modx->smarty->assign([
                 'name' => $field->get('field'),
-                'diff' => $field->get('rendered_diff'),
+                'diff' => $renderedDiff,
                 'field_id' => $field->get('id'),
                 'delta_id' => $field->get('delta'),
                 'undo' => $this->modx->lexicon('versionx.undo'),

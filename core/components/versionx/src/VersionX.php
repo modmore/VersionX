@@ -34,6 +34,9 @@ class VersionX {
     public array $config = [];
     public bool $debug = false;
     public string $charset;
+    public const CACHE_OPT = [
+        'cache_key' => 'versionx',
+    ];
 
     /**
      * @param \modX|modX $modx

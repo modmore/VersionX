@@ -125,7 +125,7 @@ class DeltaManager {
             }
             catch (\Error $e) {
                 $this->modx->log(\modX::LOG_LEVEL_ERROR, '[VersionX] Fatal Error calculating diff: '
-                    . "{$type->getClass()} id: {$id}\nField: {$field}\nField Type: $fieldType"
+                    . "{$type->getClass()} id: {$id}\nField: {$field}\nField Type: $fieldType\n"
                     . $e->getMessage() . ' // ' . $e->getTraceAsString());
                 return null;
             }
@@ -135,7 +135,7 @@ class DeltaManager {
                 'field_type' => $fieldType,
                 'before' => $prevValue,
                 'after' => $value,
-                'rendered_diff' => $renderedDiff,
+                'diff' => $renderedDiff, // Not persisted. Kept on object until cached.
             ]);
 
             $fieldsToSave[] = $deltaField;
@@ -175,6 +175,14 @@ class DeltaManager {
         foreach ($fieldsToSave as $field) {
             $field->set('delta', $delta->get('id'));
             $field->save();
+
+            // Save diffs to cache
+            $key = "{$delta->get('principal_package')}"
+                . "/{$delta->get('principal_class')}"
+                . "/{$delta->get('principal')}"
+                . "/{$delta->get('id')}"
+                . "/{$field->get('id')}";
+            $this->modx->cacheManager->set($key, $field->get('diff'), 7200, VersionX::CACHE_OPT);
         }
 
         return $type->afterDeltaCreate($delta, $object);
@@ -266,7 +274,7 @@ class DeltaManager {
         }
 
         // Apply the field values to the object
-        // When time travelling we want to revert to all fields to the after value of a specific point in time.
+        // We want to revert to all fields to the after value of a specific point in time.
         foreach ($fields as $field) {
             $object->set($field->get('field'), $field->get('before'));
         }
@@ -293,7 +301,7 @@ class DeltaManager {
         $shouldSave = false;
         foreach ($fieldsToSave as $k => $field) {
             // If there's at least one field that's changed then vxDelta should be persisted.
-            if (!empty($field->get('rendered_diff'))) {
+            if (!empty($field->get('diff'))) {
                 $shouldSave = true;
             }
             // Remove any field that hasn't been changed.

@@ -183,7 +183,6 @@ function createFields(vxDelta $delta, array $items, array $prevItems)
             'field_type' => $typeClass->getFieldClass($key),
             'before' => $beforeValue,
             'after' => $afterValue,
-            'rendered_diff' => $diff,
         ]);
         $field->save();
 

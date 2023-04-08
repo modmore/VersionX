@@ -86,7 +86,7 @@ class Resource extends Type
                 'field_type' => get_class($fieldObj),
                 'before' => $prevValue,
                 'after' => $tvValue,
-                'rendered_diff' => $fieldObj->render($prevValue, $fieldObj->getValue()),
+                'diff' => $fieldObj->render($prevValue, $fieldObj->getValue()),
             ]);
 
             $fields[] = $field;
