@@ -182,7 +182,9 @@ class DeltaManager {
                 . "/{$delta->get('principal')}"
                 . "/{$delta->get('id')}"
                 . "/{$field->get('id')}";
-            $this->modx->cacheManager->set($key, $field->get('diff'), 7200, VersionX::CACHE_OPT);
+
+            $diff = $field->get('diff');
+            $this->modx->cacheManager->set($key, $diff, 7200, VersionX::CACHE_OPT);
         }
 
         return $type->afterDeltaCreate($delta, $object);
