@@ -15,6 +15,7 @@ class Plugin extends Type
         'content',
     ];
     protected array $excludedFields = [
-        'plugincode'
+        'id',
+        'plugincode',
     ];
 }

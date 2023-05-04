@@ -15,6 +15,7 @@ class Snippet extends Type
         'content',
     ];
     protected array $excludedFields = [
-        'snippet'
+        'id',
+        'snippet',
     ];
 }

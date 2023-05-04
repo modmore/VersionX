@@ -15,4 +15,7 @@ class TV extends Type
         'description',
         'type',
     ];
+    protected array $excludedFields = [
+        'id',
+    ];
 }

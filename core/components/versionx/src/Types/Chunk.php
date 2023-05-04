@@ -15,6 +15,7 @@ class Chunk extends Type
         'content',
     ];
     protected array $excludedFields = [
-        'snippet'
+        'id',
+        'snippet',
     ];
 }

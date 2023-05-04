@@ -23,6 +23,7 @@ $completed = [];
 $versionX = new VersionX($modx);
 
 foreach (CLASSES as $vxClass => $principalClass) {
+    echo "Starting {$principalClass} version migrations...\n\n";
     $vxObjects = query($vxClass);
     foreach ($vxObjects as $vxObject) {
         // Ensure the principal object exists before migrating
@@ -164,6 +165,11 @@ function createFields(vxDelta $delta, array $items, array $prevItems)
     $echoFields = [];
 
     foreach ($items as $key => $item) {
+        // Skip "id" field
+        if ($key === 'id') {
+            continue;
+        }
+
         $beforeValue = !empty($prevItems) ? normalizeValue($prevItems[$key]) : '';
         $afterValue = normalizeValue($item);
 

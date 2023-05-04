@@ -15,6 +15,7 @@ class Resource extends Type
     protected string $package = 'core';
     protected string $nameField = 'pagetitle';
     protected array $excludedFields = [
+        'id',
         'createdon',
         'createdby',
         'editedon',
@@ -37,6 +38,14 @@ class Resource extends Type
         ],
     ];
 
+    /**
+     * Opportunity to add additional \vxDeltaField objects to the array. For example, adding TV values when saving
+     * a resource.
+     * @param \vxDeltaField[] $fields
+     * @param array $prevFields
+     * @param \xPDOObject $object
+     * @return \vxDeltaField[]
+     */
     public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
     {
         // Determine what TV values currently exist for this resource.
@@ -95,6 +104,16 @@ class Resource extends Type
         return $fields;
     }
 
+
+    /**
+     * Runs before object being reverted is saved.
+     * @param string $action - 'all', 'delta', or 'single'
+     * @param array $fields - the delta fields that are being saved to the object
+     * @param \xPDOObject $object - the object being reverted
+     * @param string $now
+     * @param string|null $deltaTimestamp
+     * @return \xPDOObject
+     */
     public function afterRevert(string $action, array $fields, \xPDOObject $object, string $now, string $deltaTimestamp = null): \xPDOObject
     {
         // Be sure to call the parent method, so we get common field processing
@@ -124,7 +143,10 @@ class Resource extends Type
             $this->revertTVValues($field, $object, $tvs);
         }
 
-        $object->save();
+        if (!$object->save(true)) {
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,
+                '[VersionX] Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
+        }
 
         return $object;
     }

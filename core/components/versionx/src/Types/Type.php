@@ -52,7 +52,9 @@ abstract class Type
      * @var array $excludedFields
      * List fields that should not be versioned. A common example might be "editedon" since that changes every save.
      */
-    protected array $excludedFields = [];
+    protected array $excludedFields = [
+        'id',
+    ];
 
     /**
      * @var array $fieldOrder

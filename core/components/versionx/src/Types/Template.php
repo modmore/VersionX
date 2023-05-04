@@ -14,4 +14,7 @@ class Template extends Type
         'description',
         'content',
     ];
+    protected array $excludedFields = [
+        'id',
+    ];
 }
