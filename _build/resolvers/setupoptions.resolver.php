@@ -1,5 +1,6 @@
 <?php
 
+use modmore\VersionX\VersionX;
 use modmore\VersionX\Types\Chunk;
 use modmore\VersionX\Types\Plugin;
 use modmore\VersionX\Types\Resource;
@@ -12,14 +13,6 @@ if (isset($object) && isset($object->xpdo)) {
     $modx = $object->xpdo;
 }
 if (!isset($modx)) {
-    require_once dirname(dirname(dirname(__DIR__))) . '/config.core.php';
-    require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
-
-    $modx = new modX();
-    $modx->initialize('web');
-    $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-    $modx->setLogTarget('ECHO');
-    $modx->loadClass('transport.xPDOTransport', '', true, true);
     $options = [
         'vx_snapshot_resources' => true,
         'vx_snapshot_templates' => true,
@@ -36,47 +29,50 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         @set_time_limit(0);
 
         /* @var VersionX $versionX */
-        $corePath = $modx->getOption('versionx.core_path',null,$modx->getOption('core_path').'components/versionx/');
-        $versionX = $modx->getService('versionx','VersionX',$corePath . '/model/');
+        $path = MODX_CORE_PATH . 'components/versionx/';
+
+        require_once $path . '/vendor/autoload.php';
+        $versionX = new VersionX($modx);
 
         $modx->log(modX::LOG_LEVEL_INFO,'Starting snapshot process for selected objects...');
 
         if (isset($options['vx_snapshot_resources']) && !empty($options['vx_snapshot_resources'])) {
-            createInitialDelta(modResource::class, new Resource($versionX), 'Resource');
+            createInitialDelta($versionX, modResource::class, new Resource($versionX), 'Resource');
         }
 
         if (isset($options['vx_snapshot_templates']) && !empty($options['vx_snapshot_templates'])) {
-            createInitialDelta(modTemplate::class, new Template($versionX), 'Template');
+            createInitialDelta($versionX, modTemplate::class, new Template($versionX), 'Template');
         }
 
         if (isset($options['vx_snapshot_chunks']) && !empty($options['vx_snapshot_chunks'])) {
-            createInitialDelta(modChunk::class, new Chunk($versionX), 'Chunk');
+            createInitialDelta($versionX, modChunk::class, new Chunk($versionX), 'Chunk');
         }
 
         if (isset($options['vx_snapshot_snippets']) && !empty($options['vx_snapshot_snippets'])) {
-            createInitialDelta(modSnippet::class, new Snippet($versionX), 'Snippet');
+            createInitialDelta($versionX, modSnippet::class, new Snippet($versionX), 'Snippet');
         }
 
         if (isset($options['vx_snapshot_plugins']) && !empty($options['vx_snapshot_plugins'])) {
-            createInitialDelta(modPlugin::class, new Plugin($versionX),'Plugin');
+            createInitialDelta($versionX, modPlugin::class, new Plugin($versionX),'Plugin');
         }
 
         if (isset($options['vx_snapshot_tmplvars']) && !empty($options['vx_snapshot_tmplvars'])) {
-            createInitialDelta(modTemplateVar::class, new TV($versionX), 'TV');
+            createInitialDelta($versionX, modTemplateVar::class, new TV($versionX), 'TV');
         }
 
     break;
 }
 
 /**
+ * @param VersionX $versionX
  * @param string $class
  * @param Type $type
  * @param string $name
  * @return void
  */
-function createInitialDelta(string $class, Type $type, string $name): void
+function createInitialDelta(VersionX $versionX, string $class, Type $type, string $name): void
 {
-    global $modx, $versionX;
+    global $modx;
 
     $modx->log(modX::LOG_LEVEL_INFO,"Iterating over {$name}s and storing snapshots..");
 
