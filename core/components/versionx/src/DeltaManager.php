@@ -388,4 +388,43 @@ class DeltaManager {
         $deltaMerger = new DeltaMerger($this->versionX);
         $deltaMerger->run();
     }
+
+    /**
+     * @param int $deltaId
+     * @param string $milestone
+     * @return bool
+     */
+    public function addMilestone(int $deltaId, string $milestone): bool
+    {
+        $delta = $this->modx->getObject(\vxDelta::class, [
+            'id' => $deltaId,
+        ]);
+        if ($delta) {
+            $delta->set('milestone', $milestone);
+            $delta->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int $deltaId
+     * @return bool
+     */
+    public function removeMilestone(int $deltaId): bool
+    {
+        $delta = $this->modx->getObject(\vxDelta::class, [
+            'id' => $deltaId,
+        ]);
+        if ($delta) {
+            $delta->set('milestone', '');
+            $delta->save();
+
+            return true;
+        }
+
+        return false;
+    }
 }

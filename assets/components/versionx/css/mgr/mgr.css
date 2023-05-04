@@ -203,6 +203,19 @@
     gap: 15px;
     padding: 5px 15px ;
 }
+.versionx-diff-milestone-btn {
+    background: transparent;
+    border: 0;
+    margin-right: 15px;
+    opacity: .3;
+    cursor: pointer;
+}
+.versionx-diff-milestone-btn i {
+    pointer-events: none;
+}
+.versionx-milestone-window .x-window-tbar .xtb-text {
+    padding: 5px 15px;
+}
 .versionx-field-diff-spacer {
     border: 1px dashed #f1f1f1;
     flex-grow: 1;

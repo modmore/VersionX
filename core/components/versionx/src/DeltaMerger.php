@@ -225,6 +225,7 @@ class DeltaMerger {
         $where = [
             'principal' => $object->get('id'),
             'principal_class' => $type->getClass(),
+            'milestone' => '', // Only include deltas without a milestone value
         ];
         if (!empty($epoch['after'])) {
             $where['time_end:>'] = $epoch['after'];

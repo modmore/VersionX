@@ -38,6 +38,7 @@ HTML;
 
     public function loadCustomCssJs()
     {
+        $this->addJavascript($this->versionX->config['js_url'] . 'mgr/window.milestone.js' . $this->cacheBust);
         $this->addJavascript($this->versionX->config['js_url'] . 'mgr/grid.deltas.js' . $this->cacheBust);
         $this->addJavascript($this->versionX->config['js_url'] . 'mgr/window.deltas.js' . $this->cacheBust);
         $this->addJavascript($this->versionX->config['js_url'] . 'mgr/grid.objects.js' . $this->cacheBust);

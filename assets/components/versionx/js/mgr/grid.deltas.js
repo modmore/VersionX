@@ -18,6 +18,7 @@ VersionX.grid.Deltas = function(config) {
         fields: [
             {name: 'id', type: 'int'},
             {name: 'username', type: 'string'},
+            {name: 'milestone', type: 'string'},
             {name: 'time_start', type: 'string'},
             {name: 'time_end', type: 'string'},
             {name: 'diffs', type: 'string'},
@@ -104,12 +105,51 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
         });
         this.getBottomToolbar().changePage(1);
     },
+    addMilestone: function(deltaId) {
+        if (this.addMilestoneWindow) {
+            this.addMilestoneWindow.destroy();
+        }
+
+        this.addMilestoneWindow = MODx.load({
+            xtype: 'versionx-window-milestone',
+            delta_id: deltaId,
+            listeners: {
+                'success': {fn: this.refresh, scope: this}
+            }
+        });
+        this.addMilestoneWindow.show();
+    },
     handleClick: function(e) {
         var t = e.getTarget(),
             className = t.className.split(' ')[0],
             that = this;
 
         switch (className) {
+            case 'versionx-diff-milestone-btn':
+                if (t.dataset.milestone.length > 0) {
+                    MODx.msg.confirm({
+                        title: 'Confirm Milestone Removal',
+                        text: 'Are you sure you want to remove the milestone tag? Doing so means this delta will be included in the next merge.',
+                        url: VersionX.config.connector_url,
+                        params: {
+                            action: 'mgr/deltas/milestone',
+                            delta_id: t.dataset.id,
+                            what: 'remove',
+                        },
+                        listeners: {
+                            'success': {fn: function() {
+                                    that.refresh();
+                                }, scope:this}
+                        },
+                    });
+                    break;
+                }
+
+                // Open create milestone window
+                that.addMilestone(t.dataset.id);
+
+                break;
+
             case 'versionx-field-diff-undo-btn-' + t.dataset.field_id:
                 MODx.msg.confirm({
                     title: 'Confirm Undo',
@@ -181,7 +221,14 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             version_id = rec.get('id'),
             name = rec.get('username'),
             time_start = rec.get('time_start'),
-            time_end = rec.get('time_end');
+            time_end = rec.get('time_end'),
+            milestone = rec.get('milestone');
+
+        // If we've got a milestone, set a class for it so it can be rendered differently
+        let milestone_class = '';
+        if (milestone) {
+            milestone_class = ' milestone';
+        }
 
         return `<div class="versionx-grid-diff-container">
                     <div class="versionx-grid-timeline">
@@ -204,13 +251,21 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                 </div>
                                 <div class="versionx-diff-top-row-right">
                                     <button 
+                                        title="Edit milestone"
+                                        class="versionx-diff-milestone-btn${milestone_class} x-button x-button-small" 
+                                        type="button" 
+                                        data-id="${version_id}"
+                                        data-milestone="${milestone}"
+                                    >
+                                        <i class="icon icon-flag"></i>
+                                    </button>
+                                    <button 
                                         class="versionx-diff-revert-btn x-button x-button-small primary-button" 
                                         type="button" 
                                         data-id="${version_id}"
                                     >
                                         Revert these changes
                                     </button>
-                                    <div class="versionx-diff-menu"></div>
                                 </div>
                             </div>
                             <div class="versionx-diff-list">
@@ -219,9 +274,6 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                         </div>
                     </div>
                 </div>`;
-    },
-    detailColumnRenderer: function(v, p, rec) {
-
     },
 });
 Ext.reg('versionx-grid-deltas', VersionX.grid.Deltas);

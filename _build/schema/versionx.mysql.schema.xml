@@ -28,7 +28,18 @@
         <field key="principal_package" dbtype="varchar" precision="128" phptype="string" null="false" default="core" />
         <field key="principal_class" dbtype="varchar" precision="128" phptype="string" null="false" />
         <field key="principal" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+
+        <!--
+            The Type class is a configuration class for the principal object. Useful for specifying
+            unique behaviour for custom objects. See core/components/versionx/src/Types/Resource.php as an example.
+            -->
         <field key="type_class" dbtype="varchar" precision="128" phptype="string" null="false" />
+
+        <!--
+            A milestone delta cannot be merged by the DeltaMerger. A tag describing the type of milestone
+            is expected to be entered. A blank value means that it can be merged.
+            -->
+        <field key="milestone" dbtype="varchar" precision="128" phptype="string" null="false" default="" />
 
         <!--
             Deltas have a start and end time, because a delta may be the result of different

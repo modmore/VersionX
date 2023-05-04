@@ -45,6 +45,7 @@ abstract class Type
      * An array of file names that should be included when loading a VersionX tab on an object
      */
     protected array $tabJavaScript = [
+        'window.milestone.js',
         'grid.deltas.js',
     ];
 
