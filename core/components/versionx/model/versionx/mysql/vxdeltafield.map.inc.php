@@ -36,7 +36,6 @@ $xpdo_meta_map['vxDeltaField']= array (
     'field_type' => 'text',
     'before' => '',
     'after' => '',
-    'rendered_diff' => '',
   ),
   'fieldMeta' => 
   array (
@@ -72,13 +71,6 @@ $xpdo_meta_map['vxDeltaField']= array (
       'default' => '',
     ),
     'after' => 
-    array (
-      'dbtype' => 'mediumtext',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => '',
-    ),
-    'rendered_diff' => 
     array (
       'dbtype' => 'mediumtext',
       'phptype' => 'string',

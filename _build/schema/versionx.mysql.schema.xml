@@ -91,7 +91,7 @@
         <field key="after" dbtype="mediumtext" phptype="string" null="false" default="" />
 
         <!-- Pre-render (or just cache) rendered diffs when creating the delta -->
-        <field key="rendered_diff" dbtype="mediumtext" phptype="string" null="false" default="" />
+        <!-- <field key="rendered_diff" dbtype="mediumtext" phptype="string" null="false" default="" /> -->
 
         <index alias="delta" name="delta" primary="false" unique="false" type="BTREE">
             <column key="delta" length="" collation="A" null="false" />
