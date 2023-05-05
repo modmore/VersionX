@@ -225,12 +225,17 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             milestone = rec.get('milestone');
 
         // If we've got a milestone, set a class for it so it can be rendered differently
-        let milestone_class = '';
-        let milestone_action = 'Make this delta a milestone!';
-        if (milestone) {
-            milestone_class = ' milestone';
-            milestone_action = 'Remove milestone status from delta.';
+        let milestone_class = milestone ? ' milestone' : '',
+            milestone_action = milestone ? 'Remove milestone status from delta.' : 'Make this delta a milestone!';
+
+        // Determine if we should show a time range or single time
+        let time_range = time_end;
+        if (time_start !== time_end) {
+            time_range = time_start + ' - ' + time_end;
         }
+
+        // Collate editor usernames
+
 
         return `<div class="versionx-grid-diff-container">
                     <div class="versionx-grid-timeline">
@@ -248,8 +253,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                         <div class="versionx-grid-column-diff">
                             <div class="versionx-diff-top-row">
                                 <div class="versionx-diff-top-row-left">
-                                    <div class="versionx-diff-times">${time_end}</div>
-                                    <div class="versionx-diff-usernames">${name}</div>
+                                    <div class="versionx-diff-times">${time_range}</div>
+                                    <div class="versionx-diff-usernames"><i class="icon icon-user"></i>&nbsp;&nbsp;${name}</div>
                                 </div>
                                 <div class="versionx-diff-top-row-right">
                                     <button 

@@ -79,7 +79,7 @@
     border: 0 !important;
 }
 .versionx-grid-deltas .x-grid3-row-selected {
-    background: white !important;
+    background: transparent !important;
 }
 
 .versionx-grid-diff-container {
@@ -142,13 +142,15 @@
 .versionx-diff-top-row {
     display: flex;
     justify-content: space-between;
-    padding: 15px;
+    padding: 10px 15px;
     background: #f4f6f8;
     border-bottom: 1px solid #d0d7de;
 }
 .versionx-diff-top-row-left {
     display: flex;
     flex-direction: column;
+    gap: 3px;
+    justify-content: center;
 }
 .versionx-diff-top-row-right {
     display: flex;
@@ -193,6 +195,19 @@
     align-items: center;
     gap: 15px;
     padding: 5px 15px ;
+}
+.versionx-diff-times {
+    font-size: 1.2em;
+    font-weight: bold;
+    /*color: #0369a1;*/
+    color: #000;
+}
+.versionx-diff-usernames {
+    opacity: 0.5;
+}
+.versionx-diff-usernames i {
+    opacity: 0.6;
+    /*color: #00b5de;*/
 }
 .versionx-diff-milestone-btn {
     background: transparent;
