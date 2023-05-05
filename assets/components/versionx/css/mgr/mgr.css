@@ -127,15 +127,6 @@
 
 .versionx-diff-revert-all-btn {
     margin-bottom: 20px;
-    background: #fff;
-    border: 1px solid #efefef;
-    border-radius: 5px;
-    padding: 5px 15px;
-    cursor: pointer;
-    font-size: 11px;
-}
-.versionx-diff-revert-all-btn:hover {
-    background: #f1f1f1;
 }
 
 .versionx-grid-column-diff {
@@ -206,12 +197,37 @@
 .versionx-diff-milestone-btn {
     background: transparent;
     border: 0;
-    margin-right: 15px;
+    margin-right: 5px;
     opacity: .3;
     cursor: pointer;
+    padding: 5px 15px;
 }
 .versionx-diff-milestone-btn i {
     pointer-events: none;
+}
+.versionx-diff-milestone-btn.milestone {
+    background: #00b5de;
+    opacity: 1;
+    color: #fff;
+    border-radius: 3px;
+    box-shadow: inset 0 0 3px 1px #009ec2;
+    outline: 1px solid #fff;
+}
+.versionx-diff-milestone-btn .milestone-name {
+    display: none;
+    margin-left: 10px;
+    pointer-events: none;
+    font-weight: bold;
+}
+.versionx-diff-milestone-btn.milestone .milestone-name {
+    border-radius: 3px;
+    display: inline-block;
+}
+.versionx-diff-milestone-btn:hover {
+    border-radius: 3px;
+    background: #00b5de;
+    opacity: 1;
+    color: #fff;
 }
 .versionx-milestone-window .x-window-tbar .xtb-text {
     padding: 5px 15px;

@@ -226,8 +226,10 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
 
         // If we've got a milestone, set a class for it so it can be rendered differently
         let milestone_class = '';
+        let milestone_action = 'Make this delta a milestone!';
         if (milestone) {
             milestone_class = ' milestone';
+            milestone_action = 'Remove milestone status from delta.';
         }
 
         return `<div class="versionx-grid-diff-container">
@@ -236,7 +238,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     </div>
                     <div class="versionx-grid-main-col">
                         <button 
-                            class="versionx-diff-revert-all-btn x-button x-button-small primary-button" 
+                            class="versionx-diff-revert-all-btn x-btn x-btn-small x-btn-icon-small-left" 
                             type="button" 
                             data-time_start="${time_start}" 
                             data-id="${version_id}"
@@ -251,16 +253,16 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                 </div>
                                 <div class="versionx-diff-top-row-right">
                                     <button 
-                                        title="Edit milestone"
+                                        title="${milestone_action}"
                                         class="versionx-diff-milestone-btn${milestone_class} x-button x-button-small" 
                                         type="button" 
                                         data-id="${version_id}"
                                         data-milestone="${milestone}"
                                     >
-                                        <i class="icon icon-flag"></i>
+                                        <i class="icon icon-flag"></i><span class="milestone-name">${milestone}</span>
                                     </button>
                                     <button 
-                                        class="versionx-diff-revert-btn x-button x-button-small primary-button" 
+                                        class="versionx-diff-revert-btn x-btn x-btn-small x-btn-icon-small-left" 
                                         type="button" 
                                         data-id="${version_id}"
                                     >
