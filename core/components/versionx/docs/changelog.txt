@@ -1,5 +1,12 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+VersionX 3.0.0-beta1
+-----------------
+Released on 2023-05-05
+
+- Initial beta version of 3.0
+- Complete rewrite
+
 VersionX 2.4.0-pl
 -----------------
 Released on 2022-08-14

@@ -21,5 +21,29 @@ Version 3 would not have been possible if not for the impressive community fundi
 
 VersionX can be installed from either the [modmore package provider](https://modmore.com/about/package-provider/), or the [MODX package provider](https://extras.modx.com/package/versionx?version=2.4.0-pl).
 
+## New UI ##
+_Coming soon..._
+
+## Deltas ##
+_Coming soon..._
+
+## Fields ##
+_Coming soon..._
+
+## Object Types ##
+_Coming soon..._
+
+## Custom Objects ##
+_Coming soon..._
+
+## Merging Deltas ##
+_Coming soon..._
+
+## Milestones ##
+_Coming soon..._
+
+## Migrating from 2.x ##
+_Coming soon..._
+
 ## Contributions ##
 VersionX is open source, and free to use. If you would like to support further development, feel free to contribute with either code (in the form of a PR on this repo) or monetary contributions. Hit the link to donate: https://modmore.com/extras/versionx/donate/ 
