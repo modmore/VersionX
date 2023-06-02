@@ -31,10 +31,111 @@ _Coming soon..._
 _Coming soon..._
 
 ## Object Types ##
-_Coming soon..._
 
-## Custom Objects ##
-_Coming soon..._
+Objects may be expected to behave differently from one another. We expect when saving a resource, it should also remember the TV values on that resource, whereas when saving a chunk, we don't need to worry about that. 
+
+To handle these different behaviours, VersionX uses configuration classes that extend the `\modmore\VersionX\Types\Type` class.
+
+Here's the object _Type_ class for a core chunk:
+
+```php
+<?php
+
+namespace modmore\VersionX\Types;
+
+class Chunk extends Type
+{
+    // The class to be versioned
+    protected string $class = \modChunk::class;
+    
+    // The id of the HTML element where the "Versions" tab will be added.
+    protected string $tabId = 'modx-chunk-tabs';
+    
+    // The id of the ExtJS panel where versions will be rendered
+    protected string $panelId = 'modx-panel-chunk';
+    
+    // Package name. If you're versioning a custom object, change this from core.
+    protected string $package = 'core';
+    
+    // The primary field name for this object (for a resource it might be pagetitle)
+    protected string $nameField = 'name';
+    
+    // List the field names to appear at the top when displaying diffs.
+    protected array $fieldOrder = [
+        'name',
+        'description',
+        'content',
+    ];
+    
+    // List field names that should not be versioned
+    protected array $excludedFields = [
+        'id',
+        'snippet',
+    ];
+}
+```
+
+VersionX will check these values when performing actions. 
+
+## Versioning Custom Objects ##
+
+In addition to resources and elements, VersionX can work with custom objects. The only requirement is that it must be a derivative of xPDOObject. 
+
+Example custom Type class for a Commerce product:
+
+```php 
+<?php
+
+namespace MyModuleNamespace;
+
+use modmore\VersionX\Fields\Image;
+use modmore\VersionX\Fields\Properties;
+use modmore\VersionX\Types\Type;
+
+class MyProduct extends Type {
+    protected string $class = \comProduct::class;
+    protected string $package = 'commerce';
+    protected string $nameField = 'name';
+    protected array $excludedFields = [
+        'id',
+    ];
+    protected array $fieldOrder = [
+        'name',
+        'description',
+        'pricing',
+        'sku',
+    ];
+    protected array $fieldClassMap = [
+        'properties' => Properties::class,
+        'image' => Image::class,
+    ];
+}
+```
+
+Here's an example of how to create a delta of an object using the MyProduct class above:
+
+```php
+$path = $modx->getOption('versionx.core_path', null, MODX_CORE_PATH . 'components/versionx/');
+require $path . 'vendor/autoload.php';
+
+$versionX = new \modmore\VersionX\VersionX($modx);
+
+$type = new \MyModuleNamespace\MyProduct($versionX);
+$result = $versionX->deltas()->createDelta($id, $type);
+```
+
+Here we are getting the VersionX autoloader (so PHP knows where the VersionX classes are), then instantiating VersionX, instantiating our own custom "Object Type", then calling `createDelta()` and passing our custom Object Type `$type` and the `$id` of the object we want to version.
+
+You can see an [example of this in the VersionX plugin](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/elements/plugins/versionx.plugin.php#L41-L42), where we are creating a new delta of a resource when saved. The Object Type in this case is `\modmore\VersionX\Types\Resource`.
+
+```php
+$type = new \modmore\VersionX\Types\Resource($versionX);
+$result = $versionX->deltas()->createDelta($id, $type);
+```
+
+Now what happens if you want to include extra data in the delta that's not a field of your object? Saving TV values along with resources are an excellent example of this. [coming soon]
+
+
 
 ## Merging Deltas ##
 _Coming soon..._
