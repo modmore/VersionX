@@ -33,6 +33,8 @@ class VersionXObjectRevertProcessor extends modProcessor
         $this->deltaId = $this->getProperty('delta_id');
         $this->fieldId = $this->getProperty('field_id');
 
+        $this->versionX->loadCustomClasses();
+
         return $init;
     }
 

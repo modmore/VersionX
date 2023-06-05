@@ -294,4 +294,21 @@ abstract class Type
         }
     }
 
+    /**
+     * This method is called when processors for the main VersionX object grid are run. Use this to load your package
+     * containing the xPDO objects to be versioned.
+     *
+     * @param \modX $modx
+     * @return bool
+     */
+    public static function loadCustomPackage(\modX $modx): bool
+    {
+        // Load your package here!
+        // For example, to version 'comProduct' belonging to the Commerce extra, we might load the Commerce service
+        // class like this:
+        //
+        // $modx->getService('commerce', 'Commerce', MODX_CORE_PATH . 'components/commerce/model/commerce/');
+
+        return true;
+    }
 }

@@ -12,6 +12,7 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
     {
         $init = parent::initialize();
         $this->versionX = new VersionX($this->modx);
+        $this->versionX->loadCustomClasses();
 
         return $init;
     }

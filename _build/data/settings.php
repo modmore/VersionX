@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'debug' => [
-        'area' => 'Development',
-        'value' => false,
+    'custom_type_classes' => [
+        'area' => 'Custom Objects',
+        'value' => '',
     ],
     'formtabs.resource' => [
         'area' => 'Form Tabs',

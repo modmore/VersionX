@@ -79,9 +79,6 @@ class VersionX {
 
         // Load lexicons
         $this->modx->lexicon->load('versionx:default');
-
-        // Set debug mode
-        $this->debug = $this->modx->getOption('versionx.debug',null,false);
     }
 
     public function deltas(): DeltaManager
@@ -90,6 +87,37 @@ class VersionX {
             $this->deltaManager = new DeltaManager($this);
         }
         return $this->deltaManager;
+    }
+
+    /**
+     * Runs the loadCustomPackage() method from each custom type class listed in the 'versionx.custom_type_classes'
+     * system setting.
+     * The loadCustomPackage() method can be used to load a package, display custom objects and revert changes via the
+     * main grid.
+     * @return void
+     */
+    public function loadCustomClasses(): void
+    {
+        $json = $this->modx->getOption('versionx.custom_type_classes');
+        if (empty($json)) {
+            return;
+        }
+
+        $array = json_decode($json, true);
+
+        foreach ($array as $item) {
+            // Ignore if file doesn't exist at provided path
+            if (!file_exists($item['path'])) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "[VersionX] Custom type class missing at {$item['path']}");
+                continue;
+            }
+
+            require_once $item['path'];
+            if (!$item['class']::loadCustomPackage($this->modx)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR,
+                    "[VersionX] Custom type class {$item['class']} failed to load the custom package.");
+            }
+        }
     }
 
     /**
@@ -150,26 +178,6 @@ class VersionX {
     }
 
     /**
-     * @param $id
-     *
-     * @return string
-     */
-    public function getCategory($id): string
-    {
-        if (!$id || $id == 0) return '';
-        if (isset($this->categoryCache[$id])) {
-            return $this->categoryCache[$id];
-        }
-        /* @var modCategory|\modCategory $category */
-        $category = $this->modx->getObject('modCategory',(int)$id);
-        if ($category) {
-            return $this->categoryCache[$id] = $category->get('category') . " ($id)";
-        } else {
-            return (string)$id;
-        }
-    }
-
-    /**
      * Runs htmlentities() on the string with the proper character encoding.
      * @param string $string
      * @return string
@@ -182,4 +190,3 @@ class VersionX {
         return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
 }
-

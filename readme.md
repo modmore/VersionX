@@ -36,7 +36,7 @@ Objects may be expected to behave differently from one another. We expect when s
 
 To handle these different behaviours, VersionX uses configuration classes that extend the `\modmore\VersionX\Types\Type` class.
 
-Here's the object _Type_ class for a core chunk:
+Here's the object _Type_ class for versioning chunks (modChunk):
 
 ```php
 <?php
@@ -109,6 +109,22 @@ class MyProduct extends Type {
         'properties' => Properties::class,
         'image' => Image::class,
     ];
+    
+    /**
+     * Here we are loading the Commerce package via it's service class. This is required in order to have 
+     * custom objects show up in the main VersionX objects grid.
+     */
+    public static function loadCustomPackage(\modX $modx): bool
+    {
+        // While we're using $modx->getService() here, depending on your package/objects you might use
+        // $modx->loadClass(), or $modx->addPackage() instead.
+        if (!$modx->getService('commerce', 'Commerce', MODX_CORE_PATH . 'components/commerce/model/commerce/')) {
+            // Return false if it failed
+            return false;
+        }
+        
+        return true;
+    }
 }
 ```
 
