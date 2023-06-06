@@ -37,6 +37,14 @@ class VersionX {
     public const CACHE_OPT = [
         'cache_key' => 'versionx',
     ];
+    public const CORE_TYPES = [
+        \modmore\VersionX\Types\Resource::class,
+        \modmore\VersionX\Types\Template::class,
+        \modmore\VersionX\Types\Chunk::class,
+        \modmore\VersionX\Types\Snippet::class,
+        \modmore\VersionX\Types\Plugin::class,
+        \modmore\VersionX\Types\TV::class,
+    ];
 
     /**
      * @param \modX|modX $modx

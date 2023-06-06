@@ -15,6 +15,9 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
         $init = parent::initialize();
 
         $this->versionX = new VersionX($this->modx);
+        if (!in_array($this->getProperty('type'), VersionX::CORE_TYPES)) {
+            $this->versionX->loadCustomClasses();
+        }
 
         $typeClass = '\\' . $this->getProperty('type');
         $this->type = new $typeClass($this->versionX);
