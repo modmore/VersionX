@@ -32,6 +32,8 @@ $_lang['versionx.home.text'] = 'VersionX is a utility tool for MODX Revolution t
 VersionX is free software, however your help is needed to keep the development going. If VersionX has proven helpful, please <a href="https://modmore.com/extras/versionx/donate/">consider making a donation</a> to support VersionX. Thank you.';
 
 $_lang['versionx.search'] = 'Search...';
+$_lang['versionx.search_by_field'] = 'Search by field...';
+$_lang['versionx.search_by_name'] = 'Search by name...';
 $_lang['versionx.undo'] = 'undo';
 $_lang['versionx.optimize_storage'] = 'Optimize Storage';
 

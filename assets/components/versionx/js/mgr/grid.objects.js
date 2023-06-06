@@ -61,10 +61,12 @@ VersionX.grid.Objects = function(config) {
         }]
         ,tbar: [{
             xtype: 'versionx-field-search',
+            emptyText: _('versionx.search_by_name'),
             grid: this,
         },'->',{
             xtype: 'versionx-combo-classes',
             showClearFilter: true,
+            width: 110,
             listeners: {
                 select: {
                     fn: this.filter,
@@ -74,6 +76,7 @@ VersionX.grid.Objects = function(config) {
         },{
             xtype: 'versionx-combo-editors',
             showClearFilter: true,
+            width: 110,
             listeners: {
                 select: {
                     fn: this.filter,
@@ -83,6 +86,7 @@ VersionX.grid.Objects = function(config) {
         },{
             xtype: 'versionx-combo-packages',
             showClearFilter: true,
+            width: 110,
             listeners: {
                 select: {
                     fn: this.filter,
@@ -94,6 +98,7 @@ VersionX.grid.Objects = function(config) {
             name: 'date_from',
             emptyText: 'Date from...',
             format: 'Y-m-d',
+            width: 120,
             listeners: {
                 select: {
                     fn: this.filter,
@@ -105,6 +110,7 @@ VersionX.grid.Objects = function(config) {
             name: 'date_to',
             emptyText: 'Date to...',
             format: 'Y-m-d',
+            width: 120,
             listeners: {
                 select: {
                     fn: this.filter,

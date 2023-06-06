@@ -8,6 +8,7 @@ VersionX.window.Deltas = function(config) {
             action: 'mgr/'
         },
         cls: 'versionx-window',
+        modal: true,
         autoHeight: false,
         constrain: true,
         buttons: [{
