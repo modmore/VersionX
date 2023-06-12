@@ -30,7 +30,15 @@ class VersionXObjectsGetlistProcessor extends modObjectGetListProcessor {
         $c->prepare();
         if ($c->stmt && $c->stmt->execute()) {
             while ($row = $c->stmt->fetch(PDO::FETCH_ASSOC)) {
-                $type = new $row['type_class']($this->versionX);
+                // Ignore object classes that aren't loaded.
+                try {
+                    $type = new $row['type_class']($this->versionX);
+                }
+                catch (Error $e) {
+                    $this->modx->log(MODX_LOG_LEVEL_ERROR, $e->getMessage() . '| Make sure the correct path '
+                        . 'is included in the versionx.custom_type_classes system setting.');
+                    continue;
+                }
                 $this->nameFieldMap[$row['type_class']] = [
                     'name_field' => $type->getNameField(),
                     'principal_class' => $type->getClass(),

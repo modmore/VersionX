@@ -114,6 +114,9 @@ class VersionX {
         $array = json_decode($json, true);
 
         foreach ($array as $item) {
+            // Check for {core_path} placeholder and replace with actual path
+            $item['path'] = str_replace('{core_path}', MODX_CORE_PATH, $item['path']);
+
             // Ignore if file doesn't exist at provided path
             if (!file_exists($item['path'])) {
                 $this->modx->log(MODX_LOG_LEVEL_ERROR, "[VersionX] Custom type class missing at {$item['path']}");
