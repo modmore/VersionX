@@ -41,10 +41,10 @@ class Resource extends Type
     /**
      * Opportunity to add additional \vxDeltaField objects to the array. For example, adding TV values when saving
      * a resource.
-     * @param \vxDeltaField[] $fields
-     * @param array $prevFields
-     * @param \xPDOObject $object
-     * @return \vxDeltaField[]
+     * @param \vxDeltaField[] $fields - Array of fields to save in the new delta
+     * @param array $prevFields - Array of fields from the previous delta
+     * @param \xPDOObject $object - The object being versioned
+     * @return \vxDeltaField[] - The list of fields to be saved in the new delta.
      */
     public function includeFieldsOnCreate(array $fields, array $prevFields, \xPDOObject $object): array
     {

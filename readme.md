@@ -128,6 +128,8 @@ class MyProduct extends Type {
 }
 ```
 
+**Create versions of a custom object**
+
 Here's an example of how to create a delta of an object using the MyProduct class above:
 
 ```php
@@ -149,7 +151,45 @@ $type = new \modmore\VersionX\Types\Resource($versionX);
 $result = $versionX->deltas()->createDelta($id, $type);
 ```
 
-Now what happens if you want to include extra data in the delta that's not a field of your object? Saving TV values along with resources are an excellent example of this. [coming soon]
+Now what happens if you want to include extra data in the delta that's not a field of your object? 
+Saving TV values along with resources are an excellent example of this. In your extended Type class, you
+can use the [includeFieldsOnCreate()](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Type.php#L162-L173) method to add extra data to the version. An [example of this](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Resource.php#L42-L105) can be 
+found in the `Resource` type class.
+
+When reverting to a previous version of an object, you're going to want to revert the values of those 
+extra fields to the values from the previous version. To do this use the [afterRevert()](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Type.php#L186-L202) method in your 
+extended Type class. See the example reverting TV values in the [Resource](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Resource.php#L108-L152) class.
+
+
+**Display the custom object versions in the VersionX grid**
+
+The most important part for custom objects is the `loadCustomPackage()` method, as seen in the example above. 
+This will allow the main VersionX objects grid to display your custom object versions in addition to the regular core objects.
+This method should be used to load the xPDO objects. Different packages may need to be loaded in different ways; for example 
+in the example above the Commerce package is loaded by using the `$modx->getService()` method. For other packages, it might
+be more appropriate to use `$modx->loadClass()`, `$modx->addPackage()`, or the MODX 3+ `bootstrap.php` file.
+
+Your object Type config class could be located anywhere, so we need to let VersionX know where to find it. For this 
+the `versionx.custom_type_classes` system setting exists. The class name and the file location of each custom package should be added in JSON format to the system setting.
+e.g.
+
+```json
+[{
+  "class": "\\MyModuleNamespace\\MyProduct",
+  "path": "{core_path}components/commerce_mymodule/src/MyModuleNamespace/MyProduct.php"
+},{
+  "class": "\\AnotherNamespace\\AnotherClass",
+  "path": "{core_path}components/packagename/src/AnotherNamespace/AnotherClass.php"
+}]
+```
+
+VersionX will check this system setting when loading the main objects grid, and then run the `loadCustomPackage()` method 
+for each class listed there.
+
+You can then see your custom object versions in the VersionX grid. Note the object with the name `MyProduct` and the 
+class `comProduct` listed in the screenshot below:
+
+![Custom Object in Grid](https://github.com/modmore/VersionX/assets/5160368/bf323859-a971-47cf-8a90-5904426179ee)
 
 
 
