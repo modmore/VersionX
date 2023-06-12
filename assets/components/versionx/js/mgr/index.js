@@ -15,7 +15,6 @@ VersionX.panel.Home = function(config) {
             html: `
                 <div class="versionx-header">
                     <h2>${_('versionx')}</h2>
-                    <div class="version">3</div>
                 </div>
                 <p class="versionx-description">${_('versionx.description')}</p>
             `,

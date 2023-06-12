@@ -1,25 +1,6 @@
 .versionx_mv2 .modx-page-header {
     padding: 0 0 10px 5px;
 }
-.versionx-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.versionx-header .version {
-    position: relative;
-    bottom: 15px;
-    right: 5px;
-    color: #fff;
-    background: #ff9640 !important;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    text-align: center;
-    vertical-align: center;
-    font-size: 20px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
-}
 .versionx-description {
     font-size: 15px;
     font-weight: 200;
