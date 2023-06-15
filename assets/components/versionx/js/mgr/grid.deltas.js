@@ -237,6 +237,32 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             time_range = time_start + ' - ' + time_end;
         }
 
+
+        let hideDiffs = '',
+            buttonRow  = `
+            <button 
+                title="${milestone_action}"
+                class="versionx-diff-milestone-btn${milestone_class} x-button x-button-small" 
+                type="button" 
+                data-id="${version_id}"
+                data-milestone="${milestone}"
+            >
+                <i class="icon icon-flag"></i><span class="milestone-name">${milestone}</span>
+            </button>
+            <button 
+                class="versionx-diff-revert-btn x-btn x-btn-small x-btn-icon-small-left" 
+                type="button" 
+                data-id="${version_id}"
+            >
+                Revert these changes
+            </button>
+        `;
+        // Display initial delta differently
+        if (milestone === '_initial_') {
+            buttonRow = '';
+            hideDiffs = ' hide-diffs';
+        }
+
         // Collate editor usernames
 
 
@@ -260,25 +286,10 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                     <div class="versionx-diff-usernames"><i class="icon icon-user"></i>&nbsp;&nbsp;${name}</div>
                                 </div>
                                 <div class="versionx-diff-top-row-right">
-                                    <button 
-                                        title="${milestone_action}"
-                                        class="versionx-diff-milestone-btn${milestone_class} x-button x-button-small" 
-                                        type="button" 
-                                        data-id="${version_id}"
-                                        data-milestone="${milestone}"
-                                    >
-                                        <i class="icon icon-flag"></i><span class="milestone-name">${milestone}</span>
-                                    </button>
-                                    <button 
-                                        class="versionx-diff-revert-btn x-btn x-btn-small x-btn-icon-small-left" 
-                                        type="button" 
-                                        data-id="${version_id}"
-                                    >
-                                        Revert these changes
-                                    </button>
+                                    ${buttonRow}
                                 </div>
                             </div>
-                            <div class="versionx-diff-list">
+                            <div class="versionx-diff-list${hideDiffs}">
                                 ${diffs}
                             </div>
                         </div>

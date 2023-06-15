@@ -72,11 +72,12 @@ class DeltaManager {
     }
 
     /**
-     * @param int $id
-     * @param Type $type
+     * @param int $id - The id of the object being versioned
+     * @param Type $type - The Type class for the object being versioned
+     * @param bool $isSnapshot - A snapshot will save the current state of all fields, even if they haven't changed
      * @return \vxDelta|null
      */
-    public function createDelta(int $id, Type $type): ?\vxDelta
+    public function createDelta(int $id, Type $type, bool $isSnapshot = false): ?\vxDelta
     {
         $now = Carbon::now()->toDateTimeString();
 
@@ -91,6 +92,11 @@ class DeltaManager {
 
         // Get latest delta for this object
         $prevDelta = $this->getPreviousDelta($id, $type);
+
+        // If this is the first delta, it should be a snapshot.
+        if (!$prevDelta) {
+            $isSnapshot = true;
+        }
 
         // Grab all the fields for the latest delta
         $prevFields = [];
@@ -144,10 +150,12 @@ class DeltaManager {
         // Give object types a way of adding additional fields to the delta
         $fieldsToSave = $type->includeFieldsOnCreate($fieldsToSave, $prevFields, $object);
 
-        // Remove fields that haven't been changed
-        $fieldsToSave = $this->processFields($fieldsToSave);
-        if (empty($fieldsToSave)) {
-            return null;
+        // If not creating a snapshot, which saves all fields, remove fields that haven't been changed
+        if (!$isSnapshot) {
+            $fieldsToSave = $this->processFields($fieldsToSave);
+            if (empty($fieldsToSave)) {
+                return null;
+            }
         }
 
         /* @var \vxDelta $delta */
@@ -156,6 +164,7 @@ class DeltaManager {
             'principal_class' => $type->getClass(),
             'principal' => $id,
             'type_class' => get_class($type),
+            'milestone' => !$prevDelta ? '_initial_' : '', // Mark the delta as _initial_ milestone if first for object
             'time_start' => $now,
             'time_end' => $now,
         ]);
@@ -184,7 +193,10 @@ class DeltaManager {
                 . "/{$field->get('id')}";
 
             $diff = $field->get('diff');
-            $this->modx->cacheManager->set($key, $diff, 7200, VersionX::CACHE_OPT);
+
+            if ($diff) {
+                $this->modx->cacheManager->set($key, $diff, 7200, VersionX::CACHE_OPT);
+            }
         }
 
         return $type->afterDeltaCreate($delta, $object);

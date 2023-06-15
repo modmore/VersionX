@@ -119,6 +119,7 @@
     background: #fff;
     border-radius: 3px;
     border: 1px solid #d0d7de;
+    width: 100%;
 }
 .versionx-diff-top-row {
     display: flex;
@@ -162,10 +163,14 @@
 
 .versionx-diff-list {
     max-height: 300px;
+    width: 100%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+.versionx-diff-list.hide-diffs .versionx-field-diff-container {
+    display: none;
 }
 .versionx-field-diff-container {
     background: #fff;
