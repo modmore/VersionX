@@ -22,10 +22,40 @@ Version 3 would not have been possible if not for the impressive community fundi
 VersionX can be installed from either the [modmore package provider](https://modmore.com/about/package-provider/), or the [MODX package provider](https://extras.modx.com/package/versionx?version=2.4.0-pl).
 
 ## New UI ##
-_Coming soon..._
+The UI in VersionX 3.0 has been overhauled and simplified. 
 
-## Deltas ##
-_Coming soon..._
+**Manager Page**
+
+The VersionX manager page is availble at `Extras -> VersionX` in the MODX manager. 
+Here you'll find the main objects grid that lists all objects that have at least one version stored.
+They are sorted by the latest update, and can be filtered by the package they belong to, the type of 
+object (Resource, Template, Chunk, Snippet, TV, Plugin, or custom), the user who made the update and the date.
+
+By default, only core object types are displayed. If you would like to include custom objects, please refer
+to the sections **Object Types** and **Versioning Custom Objects** below.
+
+To view the stored versions for an object, right-click on it and select `View Details`. A window will open 
+with a list of deltas for that object. Each delta represents a grouping of all the fields that changed at a 
+particular point in time. Inside each delta you'll see a list of rendereded 
+[diffs](https://en.wikipedia.org/wiki/Diff) for each field name showing the before and after values.]
+
+**Versions Tab**
+
+On each Resource and Element manager page, you'll see an extra "Versions" tab that's been added by VersionX.
+Switching to this tab will display the same list of deltas as when opening the detail window on the 
+VersionX manager page.
+
+## Reverting Changes ##
+
+Reverting changes is performed either on the versions tab of the manager Resource/Element form, or via the
+main VersionX manager page.
+
+Look through the list of deltas, and find the one you want to revert to. There are three buttons available
+for reverting.
+
+- `Undo`: On the right-hand side of every diff, you'll see **_undo_** buttons for each field listed. Clicking undo will revert the change for that field only, ignoring all the other fields within that delta.
+- `Revert these changes`: In the top-right corner of each delta, you'll see the **_Revert these changes_** button. This will revert all fields within that delta, but no others.
+- `Revert all fields to this point in time`: This button sits between deltas, and reverts ALL fields regardless of which delta are in, to that point in time. (The "end time" of the delta just below it).
 
 ## Fields ##
 _Coming soon..._
@@ -130,7 +160,7 @@ class MyProduct extends Type {
 
 **Create versions of a custom object**
 
-Here's an example of how to create a delta of an object using the MyProduct class above:
+Here's an example of how to create a delta of an object using the MyProduct type class above:
 
 ```php
 $path = $modx->getOption('versionx.core_path', null, MODX_CORE_PATH . 'components/versionx/');
@@ -142,7 +172,7 @@ $type = new \MyModuleNamespace\MyProduct($versionX);
 $result = $versionX->deltas()->createDelta($id, $type);
 ```
 
-Here we are getting the VersionX autoloader (so PHP knows where the VersionX classes are), then instantiating VersionX, instantiating our own custom "Object Type", then calling `createDelta()` and passing our custom Object Type `$type` and the `$id` of the object we want to version.
+Here we are getting the VersionX autoloader (so PHP knows where the VersionX classes are), then instantiating VersionX, instantiating our own custom type class, then calling `createDelta()` and passing our custom type class `$type` and the `$id` of the object we want to version.
 
 You can see an [example of this in the VersionX plugin](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/elements/plugins/versionx.plugin.php#L41-L42), where we are creating a new delta of a resource when saved. The Object Type in this case is `\modmore\VersionX\Types\Resource`.
 
@@ -152,7 +182,7 @@ $result = $versionX->deltas()->createDelta($id, $type);
 ```
 
 Now what happens if you want to include extra data in the delta that's not a field of your object? 
-Saving TV values along with resources are an excellent example of this. In your extended Type class, you
+Saving TV values along with resources are an excellent example of this. In your extended custom type class, you
 can use the [includeFieldsOnCreate()](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Type.php#L162-L173) method to add extra data to the version. An [example of this](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Resource.php#L42-L105) can be 
 found in the `Resource` type class.
 
@@ -169,7 +199,7 @@ This method should be used to load the xPDO objects. Different packages may need
 in the example above the Commerce package is loaded by using the `$modx->getService()` method. For other packages, it might
 be more appropriate to use `$modx->loadClass()`, `$modx->addPackage()`, or the MODX 3+ `bootstrap.php` file.
 
-Your object Type config class could be located anywhere, so we need to let VersionX know where to find it. For this 
+Your custom type class could be located anywhere, so we need to let VersionX know where to find it. For this 
 the `versionx.custom_type_classes` system setting exists. The class name and the file location of each custom package should be added in JSON format to the system setting.
 e.g.
 

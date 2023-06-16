@@ -1,5 +1,15 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+VersionX 3.0.0-beta2
+-----------------
+Released on 2023-06-17
+
+- Force a full snapshot including all fields on the first delta of an object.
+- Remove all revert action buttons from initial delta.
+- Add system setting versionx.custom_type_classes so VersionX knows where to find any custom type classes.
+- Add a loadCustomPackage() method to modmore\VersionX\Types\Type to allow loading custom packages in different fashions.
+- Remove unstable beta alert from setup options window introduced in beta1.
+
 VersionX 3.0.0-beta1
 -----------------
 Released on 2023-05-05
@@ -14,7 +24,6 @@ Released on 2022-08-14
 - Remove unused VersionX::getChunk()
 - Fix creating snippet and chunk versions on MODX 3 [#121]
 - Also trigger on Fred resource saves [#112]
-
 
 VersionX 2.3.2-pl
 -----------------
