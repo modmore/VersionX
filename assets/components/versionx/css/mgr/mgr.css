@@ -169,9 +169,6 @@
     flex-direction: column;
     gap: 15px;
 }
-.versionx-diff-list.hide-diffs .versionx-field-diff-container {
-    display: none;
-}
 .versionx-field-diff-container {
     background: #fff;
 }

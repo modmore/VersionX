@@ -141,7 +141,9 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
                 $renderedDiff = $fieldTypeObj->render($field->get('before'), $field->get('after'));
 
                 // Save in cache
-                $this->modx->cacheManager->set($key, $renderedDiff, 7200, VersionX::CACHE_OPT);
+                if ($renderedDiff) {
+                    $this->modx->cacheManager->set($key, $renderedDiff, 7200, VersionX::CACHE_OPT);
+                }
             }
 
             $this->modx->smarty->assign([
@@ -149,6 +151,7 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
                 'diff' => $renderedDiff,
                 'field_id' => $field->get('id'),
                 'delta_id' => $field->get('delta'),
+                'initial' => $object->get('milestone') === '_initial_',
                 'undo' => $this->modx->lexicon('versionx.undo'),
             ]);
             $row['diffs'] .= $this->modx->smarty->fetch($diffFile);
