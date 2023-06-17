@@ -55,10 +55,18 @@ for reverting.
 
 - `Undo`: On the right-hand side of every diff, you'll see **_undo_** buttons for each field listed. Clicking undo will revert the change for that field only, ignoring all the other fields within that delta.
 - `Revert these changes`: In the top-right corner of each delta, you'll see the **_Revert these changes_** button. This will revert all fields within that delta, but no others.
-- `Revert all fields to this point in time`: This button sits between deltas, and reverts ALL fields regardless of which delta are in, to that point in time. (The "end time" of the delta just below it).
+- `Revert all fields to this point in time`: This button sits between deltas, and reverts ALL fields regardless of which delta they are in, to that point in time. (_This point in time_ refers to the "end time" of the delta just below it).
 
 ## Fields ##
-_Coming soon..._
+
+Different field types in v3 allow for unique behavior when creating, reverting, or rendering deltas. In addition to the standard [Text field](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Fields/Text.php), the [Properties field](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Fields/Properties.php) is now available.
+
+Properties fields are defined for an object in the type class (see Object Types section below) and are typically used for fields that contain more than one value, 
+such as a serialized value. The properties field breaks the value apart recursively and versions each item as its own field when stored in a delta. 
+This provides more granular control over what can be reverted, compared to a normal Text field where all values must be reverted at once. 
+An example of the Properties field being defined for a Resource can be found [here](https://github.com/modmore/VersionX/blob/3.x/core/components/versionx/src/Types/Resource.php#L32-L34).
+
+An Image field is also planned that would allow rendering of the before and after images within the diff.
 
 ## Object Types ##
 
@@ -222,9 +230,33 @@ class `comProduct` listed in the screenshot below:
 ![Custom Object in Grid](https://github.com/modmore/VersionX/assets/5160368/bf323859-a971-47cf-8a90-5904426179ee)
 
 
-
 ## Merging Deltas ##
-_Coming soon..._
+
+Previously, VersionX stored the entire object each save. This, as you can imagine, caused the database tables to grow rather quickly.
+As of v3, each version only contains the fields that have changed within a delta.
+
+Merging deltas are a key function of VersionX, designed to keep storage space to a minimum. Merging deltas is intended
+to be handled by a nightly cronjob, though it can also be triggered manually by the **_Optimise Storage_** button at 
+the top of the VersionX manager page.
+
+The script to run for the cron is located at `core/components/versionx/cron.php`
+
+So to run it every midnight, in your crontab you might put:
+```
+0 0 * * * php /var/www/public/core/components/versionx/cron.php > /dev/null 2>&1
+```
+
+VersionX will look at how old deltas are and merge then depending on the timeframe.
+
+Deltas will be merged if they are older than:
+
+- 1 week ago
+- 1 month ago
+- 3 months ago
+- 18 months ago
+- 5 years ago
+
+
 
 ## Milestones ##
 _Coming soon..._

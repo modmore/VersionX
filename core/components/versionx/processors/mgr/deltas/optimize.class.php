@@ -13,12 +13,14 @@ class VersionXOptimizeDeltasProcessor extends modProcessor
     {
         $init = parent::initialize();
         $this->versionX = new VersionX($this->modx);
+        $this->versionX->loadCustomClasses();
 
         return $init;
     }
 
     public function process()
     {
+
         $this->versionX->deltas()->optimizeDeltas();
         return $this->success('Success');
     }

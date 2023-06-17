@@ -37,26 +37,31 @@ class DeltaMerger {
             [
                 'after' => null,
                 'before' => $this->fiveYearsAgo,
+                'group' => 'year',
             ],
             // 18 months
             [
                 'after' => $this->fiveYearsAgo,
                 'before' => $this->eighteenMonthsAgo,
+                'group' => 'month',
             ],
             // 3 months
             [
                 'after' => $this->eighteenMonthsAgo,
                 'before' => $this->threeMonthsAgo,
+                'group' => 'week',
             ],
             // 1 month
             [
                 'after' => $this->threeMonthsAgo,
                 'before' => $this->oneMonthAgo,
+                'group' => 'day',
             ],
             // 1 week
             [
                 'after' => $this->oneMonthAgo,
                 'before' => $this->oneWeekAgo,
+                'group' => 'hour',
             ],
         ];
     }
@@ -71,11 +76,9 @@ class DeltaMerger {
             $type = new $class($this->versionX);
 
             foreach ($this->epochs as $epoch) {
-                $this->mergeDeltas($object, $type, $epoch);
+                $this->groupDeltas($object, $type, $epoch);
             }
         }
-
-
     }
 
     /**
@@ -118,10 +121,75 @@ class DeltaMerger {
         return $objects;
     }
 
-    protected function mergeDeltas(\xPDOObject $object, Type $type, array $epoch)
+    /**
+     * @param \xPDOObject $object
+     * @param Type $type
+     * @param array $epoch
+     * @return void
+     */
+    protected function groupDeltas(\xPDOObject $object, Type $type, array $epoch)
     {
         // Get all deltas in the epoch sorted by time_end
         $deltas = $this->getEpochDeltas($object, $type, $epoch);
+        if (empty($deltas)) {
+            return;
+        }
+
+        // Now merge deltas into the group for the current epoch (per hour, day, week, month, year)
+        foreach ($deltas as $keyDelta) {
+            $this->mergeDeltas($object, $type, $keyDelta, $epoch);
+        }
+    }
+
+    /**
+     * @param \xPDOObject $object
+     * @param Type $type
+     * @param \vxDelta $keyDelta
+     * @param array $epoch
+     * @return void
+     */
+    protected function mergeDeltas(\xPDOObject $object, Type $type, \vxDelta $keyDelta, array $epoch)
+    {
+        $timeframe = [];
+        $date = Carbon::createFromDate($keyDelta->get('time_end'));
+        switch ($epoch['group']) {
+            case 'year':
+                $timeframe = [
+                    'after' => $date->copy()->startOfYear()->toDateTimeString(),
+                    'before' => $date->copy()->endOfYear()->toDateTimeString(),
+                ];
+                break;
+            case 'month':
+                $timeframe = [
+                    'after' => $date->copy()->startOfMonth()->toDateTimeString(),
+                    'before' => $date->copy()->endOfMonth()->toDateTimeString(),
+                ];
+                break;
+            case 'week':
+                $timeframe = [
+                    'after' => $date->copy()->startOfWeek()->toDateTimeString(),
+                    'before' => $date->copy()->endOfWeek()->toDateTimeString(),
+                ];
+                break;
+            case 'day':
+                $timeframe = [
+                    'after' => $date->copy()->startOfDay()->toDateTimeString(),
+                    'before' => $date->copy()->endOfDay()->toDateTimeString(),
+                ];
+                break;
+            case 'hour':
+                $timeframe = [
+                    'after' => $date->copy()->startOfHour()->toDateTimeString(),
+                    'before' => $date->copy()->endOfHour()->toDateTimeString(),
+                ];
+                break;
+        }
+
+        if (empty($timeframe)) {
+            return;
+        }
+
+        $deltas = $this->getEpochDeltas($object, $type, $timeframe);
         if (empty($deltas)) {
             return;
         }
