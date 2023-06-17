@@ -58,8 +58,6 @@ $output = <<<HTML
 </div>
 
 <p style="margin-top: 15px;">If you found VersionX useful, please consider <a href="https://modmore.com/extras/versionx/donate/">making a donation to support its development</a>. Thank you!</p>
-<br>
-<p style="background: red; color: white; font-weight: bold; padding: 5px 15px;">This version is still in beta and is not yet ready for production environments. Only install this on test environments until the stable version is released!</p>
 
 HTML;
     break;
