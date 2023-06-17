@@ -9,8 +9,9 @@ VersionX is a versioning system for the MODX content management system. It keeps
 v3.0 is a complete rewrite and is not compatible with v2. 
 There is, however, a migration utility included that will assist with moving your old data to the new tables.
 
-## The Road to v3.0 ##
-Version 3 would not have been possible if not for the impressive community funding. _[More on this soon...]_
+## Funding Goal Reached ##
+
+VersionX 3.0 was made possible by community funding. Read through [the conversation](https://github.com/modmore/VersionX/issues/4) to learn more!
 
 ## Requirements ##
 
@@ -248,21 +249,33 @@ So to run it every midnight, in your crontab you might put:
 
 VersionX will look at how old deltas are and merge then depending on the timeframe.
 
-Deltas will be merged if they are older than:
+- `1 week ago` - Deltas older than a week will be merged to a single delta for a given hour.
+  _This leaves at most 168 unique deltas per object per week, or 8736 per year._
+- `1 month ago` - Deltas older than a month will be merged to a single delta for a given day.
+  _This leaves at most 7 unique deltas per object per week, or 364 per year_
+- `3 months ago` - Deltas older than 3 months will be merged to a single delta for a given week.
+  _This leaves at most 1 unique delta per object per week, or 52 per year._
+- `18 months ago` - Deltas older than 18 months will be merged to a single delta for a given month.
+  _This leaves at most 1 unique delta per object per month, or 12 per year._
+- `5 years ago` - Deltas older than 5 years will be merged to a single delta for a given year.
 
-- 1 week ago
-- 1 month ago
-- 3 months ago
-- 18 months ago
-- 5 years ago
-
-
+The initial delta on each object, plus any delta marked as a **_milestone_** will not be merged.
 
 ## Milestones ##
-_Coming soon..._
+
+Within the delta grid UI, you can set a milestone tag (e.g. "Client Review" or "Went Live!") on a delta by 
+clicking the flag icon.
+A milestone represents an important version that should be preserved as is, and as such is never merged.
+Click the milestone tag again to remove it if you no longer wish to keep it separate.
 
 ## Migrating from 2.x ##
-_Coming soon..._
+
+A separate script has been included to migrate version data from the VersionX 2.x database tabled.
+
+After upgrading to version 3, run the following from the command line:
+```
+php /your/path/core/components/versionx/migrate.php
+```
 
 ## Contributions ##
 VersionX is open source, and free to use. If you would like to support further development, feel free to contribute with either code (in the form of a PR on this repo) or monetary contributions. Hit the link to donate: https://modmore.com/extras/versionx/donate/ 
