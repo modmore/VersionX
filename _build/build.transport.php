@@ -6,12 +6,30 @@ $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
 
-/* define package */
-require_once dirname(dirname(__FILE__)) . '/core/components/versionx/docs/version.inc.php';
-define('PKG_NAME', 'VersionX');
-define('PKG_NAME_LOWER', strtolower(PKG_NAME));
-define('PKG_VERSION', VERSIONX_VERSION);
-define('PKG_RELEASE', VERSIONX_RELEASE);
+
+if (!defined('MOREPROVIDER_BUILD')) {
+    /* define version */
+    define('PKG_NAME', 'VersionX');
+    define('PKG_NAMESPACE', 'versionx');
+    define('PKG_VERSION', '3.0.0');
+    define('PKG_RELEASE', 'dev1');
+
+    /* load modx */
+    require_once dirname(dirname(__FILE__)) . '/config.core.php';
+    require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+    $modx = new modX();
+    $modx->initialize('mgr');
+    $modx->setLogLevel(modX::LOG_LEVEL_INFO);
+    $modx->setLogTarget('ECHO');
+
+
+    echo '<pre>';
+    flush();
+    $targetDirectory = dirname(dirname(__FILE__)) . '/_packages/';
+}
+else {
+    $targetDirectory = MOREPROVIDER_BUILD_TARGET;
+}
 
 $root = dirname(dirname(__FILE__)).'/';
 $sources = [
@@ -21,13 +39,13 @@ $sources = [
     'validators' => $root . '_build/validators/',
     'resolvers' => $root . '_build/resolvers/',
     'data' => $root . '_build/data/',
-    'source_core' => $root . 'core/components/' . PKG_NAME_LOWER,
-    'source_assets' => $root . 'assets/components/' . PKG_NAME_LOWER,
-    'plugins' => $root . 'core/components/' . PKG_NAME_LOWER . '/elements/plugins/',
-    'snippets' => $root . 'core/components/' . PKG_NAME_LOWER . '/elements/snippets/',
-    'lexicon' => $root . 'core/components/' . PKG_NAME_LOWER . '/lexicon/',
-    'docs' => $root . 'core/components/' . PKG_NAME_LOWER . '/docs/',
-    'model' => $root . 'core/components/' . PKG_NAME_LOWER . '/model/',
+    'source_core' => $root . 'core/components/' . PKG_NAMESPACE,
+    'source_assets' => $root . 'assets/components/' . PKG_NAMESPACE,
+    'plugins' => $root . 'core/components/' . PKG_NAMESPACE . '/elements/plugins/',
+    'snippets' => $root . 'core/components/' . PKG_NAMESPACE . '/elements/snippets/',
+    'lexicon' => $root . 'core/components/' . PKG_NAMESPACE . '/lexicon/',
+    'docs' => $root . 'core/components/' . PKG_NAMESPACE . '/docs/',
+    'model' => $root . 'core/components/' . PKG_NAMESPACE . '/model/',
 ];
 unset($root);
 
@@ -37,19 +55,18 @@ require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx= new modX();
 $modx->initialize('mgr');
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-$modx->setLogTarget('ECHO'); echo 'Packing '.PKG_NAME_LOWER.'-'.PKG_VERSION.'-'.PKG_RELEASE.'<pre>';
-flush();
+$modx->setLogTarget('ECHO');
 
-$modx->loadClass('transport.modPackageBuilder','',false, true);
+$modx->loadClass('transport.modPackageBuilder', '', false, true);
 $builder = new modPackageBuilder($modx);
-$builder->directory = dirname(__FILE__, 2) . '/_packages/';
-$builder->createPackage(PKG_NAME_LOWER, PKG_VERSION, PKG_RELEASE);
+$builder->directory = $targetDirectory;
+$builder->createPackage(PKG_NAMESPACE, PKG_VERSION, PKG_RELEASE);
 $builder->registerNamespace(
-    PKG_NAME_LOWER,
+    PKG_NAMESPACE,
     false,
     true,
-    '{core_path}components/' . PKG_NAME_LOWER . '/',
-    '{assets_path}components/' . PKG_NAME_LOWER . '/',
+    '{core_path}components/' . PKG_NAMESPACE . '/',
+    '{assets_path}components/' . PKG_NAMESPACE . '/',
 );
 $modx->getService('lexicon', 'modLexicon');
 
