@@ -11,7 +11,31 @@ There is, however, a migration utility included that will assist with moving you
 
 ## Funding Goal Reached ##
 
-VersionX 3.0 was made possible by community funding. Read through [the conversation](https://github.com/modmore/VersionX/issues/4) to learn more!
+VersionX 3.0 was made possible by community funding. Special thanks to:
+
+<div class="credits">
+    <p class="credit">
+        <a href="https://jens-wittmann.de" target="_blank" rel="noopener">Jens Wittmann</a>
+    </p>
+    <p class="credit">
+        <a href="https://www.quadro-system.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/quadro.svg" alt="QUADRO"></a>
+    </p>
+    <p class="credit" style="background: #141414;">
+        <a href="https://www.webaix.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/webaix-logo-2021.svg" alt="webaix."></a>
+    </p>
+    <p class="credit" style="background: #e2007a;">
+        <a href="https://www.visions.ch/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo_visions.svg" alt="Visions"></a>
+    </p>
+    <p class="credit">
+        <a href="https://www.lux-medien.com/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo-lux-tiny-2019.svg" alt="LUX Medien"></a>
+    </p>
+    <p class="credit">
+        <a href="https://sepiariver.com/" target="_blank" rel="noopener">Sepia River Studios</a>
+    </p>
+    <p class="credit">
+        Joshua Lückers
+    </p>
+</div>
 
 ## Requirements ##
 
