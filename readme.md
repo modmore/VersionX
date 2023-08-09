@@ -13,6 +13,9 @@ There is, however, a migration utility included that will assist with moving you
 
 VersionX 3.0 was made possible by community funding. Special thanks to:
 
+<svg fill="none" viewBox="0 0 600 300" width="600" height="300" xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
 <div class="credits" style="display: flex;flex-wrap: wrap;">
     <p class="credit" style="flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);background: #f9fafa;margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://jens-wittmann.de" target="_blank" rel="noopener">Jens Wittmann</a>
@@ -37,6 +40,9 @@ VersionX 3.0 was made possible by community funding. Special thanks to:
     </p>
 </div>
 
+    </div>
+  </foreignObject>
+</svg>
 
 ## Requirements ##
 
