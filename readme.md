@@ -14,10 +14,10 @@ There is, however, a migration utility included that will assist with moving you
 VersionX 3.0 was made possible by community funding. Special thanks to:
 
 - <a href="https://jens-wittmann.de" target="_blank" rel="noopener">Jens Wittmann</a>
-- <a href="https://www.quadro-system.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/quadro.svg" alt="QUADRO"></a>
-- <a href="https://www.webaix.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/webaix-logo-2021.svg" alt="webaix."></a>
-- <a href="https://www.visions.ch/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo_visions.svg" alt="Visions"></a>
-- <a href="https://www.lux-medien.com/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo-lux-tiny-2019.svg" alt="LUX Medien"></a>
+- <a href="https://www.quadro-system.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/quadro.svg" alt="QUADRO" style="width: 250px;"></a>
+- <a href="https://www.webaix.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/webaix-logo-2021.svg" alt="webaix." style="width: 250px;"></a>
+- <a href="https://www.visions.ch/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo_visions.svg" alt="Visions" style="width: 250px;"></a>
+- <a href="https://www.lux-medien.com/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo-lux-tiny-2019.svg" alt="LUX Medien" style="width: 250px;"></a>
 - <a href="https://sepiariver.com/" target="_blank" rel="noopener">Sepia River Studios</a>
 - Joshua Lückers
 
