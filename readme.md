@@ -13,29 +13,30 @@ There is, however, a migration utility included that will assist with moving you
 
 VersionX 3.0 was made possible by community funding. Special thanks to:
 
-<div class="credits">
-    <p class="credit">
+<div class="credits" style="display: flex;flex-wrap: wrap;">
+    <p class="credit" style="flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);background: #f9fafa;margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://jens-wittmann.de" target="_blank" rel="noopener">Jens Wittmann</a>
     </p>
-    <p class="credit">
+    <p class="credit" style="flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);background: #f9fafa;margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://www.quadro-system.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/quadro.svg" alt="QUADRO"></a>
     </p>
-    <p class="credit" style="background: #141414;">
+    <p class="credit" style="background: #141414;flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://www.webaix.de/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/webaix-logo-2021.svg" alt="webaix."></a>
     </p>
-    <p class="credit" style="background: #e2007a;">
+    <p class="credit" style="background: #e2007a;flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://www.visions.ch/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo_visions.svg" alt="Visions"></a>
     </p>
-    <p class="credit">
+    <p class="credit" style="flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);background: #f9fafa;margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://www.lux-medien.com/" target="_blank" rel="noopener"><img src="https://assets.modmore.com/modxpo2022/sp/logo-lux-tiny-2019.svg" alt="LUX Medien"></a>
     </p>
-    <p class="credit">
+    <p class="credit" style="flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);background: #f9fafa;margin: 1%;text-align: center;display: flex;flex-direction: column;">
         <a href="https://sepiariver.com/" target="_blank" rel="noopener">Sepia River Studios</a>
     </p>
-    <p class="credit">
+    <p class="credit" style="flex: 1 0 30%;padding: 1rem;border-radius: 3px;border: 1px solid rgba(0,0,0,.1);box-shadow: 0 0 3px rgba(39,44,49,.02), 0 5px 22px -6px rgba(39,44,49,.05);background: #f9fafa;margin: 1%;text-align: center;display: flex;flex-direction: column;">
         Joshua Lückers
     </p>
 </div>
+
 
 ## Requirements ##
 
