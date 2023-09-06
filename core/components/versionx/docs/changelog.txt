@@ -1,5 +1,11 @@
 This changelog shows an overview of what changed throughout VersionX releases, with the latest release or development log on top.
 
+VersionX 3.0.0-pl
+-----------------
+Released on 2023-09-06
+
+- Official 1.0 release on modmore.com
+
 VersionX 3.0.0-beta2
 -----------------
 Released on 2023-06-17
