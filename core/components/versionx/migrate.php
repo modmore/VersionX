@@ -210,7 +210,9 @@ function mergeTVs($object): array
     $tvs = [];
     foreach ($object->get('tvs') as $tvContent) {
         $tmpVar = $modx->getObject('modTemplateVar', $tvContent['id']);
-        $tvs[$tmpVar->get('name')] = $tvContent['value'];
+        if ($tmpVar) {
+            $tvs[$tmpVar->get('name')] = $tvContent['value'];
+        }
     }
 
     return array_merge(
