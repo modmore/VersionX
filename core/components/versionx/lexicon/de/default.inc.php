@@ -23,12 +23,21 @@
  */
 
 $_lang['versionx'] = 'VersionX';
+$_lang['versionx.description'] = 'Ressourcen- & Element-Versionierung für MODX.';
+$_lang['versionx.donate'] = 'Spenden';
+
 $_lang['versionx.tabheader'] = 'Versionen';
 $_lang['versionx.menu_desc'] = 'Sichert ihren wertvollen Inhalt.';
 
 $_lang['versionx.home'] = 'VersionX';
-$_lang['versionx.home.text'] = 'VersionX ist ein nützliches Werkzeug für MODX Revolution, das Ihnen hilft den Überblick über ihre Inhalte in Ressourcen, Templates, Chunks, Snippets und Plugins zu behalten. Jeder Speichervorgang wird aufgezeichnet und kann leicht verglichen und wiederhergestellt bzw. rückgängig gemacht werden. Bitte beachten Sie, dass die Schnittstelle für Chunks, Snippets und Plugins noch nicht enthalten ist, die Daten werden in der Datenbank gespeichert und stehen zur Verfügung, sobald die Funktionen implementiert sind. <br /> <br />
-	VersionX steht kostenlos (und Open Source) zur Verfügung, jedoch wurde eine Menge Zeit in Entwicklung, Wartung und Support investiert. Bitte <a href="http://www.markhamstra.com/open-source/versionx/">denken Sie über eine Spende nach</a> und unterstützen Sie die zukünftige Weiterentwicklung von VersionX';
+$_lang['versionx.home.text'] = 'VersionX ist ein Tool für MODX Revolution, das Ihnen hilft, Ihre Inhalte in Ressourcen, Vorlagen, Chunks, Snippets und Plugins zu verfolgen. Jede Speicherung wird aufgezeichnet und kann durch diese Komponente leicht zurückverfolgt und verglichen werden. <br /><br />
+VersionX ist kostenlose Software, aber Ihre Hilfe wird benötigt, um die Entwicklung am Laufen zu halten. Wenn sich VersionX als hilfreich erwiesen hat, ziehen Sie bitte <a href="https://modmore.com/extras/versionx/donate/">eine Spende</a> zur Unterstützung von VersionX in Betracht. Vielen Dank.';
+
+$_lang['versionx.search'] = 'Suche ...';
+$_lang['versionx.search_by_field'] = 'Suche nach Feld ...';
+$_lang['versionx.search_by_name'] = 'Suche nach Name ...';
+$_lang['versionx.undo'] = 'verwerfen';
+$_lang['versionx.optimize_storage'] = 'Optimieren der Speicherung';
 
 $_lang['versionx.common.empty'] = '&lt;leer&gt;';
 $_lang['versionx.common.version-details'] = 'Version Details';
@@ -36,7 +45,7 @@ $_lang['versionx.common.detail.text'] = 'Unten finden Sie die Details für die [
 $_lang['versionx.common.fields'] = 'Felder';
 $_lang['versionx.common.content'] = 'Inhalt';
 $_lang['versionx.common.properties'] = 'Eigenschaften';
-$_lang['versionx.common.properties.off'] = 'Entschuldigung, dieser Tab kann noch nicht angezeigt werden.';
+$_lang['versionx.common.properties.off'] = 'Entschuldigung, dieser Tab kann noch nicht angezeigt werden';
 
 $_lang['versionx.resources.detail'] = 'Ressourcendetails';
 $_lang['versionx.resources.detail.text'] = 'Unten finden Sie Details zur ausgewählten Ressourcenversion. Um diese Version mit einer anderen zu vergleichen, wählen Sie über die Combobox unten eine andere Version aus.';
@@ -58,11 +67,12 @@ $_lang['versionx.templates.detail.text'] = 'Unten finden Sie Details zur ausgew�
 $_lang['versionx.templates.revert'] = 'Template auf Version #[[+id]] zurücksetzen';
 $_lang['versionx.templates.revert.options'] = 'Template zurücksetzen';
 $_lang['versionx.templates.revert.confirm'] = 'Sicher?';
-$_lang['versionx.templates.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Templates und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.templates.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Templates und ersetzt sie durch die Daten in der von Ihnen ausgewählten Version.';
 $_lang['versionx.templates.reverted'] = 'Template erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.templatevars.detail.tabs.input-options'] = 'Eingabe-Optionen';
 $_lang['versionx.templatevars.detail.tabs.output-options'] = 'Ausgabe-Optionen';
+
 $_lang['versionx.templatevars.detail'] = 'Template Variable Details';
 $_lang['versionx.templatevars.detail.input-type'] = 'Eingabetyp';
 $_lang['versionx.templatevars.detail.input-properties'] = 'Eingabe-Optionswerte';
@@ -72,7 +82,7 @@ $_lang['versionx.templatevars.detail.output-properties'] = 'Ausgabe-Optionswerte
 $_lang['versionx.templatevars.revert'] = 'Template Variable auf Version #[[+id]] zurücksetzen';
 $_lang['versionx.templatevars.revert.options'] = 'Template Variable zurücksetzen';
 $_lang['versionx.templatevars.revert.confirm'] = 'Sicher?';
-$_lang['versionx.templatevars.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieser Template Variable und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.templatevars.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieser Template Variable und ersetzt sie durch die Daten in der von Ihnen ausgewählten Version.';
 $_lang['versionx.templatevars.reverted'] = 'Template Variable erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.chunks.detail'] = 'Chunk Details';
@@ -80,7 +90,7 @@ $_lang['versionx.chunks.detail.text'] = 'Unten finden Sie Details zur ausgewähl
 $_lang['versionx.chunks.revert'] = 'Chunk auf Version #[[+id]] zurücksetzen';
 $_lang['versionx.chunks.revert.options'] = 'Chunk zurücksetzen';
 $_lang['versionx.chunks.revert.confirm'] = 'Sicher?';
-$_lang['versionx.chunks.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Chunks und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.chunks.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Chunks und ersetzt sie durch die Daten in der von Ihnen ausgewählten Version.';
 $_lang['versionx.chunks.reverted'] = 'Chunk erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.snippets.detail'] = 'Snippet Details';
@@ -88,7 +98,7 @@ $_lang['versionx.snippets.detail.text'] = 'Unten finden Sie Details zur ausgewä
 $_lang['versionx.snippets.revert'] = 'Snippet auf Version #[[+id]] zurücksetzen';
 $_lang['versionx.snippets.revert.options'] = 'Snippet zurücksetzen';
 $_lang['versionx.snippets.revert.confirm'] = 'Sicher?';
-$_lang['versionx.snippets.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Snippets und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.snippets.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Snippets und ersetzt sie durch die Daten in der von Ihnen ausgewählten Version.';
 $_lang['versionx.snippets.reverted'] = 'Snippet erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.plugins.detail'] = 'Plugin Details';
@@ -96,7 +106,7 @@ $_lang['versionx.plugins.detail.text'] = 'Unten finden Sie Details zur ausgewäh
 $_lang['versionx.plugins.revert'] = 'Plugin auf Version #[[+id]] zurücksetzen';
 $_lang['versionx.plugins.revert.options'] = 'Plugin zurücksetzen';
 $_lang['versionx.plugins.revert.confirm'] = 'Sicher?';
-$_lang['versionx.plugins.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Plugins und ersetzt Sie mit denjenigen aus Version #[[+id]]!';
+$_lang['versionx.plugins.revert.confirm.text'] = 'Sind Sie sicher, dass Sie zur Version #[[+id]] zurückkehren wollen? Dies überschreibt den Inhalt und sämtliche anderen Metadaten dieses Plugins und ersetzt sie durch die Daten in der von Ihnen ausgewählten Version.';
 $_lang['versionx.plugins.reverted'] = 'Plugin erfolgreich auf Version #[[+id]] zurückgesetzt!';
 
 $_lang['versionx.menu.viewdetails'] = 'Version Details ansehen';
