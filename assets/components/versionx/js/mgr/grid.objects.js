@@ -23,45 +23,46 @@ VersionX.grid.Objects = function(config) {
         paging: true,
         pageSize: 20,
         remoteSort: true,
+        actionsColumnWidth: 5,
         filters: ['query', 'date_from', 'date_to', 'class', 'editor', 'package'],
         columns: [{
-            header: 'Delta',
+            header: _('versionx.objects.delta'),
             dataIndex: 'id',
             hidden: true
         },{
-            header: 'When',
+            header: _('versionx.objects.when'),
             dataIndex: 'time_end',
             width: 20,
             sortable: true,
         },{
-            header: 'Name',
+            header: _('versionx.objects.name'),
             dataIndex: 'name',
             width: 20,
             sortable: true,
         },{
-            header: 'Class',
+            header: _('versionx.objects.class'),
             dataIndex: 'principal_class',
             width: 20,
             sortable: true,
         },{
-            header: 'ID',
+            header: _('versionx.objects.id'),
             dataIndex: 'principal',
             width: 10,
             sortable: true,
         },{
-            header: 'Package',
+            header: _('versionx.objects.package'),
             dataIndex: 'principal_package',
             width: 10,
             sortable: true,
         },{
-            header: 'Editor',
+            header: _('versionx.objects.editor'),
             dataIndex: 'username',
             width: 20,
             sortable: true,
         }]
         ,tbar: [{
             xtype: 'versionx-field-search',
-            emptyText: _('versionx.search_by_name'),
+            emptyText: _('versionx.filters.search_by_name'),
             grid: this,
         },'->',{
             xtype: 'versionx-combo-classes',
@@ -96,7 +97,7 @@ VersionX.grid.Objects = function(config) {
         },{
             xtype: 'datefield',
             name: 'date_from',
-            emptyText: 'Date from...',
+            emptyText: _('versionx.filters.date_from'),
             format: 'Y-m-d',
             width: 120,
             listeners: {
@@ -108,7 +109,7 @@ VersionX.grid.Objects = function(config) {
         },{
             xtype: 'datefield',
             name: 'date_to',
-            emptyText: 'Date to...',
+            emptyText: _('versionx.filters.date_to'),
             format: 'Y-m-d',
             width: 120,
             listeners: {
@@ -146,7 +147,7 @@ Ext.extend(VersionX.grid.Objects, MODx.grid.Grid, {
     getMenu: function() {
         var m = [];
         m.push({
-            text: 'View Details',
+            text: _('versionx.objects.view_details'),
             handler: this.viewDetails
         });
         return m;

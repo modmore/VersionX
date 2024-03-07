@@ -1,8 +1,14 @@
 VersionX.window.Deltas = function(config) {
     config = config || {};
     var win = this;
+    console.log(config.record);
     Ext.applyIf(config, {
-        title: 'View Details',
+        title: _('versionx.objects.viewing_object_details', {
+            name: config.record.name,
+            class: config.record.principal_class,
+            id: config.record.principal,
+            time_end: config.record.time_end,
+        }),
         url: VersionX.config.connectorUrl,
         baseParams: {
             action: 'mgr/'

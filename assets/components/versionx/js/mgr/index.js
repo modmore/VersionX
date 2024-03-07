@@ -79,8 +79,10 @@ Ext.extend(VersionX.page.Home, MODx.Component,{
     optimizeStorage: function(btn, e) {
         MODx.msg.confirm({
             title: `<i class="icon icon-refresh"></i>&nbsp; ${_('versionx.optimize_storage')}`,
-            text: `<p>Optimizing storage will merge older deltas, and typically runs each night, 
-            potentially reducing the size of the database.</p><br><p style="text-align: center;">Are you sure you want to run it manually now?</p>`,
+            text: `<p>${_('versionx.optimize_storage.confirm_text')}</p><br>
+                    <p style="text-align: center;">
+                        ${_('versionx.optimize_storage.confirm_text2')}
+                    </p>`,
             url: VersionX.config.connector_url,
             params: {
                 action: 'mgr/deltas/optimize',
@@ -89,11 +91,11 @@ Ext.extend(VersionX.page.Home, MODx.Component,{
                 'success': {fn: function(r) {
                         MODx.msg.status({
                             title: _('success')
-                            ,message: r.message || 'Optimization successful.'
+                            ,message: r.message || _('versionx.optimize_storage.successful')
                         });
                     }, scope:this}
             },
         });
     }
 });
-Ext.reg('versionx-page-home',VersionX.page.Home);
+Ext.reg('versionx-page-home', VersionX.page.Home);

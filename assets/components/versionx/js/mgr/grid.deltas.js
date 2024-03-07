@@ -32,11 +32,11 @@ VersionX.grid.Deltas = function(config) {
         autoHeight: true,
         pageSize: 10,
         columns: [{
-            header: 'Versions',
+            header: _('versionx.deltas.versions'),
             dataIndex: 'time_end',
             renderer: this.diffColumnRenderer
         },{
-            header: 'Details',
+            header: _('versionx.deltas.details'),
             dataIndex: 'id',
             fixed: true,
             width: 150,
@@ -45,7 +45,7 @@ VersionX.grid.Deltas = function(config) {
         }]
         ,tbar: [{
             xtype: 'versionx-field-search',
-            emptyText: _('versionx.search_by_field'),
+            emptyText: _('versionx.filters.search_by_field'),
             grid: this,
         },'->',{
             xtype: 'versionx-combo-editors',
@@ -60,7 +60,7 @@ VersionX.grid.Deltas = function(config) {
         },{
             xtype: 'datefield',
             name: 'date_from',
-            emptyText: 'Date from...',
+            emptyText: _('versionx.filters.date_from'),
             format: 'Y-m-d',
             width: 120,
             listeners: {
@@ -72,7 +72,7 @@ VersionX.grid.Deltas = function(config) {
         },{
             xtype: 'datefield',
             name: 'date_to',
-            emptyText: 'Date to...',
+            emptyText: _('versionx.filters.date_to'),
             format: 'Y-m-d',
             width: 120,
             listeners: {
@@ -131,8 +131,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             case 'versionx-diff-milestone-btn':
                 if (t.dataset.milestone.length > 0) {
                     MODx.msg.confirm({
-                        title: 'Confirm Milestone Removal',
-                        text: 'Are you sure you want to remove the milestone tag? Doing so means this delta will be included in the next merge.',
+                        title: _('versionx.deltas.confirm_milestone_removal'),
+                        text: _('versionx.deltas.confirm_milestone_removal.text'),
                         url: VersionX.config.connector_url,
                         params: {
                             action: 'mgr/deltas/milestone',
@@ -155,8 +155,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
 
             case 'versionx-field-diff-undo-btn-' + t.dataset.field_id:
                 MODx.msg.confirm({
-                    title: 'Confirm Undo',
-                    text: 'Are you sure you want to undo this change?',
+                    title: _('versionx.deltas.confirm_undo'),
+                    text: _('versionx.deltas.confirm_undo.text'),
                     url: VersionX.config.connector_url,
                     params: {
                         action: 'mgr/deltas/revert',
@@ -176,8 +176,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
 
             case 'versionx-diff-revert-btn':
                 MODx.msg.confirm({
-                    title: 'Confirm Revert',
-                    text: 'Are you sure you want to revert all changes in this delta?',
+                    title: _('versionx.deltas.confirm_revert'),
+                    text: _('versionx.deltas.confirm_revert.text'),
                     url: VersionX.config.connector_url,
                     params: {
                         action: 'mgr/deltas/revert',
@@ -187,21 +187,21 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                         type: that.config['type'],
                     },
                     listeners: {
-                        'success': {fn: function() {
+                        'success': {
+                            fn: function() {
                                 location.reload();
-                            }, scope:this}
+                            },
+                            scope:this
+                        }
                     },
                 });
             break;
 
             case 'versionx-diff-revert-all-btn':
-                let time = Ext.util.Format.date(t.dataset.time_start,
-                    `${MODx.config.manager_date_format} H:i:s`)
+                let time = Ext.util.Format.date(t.dataset.time_start, `${MODx.config.manager_date_format} H:i:s`);
                 MODx.msg.confirm({
-                    title: 'Revert All Fields to ' + time,
-                    text: `<p>Are you sure you want to revert all fields to this point in time?
-                               <strong>${time}</strong>
-                           </p>`,
+                    title: _('versionx.deltas.revert_all_fields', {time: time}),
+                    text: _('versionx.deltas.revert_all_fields.text', {time: time}),
                     url: VersionX.config.connector_url,
                     params: {
                         action: 'mgr/deltas/revert',
@@ -211,9 +211,12 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                         type: that.config['type'],
                     },
                     listeners: {
-                        'success': {fn: function() {
+                        'success': {
+                            fn: function() {
                                 location.reload();
-                            }, scope:this}
+                            },
+                            scope:this,
+                        }
                     },
                 });
                 break;
@@ -227,16 +230,15 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             time_end = rec.get('time_end'),
             milestone = rec.get('milestone');
 
-        // If we've got a milestone, set a class for it so it can be rendered differently
-        let milestone_class = milestone ? ' milestone' : '',
-            milestone_action = milestone ? 'Remove milestone status from delta.' : 'Make this delta a milestone!';
+        // If we've got a milestone, set a class for it, so it can be rendered differently
+        let milestone_class = milestone ? ' ' + _('versionx.deltas.milestone') : '',
+            milestone_action = milestone ? _('versionx.deltas.milestone_remove') : _('versionx.deltas.milestone_make');
 
         // Determine if we should show a time range or single time
         let time_range = time_end;
         if (time_start !== time_end) {
             time_range = time_start + ' - ' + time_end;
         }
-
 
         let hideDiffs = '',
             buttonRow  = `
@@ -254,7 +256,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 type="button" 
                 data-id="${version_id}"
             >
-                Revert these changes
+                ${_('versionx.deltas.revert_these_changes')}
             </button>
         `;
         // Display initial delta differently
@@ -263,7 +265,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             hideDiffs = ' hide-diffs';
         }
 
-        // Collate editor usernames
+        // TODO: Collate editor usernames
 
 
         return `<div class="versionx-grid-diff-container">
@@ -277,7 +279,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                             data-time_start="${time_start}" 
                             data-id="${version_id}"
                         >
-                            <i class="icon icon-undo"></i> &nbsp;&nbsp;Revert all fields to this point in time
+                            <i class="icon icon-undo"></i> &nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
                         </button>
                         <div class="versionx-grid-column-diff">
                             <div class="versionx-diff-top-row">

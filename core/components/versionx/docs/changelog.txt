@@ -1,3 +1,12 @@
+VersionX 3.0.1-pl
+-----------------
+Released on
+
+- Update version 3 changes to properly use lexicons
+- Make the action column on VersionX grids narrower on MODX 3
+- Fix possible fatal error in migration script. (@jako) [#127]
+- Update some German lexicon entries. (@jako) [#125]
+
 VersionX 3.0.0-pl
 -----------------
 Released on 2023-09-06

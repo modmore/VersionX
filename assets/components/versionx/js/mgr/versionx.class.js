@@ -96,7 +96,7 @@ VersionX.combo.Filter = function(config) {
     });
     this.getStore().on('load', function(store, rec, opts) {
         if (combo.showClearFilter) {
-            combo.insertRecord(store, 0, '( Clear filter )', 'clr');
+            combo.insertRecord(store, 0, _('versionx.filters.clear_filter'), 'clr');
         }
     });
 };
@@ -115,17 +115,17 @@ Ext.reg('versionx-combo-filter', VersionX.combo.Filter);
 VersionX.combo.Classes = function(config) {
     config = config || {};
     Ext.applyIf(config, {
-        name: 'class'
-        ,displayField: 'name'
-        ,valueField: 'id'
-        ,hiddenName: 'class'
-        ,fields: ['id', 'name']
-        ,baseParams: {
-            action: 'mgr/filters/classes'
-            ,combo: true
-            ,limit: '0'
-        }
-        ,emptyText: 'Class...'
+        name: 'class',
+        displayField: 'name',
+        valueField: 'id',
+        hiddenName: 'class',
+        fields: ['id', 'name'],
+        baseParams: {
+            action: 'mgr/filters/classes',
+            combo: true,
+            limit: '0',
+        },
+        emptyText: _('versionx.filters.class'),
     });
     VersionX.combo.Classes.superclass.constructor.call(this, config);
 };
@@ -135,17 +135,17 @@ Ext.reg('versionx-combo-classes', VersionX.combo.Classes);
 VersionX.combo.Editors = function(config) {
     config = config || {};
     Ext.applyIf(config, {
-        name: 'editor'
-        ,displayField: 'name'
-        ,valueField: 'id'
-        ,hiddenName: 'editor'
-        ,fields: ['id', 'name']
-        ,baseParams: {
-            action: 'mgr/filters/editors'
-            ,combo: true
-            ,limit: '0'
-        }
-        ,emptyText: 'Editor...'
+        name: 'editor',
+        displayField: 'name',
+        valueField: 'id',
+        hiddenName: 'editor',
+        fields: ['id', 'name'],
+        baseParams: {
+            action: 'mgr/filters/editors',
+            combo: true,
+            limit: '0',
+        },
+        emptyText: _('versionx.filters.editor'),
     });
     VersionX.combo.Editors.superclass.constructor.call(this, config);
 };
@@ -155,17 +155,17 @@ Ext.reg('versionx-combo-editors', VersionX.combo.Editors);
 VersionX.combo.Packages = function(config) {
     config = config || {};
     Ext.applyIf(config, {
-        name: 'package'
-        ,displayField: 'name'
-        ,valueField: 'id'
-        ,hiddenName: 'package'
-        ,fields: ['id', 'name']
-        ,baseParams: {
-            action: 'mgr/filters/packages'
-            ,combo: true
-            ,limit: '0'
-        }
-        ,emptyText: 'Package...'
+        name: 'package',
+        displayField: 'name',
+        valueField: 'id',
+        hiddenName: 'package',
+        fields: ['id', 'name'],
+        baseParams: {
+            action: 'mgr/filters/packages',
+            combo: true,
+            limit: '0',
+        },
+        emptyText: _('versionx.filters.package'),
     });
     VersionX.combo.Packages.superclass.constructor.call(this, config);
 };
