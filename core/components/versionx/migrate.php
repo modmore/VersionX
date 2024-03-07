@@ -22,6 +22,11 @@ $completed = [];
 /** @var \modX|modX $modx */
 $versionX = new VersionX($modx);
 
+$modxVersion = $modx->getVersionData();
+if (version_compare($modxVersion['full_version'], '3.0.0-dev', '>=')) {
+    class_alias(\xPDO\xPDOIterator::class, 'xPDOIterator');
+}
+
 foreach (CLASSES as $vxClass => $principalClass) {
     echo "Starting {$principalClass} version migrations...\n\n";
     $vxObjects = query($vxClass);
