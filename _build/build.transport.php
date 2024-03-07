@@ -11,8 +11,8 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME', 'VersionX');
     define('PKG_NAMESPACE', 'versionx');
-    define('PKG_VERSION', '3.0.0');
-    define('PKG_RELEASE', 'dev1');
+    define('PKG_VERSION', '3.0.1');
+    define('PKG_RELEASE', 'pl');
 
     /* load modx */
     require_once dirname(dirname(__FILE__)) . '/config.core.php';

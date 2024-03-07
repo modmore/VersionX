@@ -1,6 +1,6 @@
 # VersionX 3 #
 
-_If you're looking for the current stable version of VersionX, see the [v2 branch](https://github.com/modmore/VersionX/tree/master)._
+_If you're looking for the previous version of VersionX, see the [v2 branch](https://github.com/modmore/VersionX/tree/master)._
 
 VersionX is a versioning system for the MODX content management system. It keeps track of changes to your resources, templates, template variables, chunks, snippets, plugins, and _now in v3 custom objects too!_ You can view historic changes and revert changes from a simple dashboard.
 
