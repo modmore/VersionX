@@ -197,6 +197,10 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 });
             break;
 
+            case 'versionx-diff-preview-btn':
+                this.loadPreview();
+                break;
+
             case 'versionx-diff-revert-all-btn':
                 let time = Ext.util.Format.date(t.dataset.time_start, `${MODx.config.manager_date_format} H:i:s`);
                 MODx.msg.confirm({
@@ -258,6 +262,13 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             >
                 ${_('versionx.deltas.revert_these_changes')}
             </button>
+            <button 
+                class="versionx-diff-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
+                type="button" 
+                data-id="${version_id}"
+            >
+                Preview
+            </button>
         `;
         // Display initial delta differently
         if (milestone === '_initial_') {
@@ -298,5 +309,32 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     </div>
                 </div>`;
     },
+    loadPreview: function() {
+        const previewUrl = MODx.config.manager_url
+            + '?namespace=magicpreview&a=preview&resource='
+            + this.config.principal;
+
+        if (!this.previewWindow) {
+            this.previewWindow = window.open(previewUrl + '#loading', 'MagicPreview');
+        }
+
+        MODx.Ajax.request({
+            url: VersionX.config.connector_url,
+            params: {
+                action: 'mgr/deltas/preview',
+                id: this.config.principal,
+                class_key: this.config.principal_class,
+                version_id: this.config.id,
+            },
+            listeners: {
+                success: {
+                    fn: function (response) {
+                        console.log(response);
+                    }
+                }
+            }
+        });
+
+    }
 });
 Ext.reg('versionx-grid-deltas', VersionX.grid.Deltas);

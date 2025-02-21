@@ -121,6 +121,10 @@ switch($eventName) {
         }
         break;
 
+    case 'OnResourceMagicPreview':
+        $modx->log(1, print_r($resource->toArray(), true));
+
+        break;
 }
 
 return true;
