@@ -198,7 +198,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             break;
 
             case 'versionx-diff-preview-btn':
-                this.loadPreview();
+                this.loadPreview(t.dataset);
                 break;
 
             case 'versionx-diff-revert-all-btn':
@@ -309,7 +309,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     </div>
                 </div>`;
     },
-    loadPreview: function() {
+    loadPreview: function(dataset) {
+        let self = this;
         const previewUrl = MODx.config.manager_url
             + '?namespace=magicpreview&a=preview&resource='
             + this.config.principal;
@@ -324,12 +325,14 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 action: 'mgr/deltas/preview',
                 id: this.config.principal,
                 class_key: this.config.principal_class,
-                version_id: this.config.id,
+                delta_id: dataset.id,
             },
             listeners: {
                 success: {
-                    fn: function (response) {
-                        console.log(response);
+                    fn: function (r) {
+                        if (r.object && r.object.preview_hash) {
+                            self.previewWindow.location.hash = r.object.preview_hash;
+                        }
                     }
                 }
             }

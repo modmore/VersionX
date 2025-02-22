@@ -122,7 +122,35 @@ switch($eventName) {
         break;
 
     case 'OnResourceMagicPreview':
-        $modx->log(1, print_r($resource->toArray(), true));
+        /**  @var array $properties */
+        $versionX = new VersionX($modx);
+        $deltaId = $properties['delta_id'];
+//        $objectId = $resource->get('id');
+
+        $delta = $modx->getObject(\vxDelta::class, ['id' => $deltaId]);
+        $typeClass = "\\" . $delta->get('type_class');
+        /** @var \modmore\VersionX\Types\Type $type */
+        $type = new $typeClass($versionX);
+
+//        // Grab the object to revert
+//        $object = $modx->getObject($type->getClass(), ['id' => $objectId]);
+//        if (!$object) {
+//            $modx->log(MODX_LOG_LEVEL_ERROR,
+//                '[VersionX] Error loading ' . $type->getClass() . ' with id: ' . $objectId);
+//            return false;
+//        }
+
+        // Get the first version of every field after the "time_end" on the selected delta
+        $fields = [];
+        foreach ($versionX->deltas()->getClosestDeltaFields($type, $resource, [], $delta->get('time_start')) as $item) {
+            $fields[$item->get('field')] = $item;
+        }
+
+        // Apply the field values to the object
+        // We want to revert to all fields to the after value of a specific point in time.
+        foreach ($fields as $field) {
+            $resource->set($field->get('field'), $field->get('before'));
+        }
 
         break;
 }

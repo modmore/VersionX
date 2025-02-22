@@ -3,7 +3,7 @@
 class VersionXRevertPreviewProcessor extends modProcessor
 {
     public \modmore\VersionX\VersionX $versionX;
-    public \MagicPreview $magicPreview;
+    public ?\MagicPreview $magicPreview = null;
 
     public function initialize()
     {
@@ -24,18 +24,18 @@ class VersionXRevertPreviewProcessor extends modProcessor
 
     public function process()
     {
-        $resourceId = $this->getProperty('id');
-        $resource = $this->modx->getObject(modResource::class, ['id' => $resourceId]);
+        $resource = $this->modx->getObject(modResource::class, ['id' => $this->getProperty('id')]);
         if (!$resource) {
             return $this->failure('Resource not found');
         }
 
         $properties = array_merge($this->properties, $resource->toArray());
+        /** @var modProcessorResponse $response */
         $response = $this->modx->runProcessor('resource/preview', $properties, [
             'processors_path' => $this->magicPreview->config['processorsPath'],
         ]);
 
-        return $this->success('wooo', $resource);
+        return $this->success('wooo', $response->getResponse()['object']);
     }
 }
 return 'VersionXRevertPreviewProcessor';
