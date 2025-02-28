@@ -310,13 +310,15 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 </div>`;
     },
     loadPreview: function(dataset) {
-        let self = this;
-        const previewUrl = MODx.config.manager_url
+        const self = this,
+            previewUrl = MODx.config.manager_url
             + '?namespace=magicpreview&a=preview&resource='
             + this.config.principal;
 
-        if (!this.previewWindow) {
+        if (!this.previewWindow || this.previewWindow.closed) {
             this.previewWindow = window.open(previewUrl + '#loading', 'MagicPreview');
+        } else {
+            this.previewWindow.focus();
         }
 
         MODx.Ajax.request({
