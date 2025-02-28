@@ -122,23 +122,18 @@ switch($eventName) {
         break;
 
     case 'OnResourceMagicPreview':
+        if (empty($properties['versionx'])) {
+            return;
+        }
+
         /**  @var array $properties */
         $versionX = new VersionX($modx);
         $deltaId = $properties['delta_id'];
-//        $objectId = $resource->get('id');
 
         $delta = $modx->getObject(\vxDelta::class, ['id' => $deltaId]);
         $typeClass = "\\" . $delta->get('type_class');
         /** @var \modmore\VersionX\Types\Type $type */
         $type = new $typeClass($versionX);
-
-//        // Grab the object to revert
-//        $object = $modx->getObject($type->getClass(), ['id' => $objectId]);
-//        if (!$object) {
-//            $modx->log(MODX_LOG_LEVEL_ERROR,
-//                '[VersionX] Error loading ' . $type->getClass() . ' with id: ' . $objectId);
-//            return false;
-//        }
 
         // Get the first version of every field after the "time_end" on the selected delta
         $fields = [];

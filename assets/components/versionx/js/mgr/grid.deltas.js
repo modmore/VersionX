@@ -266,8 +266,9 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 class="versionx-diff-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
                 type="button" 
                 data-id="${version_id}"
+                data-revert="delta"
             >
-                Preview
+                ${_('versionx.deltas.preview')}
             </button>
         `;
         // Display initial delta differently
@@ -284,14 +285,24 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                         <div class="versionx-grid-timeline-point"></div>
                     </div>
                     <div class="versionx-grid-main-col">
-                        <button 
-                            class="versionx-diff-revert-all-btn x-btn x-btn-small x-btn-icon-small-left" 
-                            type="button" 
-                            data-time_start="${time_start}" 
-                            data-id="${version_id}"
-                        >
-                            <i class="icon icon-undo"></i> &nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
-                        </button>
+                        <div class="versionx-pit-buttons">
+                            <button 
+                                class="versionx-diff-revert-all-btn x-btn x-btn-small x-btn-icon-small-left" 
+                                type="button" 
+                                data-time_start="${time_start}" 
+                                data-id="${version_id}"
+                            >
+                                <i class="icon icon-undo"></i> &nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
+                            </button>
+                            <button 
+                                class="versionx-diff-revert-all-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
+                                type="button" 
+                                data-id="${version_id}"
+                                data-revert="pit"
+                            >
+                                ${_('versionx.deltas.preview')}
+                            </button>
+                        </div>
                         <div class="versionx-grid-column-diff">
                             <div class="versionx-diff-top-row">
                                 <div class="versionx-diff-top-row-left">
@@ -310,15 +321,22 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 </div>`;
     },
     loadPreview: function(dataset) {
-        const self = this,
-            previewUrl = MODx.config.manager_url
+        const self = this;
+        let previewUrl = MODx.config.manager_url
             + '?namespace=magicpreview&a=preview&resource='
             + this.config.principal;
 
-        if (!this.previewWindow || this.previewWindow.closed) {
-            this.previewWindow = window.open(previewUrl + '#loading', 'MagicPreview');
+        if (!self.previewWindows) {
+            self.previewWindows = {};
+        }
+
+        // Check if a window for the given dataset.id already exists
+        if (self.previewWindows[dataset.id] && !self.previewWindows[dataset.id].closed) {
+            self.previewWindows[dataset.id].focus();
         } else {
-            this.previewWindow.focus();
+            // Open a new window and store the reference
+            self.previewWindows[dataset.id] = window.open(previewUrl + '#loading', 'MagicPreview_' + dataset.id);
+            self.previewWindows[dataset.id].opener = window; // Pass reference to the main window
         }
 
         MODx.Ajax.request({
@@ -328,18 +346,21 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 id: this.config.principal,
                 class_key: this.config.principal_class,
                 delta_id: dataset.id,
+                versionx: true, // required or the VersionX plugin will ignore the OnResourceMagicPreview event
             },
             listeners: {
                 success: {
                     fn: function (r) {
                         if (r.object && r.object.preview_hash) {
-                            self.previewWindow.location.hash = r.object.preview_hash;
+                            self.previewWindows[dataset.id].location = previewUrl
+                                + '&revert=' + dataset.revert
+                                + '&version=' + dataset.id
+                                + '#' + r.object.preview_hash;
                         }
                     }
                 }
             }
         });
-
     }
 });
 Ext.reg('versionx-grid-deltas', VersionX.grid.Deltas);
