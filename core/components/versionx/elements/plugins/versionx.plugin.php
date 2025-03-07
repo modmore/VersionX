@@ -16,6 +16,8 @@
  * @var modPlugin|\MODX\Revolution\modPluginEvent $plugin
 */
 
+use Carbon\Carbon;
+use modmore\VersionX\Enums\RevertAction;
 use modmore\VersionX\Types\Chunk;
 use modmore\VersionX\Types\Plugin;
 use modmore\VersionX\Types\Snippet;
@@ -123,7 +125,7 @@ switch($eventName) {
 
     case 'OnResourceMagicPreview':
         if (empty($properties['versionx'])) {
-            return;
+            break;
         }
 
         /**  @var array $properties */
@@ -131,20 +133,34 @@ switch($eventName) {
         $deltaId = $properties['delta_id'];
 
         $delta = $modx->getObject(\vxDelta::class, ['id' => $deltaId]);
-        $typeClass = "\\" . $delta->get('type_class');
-        /** @var \modmore\VersionX\Types\Type $type */
-        $type = new $typeClass($versionX);
+        if ($delta->get('type_class') !== Resource::class) {
+            break;
+        };
 
-        // Get the first version of every field after the "time_end" on the selected delta
-        $fields = [];
-        foreach ($versionX->deltas()->getClosestDeltaFields($type, $resource, [], $delta->get('time_start')) as $item) {
-            $fields[$item->get('field')] = $item;
+        $previewType = new \modmore\VersionX\Types\ResourcePreview($versionX);
+
+        // Check type of revert preview ('delta' or 'point in time')
+        if ($properties['revert'] === 'delta') {
+            $now = Carbon::now()->toDateTimeString();
+            $fields = $modx->getCollection(\vxDeltaField::class, [
+                'delta' => $deltaId,
+            ]);
+            foreach ($fields as $field) {
+                $resource->set($field->get('field'), $field->get('before'));
+            }
+            $resource = $previewType->afterRevert(RevertAction::DELTA, $fields, $resource, $now);
         }
-
-        // Apply the field values to the object
-        // We want to revert to all fields to the after value of a specific point in time.
-        foreach ($fields as $field) {
-            $resource->set($field->get('field'), $field->get('before'));
+        elseif ($properties['revert'] === 'pit') {
+            // Get the first version of every field after the "time_end" on the selected delta
+            $fields = [];
+            foreach ($versionX->deltas()->getClosestDeltaFields($previewType, $resource, [], $delta->get('time_start')) as $item) {
+                $fields[$item->get('field')] = $item;
+            }
+            // Apply the field values to the object
+            // We want to revert to all fields to the after value of a specific point in time.
+            foreach ($fields as $field) {
+                $resource->set($field->get('field'), $field->get('before'));
+            }
         }
 
         break;

@@ -262,15 +262,32 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             >
                 ${_('versionx.deltas.revert_these_changes')}
             </button>
-            <button 
+        `;
+
+        // Only allow previews for resources
+        let pitPreviewBtn = '';
+        if (typeof rec.json.principal_class !== 'undefined' && rec.json.principal_class === 'modResource') {
+            // Delta revert preview button
+            buttonRow += `<button 
                 class="versionx-diff-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
                 type="button" 
                 data-id="${version_id}"
                 data-revert="delta"
             >
                 ${_('versionx.deltas.preview')}
-            </button>
-        `;
+            </button>`;
+
+            // Point in time preview button
+            pitPreviewBtn = `<button 
+                class="versionx-diff-revert-all-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
+                type="button" 
+                data-id="${version_id}"
+                data-revert="pit"
+            >
+                ${_('versionx.deltas.preview')}
+            </button>`;
+        }
+
         // Display initial delta differently
         if (milestone === '_initial_') {
             buttonRow = '';
@@ -294,14 +311,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                             >
                                 <i class="icon icon-undo"></i> &nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
                             </button>
-                            <button 
-                                class="versionx-diff-revert-all-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
-                                type="button" 
-                                data-id="${version_id}"
-                                data-revert="pit"
-                            >
-                                ${_('versionx.deltas.preview')}
-                            </button>
+                            ${pitPreviewBtn}
                         </div>
                         <div class="versionx-grid-column-diff">
                             <div class="versionx-diff-top-row">
@@ -346,6 +356,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 id: this.config.principal,
                 class_key: this.config.principal_class,
                 delta_id: dataset.id,
+                revert: dataset.revert,
                 versionx: true, // required or the VersionX plugin will ignore the OnResourceMagicPreview event
             },
             listeners: {
