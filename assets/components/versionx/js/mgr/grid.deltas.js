@@ -198,6 +198,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             break;
 
             case 'versionx-diff-preview-btn':
+            case 'versionx-diff-revert-all-preview-btn':
                 this.loadPreview(t.dataset);
                 break;
 
