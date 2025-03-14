@@ -22,6 +22,7 @@ VersionX.grid.Deltas = function(config) {
             {name: 'time_start', type: 'string'},
             {name: 'time_end', type: 'string'},
             {name: 'diffs', type: 'string'},
+            {name: 'show_previews', type: 'boolean'},
         ],
         paging: true,
         remoteSort: true,
@@ -233,7 +234,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             name = rec.get('username'),
             time_start = rec.get('time_start'),
             time_end = rec.get('time_end'),
-            milestone = rec.get('milestone');
+            milestone = rec.get('milestone'),
+            showPreviews = rec.get('show_previews');
 
         // If we've got a milestone, set a class for it, so it can be rendered differently
         let milestone_class = milestone ? ' ' + _('versionx.deltas.milestone') : '',
@@ -267,7 +269,11 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
 
         // Only allow previews for resources
         let pitPreviewBtn = '';
-        if (typeof rec.json.principal_class !== 'undefined' && rec.json.principal_class === 'modResource') {
+        if (
+            showPreviews
+            && typeof rec.json.principal_class !== 'undefined'
+            && rec.json.principal_class === 'modResource'
+        ) {
             // Delta revert preview button
             buttonRow += `<button 
                 class="versionx-diff-preview-btn x-btn x-btn-small x-btn-icon-small-left" 

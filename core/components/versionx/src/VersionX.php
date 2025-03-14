@@ -200,4 +200,23 @@ class VersionX {
         }
         return htmlentities($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
+
+    /**
+     * Checks if MagicPreview is loaded so delta preview buttons can be used.
+     * @return bool
+     */
+    public function magicPreviewLoaded(): bool
+    {
+        $path = $this->modx->getOption(
+            'magicpreview.core_path',
+            [],
+            $this->modx->getOption('core_path') . 'components/magicpreview/'
+        ) . 'model/magicpreview/';
+
+        if (!$magicPreview = $this->modx->getService('magicpreview', 'MagicPreview', $path)) {
+            return false;
+        }
+
+        return version_compare($magicPreview::VERSION, '1.5.0-pl', '>=');
+    }
 }

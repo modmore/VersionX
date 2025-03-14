@@ -10,6 +10,9 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
     public \modmore\VersionX\VersionX $versionX;
     public \modmore\VersionX\Types\Type $type;
 
+    /** @var bool $magicPreviewLoaded - if set to true, delta previews will be activated */
+    protected bool $magicPreviewLoaded = false;
+
     public function initialize(): bool
     {
         $init = parent::initialize();
@@ -25,6 +28,8 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
         $this->modx->getService('smarty', 'smarty.modSmarty', '', [
             'template_dir' => $this->versionX->config['templates_path'],
         ]);
+
+        $this->magicPreviewLoaded = $this->versionX->magicPreviewLoaded();
 
         return $init;
     }
@@ -118,6 +123,9 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
         $fields = array_unique(array_merge($sorted, $fields), SORT_REGULAR);
 
         $row = $object->toArray();
+
+        // Flag if MagicPreview is loaded so preview buttons can be used
+        $row['show_previews'] = $this->magicPreviewLoaded;
 
         $diffFile = $this->versionX->config['templates_path'] . 'mgr/diff.tpl';
         if (!file_exists($diffFile)) {
