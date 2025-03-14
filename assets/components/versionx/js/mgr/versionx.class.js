@@ -143,7 +143,6 @@ VersionX.combo.Editors = function(config) {
         baseParams: {
             action: 'mgr/filters/editors',
             combo: true,
-            limit: '0',
         },
         emptyText: _('versionx.filters.editor'),
     });

@@ -21,6 +21,14 @@ class VersionXEditorsFilterProcessor extends modObjectGetListProcessor
             'username' => 'User.username',
         ]);
 
+        $query = trim($this->getProperty('query'));
+
+        if ($query) {
+            $c->where(['User.username:LIKE' => '%'.$query.'%']);
+        }
+
+        $c->groupBy('User.username');
+
         return $c;
     }
 
