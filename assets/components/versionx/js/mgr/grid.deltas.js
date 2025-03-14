@@ -22,6 +22,7 @@ VersionX.grid.Deltas = function(config) {
             {name: 'time_start', type: 'string'},
             {name: 'time_end', type: 'string'},
             {name: 'diffs', type: 'string'},
+            {name: 'show_previews', type: 'boolean'},
         ],
         paging: true,
         remoteSort: true,
@@ -197,6 +198,11 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 });
             break;
 
+            case 'versionx-diff-preview-btn':
+            case 'versionx-diff-revert-all-preview-btn':
+                this.loadPreview(t.dataset);
+                break;
+
             case 'versionx-diff-revert-all-btn':
                 let time = Ext.util.Format.date(t.dataset.time_start, `${MODx.config.manager_date_format} H:i:s`);
                 MODx.msg.confirm({
@@ -228,7 +234,8 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
             name = rec.get('username'),
             time_start = rec.get('time_start'),
             time_end = rec.get('time_end'),
-            milestone = rec.get('milestone');
+            milestone = rec.get('milestone'),
+            showPreviews = rec.get('show_previews');
 
         // If we've got a milestone, set a class for it, so it can be rendered differently
         let milestone_class = milestone ? ' ' + _('versionx.deltas.milestone') : '',
@@ -259,6 +266,35 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 ${_('versionx.deltas.revert_these_changes')}
             </button>
         `;
+
+        // Only allow previews for resources
+        let pitPreviewBtn = '';
+        if (
+            showPreviews
+            && typeof rec.json.principal_class !== 'undefined'
+            && rec.json.principal_class === 'modResource'
+        ) {
+            // Delta revert preview button
+            buttonRow += `<button 
+                class="versionx-diff-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
+                type="button" 
+                data-id="${version_id}"
+                data-revert="delta"
+            >
+                <i class="icon icon-eye"></i>&nbsp;&nbsp;${_('versionx.deltas.preview')}
+            </button>`;
+
+            // Point in time preview button
+            pitPreviewBtn = `<button 
+                class="versionx-diff-revert-all-preview-btn x-btn x-btn-small x-btn-icon-small-left" 
+                type="button" 
+                data-id="${version_id}"
+                data-revert="pit"
+            >
+                <i class="icon icon-eye"></i>&nbsp;&nbsp;${_('versionx.deltas.preview')}
+            </button>`;
+        }
+
         // Display initial delta differently
         if (milestone === '_initial_') {
             buttonRow = '';
@@ -273,14 +309,17 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                         <div class="versionx-grid-timeline-point"></div>
                     </div>
                     <div class="versionx-grid-main-col">
-                        <button 
-                            class="versionx-diff-revert-all-btn x-btn x-btn-small x-btn-icon-small-left" 
-                            type="button" 
-                            data-time_start="${time_start}" 
-                            data-id="${version_id}"
-                        >
-                            <i class="icon icon-undo"></i> &nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
-                        </button>
+                        <div class="versionx-pit-buttons">
+                            <button 
+                                class="versionx-diff-revert-all-btn x-btn x-btn-small x-btn-icon-small-left" 
+                                type="button" 
+                                data-time_start="${time_start}" 
+                                data-id="${version_id}"
+                            >
+                                <i class="icon icon-undo"></i>&nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
+                            </button>
+                            ${pitPreviewBtn}
+                        </div>
                         <div class="versionx-grid-column-diff">
                             <div class="versionx-diff-top-row">
                                 <div class="versionx-diff-top-row-left">
@@ -298,5 +337,48 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                     </div>
                 </div>`;
     },
+    loadPreview: function(dataset) {
+        const self = this;
+        let previewUrl = MODx.config.manager_url
+            + '?namespace=magicpreview&a=preview&resource='
+            + this.config.principal;
+
+        if (!self.previewWindows) {
+            self.previewWindows = {};
+        }
+
+        // Check if a window for the given dataset.id already exists
+        if (self.previewWindows[dataset.id] && !self.previewWindows[dataset.id].closed) {
+            self.previewWindows[dataset.id].focus();
+        } else {
+            // Open a new window and store the reference
+            self.previewWindows[dataset.id] = window.open(previewUrl + '#loading', 'MagicPreview_' + dataset.id);
+            self.previewWindows[dataset.id].opener = window; // Pass reference to the main window
+        }
+
+        MODx.Ajax.request({
+            url: VersionX.config.connector_url,
+            params: {
+                action: 'mgr/deltas/preview',
+                id: this.config.principal,
+                class_key: this.config.principal_class,
+                delta_id: dataset.id,
+                revert: dataset.revert,
+                versionx: true, // required or the VersionX plugin will ignore the OnResourceMagicPreview event
+            },
+            listeners: {
+                success: {
+                    fn: function (r) {
+                        if (r.object && r.object.preview_hash) {
+                            self.previewWindows[dataset.id].location = previewUrl
+                                + '&revert=' + dataset.revert
+                                + '&version=' + dataset.id
+                                + '#' + r.object.preview_hash;
+                        }
+                    }
+                }
+            }
+        });
+    }
 });
 Ext.reg('versionx-grid-deltas', VersionX.grid.Deltas);

@@ -63,6 +63,11 @@ abstract class Type
      * order they're loaded.
      */
     protected array $fieldOrder = [];
+    /**
+     * @var bool Can be overridden to prevent saving changes to the object after a revert.
+     * See Resource vs ResourcePreview types for an example.
+     */
+    protected bool $persistChanges = true;
 
     function __construct(VersionX $versionX)
     {
@@ -289,7 +294,9 @@ abstract class Type
                 $data = $object->get($propField);
                 Properties::revertPropertyValue($field, $data);
                 $object->set($propField, $data);
-                $object->save();
+                if ($this->persistChanges) {
+                    $object->save();
+                }
             }
         }
     }

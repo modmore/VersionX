@@ -27,6 +27,7 @@ $_lang['versionx.deltas.revert_all_fields.text'] = "<p>Are you sure you want to 
 $_lang['versionx.deltas.milestone'] = 'milestone';
 $_lang['versionx.deltas.milestone_remove'] = 'Remove milestone status from delta';
 $_lang['versionx.deltas.milestone_make'] = 'Make this delta a milestone';
+$_lang['versionx.deltas.preview'] = 'Preview';
 $_lang['versionx.deltas.revert_these_changes'] = 'Revert these changes';
 
 // Grid filters

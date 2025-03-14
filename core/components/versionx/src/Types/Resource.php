@@ -143,7 +143,8 @@ class Resource extends Type
             $this->revertTVValues($field, $object, $tvs);
         }
 
-        if (!$object->save(true)) {
+        // Skip saving if not allowed e.g. in ResourcePreview
+        if ($this->persistChanges && !$object->save(true)) {
             $this->modx->log(MODX_LOG_LEVEL_ERROR,
                 '[VersionX] Error saving ' . get_class($object) . ' with id: ' . $object->get('id'));
         }
@@ -170,7 +171,11 @@ class Resource extends Type
                 ]);
 
                 $tvObj->set('value', $field->get('before'));
-                $tvObj->save();
+
+                // Skip saving if not allowed e.g. in ResourcePreview
+                if ($this->persistChanges) {
+                    $tvObj->save();
+                }
             }
         }
     }
