@@ -281,7 +281,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 data-id="${version_id}"
                 data-revert="delta"
             >
-                ${_('versionx.deltas.preview')}
+                <i class="icon icon-eye"></i>&nbsp;&nbsp;${_('versionx.deltas.preview')}
             </button>`;
 
             // Point in time preview button
@@ -291,7 +291,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                 data-id="${version_id}"
                 data-revert="pit"
             >
-                ${_('versionx.deltas.preview')}
+                <i class="icon icon-eye"></i>&nbsp;&nbsp;${_('versionx.deltas.preview')}
             </button>`;
         }
 
@@ -316,7 +316,7 @@ Ext.extend(VersionX.grid.Deltas, MODx.grid.Grid, {
                                 data-time_start="${time_start}" 
                                 data-id="${version_id}"
                             >
-                                <i class="icon icon-undo"></i> &nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
+                                <i class="icon icon-undo"></i>&nbsp;&nbsp;${_('versionx.deltas.revert_all_fields_to_point_in_time')}
                             </button>
                             ${pitPreviewBtn}
                         </div>
