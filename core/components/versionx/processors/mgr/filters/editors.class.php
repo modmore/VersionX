@@ -17,12 +17,11 @@ class VersionXEditorsFilterProcessor extends modObjectGetListProcessor
         ]);
 
         $c->select([
-            'vxDeltaEditor.*',
+            'id' => 'MIN(vxDeltaEditor.id)',
             'username' => 'User.username',
         ]);
 
         $query = trim($this->getProperty('query'));
-
         if ($query) {
             $c->where(['User.username:LIKE' => '%'.$query.'%']);
         }
