@@ -11,7 +11,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME', 'VersionX');
     define('PKG_NAMESPACE', 'versionx');
-    define('PKG_VERSION', '3.2.0');
+    define('PKG_VERSION', '3.2.1');
     define('PKG_RELEASE', 'pl');
 
     /* load modx */
