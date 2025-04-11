@@ -175,8 +175,8 @@ function createFields(vxDelta $delta, array $items, array $prevItems)
             continue;
         }
 
-        $beforeValue = !empty($prevItems) && !empty($prevItems[$key]) ? normalizeValue($prevItems[$key]) : '';
-        $afterValue = normalizeValue($item);
+        [$beforeValue, $beforeType] = !empty($prevItems) && !empty($prevItems[$key]) ? normalizeValue($prevItems[$key]) : ['', ''];
+        [$afterValue, $afterType] = normalizeValue($item);
 
         $diff = $versionX->deltas()::calculateDiff($beforeValue, $afterValue);
 
@@ -193,7 +193,9 @@ function createFields(vxDelta $delta, array $items, array $prevItems)
             'field' => $key,
             'field_type' => $typeClass->getFieldClass($key),
             'before' => $beforeValue,
+            'before_type' => $beforeType,
             'after' => $afterValue,
+            'after_type' => $afterType,
         ]);
         $field->save();
 
@@ -246,19 +248,45 @@ function getElementFields($object, array $extraKeys): array
 
 /**
  * @param $value
- * @return mixed|string
+ * @return array
  */
-function normalizeValue($value)
+function normalizeValue($value): array
 {
     if ($value === null) {
-        return '';
+        return ['', ''];
     }
 
+    if (isSerialized($value)) {
+        $value = unserialize($value);
+    }
+
+    $type = gettype($value);
+    if (in_array($type, [null, 'null', 'string'])) {
+        $type = '';
+    }
     if (is_array($value) || is_object($value)) {
-        return serialize($value);
+        return [json_encode($value) ?? '', $type];
     }
 
-    return $value;
+    return [$value, $type];
+}
+
+/**
+ * @param $value
+ * @return bool
+ */
+function isSerialized($value): bool
+{
+    if (!is_string($value)) {
+        return false;
+    }
+
+    $unserialized = @unserialize($value);
+    if ($value === 'b:0;' || $unserialized !== false) {
+        return true;
+    }
+
+    return false;
 }
 
 @session_write_close();
