@@ -1,9 +1,10 @@
 VersionX 3.2.0-pl
 -----------------
-Released on 2025-03-14
+Released on 2025-04-11
 
-- Add MagicPreview (v1.5+) integration to enable previews of resource deltas before reverting. [#142]
+- Add MagicPreview (v1.5.1+) integration to enable previews of resource deltas before reverting. [#142]
 - Optimize editor filter query for large data sets. (@matdave) [#143]
+- Update migration script to use json_encode instead of serialize to match changes to vxDeltaField in the last release. [#145]
 
 VersionX 3.1.3-pl
 -----------------
