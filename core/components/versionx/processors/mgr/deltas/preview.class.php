@@ -35,7 +35,7 @@ class VersionXRevertPreviewProcessor extends modProcessor
             'processors_path' => $this->magicPreview->config['processorsPath'],
         ]);
 
-        return $this->success('wooo', $response->getResponse()['object']);
+        return $this->success('', $response->getResponse()['object']);
     }
 }
 return 'VersionXRevertPreviewProcessor';

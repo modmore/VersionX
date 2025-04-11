@@ -217,6 +217,6 @@ class VersionX {
             return false;
         }
 
-        return version_compare($magicPreview::VERSION, '1.5.0-pl', '>=');
+        return version_compare($magicPreview::VERSION, '1.5.1-pl', '>=');
     }
 }

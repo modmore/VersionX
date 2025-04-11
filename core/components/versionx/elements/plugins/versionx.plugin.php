@@ -124,11 +124,11 @@ switch($eventName) {
         break;
 
     case 'OnResourceMagicPreview':
+        /**  @var array $properties */
         if (empty($properties['versionx'])) {
             break;
         }
 
-        /**  @var array $properties */
         $versionX = new VersionX($modx);
         $deltaId = $properties['delta_id'];
 
