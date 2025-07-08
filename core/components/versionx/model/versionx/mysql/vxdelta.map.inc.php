@@ -37,7 +37,7 @@ $xpdo_meta_map['vxDelta']= array (
     'type_class' => NULL,
     'milestone' => '',
     'time_start' => 'CURRENT_TIMESTAMP',
-    'time_end' => 'CURRENT_TIMESTAMP',
+    'time_end' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -92,7 +92,6 @@ $xpdo_meta_map['vxDelta']= array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
       'null' => false,
-      'default' => 'CURRENT_TIMESTAMP',
     ),
   ),
   'indexes' => 

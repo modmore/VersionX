@@ -46,7 +46,7 @@
             deltas that were merged.
             -->
         <field key="time_start" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
-        <field key="time_end" dbtype="timestamp" phptype="timestamp" null="false" default="CURRENT_TIMESTAMP" />
+        <field key="time_end" dbtype="timestamp" phptype="timestamp" null="false" />
 
         <index alias="principal_class" name="principal_class" primary="false" unique="false" type="BTREE">
             <column key="principal_class" length="" collation="A" null="false" />
