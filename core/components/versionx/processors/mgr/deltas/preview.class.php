@@ -13,11 +13,13 @@ class VersionXRevertPreviewProcessor extends modProcessor
             null,
             $this->modx->getOption('core_path') . 'components/magicpreview/'
         );
-        $this->magicPreview ??= $this->modx->getService(
-            'magicpreview',
-            'MagicPreview',
-            $path . '/model/magicpreview/'
-        );
+        if (file_exists($path . '/model/magicpreview/')) {
+            $this->magicPreview ??= $this->modx->getService(
+                'magicpreview',
+                'MagicPreview',
+                $path . '/model/magicpreview/'
+            );
+        }
 
         return $init;
     }

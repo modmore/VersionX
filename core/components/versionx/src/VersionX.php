@@ -213,7 +213,7 @@ class VersionX {
             $this->modx->getOption('core_path') . 'components/magicpreview/'
         ) . 'model/magicpreview/';
 
-        if (!$magicPreview = $this->modx->getService('magicpreview', 'MagicPreview', $path)) {
+        if (!file_exists($path) || !$magicPreview = $this->modx->getService('magicpreview', 'MagicPreview', $path)) {
             return false;
         }
 
