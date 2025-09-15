@@ -59,6 +59,9 @@ class Resource extends Type
         // Grab the most recent TV value fields
         $prevFields = $this->versionX->deltas()->getClosestDeltaFields($this, $object, $tvNames);
 
+        $options = [
+            'renderer' => $this->modx->getOption('versionx.renderer', null, 'Inline'),
+        ];
         // Loop through TVs matching previous delta fields by TV name
         /* @var \MODX\Revolution\modTemplateVar|\modTemplateVar $tv */
         foreach ($tvs as $tv) {
@@ -95,7 +98,7 @@ class Resource extends Type
                 'field_type' => get_class($fieldObj),
                 'before' => $prevValue,
                 'after' => $tvValue,
-                'diff' => $fieldObj->render($prevValue, $fieldObj->getValue()),
+                'diff' => $fieldObj->render($prevValue, $fieldObj->getValue(), $options),
             ]);
 
             $fields[] = $field;

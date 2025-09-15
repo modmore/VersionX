@@ -19,6 +19,7 @@ $e = [
     'OnPluginFormPrerender',
 
     'FredOnFredResourceSave',
+    'OnSiteRefresh',
 ];
 
 foreach ($e as $ev) {

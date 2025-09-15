@@ -164,6 +164,9 @@ switch($eventName) {
         }
 
         break;
+    case 'OnSiteRefresh':
+        $versionX->deltas()->cleanup();
+        break;
 }
 
 return true;

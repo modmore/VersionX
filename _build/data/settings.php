@@ -53,4 +53,8 @@ return [
         'area' => 'Enable',
         'value' => true,
     ],
+    'renderer' => [
+        'area' => 'Appearance',
+        'value' => 'Inline'
+    ]
 ];

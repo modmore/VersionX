@@ -66,6 +66,6 @@ abstract class Field
 
     public function render(string $prevValue, string $newValue, array $options = []): string
     {
-        return DeltaManager::calculateDiff($prevValue, $newValue);
+        return DeltaManager::calculateDiff($prevValue, $newValue, $options);
     }
 }
