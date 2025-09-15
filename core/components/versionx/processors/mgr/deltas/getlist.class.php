@@ -132,6 +132,9 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
             return [];
         }
 
+        $options = [
+            'renderer' => $this->modx->getOption('versionx.renderer', null, 'Inline'),
+        ];
         $row['diffs'] = '';
         foreach($fields as $field) {
             // Attempt to get diff from cache
@@ -146,7 +149,7 @@ class VersionXDeltasGetlistProcessor extends modObjectGetListProcessor {
                 // Otherwise calculate diff
                 $fieldType = $this->type->getFieldClass($field->get('field'));
                 $fieldTypeObj = new $fieldType($field->get('after'));
-                $renderedDiff = $fieldTypeObj->render($field->get('before'), $field->get('after'));
+                $renderedDiff = $fieldTypeObj->render($field->get('before'), $field->get('after'), $options);
 
                 // Save in cache
                 if ($renderedDiff) {
