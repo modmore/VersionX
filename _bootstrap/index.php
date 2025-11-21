@@ -1,4 +1,5 @@
 <?php
+
 /* Get the core config */
 if (!file_exists(dirname(__DIR__) . '/config.core.php')) {
     die('ERROR: missing ' . dirname(__DIR__) . '/config.core.php file defining the MODX core path.');
@@ -94,7 +95,7 @@ if ($vcPlugin) {
         'OnChunkFormSave',
         'OnSnipFormSave',
         'OnPluginFormSave',
-
+        'OnSiteRefresh',
         'OnDocFormPrerender',
         'OnTempFormPrerender',
         'OnTVFormPrerender',
