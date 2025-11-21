@@ -43,15 +43,28 @@ class DeltaManager
      * @param string $value
      * @return string
      */
-    public static function calculateDiff(string $prevValue, string $value): string
+    public static function calculateDiff(string $prevValue, string $value, array $options = []): string
     {
+        $renderer = self::getRenderer($options);
         return DiffHelper::calculate(
             $prevValue,
             $value,
-            'Inline',
+            $renderer,
             self::$diffOptions,
             self::$rendererOptions,
         );
+    }
+
+    private static function getRenderer(array $options): string
+    {
+        $valid = [
+            'Inline', 'Combined', 'SideBySide', // HTML
+        ];
+        $renderer = $options['renderer'] ?? 'Inline';
+        if (!in_array($renderer, $valid)) {
+            return 'Inline';
+        }
+        return $renderer;
     }
 
     /**
@@ -84,6 +97,9 @@ class DeltaManager
 
         // Get current principal object
         $object = $this->modx->getObject($type->getClass(), ['id' => $id]);
+        $options = [
+            'renderer' => $this->modx->getOption('versionx.renderer', null, 'Inline'),
+        ];
 
         if (!$type->beforeDeltaCreate($now, $object)) {
             return null;
@@ -141,7 +157,7 @@ class DeltaManager
             }
 
             try {
-                $renderedDiff = $fieldTypeObj->render($prevValue, $value);
+                $renderedDiff = $fieldTypeObj->render($prevValue, $value, $options);
             }
             catch (\Error $e) {
                 $this->modx->log(\modX::LOG_LEVEL_ERROR, '[VersionX] Fatal Error calculating diff: '
@@ -454,5 +470,11 @@ class DeltaManager
         }
 
         return false;
+    }
+
+    public function cleanup(): void
+    {
+        $this->modx->log(\xPDO::LOG_LEVEL_INFO, '[VersionX] Cleaning up cache...');
+        $this->modx->cacheManager->clean(VersionX::CACHE_OPT);
     }
 }

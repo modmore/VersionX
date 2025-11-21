@@ -13,7 +13,7 @@ class Image extends Field
 
     public function render(string $prevValue, string $newValue, array $options = []): string
     {
-        $diff = DeltaManager::calculateDiff($prevValue, $newValue);
+        $diff = DeltaManager::calculateDiff($prevValue, $newValue, $options);
         // todo: render before and after images into diff (process with media source) - templates/mgr/fields/image.tpl
         return $diff;
     }

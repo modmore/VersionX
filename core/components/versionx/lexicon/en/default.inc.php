@@ -62,3 +62,7 @@ $_lang['versionx.optimize_storage.successful'] = 'Optimization successful';
 $_lang['versionx.widget.resources'] = 'Recent Resource Changes';
 $_lang['versionx.widget.resources.desc'] = '[VersionX] Shows a grid with the most recent resource changes for all users.';
 $_lang['versionx.widget.resources.update'] = 'Update Resource';
+
+// Settings
+$_lang['setting_versionx.renderer'] = 'Renderer';
+$_lang['setting_versionx.renderer_desc'] = 'The renderer to use for the Diff view, options are: "Inline", "SideBySide" and "Combined".';
