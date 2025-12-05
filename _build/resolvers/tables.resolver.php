@@ -38,6 +38,11 @@ if ($object->xpdo) {
             $manager->addField('vxDeltaField', 'before_type', ['after' => 'field_type']);
             $manager->addField('vxDeltaField', 'after_type', ['after' => 'before_type']);
 
+            // VersionX 3.3.0
+            // Remove explicit CURRENT_TIMESTAMP default on datetime fields for compatibility with MariaDB
+            $manager->alterField('vxDelta', 'time_start');
+            $manager->alterField('vxDelta', 'time_end');
+
             $modx->setLogLevel($loglevel);
 
         break;
