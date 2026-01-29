@@ -1,3 +1,12 @@
+VersionX 3.3.0-pl
+-----------------
+Released on 2026-01-29
+
+- Allow changing the diff renderer with the versionx_renderer system setting [#154] (@matdave)
+- Fix MagicPreview errors by adding file_exists() check [#150]
+- Fix OnSiteRefresh event missing in bootstrap
+- Remove explicit CURRENT_TIMESTAMP from time_start and time_end on vxDelta to fix MariaDB compatibility
+
 VersionX 3.2.1-pl
 -----------------
 Released on 2025-04-11
