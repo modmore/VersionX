@@ -84,13 +84,13 @@ $xpdo_meta_map['vxDelta']= array (
     array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
-      'null' => false,
+      'null' => true,
     ),
     'time_end' => 
     array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
-      'null' => false,
+      'null' => true,
     ),
   ),
   'indexes' => 

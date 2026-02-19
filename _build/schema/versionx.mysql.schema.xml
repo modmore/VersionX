@@ -45,8 +45,8 @@
             Deltas have a start and end time, because a delta may be the result of different
             deltas that were merged.
             -->
-        <field key="time_start" dbtype="timestamp" phptype="timestamp" null="false" />
-        <field key="time_end" dbtype="timestamp" phptype="timestamp" null="false" />
+        <field key="time_start" dbtype="timestamp" phptype="timestamp" null="true" />
+        <field key="time_end" dbtype="timestamp" phptype="timestamp" null="true" />
 
         <index alias="principal_class" name="principal_class" primary="false" unique="false" type="BTREE">
             <column key="principal_class" length="" collation="A" null="false" />
