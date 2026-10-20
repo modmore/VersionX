@@ -166,19 +166,11 @@ class Resource extends Type
     {
         // TODO: consider recreating a TV if it has since been deleted... but may not be possible.
         foreach ($tvs as $tv) {
-            if ($tv->get('name') === $field->get('field')) {
-                // Get actual TV object to save, now that we have the id.
-                $tvObj = $this->modx->getObject(\modTemplateVarResource::class, [
-                    'tmplvarid' => $tv->get('id'),
-                    'contentid' => $object->get('id'),
-                ]);
-
-                $tvObj->set('value', $field->get('before'));
-
-                // Skip saving if not allowed e.g. in ResourcePreview
-                if ($this->persistChanges) {
-                    $tvObj->save();
-                }
+            // Skip saving if not allowed e.g. in ResourcePreview
+            if ($this->persistChanges && $tv->get('name') === $field->get('field')) {
+                // MODX deletes a resource's TV value row when the TV is cleared, so the row may not exist.
+                // setTVValue() recreates it if needed, and removes it if the value matches the TV default.
+                $object->setTVValue($tv->get('id'), $field->get('before'));
             }
         }
     }
